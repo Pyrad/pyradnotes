@@ -1408,14 +1408,14 @@ public static boolean symmetry() {
 
 - 常用
 
-  - TreeMap
-  - HashMap
+  - **TreeMap**
+  - **HashMap**
 
 - Map接口中的常用方法
 
   ```java
   V put(K key, V value);               // 添加键值对，如果key已存在，会覆盖原有的key-value对，然后返回value；如果可以不存在，就返回null
-  void putAll(Map m);                  // 复制另一个Map到此Map（并运算）
+  void putAll(Map m);                  // 复制另一个Map到此Map（并运算），如有key相同，会把对应的值覆盖
   V remove(Object key);                // 删除key对应的key-value对
   V get(Object key);                   // 得到key对应的value
   boolean containsKey(Object key);     // 是否有key
@@ -1429,9 +1429,140 @@ public static boolean symmetry() {
 
 - 是Map接口的实现类
 
-- 底层采样哈希表存储数据，key重复的话，后面添加的会覆盖之前已经存在的key-value对
+- 底层采样**<font color='red'>哈希表</font>**存储数据，key重复的话，后面添加的会覆盖之前已经存在的key-value对
 
-- 遍历方法
+- HashMap中的成员变量
+
+  ```java
+  //数组初始长度，必须是2的次方
+  static final int DEFAULT_INITIAL_CAPACITY = 1 << 4;
+  
+  // 数组最大长度
+  static final int MAXIMUM_CAPACITY = 1 << 30;
+  
+  // 负载因子，数组扩容时的使用（即数组使用到75%时即扩容）
+  static final float DEFAULT_LOAD_FACTOR = 0.75f;
+  /**
+   * 链表节点数超过多少时转换成红黑树（默认8），但不是马上转，还要看MIN_TREEIFY_CAPACITY值（即
+   * 数组table长度超过64的时候才转成红黑树），如果链表节点数超过8单数组长度还没有超过64，
+   * 那么值扩容，不转换成红黑树
+   */
+  static final int TREEIFY_THRESHOLD = 8;
+  // 红黑树节点数少于多少时转换成链表（默认6）
+  static final int UNTREEIFY_THRESHOLD = 6;
+  // 并不是一个链表超过8个节点时马上转换成红黑树，而是在数组长度超过64的时候，才把那些超过8个节点的链表转换成红黑树
+  static final int MIN_TREEIFY_CAPACITY = 64;
+  // 当前HashMap中键值对的个数
+  transient int size;
+  // 就是HashMap中的数组（每个节点可能是单独的一个节点，或者一个链表，或者一个红黑树）
+  transient Node<K,V>[] table;
+  ```
+
+- HashMap中存储元素的节点类型：两种，分别是**Node<K, V>**和**TreeNode<K, V>**
+
+  **Node<K, V>**，是HashMap的内部类，用来表示**链表节点**
+
+  ```java
+  static class Node<K,V> implements Map.Entry<K,V> {
+      final int hash;
+      final K key; //注意，和C++中一样，key不能变，如果要变，只能删除再添加一个键值对
+      V value; //value可以修改
+      Node<K,V> next;
+      Node(int hash, K key, V value, Node<K,V> next) {
+          this.hash = hash;
+          this.key = key;
+          this.value = value;
+          this.next = next;
+      }
+      public final getKey() {return key;}
+      public final getValue
+  }
+  ```
+
+  **TreeNode<K, V>**，是HashMap的内部类，用来表示**红黑树的节点**
+
+  ```java
+  /** 
+   * 注意：LinkedHashMap.Entry<K,V>是LinkedHashMap的一个内部类（名字叫Entry<K,V>），
+   * 它又继承了前面提到的HashMap的Node<K,V>这个内部类
+   */
+  static final class TreeNode<K,V> extends LinkedHashMap.Entry<K,V> {
+  	// 当前节点的父节点
+      TreeNode<K,V> parent;  // red-black tree links
+      TreeNode<K,V> left;
+      TreeNode<K,V> right;
+      // 当前节点的前一个节点
+      TreeNode<K,V> prev;    // needed to unlink next upon deletion
+      boolean red; // 红树或黑树
+      TreeNode(int hash, K key, V val, Node<K,V> next) {
+          super(hash, key, val, next);
+      }
+  }
+  ```
+
+  
+
+- 哈希表的本质就是：**数组**+**链表**
+
+- JDK1.8里面哈希表采用的是：数组+链表/红黑树
+
+  - 当数组中节点数大于8的时候，就把链表转换成红黑树
+  - 当数组中节点数小于6的时候，就把红黑树转换成链表
+
+  ![HashMap implementation](..\..\_static\HashMap.impl.PNG)
+
+- 数组初始化
+
+  - JDK1.8中HashMap采用延迟初始化的方式
+  - 通过**<font color='red'>resize</font>**方法（返回Node<K,V>[]，即Node数组）初始化，同时也实现的扩容。扩容的方式是通过**<font color='red'>2倍</font>**的方式增加的
+  
+- 计算Hash值的方法（步骤）
+
+  1. 计算key对象的**hash code**（调用key对象的hashcode()方法）
+
+  2. 根据**hashcode**计算出**hash值**（要求在**[0, 数组长度-1]**这个闭区间内）
+     hashcode是一个整数，要求转换后的hash值尽量均匀分布在**[0, 数组长度-1]**这个闭区间内，以便减少”hash冲突“
+
+     - 极端简单的办法：hash值=hashcode/hashcode，此时hash值总是1，那么键值对都会存到数组索引的第一个位置，这样HashMap就退化为一个“链表”了
+
+     - 相除取余法：hash值 = hashcode % 数组长度。
+       这种办法可以使hash值均匀地分布到**[0, 数组长度-1]**这个闭区间内，但用除法了，所以效率低。JDK后来改进为：**<font color='red'>hash值 = hashcode & （数组长度 - 1）</font>**，这里的前提是数组长度**必须是2的整数次幂**。
+       根据下面的分析，简单总结为
+       **<font color='red'>先把key的hashcode的高16位和低16位做异或，得到的值再和数组长度-1做与得到的值，就是最后的hash值</font>**
+
+       ```java
+       // HashMap中put的方法如下
+       // 它首先会把key用下面的hash方法做一次运算，但这里hash(key)得到的值还不是最终的hash值，
+       // 它的目的是是的最后算出来的hash值更散更均匀
+       // 真正算hash值的地方在putVal里面，如下面第二个函数所示
+       public V put(K key, V value) {
+           return putVal(hash(key), key, value, false, true);
+       }
+       
+       static final int hash(Object key) {
+           int h;
+           /// 这里'>>>'表示无符号的向右位移，h >>> 16即表示取h的前面的高16位
+           /// 所以(h = key.hashCode()) ^ (h >>> 16)即表示h的高16位和低16位做异或运算
+           return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+       }
+       
+       // 计算hash值的地方：tab[i = (n - 1) & hash]
+       // 也就是说，通过(n - 1) & hash计算出来的hash值，就是想要放置节点在数组中的索引
+       final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
+                          boolean evict) {
+           Node<K,V>[] tab; Node<K,V> p; int n, i;
+           if ((tab = table) == null || (n = tab.length) == 0)
+               n = (tab = resize()).length;
+           // 计算最终hash值的地方
+           if ((p = tab[i = (n - 1) & hash]) == null)
+               tab[i] = newNode(hash, key, value, null);
+           else {
+           }
+           ...
+       }
+       ```
+
+- 遍历等常用方法
 
   ```java
   Map<String, String> m = new HashMap<>();
@@ -1441,10 +1572,184 @@ public static boolean symmetry() {
       String cv = m.get(s);  
       System.out.println(cv);
   }
+  
+  // Map.Entry<K,V>相当于C++中的std::pair
   Set<Map.Entry<String, String>> kvs = m.entrySet();
   for (Map.Entry<String, String> kv : kvs) { 
       System.out.println(kv.getKey() + ": " + kv.getValue());
   }
+  
+  map0.putAll(map1); //如有key相同，会把key对应的值覆盖成新的
+  String removed = map0.remove("c");
+  System.out.println("Removed: " + removed); // Removed: C
+  
+  String removed = map0.remove("k");
+  System.out.println("Removed: " + removed); // Removed: null
+  
+  boolean has = map0.containsKey("b");
+  has = map0.containsValue("B");
+  ```
+  
+
+## TreeMap
+
+- 和HashMap一样实现了Map接口，所以API基本相同
+
+- TreeMap的底层实现是**红黑树**
+
+- TreeMap是对键进行了排序的，所以要给定排序规则
+
+  - 元素自己的比较规则
+
+  - 给定比较器
+
+    ```java
+    package com.pyrad.testContainer;
+    
+    public class Student implements Comparable<Student> {
+        private String name;
+        private int age;
+    
+        public Student(String name, int age) { this.name = name; this.age = age; }
+        public Student() {}
+    
+        public String getName() { return name; }
+        public void setName(String name) { this.name = name; }
+        public int getAge() { return age; }
+        public void setAge(int age) { this.age = age; }
+    
+        // 定义元素自己的比较规则（实现Comparable<T>接口）
+        @Override
+        public int compareTo(Student o) {
+            if (getName() == o.getName()) {
+                if ( getAge() < o.getAge() ) {
+                    return 1;
+                } else if (getAge() > o.getAge()){
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+            return getName().compareTo(o.getName());
+        }
+    }
+    
+    // 定义比较器
+    public class StudentComparator implements Comparator<Student> {
+        @Override
+        public int compare(Student o1, Student o2) {
+            if (o1.getAge() == o2.getAge()) {
+                return o1.compareTo(o2);
+            }
+    
+            return o1.getName().compareTo(o2.getName());
+        }
+    }
+    
+    
+    public class testTreeMap {
+        public static void main(String[] args) {
+            test();
+        }
+    
+        public static void test() {
+            Map<Student, String> tmap = new TreeMap<>();
+            Student s0 = new Student("pyard", 18);
+            Student s1 = new Student("admin", 20);
+            tmap.put(s0, "KKK");
+            tmap.put(s1, "DDD");
+            for (Map.Entry<Student, String> entry : tmap.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
+            }
+        }
+    }
+    ```
+
+## Iterator迭代器
+
+- Collection接口继承了**Iterable接口**（注意是extends，不是implements，因为Collection也是一个接口），该接口中有一个名字是**iterator**的抽象方法，所以实现了Collection接口的容器类都有具体实现
+
+- **iterator**方法会返回一个**Iterator类型**的迭代器对象
+
+- **Iterator**也是一个接口，定义有三个方法
+
+  ```java
+  // 判断游标**当前**（注意是当前）是否有元素，如有返回true，否则返回false
+  boolean hasNext();
+  
+  // 取代游标当前的元素，并将游标移动到下一个位置
+  Obejct next();
+  
+  // 删除游标当前位置的元素，在执行完next之后只能执行一次
+  void remove();
+  ```
+
+- 通过迭代器变量可以使用while或for循环
+
+  ```java
+  public static void test() {
+      // 也可以用HashSet等容器，但Map类型（HashMap，TreeMap）不能直接用迭代器
+      // 而且要用其keySet()或entrySet()得到的Set结构，再结合迭代器来遍历
+      List<String> slist = new ArrayList<>();
+  
+      slist.add("a"); slist.add("b"); slist.add("c");
+      Iterator<String> itr = slist.iterator();
+      
+      // 使用while + 迭代器
+      while (itr.hasNext()) {
+          String curval = itr.next();
+          System.out.println(curval);
+      }
+  
+      // 使用for + 迭代器
+      for (Iterator<String> it = slist.iterator(); it.hasNext();) {
+          String val = it.next();
+          System.out.println(val);
+      }
+  
+      // 遍历删除
+      itr = slist.iterator();
+      while (itr.hasNext()) {
+          String curval = itr.next();
+          itr.remove();
+      }
+  	
+  	System.out.println(slist.isEmpty()); // 返回true
+  }
+  ```
+
+- 可以在增强for循环中删除元素，但是不能添加元素；用迭代器遍历时，也可以删除元素，但是也一样不能添加元素。
+
+  ```java
+  for (String str : slist) {
+      if (str == "c") {
+          slist.remove(str);
+      }
+  }
+  ```
+
+## Collections工具类
+
+- 提供的方法都是静态方法。常用方法如下
+
+  ```java
+  // 按升序排序
+  void sort(List);
+  
+  // 随机排序
+  void shuffle(List);
+  
+  // 逆序
+  void reverse(List);
+  
+  // 用一个特定对象重新整个List容器
+  void fill(List, Object);
+  
+  // 对于已排序的List容器，采用二分查找法查找元素，并返回索引
+  int binarySearch(List, Object);
   ```
 
   
+
+- 
+
