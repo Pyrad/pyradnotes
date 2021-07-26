@@ -1589,7 +1589,6 @@ public static boolean symmetry() {
   boolean has = map0.containsKey("b");
   has = map0.containsValue("B");
   ```
-  
 
 ## TreeMap
 
@@ -1752,4 +1751,159 @@ public static boolean symmetry() {
   
 
 - 
+
+# IO 流
+
+## IO简介
+
+- 和外部数据系统进行通信（外部系统可能是文件、数据库、其他程序、网络、IO设备等）
+
+- java.io包提供了相关的API
+
+- Java中的**四大IO抽象类**（分为**字节流**和**字符流**）
+
+  - **InputStream**
+
+    **字节**输入流的所有类的父类，是一个抽象类，数据单位是字节（1Byte/8bits）
+
+    ```java
+    // 常用方法
+    
+    // 读取一个字节，并以int返回（值为0-255之间）；未读出则返回-1（表示结束）
+    int read();
+    
+    // 关闭输入流对象
+    void close();
+
+  - **OutputStream**
+
+    **字节**输出流的所有类的父类，是一个抽象类，数据单位是字节（1Byte/8bits）
+
+    ```java
+    // 常用方法
+    
+    // 向目的地中写入一个字节
+    int write(int n);
+    
+    // 关闭输出流对象
+    void close();
+    ```
+
+  - **Reader**
+
+    读取**字符**流的抽象类，数据单位为字符
+
+    ```java
+    // 常用方法
+    // 读取一个字符的数据，以int返回（0-65535之间的值），即Unicode的值；
+    // 未读出则返回-1（表示结束）
+    int read();
+    
+    // 关闭流对象
+    void close();
+    ```
+
+  - **Writer**
+
+    输出**字符**流的抽象类，数据单位为字符
+
+    ```java
+    // 写出一个字符
+    void write(int n);
+    // 关闭
+    void close();
+    ```
+
+- Java中流的概念细分
+
+  - 按**流的方向**
+    - **输入流**
+    - **输出流**
+  - 按处理**数据的单元**
+    - **字节流**：一般以stream结尾（一般读二进制文件）
+    - **字符流**：一般以Reader/Writer结尾（一般读取文本类文件）
+  - 按**处理对象**分类
+    - **节点流**：可以直接从数据源或目的地读写数据（FileInputSteam，FileReader，DataInputStream）
+    - **处理流**：不直接连接到数据源或目的地读写数据，是“处理流的流”。通过处理其他流来提高程序的性能（BufferedInputStream，BufferedReader），也叫**包装流**。
+
+- Java IO流体系
+
+  ![Java IO Stream System](..\..\_static\java_io_stream_system.png)
+
+  - 注意File、RandomAccessFile类不是java.io里的
+
+  - 简单总结各种流
+
+    - **<font color='red'>InputStream/OutputStream</font>**
+      **字节流**的**<font color='red'>抽象类</font>**
+    - **<font color='red'>Reader/Writer</font>**
+      **字符流**的**<font color='red'>抽象类</font>**
+    - **FileInputStream/FileOutputStream**
+      节点流，以**字节**为单位直接操作文件
+    - **ByteArrayInputStream/ByteArrayOutputStream**
+      节点流，以**字节**为单位直接操作“字节数组对象”
+    - **ObjectInputStream/ObjectOutputStream**
+      处理流：以**字节**为单位直接操作“对象”
+    - **DataInputStream/DataOutputStream**
+      处理流：以**字节**为单位直接操作“基本数据类型与字符串类型”
+    - **FileReader/FileWriter**
+      节点流：以**字符**为单位直接操作“文本文件”（注意：只能读写文本文件）
+    - **BufferedReader/BufferedWriter**
+      处理流：将Reader/Writer对象进行包装，增加缓存功能，提高读写效率
+    - **BufferedInputStream/BufferedOutputStream**
+      处理流：将InputStream/OutputStream对象进行包装，增加缓存功能，提高读写效率
+    - **InputStreamReader/OutputStreamWriter**
+      处理流：将字节流对象转化成字符流对象
+    - **PrintStream**
+      处理流：将OutputStream包装，方便输出字符，更灵活
+
+  - 一个简单例子
+
+    ```java
+    public static void testAll() {
+        FileInputStream fis = null;
+        try {
+            String fname = new String("D:\\someTestWords.txt");
+            fis = new FileInputStream(fname);
+            // int s1 = fis.read(); // read only 1 character
+            int s = -1;
+            int cnt = 0;
+            StringBuilder sb = new StringBuilder();
+            while ((s = fis.read()) > 0) {
+                cnt += 1;
+                System.out.println(s);
+                sb.append((char) s);
+            }
+            System.out.println("Read chars: " + cnt);
+            System.out.println(sb.toString());
+            // System.out.println(s1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (fis != null) {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    ```
+
+    
+
+
+
+## File类的使用
+
+## 常用流对象
+
+## Apache IO包
+
+## 总结
+
+
+
+
 
