@@ -1907,3 +1907,14 @@ public static boolean symmetry() {
 
 
 
+# Java重要知识点
+
+- 注解
+- 反射
+- 动态代理
+- 泛型
+- Servlet
+- Filter
+- Listener
+- JDBC
+- 常用设计模式
