@@ -1897,7 +1897,113 @@ public static boolean symmetry() {
 
 ## File类的使用
 
+- 针对磁盘中的文件或目录转换对象的包装类
+
+- 可以是文件或目录
+
+  针对**文件**的操作方法
+
+  ```java
+  // 创建新文件
+  createNewFile();
+  // 从磁盘中删除（文件或目录）
+  delete();
+  // 查询是否存在
+  exists();
+  // 获取绝对路径
+  getAbsolutePath();
+  // 获取相对路径
+  getPath();
+  // 文件名，相当于调用了一个toString()方法
+  getName();
+  // 判断是否为文件
+  isFile();
+  // 文件的字节数
+  length();
+  // 是否为隐藏文件
+  isHidden();
+  ```
+
+  针对**目录**的操作方法
+
+  ```java
+  exists(); // 目录是否存在
+  isDirectory(); // 是否为目录
+  mkdir(); // 创建目录
+  getParentFile(); // 父级目录
+  list(); // 返回字符串数组，包含目录中的文件和目录
+  listFiles(); // 返回File数组，表示目录路径中的文件
+  ```
+
+- File类的基本使用
+
+  ```java
+  // 文件
+  File f2 = new File("C:/aa.txt");
+  boolean created = f2.createNewFile();
+  System.out.println(created);
+  
+  System.out.println(f2.getName());
+  System.out.println(f2.length());
+  System.out.println(f2.isFile());
+  System.out.println(f2.isDirectory());
+  System.out.println(f2.isHidden());
+  
+  boolean deleted = f2.delete();
+  System.out.println(deleted);
+  
+  // 目录
+  public static void testDir() throws IOException {
+  	File f = new File("C:\\dirDemo");
+      if (!f.exists()) {
+          if (!f.mkdir()) {
+              return;
+          }
+      }
+      System.out.println(f.isDirectory());
+      System.out.println(f.getParent());
+      System.out.println(f.listFiles());
+      for (File cf : f.listFiles()) {
+          System.out.println(cf.getName());
+      }
+      System.out.println(f.list());
+      for (String s : f.list()) {
+          System.out.println(s);
+      }
+      File pf = f.getParentFile();
+      String pfn = f.getParent();
+  }
+  ```
+
+  
+
 ## 常用流对象
+
+### 文件字节流
+
+**FileInputStream**：可以读所有类型文件，通过字节方式读取（FileReader专门读文本文件）
+
+**FileOutputStream**：可以写所有类型文件，通过字节方式写入文件（FileWriter专门写文本文件）
+
+```java
+File curDir = new File(".");
+String curDirName = curDir.getCanonicalPath();
+FileInputStream fis = null ;
+
+fis = new FileInputStream(curDirName + "/riho.jpg");
+int temp = 0;
+int cnt = 0;
+while ((temp = fis.read()) != -1) { // 字节流每个读取的值不超过255(temp <= 255)
+    cnt++;
+}
+System.out.println("cnt = " + cnt);
+```
+
+
+
+
+
+
 
 ## Apache IO包
 
@@ -1918,3 +2024,4 @@ public static boolean symmetry() {
 - Listener
 - JDBC
 - 常用设计模式
+- 
