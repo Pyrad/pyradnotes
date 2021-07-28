@@ -1981,9 +1981,64 @@ public static boolean symmetry() {
 
 ### 文件字节流
 
+#### FileInputStream/FileOutputStream
+
 **FileInputStream**：可以读所有类型文件，通过字节方式读取（FileReader专门读文本文件）
 
 **FileOutputStream**：可以写所有类型文件，通过字节方式写入文件（FileWriter专门写文本文件）
+
+```java
+// 没有缓冲区（buffer数组）的读写法
+File curDir = new File(".");
+String curDirName = curDir.getCanonicalPath();
+FileInputStream fis = null ;
+
+// 文件输入流：读文件
+fis = new FileInputStream(curDirName + "/riho.jpg");
+int temp = 0;
+int cnt = 0;
+List<Integer> outdata = new ArrayList<Integer>();
+while ((temp = fis.read()) != -1) { // 字节流每个读取的值不超过255(temp <= 255)
+    cnt++;
+    outdata.add(temp);
+}
+System.out.println("cnt = " + cnt);
+
+// 文件输出流：写出到文件
+fos = new FileOutputStream(curDirName + "/rhio_copy.jpg");
+for (int idata : outdata) {
+	fos.write(idata);
+}
+fos.flush();
+fos.close();
+```
+
+#### **通过缓冲区提高读写效率**
+
+**方式一**：创建指定长度的字节数组作为缓冲区，缓冲区长度为固定长度
+
+```java
+File curDir = new File(".");
+String curDirName = curDir.getCanonicalPath();
+FileInputStream fis = null ;
+
+// 
+fis = new FileInputStream(curDirName + "/riho.jpg");
+fos = new FileOutputStream(curDirName + "/rhio_copy.jpg");
+int temp = 0;
+int cnt = 0;
+byte [] buff = new byte[1024];
+while ((temp = fis.read(buff)) != -1) { // 每次读入到buff中temp个字节
+    cnt++;
+    fos.write(buff, 0, temp);// 每次从buff的0位置开始写，写到总共读入的字节个数
+}
+System.out.println("cnt = " + cnt);
+
+fos.flush();
+fos.close();
+```
+
+方式二：创建指定长度的字节数组作为缓冲区，数组长度通过输入流对象的available()返回当前文件的预估长度来定义。在读写文件时一次完成读和写，但这种方式比较占内存。
 
 ```java
 File curDir = new File(".");
@@ -1991,17 +2046,40 @@ String curDirName = curDir.getCanonicalPath();
 FileInputStream fis = null ;
 
 fis = new FileInputStream(curDirName + "/riho.jpg");
-int temp = 0;
-int cnt = 0;
-while ((temp = fis.read()) != -1) { // 字节流每个读取的值不超过255(temp <= 255)
-    cnt++;
-}
-System.out.println("cnt = " + cnt);
+fos = new FileOutputStream(curDirName + "/rhio_copy.jpg");
+
+byte [] buff = new byte[fis.available()];
+fis.read(buff);
+fos.write(buff);
+
+fos.flush();
+fos.close();
 ```
 
+#### **通过字节缓冲流提高读写效率**
 
+字节缓冲流有两个：**BufferedInputStream/BufferedOutputStream**
 
+缓冲流把别的流包装起来，先将数据缓存起来，当缓存区满后或者手动刷新时在一次性写入程序或文件
 
+有多个流时，关闭的顺序依据：后开的先关闭
+
+**BufferedInputStream/BufferedOutputStream**的内部缓冲区的大小（byte数组的长度）默认是8192（2^13）
+
+```java
+fis = new FileInputStream(curDirName + "/riho.jpg");
+bis = new BufferedInputStream(fis);
+
+fos = new FileOutputStream(curDirName + "/riho.copy.3.jpg");
+bos = new BufferedOutputStream(fos);
+int temp = 0;
+while ((temp = bis.read()) != -1) {
+    bos.write(temp);
+}
+bos.flush();
+```
+
+#### 定义文件拷贝工具类
 
 
 
