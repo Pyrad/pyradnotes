@@ -12,6 +12,7 @@ Pyrad's Notes!
 
    AlgorithmsDataStructures/index
    Java/index
+   Leetcode/index
 
 
 Indices and tables
