@@ -5,4 +5,3 @@ Java Basics
     :maxdepth: 1
 
     java
-    javabasics
