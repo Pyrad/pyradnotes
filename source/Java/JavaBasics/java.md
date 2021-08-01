@@ -2081,6 +2081,479 @@ bos.flush();
 
 #### 定义文件拷贝工具类
 
+【因故缺失】
+
+### 文件字符流
+
+#### 文件字符输入流 FileReader
+
+以字符（**Unicode字符**）的方式读入文件里面的内容，每次读入一个字符值（Unicode）
+
+```java
+File curDir = new File(".");
+String curDirName = curDir.getCanonicalPath();
+FileReader freader = null;
+freader = new FileReader(curpath + "/staticStuffs/testwords.txt");
+int temp = 0;
+while ((temp = freader.read()) != -1) {    
+    System.out.println(temp); // unicode value in int type
+    System.out.println((char) temp); // unicode value
+}
+freader.close();
+/** 
+ * 假如文件内容为"Good day today 你好！"，则输出如下： 
+ * 71: G 
+ * 111: o 
+ * 111: o 
+ * 100: d 
+ * 32:   
+ * 100: d 
+ * 97: a 
+ * 121: y 
+ * 32:   
+ * 116: t 
+ * 111: o 
+ * 100: d 
+ * 97: a 
+ * 121: y 
+ * 32:   
+ * 20320: 你 
+ * 22909: 好 
+ * 33: ! 
+ */
+```
+
+#### 文件字符输出流 FileWriter
+
+注意：windows里面的回车/换行是***```\r\n```***。
+
+注意：如果用FileWriter初始化一个已经存在的文件，那么再写数据到该文件里面的时候，会把文件之前的内容覆盖。
+
+```java
+String curpath = getCurrentDirPath();
+System.out.println(curpath);
+FileWriter fwriter = null;
+fwriter = new FileWriter(curpath + "/staticStuffs/testwords.copy.txt");
+fwriter.write("Good day today 你好!\r\n");
+fwriter.write("Good day today 你好！");
+// 追加文件内容，在构造FileWriter的时候给定第二个参数
+fwriter2 = new FileWriter(curpath + "/staticStuffs/testwords.copy.txt", true);
+fwriter2.write("Not anymore");
+fwriter.close();
+fwriter2.close();
+```
+
+
+
+#### 使用字符流实现文本文件的拷贝处理
+
+```java
+FileReader fr = new FileReader(cpath + "/staticStuffs/test.words.txt");
+FileWriter fw = new FileWriter(cpath + "/staticStuffs/test.words.copy2.txt");
+char[] buff = new char[1024];
+int temp = 0;
+while ((temp = fr.read(buff)) != -1) {    
+    fw.write(buff, 0, temp);
+}
+fw.flush();
+```
+
+
+
+#### 字符缓冲输入流 BufferedReader
+
+可以**按行为单位**进行读取文件
+
+```java
+FileReader fr = new FileReader(cpath + "/staticStuffs/testwords.txt");
+BufferedReader bfr = new BufferedReader(fr);
+String temp = "";
+while ((temp = bfr.readLine()) != null) {    
+    System.out.println(temp);
+}
+```
+
+
+
+#### 字符缓冲输出流 BufferedWriter
+
+BufferedWriter有个newLine()的方法，可以代替之前使用```\r\n```来添加一个换行符
+
+```java
+FileWriter fw = new FileWriter("mytest.txt");
+BufferedWriter bfw = new BufferedWriter(fw);
+bfw.write("Good day today!");
+bfw.newLine(); // 添加一个换行符
+bfw.write("To be or not to be");
+bfw.newLine(); // 添加一个换行符
+bfw.flush();
+bfw.close();
+fw.close();
+```
+
+
+
+#### 使用字符缓冲流实现文本文件的拷贝处理
+
+```java
+String cpath = testUtils.getCurrentDirPath();
+String fname = cpath + "/staticStuffs/testwords.txt";
+String fout = cpath + "/staticStuffs/testwords.txt.copy";
+BufferedReader br = new BufferedReader(new FileReader(fname));
+BufferedWriter bw = new BufferedWriter(new FileWriter(fout));
+String strtmp = "";
+while ((strtmp = br.readLine()) != null) {    
+    bw.write(strtmp);    
+    bw.newLine();
+}
+bw.flush();
+bw.close();
+br.close();
+```
+
+
+
+### 转换流
+
+**InputStreamReader/OutputStreamWriter**来实现把**字节流**转换为**字符流**
+
+场景：比如System.in是System下面的一个static 变量in，类型是InputStream，而键盘输入就是InputStream，所以如果要把键盘输入的字节转换成（一行）字符，就要用到转换流InputStremReader。同时System.out是System下面的一个static 变量out，类型是OutputStream，如果要把一行字符显示到控制台，就要用到字符流的write(String str)方法，OutputStreamWriter。
+
+```java
+// System.in is type 'InputStream'
+// but BufferedRead accepts the char stream
+// So use InputStreamRead
+/* BufferedReader接收的是字符输入流，但System.in是InputStream类型，即字节输入流，所以需要 
+ * InputStreamReader这个转换流。 
+ * BufferedWriter接收的是字符输出流，但System.out是OutputStream类型，即字节输出流，所以需要 
+ * OutputStreamWriter这个转换流。
+ */
+BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+String input = br.readLine();
+BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+bw.write(input);
+bw.flush();
+bw.close();
+br.close();
+```
+
+### 字符输出流
+
+java.io中提供的字符输出流对象**```PrintWriter```**，可自动换行、刷新缓冲字符输出流。
+
+特点是可以按行写出字符串，通过**println()**方法实现自动换行。
+
+```java
+String cpath = testUtils.getCurrentDirPath();
+String fn = cpath + "/staticStuffs/testwords.txt";
+String fn1 = cpath + "/staticStuffs/testwords2.txt";
+BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(fn)));
+PrintWriter pw = new PrintWriter(fn1);
+String temp = "";
+while ((temp = br.readLine()) != null) {    
+    pw.println(temp);
+}
+br.close();
+pw.close();
+```
+
+
+
+### 字节数组流
+
+经常用于流和数组需要转换的情况下
+
+- **ByteArrayInputStream**
+- **ByteArrayOutputStream**
+
+
+
+#### 字节数组输入流
+
+**ByteArrayInputStream**把**内存中的字节数组**对象当做数据源（相比较，FileInputStream把文件当做数据源）
+
+它的构造函数里面需要一个**字节数组**参数，这个字节数组就是数据源
+
+```java
+byte [] arr = "abcdefg".getBytes();
+StringBuffer sb = new StringBuffer();
+ByteArrayInputStream bis = new ByteArrayInputStream(arr);
+int temp = 0;
+while ((temp = bis.read()) != -1) {    
+    sb.append((char) temp);
+}
+System.out.println(sb.toString());
+bis.close();
+```
+
+
+
+#### 字节数组输出流
+
+**ByteArrayOutputStream**把**流中的数据**写入到**字节数组**中，这个字节数组是**ByteArrayOutputStream**的对象的内部的变量（字节数组），可以通过ByteArrayOutputStream.**toByteArray()**这个方法来获取
+
+```java
+ByteArrayOutputStream bos = new ByteArrayOutputStream();
+bos.write('g');
+bos.write('o');
+bos.write('o');
+bos.write('d');
+byte [] arr = bos.toByteArray();
+for (byte c : arr) {    
+    System.out.println((char) c);
+}
+```
+
+
+
+### 数据流
+
+#### 数据流的作用
+
+- 以“基本数据类型和字符串类型”作为数据源，允许程序以与机器无关的方式从底层输入输出流中操作Java基本数据类型和字符串类型
+
+- **DataInputStream**和**DataOutputStream**提供了存取与机器无关的所有Java基本数据类型
+
+- 理解
+
+  前面提到的字节输入输出流和字符输入输出流，要么以字节的方式读写，要么以字符的方式读写，但是如果想以其他类型的数据读写该怎么办？
+
+  比如，读写一个都是double类型的文件，就要求以double的方式读写，这时候就要用到这里提到的**数据流**（**DataInputStream**和**DataOutputStream**）。
+
+  简单来说，就是帮助我们节省了转换成相应数据类型的工作
+
+  
+
+#### 数据输出流
+
+**DataOutputStream**下面有一些写出为各种类型的方法
+
+
+
+#### 数据输入流
+
+**DataInputStream**下面有一些以按各种类型读入的方法
+
+下面这个例子同时示意了如何使用**数据输出流**和**数据输入流**
+
+```java
+String cpath = testUtils.getCurrentDirPath();
+String fn = cpath + "/staticStuffs/dataIoStreamTest.txt";
+DataOutputStream dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(fn)));
+dos.writeDouble(3.1415926);
+dos.writeUTF("Pyrad"); // 写字符串
+dos.writeChar('x');
+dos.writeInt(1024);
+dos.writeBoolean(false);
+
+dos.flush();
+dos.close();
+
+// 之前是按照什么顺序写出的，就要按照相应的顺序读入
+DataInputStream dis = new DataInputStream(new BufferedInputStream(new FileInputStream(fn)));
+double v0 = dis.readDouble();
+String v1 = dis.readUTF();
+char v2 = dis.readChar();
+int v3 = dis.readInt();
+boolean v4 = dis.readBoolean();
+
+dis.close();
+```
+
+
+
+### 对象流
+
+把对象存储到磁盘或通过网络传输
+
+
+
+#### Java对象的序列化和反序列化
+
+**序列化**：把Java对象转换成字节序列
+
+**反序列化**：把字节序列恢复为Java对象
+
+对象序列化的用途：**持久化**（保存到磁盘上等）和**网络通信**（网络传输对象的字节序列）
+
+
+
+#### 序列化的类和接口
+
+**ObjectOutputStream**代表对象输出流，它的writeObject(Object obj)把对象obj进行序列化，把得到的字节序列写到一个目标输出流中
+
+**ObjectInputStream**代表对象输入流，它的readObject()方法从一个源输入流中读入字节序列，再反序列化称为一个对象，并把它返回。
+
+只有实现了**Serializable接口**的类的对象才能序列化，**Serializable接口**是一个空接口（可以叫**标识接口**），只是起到了标记的作用。
+
+
+
+#### 写出和读入基本数据类型的数据
+
+通过**ObjectOutputStream**写，通过**ObjectInputStream**写（见下面的程序片段）
+
+```java
+String cpath = testUtils.getCurrentDirPath();
+String fn = cpath + "/staticStuffs/oos.dat";
+
+ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fn)));
+oos.writeInt(10);
+oos.writeDouble(1.34);
+oos.writeChar('a');
+oos.writeBoolean(false);
+oos.writeUTF("Testcase");
+
+oos.close();
+
+
+ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fn)));
+int v0 = ois.readInt();
+double v1 = ois.readDouble();
+char v2 = ois.readChar();
+boolean v3 = ois.readBoolean();
+String v4 = ois.readUTF();
+
+ois.close();
+```
+
+
+
+#### 操作对象（序列化/反序列化）
+
+Java可以把任何类都序列化，只要它实现了**Serializable**序列化接口
+
+- 把对象序列化到文件
+
+  - **ObjectOutputStream**把内存中的Java对象通过序列化的方式写入磁盘文件
+  - 被序列化的文件必须实现**Serializable**序列化接口
+  - 通过**ObjectOutputStream.writeObject()**把对象写入文件，这个文件必须通过**字节输出流**（FileOutputStream/BufferedOutputStream）打开
+
+- 把对象从文件中反序列化到内存中
+
+  - **ObjectInputStream**把磁盘文件中的Java对象通过反序列化的方式读入内存
+  - 通过**ObjectInputStream.readObject()**把对象读入内存，这个文件必须通过**字节输入流**（FileInputStream/BufferedInputStream）打开
+  - 读入之后，要把读入的对象进行强制类型转换
+
+  
+
+  ```java
+  class Users implements Serializable {
+      private int m_id;
+      private String m_name;
+      private int m_age;
+  
+      public Users(int m_id, String m_name, int m_age) {
+          this.m_id = m_id;
+          this.m_name = m_name;
+          this.m_age = m_age;
+      }
+      public Users() {    }
+  
+      public int getM_id() { return m_id; }
+      public void setM_id(int m_id) { this.m_id = m_id; }
+      public String getM_name() { return m_name; }
+      public void setM_name(String m_name) { this.m_name = m_name;  }
+      public int getM_age() { return m_age; }
+      public void setM_age(int m_age) {  this.m_age = m_age;  }
+  }
+  
+  
+  Users u = new Users(1, "pyrad", 18);
+  
+  // 对象序列化，写入到文件中
+  String cp = testUtils.getCurrentDirPath();
+  String fn = cp + "/staticStuffs/obj_out.dat";
+  ObjectOutputStream oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(fn)));
+  oos.writeObject(u);
+  oos.flush();
+  oos.close();
+  
+  // 对象反序列化，从文件读入到内存中
+  ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fn)));
+  Users ru = (Users) ois.readObject();
+  System.out.println(ru.getM_age());
+  System.out.println(ru.getM_id());
+  System.out.println(ru.getM_name());
+  
+  ois.close();
+  ```
+
+
+
+### 随机访问流
+
+RandomAccessFile
+
+- 实现对一个文件的读写操作
+- 可以访问文件的任意位置（其他流只能按照先后顺序读取）
+
+主要掌握3个方法
+
+1. RandomAccessFile(String name, String mode)
+
+   name表示访问的文件，mode取r（读）或rw（读写）；mode确定流对文件的访问权限
+
+2. seek(long a)
+
+   定位流对象读写文件的位置，a表示读写位置距离文件开头的字节个数
+
+3. getFilePointer()
+
+   获得流的当前读写位置
+
+```java
+String cp = testUtils.getCurrentDirPath();
+String fn = cp + "/staticStuffs/testwords.txt";
+RandomAccessFile raf = new RandomAccessFile(fn, "rw");
+
+int[] arr = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+for (int i : arr) {
+    raf.writeInt(arr[i]);
+}
+
+raf.seek(4); // move the file pointer to 4 bytes away from the file beginning
+
+int temp = raf.readInt();
+System.out.println(temp); // output 1, because each integer occupies 4 bytes
+
+raf.close();
+```
+
+
+
+### File类
+
+之前利用IO流对文件读写的时候，是用String字符串来指定的；如果以文件作为数据源或目标，也可以使用File类的对象来指定
+
+```java
+public class testFileIn {
+    public static void main(String[] args) throws IOException {
+        String cp = testUtils.getCurrentDirPath();
+        String fn = cp + "/staticStuffs/testwords.txt";
+        File fi = new File(fn);
+        // 使用File类的对象指定要读写的文件
+        BufferedReader br = new BufferedReader(new FileReader(fi));
+        String line = "";
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+        br.close();
+    }
+}
+```
+
+
+
+## Apache IO包
+
+JDK提供的文件操作比较基础，需要第三方的包来补充
+
+**Apache-commons**工具包提供了**IOUtils/FileUtils**，可以方便地对文件和目录进行操作
+
+**Apache Software Foundation (ASF)**
+
+来自ASF的开源Java项目：commons，kafka，Lucene，maven，shiro，structs，以及大数据技术的：hadoop，hbase，spark，strom，mahout
+
 
 
 ## Apache IO包
