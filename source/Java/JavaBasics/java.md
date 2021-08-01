@@ -2554,13 +2554,164 @@ JDK提供的文件操作比较基础，需要第三方的包来补充
 
 来自ASF的开源Java项目：commons，kafka，Lucene，maven，shiro，structs，以及大数据技术的：hadoop，hbase，spark，strom，mahout
 
+### FileUtils
+
+常用方法
+
+```java
+// 清空目录（里面的文件），但不删除目录
+cleanDirectory();
+// 比较两个文件内容是否相同
+contentEquals();
+// 拷贝一个目录的内容到另一个目录。可以通过FileFilter过滤要拷贝的文件
+copyDirectory();
+// 把一个文件拷贝到一个新的地址
+copyFile();
+// 把一个文件拷贝到某个目录下
+copyFileToDirectory();
+// 拷贝输入流的内容到文件
+copyInputStreamToFile();
+// 删除目录
+deleteDirectory();
+// 删除文件
+deleteQuietly();
+// 列出目录下文件
+listFiles();
+// 打卡指定文件的输入流
+openInputStream();
+// 把文件的内容作为字符串返回
+readFileToString();
+// 文件内容按行返回到一个字符串数组中
+readLines();
+// 返回文件或目录的大小
+size();
+// 把字符串内容直接写到文件中
+write();
+// 把字节数组内容写到文件中
+writeByteArrayToFile();
+// 把容器里元素的toString()方法返回的内容依次写入文件
+writeLines();
+// 把字符串内容写入文件
+writeStringToFile();
+```
+
+举例
+
+```java
+public class testFileUtils {
+    public static void main(String[] args) throws IOException {
+        File curDir = new File(".");
+        String curDirName = curDir.getCanonicalPath();
+        String fn = curDirName + "/first.java.txt";
+        
+        // 注意：接受的参数是File类
+        String content = FileUtils.readFileToString(new File(fn), "utf-8");
+        System.out.println(content);
+
+        // Copy a directory to a new directory
+        String dir_src = curDirName + "/mytestdir";
+        String dir_dest = curDirName + "/mytestdirNew";
+        
+        // 注意：可以使用原地实现的方式实现一个接口，只要实现其中的方法即可（这里的FileFilter）
+        FileUtils.copyDirectory(new File(dir_src), new File(dir_dest), new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                if (pathname.isDirectory() ||
+                    pathname.getName().endsWith("jpg") ||
+                    pathname.getName().endsWith("html")) 
+                {
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+}
+```
+
+### IOUtils
+
+常用方法
+
+```java
+// 把传入的流包装成缓冲流，可以通过参数指定缓冲大小
+buffer();
+// 关闭流
+close();
+// 比较两个流中的内容是否一致
+contentEquals();
+// 把输入流内容拷贝到输出流中，可指定字符编码
+copy();
+// 把输入流内容拷贝到输出流中，适合大于2G内容的拷贝
+copyLarge();
+// 返回可以迭代每一行内容的迭代器
+lineIterator();
+// 把输入流中的部分内容读入到字节数组中
+read();
+// 把输入流中的所有内容读入到字节数组中
+readFully();
+// 读入输入流中的一行
+readLine();
+// 把输入转换成带缓冲的输入流
+toBufferedInputStream();
+toBufferedReader();
+// 把输入流内容转为字节数组、字符数组
+toByteArray();
+toCharArray();
+// 把输入流或数组中的内容转换为字符串
+toString();
+// 向流里写入内容
+write();
+// 向流里写入一行内容
+writeLine();
+```
+
+举例
+
+```java
+public class testIOUtils {
+    public static void main(String[] args) throws IOException {
+        File curDir = new File(".");
+        String curDirName = curDir.getCanonicalPath();
+        String fn = curDirName + "/first.java.txt";
+        
+        // 实现了以字节流的方式读入文件，并以字符的方式打印出来
+        String cont = IOUtils.toString(new FileInputStream(fn), "utf-8");
+        System.out.println(cont);
+    }
+}
+```
 
 
-## Apache IO包
 
 ## 总结
 
-
+- 四大基本IO抽象类
+- 分类
+  - 按流的方向
+  - 按流处理的数据单元
+  - 按处理的对象
+- 四个基本IO抽象类的实现类
+  - InputStream
+    - FileInputStream
+    - ByteArrayInputStream
+    - BufferedInputStream
+    - DataInputStream
+    - ObjectInputStream
+  - OutputStream
+    - FileOutputStream
+    - ByteArrayOutputStream
+    - BufferedOutputStream
+    - DataOutputStream
+    - ObjectOutputStream
+  - Reader
+    - FileReader
+    - BufferedReader
+    - InputStreamReader
+  - Writer
+    - FileWriter
+    - BufferedWriter
+    - OutputStreamWriter
 
 
 
