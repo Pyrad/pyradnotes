@@ -306,3 +306,132 @@ public void testJunit() {
 
 # 注解
 
+## 历史
+
+注解（Annotation），也叫元数据，JDK 5.0引入
+
+## 什么是注解？
+
+- 代码里的***特殊标记***，这些标记在编译、类加载和运行时被读取，并执行相应处理。
+- 可以不改变原有源代码的逻辑，在源文件中加入一些补充信息
+- 代码分析工具、开发工具和部署工具可以通过这些信息进行验证或进行部署
+- 使用时，在其前面加入**```@```**符号，并把注解当做一个修饰符使用，用于修饰它支持的程序元素
+
+## 重要性
+
+- 可当做修饰符使用，可以用来修饰包、类、构造器、方法、成员变量、参数、局部变量等的声明
+- 信息被保存在Annotation的**"name=value"**对中，
+- JavaSE注解的使用目的比较简单，JavaEE/Android中更重要（比如配置应用程序的切面，代替旧版JavaEE中繁冗的代码和XML配置）
+- 开发模式基于注解的
+  - JPA ：Java的持久化API
+  - Spring2.5以上
+  - Hibernate3.x之后
+- 一定程度上：**框架 = 注解 + 反射 + 设计模式**
+
+
+
+## 文档注解
+
+一般使用在文档注释中，配合javadoc工具使用
+
+注意事项
+
+- @param @return和@exception只用于方法
+- @param的格式：@param 形参 形参类型 形参说明
+- @return的格式：@return 返回值类型 返回值说明（如果方法的返回值是void，就不能写）
+- @exception格式：@exception 异常类型 异常说明
+- @param和@exception可以并列多个
+
+IDEA中使用Java doc：Tools -> Generate JavaDoc，在Other command line argument中加入```-encoding utf-8 -charset utf-8```，以防生成乱码
+
+
+
+## JDK内置的3个注解
+
+- @Override：限定重写父类方法，该注解只能用于方法（防止写错重写的方法）
+- @Deprecated：用于表示所修饰的元素（类、方法、构造器、属性等）已过时
+- @SuppressWarnings：抑制编译器警告
+
+```java
+@Override
+public int weight() { return 200; }
+
+@Deprecated
+public void move() { System.out.println("moving"); }
+
+public void msg() {
+    @SuppressWarnings("unused")
+    int age = 10;
+
+    @SuppressWarnings({"unused", "rawtype"})
+    ArrayList al = new ArrayList();
+}
+```
+
+
+
+## 元注解
+
+元注解是修饰其他注解的注解，JDK 5.0之后提供了4种
+
+- **Retention**
+  - 修饰注解的生命周期
+  - 包含一个叫RetentionPolicy枚举类型的成员变量，使用时必须指定其值
+  - **RetentionPolicy.SOURCE**：只在源文件中有效
+  - **RetentionPolicy.CLASS**：在class文件中（字节码文件）有效，运行Java程序时，不会加载，不会保留在内存里，JVM不会保留该类型的注解。如果注解没有加Retention的元注解，默认值就是RetentionPolicy.CLASS
+  - **RetentionPolicy.RUNTIME**：运行时有效，运行Java程序时，JVM会保留注释，加载在内存中，程序可以通过反射获取该注解
+- **Target**
+  - 只有一个成员变量value，该成员变量的值是一个枚举类型，值有TYPE，CONSTRUCTOR，FIELD等等
+  - 这个元注解用来限定注解的应用在哪些元素上，比如所定义的注解只能修饰类、属性、构造器等到
+- **Documented**
+  - 如果用来修饰注解，JavaDoc就会把这个注解提取到API中
+- **Inherited**
+  - 如果用来修饰注解，那么这个被定义的注解如果使用在父类上，其子类就会自动继承这个用在父类上的注解，即相当于子类也使用了父类的那个注解
+  - 这个元注解用的比较少
+
+
+
+## 自定义注解
+
+- 一般情况大多使用现成的注解，很少用自定义的注解
+
+- 使用```@interface```关键字定义
+
+- 在注解定义里面，```String[] value()```这样的实际是一个成员变量，只是看上去像一个无参方法
+
+  - 无参方法的名字是成员变量的名字（只有一个参数的话，约定俗成叫value）
+  - 无参方法的返回值是成员变量的类型
+  - 无参方法的类型：基本数据类型，String，枚举，注解，或者它们对应的数组
+
+- 注意事项
+
+  - 如果定义了配置参数，就要给配置参数赋值
+  - 如果只有一个配置参数，并且名字是value的话，使用的时候```value = XXX ```中的```value = ```可以省略不写
+  - 定义注解时，配置参数可以有默认值
+  - 如果配置参数有默认值，那么可以不写后面的```value = XXX```而直接使用默认值
+  - 如果注解没有定义配置参数，可以叫**标记**，如果注解定义了配置参数，可以叫**元数据**
+
+  ```java
+  public @interface Galaxy {
+      String[] value();
+  }
+  
+  // 配置参数有默认值
+  public @interface Galaxy2 {
+      String value() default "kkk";
+  }
+  
+  // 使用注解，Galaxy2的配置参数有默认值，可以省略其值
+  @Galaxy2
+  @Galaxy(value = {"Planet", "weight"})
+  class Planet {
+      public int weight() {
+          return 100;
+      }
+  }
+  ```
+
+  
+
+  
+
