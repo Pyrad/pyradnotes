@@ -1509,7 +1509,7 @@ public static boolean symmetry() {
   - 当数组中节点数大于8的时候，就把链表转换成红黑树
   - 当数组中节点数小于6的时候，就把红黑树转换成链表
 
-  ![HashMap implementation](..\..\_static\HashMap.impl.PNG)
+  ![HashMap implementation](../../_static/HashMap.impl.PNG)
 
 - 数组初始化
 
@@ -1828,7 +1828,7 @@ public static boolean symmetry() {
 
 - Java IO流体系
 
-  ![Java IO Stream System](..\..\_static\java_io_stream_system.png)
+  ![Java IO Stream System](../../_static/java_io_stream_system.png)
 
   - 注意File、RandomAccessFile类不是java.io里的
 
