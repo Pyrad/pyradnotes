@@ -14,6 +14,7 @@ Pyrad's Notes!
    Java/index
    Leetcode/index
    Git/index
+   MySQL/index
 
 
 Indices and tables
