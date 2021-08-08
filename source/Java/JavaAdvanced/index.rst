@@ -2,6 +2,6 @@ Java Advanced
 ===============
 
 .. toctree::
-    :maxdepth: 1
+ :maxdepth: 1
 
-    JavaReflection
+ JavaReflection

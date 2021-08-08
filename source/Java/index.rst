@@ -2,7 +2,7 @@ Java
 ===============
 
 .. toctree::
-    :maxdepth: 2
+ :maxdepth: 2
 
-    JavaBasics/index
-	JavaAdvanced/index
+ JavaBasics/index
+ JavaAdvanced/index
