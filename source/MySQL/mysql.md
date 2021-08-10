@@ -1,11 +1,64 @@
+# 数据库的好处
+
+1. 可以持久化到本地
+2. 结构化查询
+
+
+
+# 数据库常见概念
+
+1. DB：数据库，存储数据的容器
+2. DBMS：数据库管理系统，又称为数据库软件或数据库产品，用于创建或管理DB
+3. SQL：结构化查询语言，用于和数据库通信，主流的数据库软件通用的语言
+
+
+
+# 数据存储数据的特点
+
+1. 数据存放在表中，表放到库中
+2. 库中可以有多张表，每张表有唯一的表名标识
+3. 表有一个或多个列，列也叫“字段”，相当于属性
+4. 表忠每行数据，相当于Java的对象
+
+
+
+# 常见的数据库软件
+
+MySQL
+
+Oracle
+
+DB2
+
+SQL Server
+
+
+
+# MySQL的优点
+
+1. 开源免费成本低
+2. 性能高，移植性好
+3. 体积小，好安装
+
+
+
+# MySQL的安装
+
+属于C/S架构，需要先安装服务器（Server），使用前要启动服务
+
+
+
 # MySQL 基本操作
 
 启动服务/停止服务：
 
 ```shell
-# windows command line中
-net stop <mysql_name>
-net start <mysql_name>
+# windows command line中，使用管理员打开cmd
+#启动服务
+net start <服务名>
+#暂停服务
+net stop <服务名>
+
 ```
 
 连接数据库
@@ -13,6 +66,7 @@ net start <mysql_name>
 ```shell
 # 连接数据库
 mysql -h localhost -P<PortNum> -u <root> -p<passward>
+# 如果是连接本机，可以省略host和端口
 mysql -u <root> -p<passward>
 ```
 
@@ -59,20 +113,13 @@ desc stuinfo;
 
 DQL = Data Query Language
 
-
-
 基本语法
 
 ```sql
 SELECT 查询列表 from 表名
 ```
 
-查询列表可以是
-
-- 表中的字段
-- 常量
-- 表达式
-- 函数
+查询列表可以是（1）表中的字段（2）常量（3）表达式（4）函数
 
 查询的结果是一个虚拟的表格
 
@@ -88,6 +135,7 @@ SELECT * FROM empolyees;
 SELECT `NAME` FROM stuinfo
 
 # 查询常量值
+# 如果查询字符型或日期型的常量值，必须用单引号引起来，数值型则不用
 SELECT 100;
 SELECT 'string'; #字符串单引号或双引号都可以
 
@@ -95,6 +143,7 @@ SELECT 'string'; #字符串单引号或双引号都可以
 SELECT 100%98;
 
 # 查询函数
+# MySQL执行函数必须用SELECT，而且MySQL的语句都有返回值
 SELECT VERSION();
 
 # 起别名
@@ -109,6 +158,7 @@ SELECT DISTINCT department_id FROM employees;
 
 /*去重*/
 SELECT DISTINCT department_id FROM employees;
+# 注意，不能对两个或多个字段使用DISTINCT，原因是每个字段的重复的行数可能不同
 
 /*
 如果要连接字符串,就用concat函数
@@ -137,6 +187,9 @@ select ifnull(commission_pct, 0) as CMP, commission_pct from employees;
 # 但里面的每个被连接的不能重命名
 select concat(first_name, ',', last_name, ',', job_id, ',', ifnull(commission_pct, 0))  as CMP from employees;
 
+# ISNULL函数
+# 判断某个字段是否为null，如是则返回1，否则返回0
+select isnull(commission_pct, 0) as CMP, commission_pct from employees;
 
 
 
@@ -154,6 +207,7 @@ select concat(first_name, ',', last_name, ',', job_id, ',', ifnull(commission_pc
          通配符%表示0到多个字符,
          通配符'_'表示单个任意字符,
          如果需要转义（1）用'\'即可（2）可以使用ESCAPE关键字指定
+         MySQL5.5以上的版本不仅可以用于匹配字符，也可以匹配数值
    between and:
 		 提高了简洁度
          范围临界值是前小后大
@@ -231,6 +285,14 @@ SELECT
     department_id, 
     salary*12*(1+IFNULL(commission_pct, 0)) AS AnnualIncome
 FROM employees;
+
+
+# 一道面试题
+# 下面两个语句的返回结果不同
+# 原因是如果有null值，第一条可以查询出来，第二条不行
+SELECT * FROM employees;
+SELECT * FROM employees where commission_part LIKE "%%" and last_name LIKE "%%";
+
 ```
 
 
