@@ -83,7 +83,7 @@ use <databases_name>;
 show tables;
 
 # 查看当前所在的database
-select database;
+select database();
 
 # 创建表
 create table stuinfo(id int, name varchar(20));
