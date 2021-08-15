@@ -291,13 +291,13 @@ FROM employees;
 # 下面两个语句的返回结果不同
 # 原因是如果有null值，第一条可以查询出来，第二条不行
 SELECT * FROM employees;
-SELECT * FROM employees where commission_part LIKE "%%" and last_name LIKE "%%";
+SELECT * FROM employees where commission_pct LIKE "%%" and last_name LIKE "%%";
 
 ```
 
 
 
-
+【2021-08-15】B站视频看到第100集
 
 # DML 数据管理语言
 
