@@ -17,7 +17,7 @@
 # import recommonmark
 # from recommonmark.transform import AutoStructify
 
-# import sphinx_markdown_tables
+import sphinx_markdown_tables
 
 
 # -- Project information -----------------------------------------------------
@@ -36,8 +36,8 @@ release = '0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 #extensions = []
-#extensions = ['recommonmark','sphinx_markdown_tables']
-extensions = ['recommonmark']
+extensions = ['recommonmark','sphinx_markdown_tables']
+#extensions = ['recommonmark']
 #extensions = ['myst_parser']
 
 # Add any paths that contain templates here, relative to this directory.
