@@ -17,7 +17,7 @@
 # import recommonmark
 # from recommonmark.transform import AutoStructify
 
-import sphinx_markdown_tables
+# import sphinx_markdown_tables
 
 
 # -- Project information -----------------------------------------------------
@@ -83,7 +83,11 @@ latex_elements={ # The paper size ('letterpaper' or 'a4paper').
 """}
 
 
+source_parsers = {
+    '.md': 'recommonmark.parser.CommonMarkParser',
+}
 
+source_suffix = ['.rst', '.md']
 
 #  # At the bottom of conf.py
 #  def setup(app):
