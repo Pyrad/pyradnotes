@@ -413,6 +413,58 @@ SELECT * FROM employees WHERE commission_pct LIKE "%%" AND last_name LIKE "%%";
 
 
 
+## 排序查询
+
+### 基本语法
+
+```mysql
+SELECT 查询列表
+FROM 表
+【WHERE 筛选条件】
+ORDER BY 排序字段/表达式 ASC/DESC;
+```
+
+1. 排序顺序
+
+   ```ASC```是升序
+
+   ```DESC```是降序
+
+2. ```ORDER BY```子句可以支持：
+
+   单个字段 | 别名 | 表达式 | 函数 | 多个字段
+
+3. ```ORDER BY```子句放在查询语句的最后面（```LIMIT```子句除外）
+
+
+
+
+
+### 示例
+
+- 按单个字段排序
+
+```mysql
+SELECT * FROM employees ORDER BY salary DESC;
+```
+
+- 按添加筛选条件再排序
+
+  查询部门编号>=90的员工信息，并按员工编号降序
+
+```mysql
+SELECT * 
+FROM employees 
+WHERE employee_id >= 90
+ORDER BY employee_id DESC;
+```
+
+
+
+
+
+
+
 ```mysql
 ```
 
