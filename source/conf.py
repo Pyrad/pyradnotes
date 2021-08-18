@@ -19,6 +19,13 @@
 
 # import sphinx_markdown_tables
 
+import sys, os
+
+if os.environ.get('READTHEDOCS', None) == 'True':
+    sys.path.insert(0, os.path.abspath(os.path.join('.', 'pyextensions')))
+    sys.path.insert(0, os.path.abspath('.'))
+    import sphinx_markdown_tables
+
 
 # -- Project information -----------------------------------------------------
 
