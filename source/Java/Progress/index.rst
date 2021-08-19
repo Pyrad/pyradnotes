@@ -2,7 +2,6 @@ Learning Progress
 ===================
 
 .. toctree::
-
-	:maxdepth: 1
-
-	progress
+ :maxdepth: 1
+ 
+ progress

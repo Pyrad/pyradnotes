@@ -7,4 +7,4 @@ Java
  JavaBasics/index
  JavaAdvanced/index
  Progress/index
- Interveiew/index
+ Interview/index
