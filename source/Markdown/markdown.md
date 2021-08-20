@@ -28,7 +28,9 @@
 
 
 
-![Riho](D:/Gitee/pyradnotes/source/_static/riho.jpg)
+![Riho](../_static/riho.jpg)
+
+
 
 
 
