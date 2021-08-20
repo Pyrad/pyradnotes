@@ -1141,18 +1141,186 @@ ORDER BY min_sal DESC;
 
 
 
+## 连接查询
 
+### 含义
 
+即**多表查询**，当查询的字段来自于多个表时，用连接查询
 
+### 笛卡尔积
 
+表1有```M```行，表2有```N```行，查询结果为```M*N```行
 
+原因：没有有效的连接条件
 
+解决：添加有效的连接条件
 
+### 分类
 
+- 按年代分类
 
+  SQL92标准：只支持内连接
+
+  SQL99标准：支持内连接，外连接（左外+右外）以及交叉连接
+
+- 按功能分类
+
+  内连接：等值连接，非等值连接以及自连接
+
+  外连接：左外连接，右外连接以及全外连接
+
+  交叉连接
+
+### SQL92标准的连接查询
+
+#### 语法
 
 ```mysql
+SELECT 表1字段1, 表1字段2, ... 表2字段1, 表2字段2, ...
+FROM 表1, 表2, ...
+WHERE 连接条件
+【 AND 筛选条件 】
+```
 
+#### 等值连接
+
+- 多表等值连接的结果为多表的交集部分
+- ```N```表连接，至少需要```N-1```个连接条件
+- 多表的顺序没有要求
+- 一般需要为表起别名
+- 可以搭配前面介绍的所有子句使用，比如排序、分组、筛选
+
+##### 示例
+
+- 查询女神名和对应的男神名
+
+```mysql
+SELECT beauty.name, boys.boyName
+FROM beauty, boys
+WHERE beauty.boyfriend_id = boys.id;
+```
+
+- 查询员工名和对应的部门名
+
+```mysql
+SELECT employees.first_name, departments.department_name
+FROM employees, departments
+WHERE employees.department_id = departments.department_id;
+```
+
+
+
+##### 给表起别名
+
+- 提高语句的简洁度
+- 区分多个重名的字段
+
+如果为表起了别名，则查询的字段就不能使用原来的表名去限定
+
+##### 示例
+
+- 查询员工名、工种号、工种名
+
+```mysql
+# 两个表的顺序可以调换
+SELECT E.first_name, E.job_id, J.job_title
+FROM employees AS E, jobs AS J
+WHERE E.job_id = J.job_id;
+```
+
+##### 添加筛选
+
+- 查询有奖金的员工名、部门名
+
+```mysql
+SELECT E.first_name, D.department_name
+FROM employees AS E, departments AS D
+WHERE E.department_id = D.department_id
+AND E.commission_pct IS NOT NULL;
+```
+
+- 查询城市名中第二个字符为o的部门名和城市名
+
+```mysql
+SELECT D.department_name, L.city
+FROM departments AS D, locations AS L
+WHERE D.location_id = L.location_id
+AND L.city LIKE '_o%';
+```
+
+
+
+##### 添加分组
+
+- 查询每个城市的部门个数
+
+```mysql
+SELECT D.department_name, COUNT(*) AS d_num
+FROM departments AS D, locations AS L
+WHERE D.location_id = L.location_id
+GROUP BY D.location_id;
+```
+
+- 查询有奖金的每个部门的部门名和部门的领导编号和该部门的最低工资
+
+```mysql
+SELECT D.department_name, D.manager_id, MIN(salary) AS MinSal
+FROM employees AS E, departments AS D
+WHERE E.department_id = D.department_id
+AND E.commission_pct IS NOT NULL
+GROUP BY E.department_id;
+```
+
+##### 添加排序
+
+- 查询每个工种的工种名和员工的个数，并且按员工个数降序
+
+```mysql
+SELECT J.job_id, J.job_title, COUNT(*) AS EmpNum
+FROM employees AS E, jobs AS J
+WHERE E.job_id = J.job_id
+GROUP BY J.job_id
+ORDER BY EmpNum DESC;
+```
+
+
+
+##### 三表连接
+
+- 查询员工名、部门名和所在的城市
+
+```mysql
+SELECT E.first_name, D.department_name, L.city
+FROM employees AS E, departments AS D, locations AS L
+WHERE E.department_id = D.department_id
+AND D.location_id = L.location_id;
+```
+
+
+
+#### 非等值连接
+
+- 查询员工的工资和工资级别
+
+```mysql
+# 注意BETWEEN...AND...后面跟的值的大小顺序，是前面小后面大
+SELECT E.salary, JG.grade_level
+FROM employees AS E, job_grades AS JG
+WHERE E.salary BETWEEN JG.lowest_sal AND JG.highest_sal;
+```
+
+
+
+#### 自连接
+
+- 查询员工名和上级的名称
+
+  即要查询的两个表实际是同一个表，使用同一张表的不同字段连接起来
+
+```mysql
+SELECT E0.first_name AS Ename, E1.first_name AS Mname
+FROM employees AS E0, employees AS E1
+WHERE E0.manager_id = E1.employee_id;
 ```
 
 
