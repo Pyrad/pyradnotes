@@ -1538,14 +1538,14 @@ WHERE BO.boyName IS NULL;
 - 查询哪个部门没有员工
 
 ```mysql
-# With LEFT JOIN
+/* With LEFT JOIN */
 SELECT D.department_id, D.department_name
 FROM departments AS D
 LEFT JOIN employees AS E
 ON D.department_id = E.department_id
 WHERE E.department_id IS NULL;
 
-# With RIGHT JOIN
+/* With RIGHT JOIN */
 SELECT D.department_id, D.department_name
 FROM employees AS E
 RIGHT JOIN departments AS D
@@ -1617,7 +1617,7 @@ SELECT *
 FROM employees
 LIMIT 0, 5;
 
-# 如果起始索引是0，那么可以把这个offset省略，直接跟上后面的size（条目数）
+/* 如果起始索引是0，那么可以把这个offset省略，直接跟上后面的size（条目数） */
 SELECT *
 FROM employees
 LIMIT 5;
@@ -1736,7 +1736,7 @@ SELECT E.last_name, E.job_id, E.salary
 FROM employees AS E
 WHERE E.salary = (SELECT MIN(DISTINCT salary) FROM employees);
 
-## 也可以用LIMIT语句，但是LIMIT只会保留最终一项，但最低工资的人可能有多个
+/* 也可以用LIMIT语句，但是LIMIT只会保留最终一项，但最低工资的人可能有多个 */
 SELECT E.last_name, E.job_id, E.salary
 FROM employees AS E
 ORDER BY E.salary ASC
@@ -1746,7 +1746,7 @@ LIMIT 1;
 - 查询最低工资大于50号部门最低工资的部门id和其最低工资
 
 ```mysql
-# 注意是求每个部门的最低工资 > 50号部门的最低工资
+/* 注意是求每个部门的最低工资 > 50号部门的最低工资 */
 SELECT EE.department_id, MIN(EE.salary) AS MinSal
 FROM employees AS EE
 GROUP BY EE.department_id
@@ -1760,7 +1760,7 @@ ORDER BY MinSal ASC;
 
 
 
-##### 列子查询（多行）示例
+##### 列子查询（多行一列）示例
 
 - 返回location_id是1400或1700的部门中的所有员工姓名
 
@@ -1773,7 +1773,7 @@ WHERE E.department_id IN (
   WHERE location_id IN (1400, 1700)
 );
 
-# 或者也可以使用连接查询
+/*  或者也可以使用连接查询 */
 SELECT E.first_name, D.location_id
 FROM employees AS E
 INNER JOIN departments AS D
@@ -1784,7 +1784,7 @@ WHERE D.location_id = 1400 OR D.location_id = 1700
 - 返回其它工种中比job_id为‘IT_PROG’工种任一工资低的员工的员工号、姓名、job_id 以及salary
 
 ```mysql
-# 注意是ANY的考察，即只要低于其中之一即可
+/* 注意是ANY的考察，即只要低于其中之一即可 */
 SELECT EE.first_name, EE.last_name, EE.employee_id, EE.job_id, EE.salary
 FROM employees AS EE
 WHERE EE.salary < ANY (
@@ -1797,7 +1797,7 @@ WHERE EE.salary < ANY (
 返回其它部门中比job_id为‘IT_PROG’部门所有工资都低的员工   的员工号、姓名、job_id 以及salary
 
 ```mysql
-# 注意是ALL的考察，即只要低于所有的
+/* 注意是ALL的考察，即只要低于所有的 */
 SELECT EE.first_name, EE.last_name, EE.employee_id, EE.job_id, EE.salary
 FROM employees AS EE
 WHERE EE.salary < ALL (
@@ -1806,6 +1806,166 @@ WHERE EE.salary < ALL (
   WHERE E.job_id = 'IT_PROG'
 ) AND EE.job_id <> 'IT_PROG';
 ```
+
+
+
+##### 行子查询（一行多列或多行多列）
+
+- 查询员工编号最小并且工资最高的员工信息
+
+```mysql
+SELECT E.*
+FROM employees AS E
+WHERE E.employee_id = (
+  SELECT MIN(E0.employee_id)
+  FROM employees AS E0
+) AND E.salary = (
+  SELECT MAX(E1.salary)
+  FROM employees AS E1
+);
+```
+
+
+
+### ```SELECT```后面
+
+在```SELECT```后面只支持标量子查询
+
+- 查询每个部门的员工个数
+
+```mysql
+SELECT D.*,(
+  SELECT COUNT(*)
+  FROM employees AS E
+  WHERE E.department_id = D.`department_id`
+ ) DepNum
+ FROM departments AS D;
+ 
+/* 注意，下面的语句只能查出来有员工的department，但不能查出来没有员工的department */
+SELECT E.department_id, COUNT(*) AS DepNum
+FROM employees AS E
+GROUP BY E.department_id
+ 
+```
+
+- 查询员工号=102的部门名
+
+```mysql
+SELECT (
+  SELECT D.department_name
+  FROM employees AS E
+  INNER JOIN departments AS D
+  ON E.department_id = D.department_id
+  WHERE E.employee_id = 102
+) depName;
+
+/* 或者直接使用连接+筛选 */
+SELECT D.department_name, E.employee_id
+FROM employees AS E
+INNER JOIN departments AS D
+ON E.department_id = D.department_id
+WHERE E.employee_id = 102;
+
+
+```
+
+
+
+### ```FROM```后面
+
+**将子查询结果充当一张表，要求必须起别名**
+
+- 查询每个部门的平均工资的工资等级
+
+```mysql
+SELECT AvgSalTab.AvgSal, JG.grade_level
+FROM (SELECT AVG(E.salary) AS AvgSal
+  FROM employees AS E
+  GROUP BY E.department_id
+  ORDER BY AvgSal) AS AvgSalTab
+INNER JOIN job_grades AS JG
+WHERE AvgSalTab.AvgSal BETWEEN JG.lowest_sal AND JG.highest_sal;
+
+```
+
+
+
+### ```EXISTS```后面（相关子查询）
+
+#### 语法
+
+```mysql
+/* 结果返回1或0 */
+SELECT EXISTS (完整的查询语句)
+
+/* 例子 */
+SELECT EXISTS(
+SELECT employee_id
+FROM employees
+WHERE salary=300000) AS Result;
+```
+
+#### 示例
+
+- 查询有员工的部门名
+
+```mysql
+/*
+可以这样理解：
+（1）首先是从department这个表开始，遍历每一条entry
+（2）对于当前department的entry，执行EXIST后面的查询，即该条在department中的department_id是否在employee表中存在，如果存在返回1，否则返回0
+（3）如果EXISTS子查询返回的是1，则保留该entry，进行department中的下一条entry；否则结果集中不保留该条目，继续进行department中的下一条entry
+ */
+SELECT D.department_name
+FROM departments AS D
+WHERE EXISTS(
+  SELECT *
+  FROM employees AS E
+  WHERE D.department_id = E.department_id
+);
+
+/* 使用IN */
+SELECT D.department_name
+FROM departments AS D
+WHERE D.department_id IN (
+  SELECT DISTINCT E.department_id
+  FROM employees AS E
+);
+
+
+/* 使用外连接查询 */
+SELECT DISTINCT D.department_name
+FROM departments AS D
+LEFT OUTER JOIN employees AS E
+ON D.department_id = E.department_id
+WHERE E.employee_id IS NOT NULL
+```
+
+- 查询没有女朋友的男神信息
+
+```mysql
+SELECT *
+FROM boys AS BO
+WHERE NOT EXISTS(
+  SELECT *
+  FROM beauty AS BE
+  WHERE BE.boyfriend_id = BO.id
+);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
