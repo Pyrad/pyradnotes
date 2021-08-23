@@ -2031,6 +2031,8 @@ WHERE NOT EXISTS(
 
 【2021-08-15】B站视频看到第100集
 
+【2021-08-23】B站视频看到第124集（刚开始）
+
 # DML 数据管理语言
 
 DML = Data Management Language
