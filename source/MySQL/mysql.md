@@ -1959,7 +1959,7 @@ WHERE NOT EXISTS(
 
 
 
-
+幻读一般就是针对插入（```INSERT```）的
 
 
 
