@@ -16,6 +16,7 @@ Pyrad's Notes!
    Git/index
    MySQL/index
    Markdown/index
+   ChinesePoetry/index
 
 
 Indices and tables
