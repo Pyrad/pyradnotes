@@ -2011,6 +2011,8 @@ SELECT t_id,tname FROM t_ua WHERE tGender='male';
 
 DML = Data Management Language
 
+**就是表中记录的增删改**
+
 
 
 ## 三大类：增、删、改
@@ -2073,20 +2075,29 @@ VALUES('关晓彤', '女', 17, '110');
 - **如果插入的时候不写列名，默认就是所有的列名，而且顺序和表中的顺序一致，后面的值也必须都写**
 
 ```mysql
-INSERT INTO beautyVALUES(18, 'Riho Yoshioka', '女', '1992-05-07', '15210560360', NULL, 1);
+INSERT INTO beauty
+VALUES(18, 'Riho Yoshioka', '女', '1992-05-07', '15210560360', NULL, 1);
 ```
 
 - **可以一次插入多行**
   - 注意，```VALUES```只写一次
 
 ```mysql
-INSERT INTO beautyVALUES(19, 'Satomi', '女', '1992-05-07', '15210560360', NULL, 2), (20, 'TingLiu', '女', '1992-05-07', '15210560360', NULL, 2), (21, 'Liudi', '女', '1992-05-07', '15210560360', NULL, 3);
+INSERT INTO beauty
+VALUES(19, 'Satomi', '女', '1992-05-07', '15210560360', NULL, 2)
+, (20, 'TingLiu', '女', '1992-05-07', '15210560360', NULL, 2)
+, (21, 'Liudi', '女', '1992-05-07', '15210560360', NULL, 3);
 ```
 
 - 可以利用子查询来插入子查询的结果
 
 ```mysql
-INSERT INTO beauty(id, NAME, phone)SELECT 23,'宋茜','11809866';INSERT INTO beauty(id,NAME,phone)SELECT id, boyname, '1234567'FROM boys WHERE id<3;
+INSERT INTO beauty(id, NAME, phone)
+SELECT 23,'宋茜','11809866';
+
+INSERT INTO beauty(id,NAME,phone)
+SELECT id, boyname, '1234567'
+FROM boys WHERE id<3;
 ```
 
 
@@ -2123,13 +2134,22 @@ INSERT INTO beautySET id=22, NAME='刘涛', phone='999';
 - 修改单表的记录
 
 ```mysql
-UPDATE 表名SET 列名1 = 值1, 列名2 = 值2, ...WHERE 筛选条件
+UPDATE 表名 SET 列名1 = 值1, 列名2 = 值2, ...WHERE 筛选条件
 ```
 
 - 修改多表的记录
 
 ```mysql
-# SQL99UPDATE 表名1 AS 别名1[INNER | LEFT | RIGHT JOIN] 表2 AS 别名2ON 连接条件SET 列名1 = 值1, 列名2 = 值2, ...WHERE 筛选条件# SQL92UPDATE 表1 AS 别名1, 表2 AS 别名2SET 列名1 = 值1, 列名2 = 值2, ...WHERE 连接条件AND 筛选条件
+# SQL99
+UPDATE 表名1 AS 别名1
+[INNER | LEFT | RIGHT JOIN] 表2 AS 别名2
+ON 连接条件SET 列名1 = 值1, 列名2 = 值2, ...
+WHERE 筛选条件
+
+# SQL92
+UPDATE 表1 AS 别名1, 表2 AS 别名2
+SET 列名1 = 值1, 列名2 = 值2, ...
+WHERE 连接条件AND 筛选条件
 ```
 
 
@@ -2139,13 +2159,15 @@ UPDATE 表名SET 列名1 = 值1, 列名2 = 值2, ...WHERE 筛选条件
 - 修改beauty表中姓唐的女神的电话为13899888899
 
 ```mysql
-UPDATE beauty AS BSET phone='13899888899'WHERE B.name LIKE '唐%';
+UPDATE beauty AS B SET phone='13899888899'
+WHERE B.name LIKE '唐%';
 ```
 
 - 修改boys表中id号为2的名称为张飞，魅力值 10
 
 ```mysql
-UPDATE boysSET boyName = '张飞', userCP = 10WHERE id = 2;
+UPDATE boys SET boyName = '张飞', userCP = 10
+WHERE id = 2;
 ```
 
 
@@ -2155,13 +2177,21 @@ UPDATE boysSET boyName = '张飞', userCP = 10WHERE id = 2;
 - 修改张无忌的女朋友的手机号为114，张无忌的魅力值为1000
 
 ```mysql
-UPDATE beauty AS BEINNER JOIN boys AS BOON BE.boyfriend_id = BO.idSET BE.phone = '114', BO.userCP = 1000WHERE BO.boyName = '张无忌';
+UPDATE beauty AS BE
+INNER JOIN boys AS BO
+ON BE.boyfriend_id = BO.id
+SET BE.phone = '114', BO.userCP = 1000
+WHERE BO.boyName = '张无忌';
 ```
 
 - 修改没有男朋友的女神的男朋友编号都为2号
 
 ```mysql
-UPDATE beauty AS BELEFT OUTER JOIN boys AS BOON BE.boyfriend_id = BO.idSET BE.boyfriend_id = 2WHERE BO.id IS NULL;
+UPDATE beauty AS BE
+LEFT OUTER JOIN boys AS BO
+ON BE.boyfriend_id = BO.id
+SET BE.boyfriend_id = 2
+WHERE BO.id IS NULL;
 ```
 
 
@@ -2198,7 +2228,23 @@ DELETE FROM beautyWHERE phone LIKE '%9';
 
 - 删除多表中的记录：删除张无忌的女朋友的信息
 
+```mysql
+DELETE BE 
+FROM beauty AS BE
+INNER JOIN boys AS BO
+ON BE.boyfriend_id = BO.id
+WHERE BE.boyfriend_id = 1;
+```
 
+- 删除黄晓明的信息以及他女朋友的信息
+
+```mysql
+DELETE BE, BO
+FROM beauty AS BE
+INNER JOIN boys AS BO
+ON BE.boyfriend_id = BO.id
+WHERE BE.boyfriend_id = 3;
+```
 
 
 
@@ -2208,39 +2254,19 @@ DELETE FROM beautyWHERE phone LIKE '%9';
 TRUNCATE TABLE 表名;
 ```
 
-
-
-#### 示例
-
+注意：```TRUNCATE```只能删除整个表，不能加筛选条件
 
 
 
+#### 两种删除方式比较
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+|                                | ```DELETE```             | ```TRUNCATE```      |
+| ------------------------------ | ------------------------ | ------------------- |
+| 可否加```WHERE```筛选条件      | 可以                     | 不可以              |
+| 效率                           | 低                       | 高                  |
+| 删除自增长列后再插入记录时的值 | 自增长列的值从断点处开始 | 自增长列的值从1开始 |
+| 是否有返回值                   | 有                       | 无                  |
+| 能否回滚                       | 可以                     | 不可能              |
 
 
 
@@ -2249,6 +2275,17 @@ TRUNCATE TABLE 表名;
 # DDL 数据定义语言
 
 DDL = Data Definition Language
+
+就是库和表的管理
+
+
+
+## 内容
+
+- 库的管理：**创建、修改和删除**
+- 表的管理：**创建、修改和删除**
+
+
 
 
 
