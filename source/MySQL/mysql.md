@@ -2282,7 +2282,7 @@ TRUNCATE TABLE 表名;
 
 DDL = Data Definition Language
 
-就是库和表的管理
+**就是库和表的管理**
 
 
 
@@ -2290,7 +2290,8 @@ DDL = Data Definition Language
 
 - 库的管理：**创建、修改和删除**
 - 表的管理：**创建、修改和删除**
-- 对应的数据类型
+- 对应的**数据类型**
+- 对应的**类型约束**
 
 
 
@@ -2873,9 +2874,47 @@ ALTER TABLE stuinfo DROP FOREIGN KEY fk_stuinfo_major;
 
 
 
+## 标识列
 
+又称**自增长列**
 
+### 含义
 
+不用手动插入值，系统提供默认的序列值
+
+### 特点
+
+- 标识列不一定要和主键搭配，但要求是一个`KEY`
+- 一个表**最多有一个标识列**
+- 标识列的类型只能是**数值型**
+- 标识列可以通过**`SET auto_increment_increment = 3`来设置步长**
+- 标识列可以通过**手动插入值来设置起始值**
+
+### 语法
+
+#### 创建表时设置自增长列
+
+```mysql
+CREATE TABLE 表名(
+    字段名 字段类型 字段约束 AUTO_INCREMENT
+);
+```
+
+#### 修改表时设置自增长列
+
+即使用`MODIFY`修改字段约束的语法，只是后面**加上`AUTO_INCREMENT`**
+
+```mysql
+ALTER TABLE 表名 MODIFY COLUMN 字段名 字段类型 字段约束 AUTO_INCREMENT
+```
+
+#### 删除自增长列
+
+即使用`MODIFY`修改字段约束的语法，只是后面**去掉`AUTO_INCREMENT`**
+
+```mysql
+ALTER TABLE 表名 MODIFY COLUMN 字段名 字段类型 字段约束
+```
 
 
 
@@ -2887,17 +2926,193 @@ TCL = Transaction Control Language
 
 
 
-幻读一般就是针对插入（```INSERT```）的
+## 事务
+
+一个或一组SQL语句组成一个执行单元，这个执行单元要么**全部执行**，要么**全部不执行**
 
 
 
+## 事务的特性 ACID
+
+### 原子性 Atomicity
+
+一个事务不可再分割，要么都执行要么都不执行
+
+### 一致性 Consistency
+
+一个事务执行会使数据从一个一致性状态切换到另一个一致性状态
+
+### 隔离性 Isolation
+
+一个事务的执行不受其他事务的干扰
+
+### 持久性 Durability
+
+一个事务一旦提交，就会永久地改变数据库的数据
 
 
 
+## 创建事务
+
+### 隐式事务
+
+事务**没有明显**的开启和结束标记
+
+常见的就是SQL语句：`INSERT`, `UPDATE`, `DELETE`
+
+### 显示事务
+
+- 事务**有明显**的开启（`START TRANSACTION`）和结束标记（`ROLLBACK`，`COMMIT`）
+
+- 必须的前提：设置自动提交功能为禁用`SET AUTOCOMMIT = 0`
+
+- 步骤
+
+  - 开启事务
+
+    `SET AUTOCOMMIT = 0`
+
+    `START TRANSACTION`
+
+    其中`START TRANSACTION`可以省略，因为已经有禁用自动提交`SET AUTOCOMMIT = 0`
+
+  - 编写事务SQL语句
+
+    可以在事务SQL语句中设置回滚点：`SAVEPOINT 节点名`
+
+  - 结束事务
+
+    或者提交事务：`COMMIT`
+
+    或者回滚事务：`ROLLBACK`
+
+  - 其中
+
+```mysql
+# 开启事务
+SET AUTOCOMMIT = 0
+START TRANSACTION # 可以省略
+
+# 编写事务里的SQL语句(SELECT, INSERT, UPDATE, DELETE)
+# 可以设置回滚节点
+# SAVEPOINT 回滚点名称
+# 最后若要回滚，使用ROLLBACK TO回滚点名称
+SAVEPOINT SP0
+
+# 结束事务
+COMMIT # 提交事务
+ROLLBACK # 回滚事务
+```
 
 
 
+## 并发问题
 
+### 脏读
+
+一个事务读取了其他事务还没有提交的数据，读到的是其他事务**“更新”**的数据
+
+### 不可重复度
+
+一个事务中多次读取，结果不一样
+
+### 幻读
+
+一个事务读取了其他事务还没有提交的数据，只是读到的是 其他事务**“插入”**的数据
+
+幻读一般就是针对插入（`INSERT`）的
+
+### 解决办法
+
+设置相应的隔离级别
+
+
+
+## 事务的隔离级别
+
+|      隔离级别      | (避免)脏读 | (避免)不可重复读 | (避免)幻读 |
+| :----------------: | :--------: | :--------------: | :--------: |
+| `READ UNCOMMITTED` |     N      |        N         |     N      |
+|  `READ COMMITTED`  |   **Y**    |        N         |     N      |
+| `REPEATABLE READ`  |   **Y**    |      **Y**       |     N      |
+|   `SERIALIZABLE`   |   **Y**    |      **Y**       |   **Y**    |
+
+- MySQL中设置隔离级别的语法
+
+```mysql
+SET 【 SESSION | GLOBAL 】 TRANSACTION ISOLATION LEVEL 隔离级别;
+```
+
+如果想设置的范围是`SESSION`，那么`SESSION`就可以省略
+
+- MySQL中查看隔离级别的语法
+
+```mysql
+SELECT @@tx_isolation;
+```
+
+- MySQL默认的隔离级别是`REPEATABLE READ`
+
+
+
+## 示例
+
+- 查看自动提交变量的值
+
+```mysql
+SHOW VARIABLES LIKE 'autocommit';
+```
+
+- 查看MySQL支持的存储引擎（MySQL默认存储引擎是InnoDB）
+
+```mysql
+SHOW ENGINES;
+```
+
+常用的存储引擎有
+
+1. InnoDB（支持事务）
+2. MyISAM（不支持事务）
+3. MEMORY（不支持事务）
+
+
+
+### 事务的使用步骤
+
+```mysql
+#开启事务
+SET autocommit=0;
+START TRANSACTION;
+
+#编写一组事务的语句
+UPDATE account SET balance = 1000 WHERE username='张无忌';
+UPDATE account SET balance = 1000 WHERE username='赵敏';
+
+#结束事务
+commit;
+# ROLLBACK;
+```
+
+
+
+### 事务对`DELETE`和`TRUNCATE`的处理的区别
+
+对`DELETE`可以进行回滚操作
+
+对`TRUNCATE`不能进行回滚操作
+
+
+
+# `SAVEPOINT`的使用
+
+```mysql
+SET autocommit=0;
+START TRANSACTION;
+DELETE FROM account WHERE id=25;
+SAVEPOINT SP0;#设置保存点
+DELETE FROM account WHERE id=28;
+ROLLBACK TO SP0;#回滚到保存点
+```
 
 
 
