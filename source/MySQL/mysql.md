@@ -3055,7 +3055,7 @@ SELECT @@tx_isolation;
 
 
 
-## 示例
+## 事务示例
 
 - 查看自动提交变量的值
 
@@ -3103,7 +3103,7 @@ commit;
 
 
 
-# `SAVEPOINT`的使用
+### `SAVEPOINT`的使用
 
 ```mysql
 SET autocommit=0;
@@ -3116,61 +3116,209 @@ ROLLBACK TO SP0;#回滚到保存点
 
 
 
-```mysql
+# 视图
 
-```
+## 含义
 
+本身是一个虚拟表，它的数据来自于其他表，通过动态生成数据
 
+## 和普通表的比较
 
+|                      | 视图                     | 表             |
+| -------------------- | ------------------------ | -------------- |
+| 创建语法关键字       | `CREATE VIEW ... AS ...` | `CREATE TABLE` |
+| 是否实际占用物理空间 | 只保存SQL逻辑            | 保存了数据     |
+| 使用                 | 增删查改（一般不增删改） | 增删查改       |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## 创建视图
 
 ```mysql
+CREATE 【 OR REPLACE 】 VIEW 视图名
+AS
+查询语句;
+```
+
+- 示例：查询姓名中包含a字符的员工名、部门名和工种信息
+
+```mysql
+# 创建
+CREATE VIEW tmpview
+AS
+SELECT E.first_name, D.department_name, J.job_title
+FROM employees AS E
+INNER JOIN departments AS D ON E.department_id = D.department_id
+INNER JOIN jobs AS J ON E.job_id = J.job_id
+WHERE E.first_name LIKE '%a%';
+
+# 使用
+SELECT * FROM tmpview;
+```
+
+- 示例：查询各部门的平均工资级别
+
+```mysql
+CREATE OR REPLACE VIEW tmpview0
+AS
+SELECT AVG(E.salary) AS AvgSal, E.department_id AS EID
+FROM employees AS E
+GROUP BY E.department_id;
+
+SELECT TV.EID, TV.AvgSal, JG.grade_level
+FROM tmpview0 AS TV
+INNER JOIN job_grades AS JG
+ON TV.AvgSal BETWEEN JG.lowest_sal AND JG.highest_sal;
 ```
 
 
 
-```sql
+## 修改视图
 
+### 第一种方式`CREATE OR REPLACE VIEW`
 
+```mysql
+CREATE OR REPLACE VIEW 视图名
+AS
+查询语句;
+```
+
+### 第二种方式`ALTER VIEW`
+
+```mysql
+ALTER VIEW 视图名
+AS
+查询语句;
 ```
 
 
+
+## 删除视图
+
+```mysql
+DROP VIEW 视图名1, 视图名2, ...
+```
+
+
+
+## 查看视图
+
+- 使用`DESC`
+
+```mysql
+DESC 视图名
+```
+
+- 使用`SHOW CREATE VIEW`
+
+```mysql
+SHOW CREATE VIEW 视图名
+```
+
+
+
+## 更新视图
+
+更新视图的语句和修改表中记录的语句相同，只需把表名改为对应的视图名即可
+
+- 插入
+
+```mysql
+INSERT INTO 视图名 VALUES(列1, 列2, 列3, ...)
+```
+
+- 修改
+
+```mysql
+UPDATE 视图名
+SET 列1=值1, 列2=值1, 列3=值3
+【 WHERE 筛选条件 】
+```
+
+- 删除
+
+```mysql
+DELETE FROM 视图名 【 WHERE 筛选条件 】
+```
+
+不能修改的视图
+
+1. 包含分组函数、`GROUP BY`、`DISTINCT`、`HAVING`、`UNION`
+
+2. 连接查询`JOIN`
+
+3. 常量视图
+
+4. `WHERE`后的子查询用到了`FROM`中的表
+
+   ```mysql
+   SELECT last_name, email, salary
+   FROM employees
+   WHERE employee_id IN(
+   	SELECT manager_id
+   	FROM employees
+   	WHERE manager_id IS NOT NULL
+   );
+   ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```mysql
+```
+
+
+
+
+
+
+
+
+
+# B站MySQL课程进度记录
 
 【2021-08-15】B站视频看到第100集
 
@@ -3180,20 +3328,7 @@ ROLLBACK TO SP0;#回滚到保存点
 
 
 
-# DML 数据管理语言
 
 
 
-DML = Data Management Language
 
-
-
-# DDL 数据定义语言
-
-DDL = Data Definition Language
-
-
-
-# TCL 事务控制语言
-
-TCL = Transaction Control Language
