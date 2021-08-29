@@ -2616,11 +2616,260 @@ INSERT INTO tab_set VALUES('a,c,d');
 
 
 
+## 常见约束
 
 
 
+### 约束的含义和目的
+
+是一种限制，用于限制表中的数据，保证表中数据的准确和可靠
 
 
+
+### 语法
+
+```mysql
+CREATE TABLE 表名(
+	字段名 字段类型 列级约束, # 有列级约束
+    字段名 字段类型 列级约束,
+    ...
+	字段名 字段类型, # 无列级约束
+    字段名 字段类型,
+    ...
+	表级约束
+)
+```
+
+
+
+### 分类
+
+- 有**六**大约束
+
+| 约束类型      | 含义                                                         |
+| ------------- | ------------------------------------------------------------ |
+| `NOT NULL`    | 非空，保证该字段的值不能为`NULL`                             |
+| `DEFAULT`     | 默认，保证该字段有默认值                                     |
+| `UNIQUE`      | 唯一，保证该字段具有唯一性，可以为`NULL`（但只能有一个`NULL`） |
+| `CHECK`       | 检查约束（MySQL不支持）                                      |
+| `PRIMARY KEY` | 主键，保证该字段具有唯一性，并且非空                         |
+| `FOREIGN KEY` | 外键，限制两个表的关系，保证该字段的值必须来自主表的关联列的值 |
+
+其中`FOREIGN KEY`，在哪个表中添加，那个表就是**从表**，而引用的关联列所在的表是**主表**
+
+
+
+### 添加时机
+
+- 在创建表时
+- 在修改表时
+
+
+
+### 约束的添加分类
+
+| 列/表级约束 | 是否支持                                   |
+| ----------- | ------------------------------------------ |
+| 列级约束    | 六大约束语法都支持，但**外键约束没有效果** |
+| 表级约束    | 除了**非空**、**默认**，其他都支持         |
+
+
+
+### 主键和唯一的对比
+
+|                  | 主键`PRIMARY KEY`      | 唯一`UNIQUE`   |
+| ---------------- | ---------------------- | -------------- |
+| 是否保证唯一性   | 是                     | 是             |
+| 是否允许为`NULL` | 否                     | 是             |
+| 表中可否有多个   | 最多一个（字段是主键） | 可以有多个     |
+| 是否允许组合     | 是（但不推荐）         | 是（但不推荐） |
+
+
+
+### 外键的特点
+
+- 外键关系是设置在**从表**中的
+- 从表外键列的类型和主表关联列的类型要求**一致**或者**兼容**，名称可以不同
+- 主表的关联列必须是一个**KEY**（一般为主键或唯一）
+- 插入数据时，先插入主表，后插入从表；删除数据时，先删除从表，后删除主表
+
+
+
+### 约束添加和删除示例
+
+#### 创建表时添加约束
+
+- 添加列级约束（只支持默认、非空、主键和唯一）
+
+  语法：**直接在字段名和类型后面追加 约束类型即可**
+
+```mysql
+USE students;
+DROP TABLE stuinfo;
+CREATE TABLE stuinfo(
+	id INT PRIMARY KEY,                                #主键
+	stuName VARCHAR(20) NOT NULL UNIQUE,               #非空
+	gender CHAR(1) CHECK(gender='男' OR gender ='女'),  #MySQL支持检查语法，但无效
+	seat INT UNIQUE,                                   #唯一
+	age INT DEFAULT 18,                                #默认约束
+	majorId INT REFERENCES major(id)                   #外键，支持列级添加外键约束，但无效
+);
+
+# 创建上面从表所关联的主表
+CREATE TABLE major(
+	id INT PRIMARY KEY,
+	majorName VARCHAR(20)
+);
+
+# 查看stuinfo中的所有索引，包括主键、外键和唯一
+SHOW INDEX FROM stuinfo;
+```
+
+
+
+- 添加表级约束
+
+  语法：在各个字段的最下面添加 **【`CONSTRAINT` 约束名】 约束类型（字段名）**
+
+```mysql
+DROP TABLE IF EXISTS stuinfo;
+CREATE TABLE stuinfo(
+	id INT,
+	stuname VARCHAR(20),
+	gender CHAR(1),
+	seat INT,
+	age INT,
+	majorid INT,
+	
+	CONSTRAINT pk PRIMARY KEY(id),                                        # 主键
+	CONSTRAINT uq UNIQUE(seat),                                           # 唯一键
+	CONSTRAINT ck CHECK(gender ='男' OR gender  = '女'),                   # 检查
+	CONSTRAINT fk_stuinfo_major FOREIGN KEY(majorid) REFERENCES major(id) # 外键
+);
+
+# 查看stuinfo中的所有索引，包括主键、外键和唯一
+SHOW INDEX FROM stuinfo;
+```
+
+
+
+- 通用写法
+
+```mysql
+CREATE TABLE IF NOT EXISTS stuinfo(
+	id INT PRIMARY KEY,
+	stuname VARCHAR(20),
+	sex CHAR(1),
+	age INT DEFAULT 18,
+	seat INT UNIQUE,
+	majorid INT,
+    
+	CONSTRAINT fk_stuinfo_major FOREIGN KEY(majorid) REFERENCES major(id)
+);
+```
+
+
+
+#### 修改表时添加约束
+
+语法
+
+```mysql
+# 添加列级约束
+ALTER TABLE 表名 MODIFY COLUMN 字段名 字段类型 新约束
+
+# 添加表级约束
+ALTER TABLE 表名 ADD 【 CONSTRAINT 约束名 】 约束类型(字段名) 【 外键引用 】
+```
+
+
+
+- 添加非空约束
+
+```mysql
+ALTER TABLE stuinfo MODIFY COLUMN stuname VARCHAR(20) NOT NULL;
+```
+
+- 添加默认约束
+
+```mysql
+ALTER TABLE stuinfo MODIFY COLUMN age INT DEFAULT 0;
+```
+
+- 添加主键
+
+```mysql
+# 列级
+ALTER TABLE stuinfo MODIFY COLUMN id INT PRIMARY KEY;
+
+# 表级
+ALTER TABLE stuinfo ADD 【 CONSTRAINT pk 】 PRIMARY KEY(id);
+
+# 注意，删除主键使用DROP PRIMARY KEY（并且先CHANGE COLUMN）
+ALTER TABLE stuinfo CHANGE COLUMN id id INT;
+ALTER TABLE stuinfo DROP PRIMARY KEY;
+```
+
+- 添加唯一键
+
+```mysql
+# 列级
+ALTER TABLE stuinfo MODIFY COLUMN seat INT UNIQUE;
+
+# 表级
+ALTER TABLE stuinfo ADD 【 constraint st_uq 】 UNIQUE(seat)
+```
+
+- 添加外键
+
+```mysql
+ALTER TABLE stuinfo ADD CONSTRAINT fk_stu_major FOREIGN KEY(majorid) REFERENCES major(id);
+
+```
+
+
+
+### 修改表时删除约束
+
+- 删除非空约束（非空只支持列级）
+
+  即使用`MODIFY COLUMN`，后面约束用`NULL`
+
+```mysql
+ALTER TABLE stuinfo MODIFY COLUMN stuname VARCHAR(20) NULL;
+```
+
+- 删除默认约束（默认只支持列级）
+
+  即使用`MODIFY COLUMN`，后面约束置空即可
+
+```mysql
+ALTER TABLE stuinfo MODIFY COLUMN age INT;
+```
+
+- 删除主键约束
+
+  使用`DROP PRIMARY KEY`
+
+```mysql
+ALTER TABLE stuinfo DROP PRIMARY KEY;
+```
+
+- 删除唯一约束
+
+  使用`DROP INDEX 列名`
+
+```mysql
+ALTER TABLE stuinfo DROP INDEX 列名;
+```
+
+- 删除外键约束
+
+```mysql
+ALTER TABLE stuinfo DROP FOREIGN KEY 外键约束名;
+
+ALTER TABLE stuinfo DROP FOREIGN KEY fk_stuinfo_major;
+```
 
 
 
