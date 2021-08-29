@@ -1582,7 +1582,7 @@ CROSS JOIN boys AS BO;
 
 ```mysql
 SELECT 查询列表
-FROM 表 AS 别名 【连接类型（ INNER/LEFT OUTER/RIGHT OUTER ）】
+FROM 表 AS 别名 【 连接类型 INNER/LEFT OUTER/RIGHT OUTER 】
 JOIN 表1 AS 别名1 ON 连接条件1
 JOIN 表2 AS 别名2 ON 连接条件2
 ...
@@ -1590,7 +1590,7 @@ JOIN 表2 AS 别名2 ON 连接条件2
 【 GROUP BY 分组 】
 【 HAVING 分组后筛选条件 】
 【 ORDER BY 排序列表 】
-【 LIMIT [offset, ] size 】
+【 LIMIT 【 offset, 】 size 】
 ```
 
 - **offset**：要显示条目的起始索引（起始索引从0开始）
@@ -2134,7 +2134,8 @@ INSERT INTO beautySET id=22, NAME='刘涛', phone='999';
 - 修改单表的记录
 
 ```mysql
-UPDATE 表名 SET 列名1 = 值1, 列名2 = 值2, ...WHERE 筛选条件
+UPDATE 表名 SET 列名1 = 值1, 列名2 = 值2, ...
+WHERE 筛选条件
 ```
 
 - 修改多表的记录
@@ -2142,7 +2143,7 @@ UPDATE 表名 SET 列名1 = 值1, 列名2 = 值2, ...WHERE 筛选条件
 ```mysql
 # SQL99
 UPDATE 表名1 AS 别名1
-[INNER | LEFT | RIGHT JOIN] 表2 AS 别名2
+【 INNER | LEFT | RIGHT JOIN 】 表2 AS 别名2
 ON 连接条件SET 列名1 = 值1, 列名2 = 值2, ...
 WHERE 筛选条件
 
@@ -2215,7 +2216,11 @@ DELETE FROM 表名 WHERE 筛选条件
 - 多表中记录的删除
 
 ```mysql
-DELETE 别名1, 别名2, 别名3, ...FROM 表1 AS 别名1[INNER | LEFT | RIGHT JOIN] 表2 AS 别名2 ON 连接条件[INNER | LEFT | RIGHT JOIN] 表3 AS 别名3 ON 连接条件WHERE 筛选条件
+DELETE 别名1, 别名2, 别名3, ...
+FROM 表1 AS 别名1
+【 INNER | LEFT | RIGHT JOIN 】表2 AS 别名2 ON 连接条件
+【 INNER | LEFT | RIGHT JOIN 】 表3 AS 别名3 ON 连接条件
+WHERE 筛选条件
 ```
 
 ##### 示例
@@ -2223,7 +2228,8 @@ DELETE 别名1, 别名2, 别名3, ...FROM 表1 AS 别名1[INNER | LEFT | RIGHT J
 - 删除单表中的记录：删除手机号以9结尾的女神信息
 
 ```mysql
-DELETE FROM beautyWHERE phone LIKE '%9';
+DELETE FROM beauty
+WHERE phone LIKE '%9';
 ```
 
 - 删除多表中的记录：删除张无忌的女朋友的信息
@@ -2284,6 +2290,204 @@ DDL = Data Definition Language
 
 - 库的管理：**创建、修改和删除**
 - 表的管理：**创建、修改和删除**
+- 对应的数据类型
+
+
+
+## 库的管理
+
+包括：创建、修改和删除
+
+### 库的创建
+
+```mysql
+CREATE DATABASE 【 IF NOT EXISTS 】 库名;
+```
+
+注意：```IF NOT EXISTS```可以省略，加上它是为了防止创建已经已经存在的数据库
+
+### 库的修改
+
+- 重命名
+
+```mysql
+# 注意，这个重命名方法在MySQL中不支持
+# 要重命名的话，需要先停止MySQL服务，然后再操作系统中修改数据库对应的名字，然后再重启服务
+RENAME DATABASE books TO 新库名
+```
+
+- 修改库的字符集
+
+```mysql
+ALTER DATABASE Books CHARACTER SET gbk;
+```
+
+### 库的删除
+
+```mysql
+DROP DATABASE IF EXISTS 库名;
+```
+
+
+
+## 表的管理
+
+包括：创建、修改和删除
+
+### 表的创建
+
+```mysql
+CREATE TABLE 表名(
+    列名 列的类型 【 (长度) 列级约束 】,
+    列名 列的类型 【 (长度) 列级约束 】,
+    列名 列的类型 【 (长度) 列级约束 】,
+    ...
+    列名 列的类型 【 (长度) 列级约束 】,
+)
+```
+
+#### 示例
+
+- 创建Book表
+
+```mysql
+CREATE TABLE Book(
+  id INT,
+  bName VARCHAR(20),
+  price DOUBLE,
+  authorId INT,
+  publishData DATETIME
+);
+DESC Book;
+```
+
+- 创建author表
+
+```mysql
+CREATE TABLE author(
+  id INT,
+  au_name VARCHAR(20),
+  nation VARCHAR(10)
+)
+DESC author;
+```
+
+### 表的修改
+
+- 语法简要
+
+```mysql
+ALTER TABLE 表名
+【 ADD | DROP | MODIFY | CHANGE 】 COLUMN 列名 【 列类型 约束 】
+```
+
+- 添加列
+
+```mysql
+ALTER TABLE 表名
+ADD COLUMN 新列名 【 列类型 列级约束 】
+```
+
+- 修改列的类型或约束
+
+```mysql
+ALTER TABLE 表名
+MODIFY COLUMN 列名 新类型 新约束
+
+# 注意，如果要修改字段即列的字符集，MODIFY不起作用，需要用CHANGE COLUMN
+```
+
+- 修改列名
+
+```mysql
+ALTER TABLE 表名
+CHANGE COLUMN 旧列名 新列名 【 列类型 约束 】
+
+# 修改列的字符集
+ALTER TABLE author 
+CHANGE COLUMN 列名 不变列名 VARCHAR(20) CHARACTER SET utf8;
+```
+
+- 删除列
+
+```mysql
+ALTER TABLE 表名
+DROP COLUMN 列名
+```
+
+- 修改表名
+
+```mysql
+ALTER TABLE 旧表名 RENAME TO 新表名;
+```
+
+
+
+### 表的删除
+
+```mysql
+DROP TABLE 【 IF EXISTS 】 表名
+```
+
+
+
+### 表的复制
+
+#### 仅复制表的结构
+
+即仅复制表的各个字段【列】，得到的新表里面没有数据记录，是空的
+
+```mysql
+CREATE TABLE 新表名 LIKE 旧表名;
+```
+
+#### 复制表的结构和数据
+
+即不仅仅复制表的结构，还复制表的数据记录
+
+- 复制全部数据记录
+
+```mysql
+CREATE TABLE 新表
+SELECT * FROM 旧表; 
+```
+
+- 复制部分数据记录
+
+```mysql
+CREATE TABLE 新表
+SELECT * FROM 旧表
+WHERE 筛选条件
+```
+
+- 仅复制某些字段
+
+```mysql
+CREATE TABLE 新表
+SELECT 列1，列2
+FROM 旧表
+WHERE 0;
+```
+
+
+
+### 创建表或库的惯用写法
+
+- 创建库
+
+```mysql
+DROP DATABASE IF EXISTS 旧库名
+CREATE DATABASE 新库名
+```
+
+- 创建表
+
+```mysql
+DROP TABLE IF EXISTS 旧表名
+CREATE TABLE 新表名
+```
+
+
 
 
 
