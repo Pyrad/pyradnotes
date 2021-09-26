@@ -3261,35 +3261,233 @@ DELETE FROM 视图名 【 WHERE 筛选条件 】
 
 
 
+# 变量
+
+- 系统变量
+  - 全局变量
+  - 会话变量
+- 自定义变量
+  - 用户变量
+  - 局部变量
+
+
+
+## 系统变量
+
+- 系统变量由系统定义，属于服务器层面，非用户定义
+
+- **全局变量**前加`GLOBAL`关键字加以指明，**会话变量**前加`SESSION`加以指明；如不写，默认为**会话变量**
+
+- 常用命令
+
+  - 查看所有系统变量
+
+  ```mysql
+  SHOW GLOBAL | 【 SESSION 】 VARIABLES;
+  ```
+
+  - 查看满足条件的部分系统变量
+
+  ```mysql
+  SHOW GLOBAL | 【 SESSION 】 VARIABLES LIKE '%<characters>%';
+  ```
+
+  - 查看指定的系统变量
+
+  ```mysql
+  SELECT @@GLABAL | 【 SESSION 】 系统变量名;
+  ```
+
+  - 给系统变量赋值
+
+  ```mysql
+  # 方式1
+  SET GLOBAL | 【 SESSION 】 系统变量名=值;
+  # 方式2
+  SET @@GLOBAL | 【 SESSION 】 系统变量名=值;
+  ```
+
+
+
+### 全局变量
+
+- 设置全局变量对所有会话（即连接）有效，但重启MySQL服务之后会失效
+
+- 常用命令
+
+  - 查看所有全局变量
+
+  ```mysql
+  SHOW GLOBAL VARIABLES;
+  ```
+
+  - 查看满足条件的部分系统变量
+
+  ```mysql
+  SHOW GLOBAL VARIABLES LIKE '%<characters>%';
+  ```
+
+  - 查看指定的系统变量的值
+
+  ```mysql
+  SELECT @@GLOBAL.AUTOCOMMIT;
+  ```
+
+  - 给系统变量赋值
+
+  ```mysql
+  # 方式1
+  SET @@GLOBAL.AUTOCOMMIT = 0;
+  # 方式2
+  SET GLOBAL AUTOCOMMIT = 0;
+  ```
+
+
+
+### 会话变量
+
+- 设置会话变量仅对当前会话（即连接）有效
+
+- 常用命令
+
+  - 查看所有会话变量
+
+  ```mysql
+  SHOW SESSION VARIABLES;
+  ```
+
+  - 查看满足条件的部分会话变量
+
+  ```mysql
+  SHOW SESSION VARIABLES LIKE '%<characters>%';
+  ```
+
+  - 查看指定的会话变量的值
+
+  ```mysql
+  SELECT @@AUTOCOMMIT;
+  SELECT @@SESSION.TX_ISOLATION;
+  ```
+
+  - 给会话变量赋值
+
+  ```mysql
+  # 方式1
+  SET @@SESSION.TX_ISOLATION = 'READ-UNCOMMITTED';
+  # 方式2
+  SET SESSION TX_ISOLATION = READ-COMMITTED';
+  ```
+
+
+
+## 自定义变量
+
+- 自定义变量由用户定义，不是系统提供
+- 使用步骤
+  - 声明
+  - 赋值
+  - 使用（查看、比较、运算）
+
+
+
+### 用户变量
+
+使用赋值操作符`=`或`:=`
+
+- 声明并初始化
+
+```mysql
+SET @VARIABLE_NAME = USER_VALUE;
+SET @VARIABLE_NAME := USER_VALUE;
+SELECT @VARIABLE_NAME := USER_VALUE;
+```
+
+- 赋值
+
+```mysql
+# 方式1
+SET @VARIABLE_NAME = USER_VALUE;
+SET @VARIABLE_NAME := USER_VALUE;
+SELECT @VARIABLE_NAME := USER_VALUE;
+
+# 方式2
+SELECT 字段 INTO @VARIABLE_NAME FROM 表;
+```
+
+- 使用
+
+```mysql
+SELECT @VARIABLE_NAME
+```
+
+
+
+### 局部变量
+
+局部变量的作用域仅在定义它的`BEGIN... END`块中有效
+
+应用在`BEGIN... END`块中的第一句话
+
+声明时使用`DECLARE`关键字
+
+- 声明
+
+```mysql
+DECLARE 变量名 类型;
+DECLARE 变量名 类型 【 DEFAULT 值 】;
+```
+
+- 赋值
+
+```mysql
+# 方式1
+SET 局部变量名 = 值;
+SET 局部变量名 := 值;
+SELECT 局部变量名 := 值;
+
+# 方式2
+SELECT 字段 INTO 局部变量名 FROM 表;
+```
+
+- 使用
+
+```mysql
+SELECT 局部变量名
+```
+
+
+
+### 用户变量和局部变量的比较案例
+
+声明两个变量，求和，并打印
+
+- 用户变量
+
+```mysql
+SET @m = 1;
+SET @n = 1;
+SET @sum = @m + @n;
+SELECT @sum;
+```
+
+- 局部变量
+
+```mysql
+DECLARE m INT DEFAULT 1;
+DECLARE n INT DEFAULT 1;
+DECLARE sum INT;
+SET sum = m + n;
+SELECT sum;
+```
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+|          | 作用域                    | 定义位置                    | 语法                    |
+| -------- | ------------------------- | --------------------------- | ----------------------- |
+| 用户变量 | 当前会话                  | 会话中的任何地方            | 加`@`，不用指定类型     |
+| 局部变量 | 定义它的`BEGIN ... END`中 | `BEGIN ... END`中的第一句话 | 一般不加`@`，需指定类型 |
 
 
 
