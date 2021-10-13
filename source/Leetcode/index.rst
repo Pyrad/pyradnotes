@@ -2,7 +2,7 @@ Leetcode
 ===============
 
 .. toctree::
-    :maxdepth: 2
+ :maxdepth: 2
 
-    Top100/index
-    CodeInterviewGuide/index
+ Top100/index
+ CodeInterviewGuide/index

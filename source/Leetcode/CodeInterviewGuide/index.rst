@@ -2,6 +2,7 @@ The Code Interview Guide
 ==========================
 
 .. toctree::
-    :maxdepth: 1
+ :maxdepth: 1
 
-    CodeInterviewGuide
+ CodeInterviewGuide
+ CodeInterviewGuideSolutions
