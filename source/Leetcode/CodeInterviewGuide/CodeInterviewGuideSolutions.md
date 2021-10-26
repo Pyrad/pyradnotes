@@ -46,6 +46,36 @@
 
 
 
+```cpp
+/* 2021-10-26 22:41 Hui Long Guan*/
+
+int getRemoveLastElement(std::stack<int> &stk) {
+	int t = stk.top();
+	stk.pop();
+	if (stk.empty()) {
+		return t;
+	} else {
+		int k = getRemoveLastElement(stk);
+		stk.push(t);
+		return k;
+	}
+}
+
+void reverseStack(std::stack<int> &stk) {
+	if (stk.empty() || stk.size() == 1) {
+		return;
+	}
+	
+	int c = getRemoveLastElement(stk);
+	reverseStack(stk);
+	stk.push(c);
+}
+```
+
+
+
+
+
 ## 1.4  猫狗队列
 
 宠物，狗和猫的类如下：
@@ -96,9 +126,61 @@ public:
 
 
 
-## 1.5  用一个栈实现另一个站的排序
+> 构造两个队列（cat和dog），每个实例入列时加上一个int类型的时间戳
+>
+> 
+
+```cpp
+
+```
+
+
+
+
+
+
+
+## 1.5  用一个栈实现另一个栈的排序
 
 【题目】一个栈中的元素为整型，现在想将该栈从顶到底按照从大到小的顺序排序，只允许申请一个栈。除此之外，可以申请新的变量，但不能申请额外的数据结构。然后完成排序？
+
+> 用另一个栈X，按照从顶到底，依次变大的顺序，依次压入从原先的栈弹出的栈顶值。
+>
+> 如果原先某次弹出的栈顶值V，大于栈X栈顶的值，就要把栈X依次弹出到原先的栈中，直到其栈顶值小于等于V（或栈X为空），此时将V压入栈X，再重复上述过程，直到原先的栈为空。
+>
+> 最后把栈X依次弹出并压入原先的栈即可
+
+```cpp
+/* 2021-10-26 22:53 Hui Long Guan*/
+
+void stackSort(std::stack<int> &stk) {
+	if (stk.size() <= 2) {
+		return ;
+	}
+	
+	std::stack<int> sstk;
+	
+	while (!stk.empty()) {
+		int c = stk.top();
+		stk.pop();
+		if (sstk.empty() || sstk.top() >= c) {
+			sstk.push(c);
+			continue;
+		}
+		
+		while (!sstk.empty() && (sstk.top() < c)) {
+			int k = sstk.top();
+			sstk.pop();
+			stk.push(k);
+		}
+		
+		sstk.push(c);
+	}
+    
+    // Push to the original stack
+    // ...
+}
+```
 
 
 
