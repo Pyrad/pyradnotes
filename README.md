@@ -1,37 +1,21 @@
-# pyradnotes
+# A Tour of Life (Pyrad Notes!)
 
-#### 介绍
-Pyrad's Notes
+## Description
+This is a notebook for Pyrad. 
 
-#### 软件架构
-软件架构说明
+It's old name is *Pyrad's Notes*, and it was originally created on **Gitee**, and all kinds of useful notes are kept down here to remind me of something interesting. Yes, all kinds.
 
+I changed the name to **A Tour of Life** from **Pyrad Notes!**, as I think it's the time to find a place keep down all things over my mind, and to find a way to track my life. Perhaps good, perhaps bad.
 
-#### 安装教程
+All notes are organized by Sphinx + markdown texts, and the web pages are built with help of **ReadTheDocs**.
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+May 17, 2022 22:28
 
-#### 使用说明
+## References
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+Here are some useful links, relating to **Sphinx**, **reStructuredText**, **ReadTheDocs** and so on.
 
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+- [Sphinx使用手册](https://zh-sphinx-doc.readthedocs.io/en/latest/index.html) （[其目录](https://zh-sphinx-doc.readthedocs.io/en/latest/contents.html)）
+- [Sphinx Docs](http://www.sphinxsearch.com/docs/)
+- [reStructuredText(rst)快速入门语法说明](https://www.jianshu.com/p/1885d5570b37)
+- [*Read the Docs* Tutorial](https://docs.readthedocs.io/en/stable/tutorial/)
