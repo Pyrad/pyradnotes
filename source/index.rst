@@ -8,12 +8,22 @@ A Tour of Life (Pyrad's Notes!)
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Alorithms:
 
    AlgorithmsDataStructures/index
-   Java/index
    Leetcode/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Java:
+
+   Java/index
    Git/index
    MySQL/index
    Markdown/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Chinese:
+
    ChinesePoetry/index
