@@ -17,11 +17,3 @@ A Tour of Life (Pyrad's Notes!)
    MySQL/index
    Markdown/index
    ChinesePoetry/index
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
