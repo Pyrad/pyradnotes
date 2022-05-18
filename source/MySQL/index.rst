@@ -2,6 +2,6 @@ MySQL
 ===============
 
 .. toctree::
-    :maxdepth: 1
-
-    mysql
+   :maxdepth: 1
+   
+   mysql
