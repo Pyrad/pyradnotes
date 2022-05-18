@@ -30,7 +30,7 @@ if os.environ.get('READTHEDOCS', None) == 'True':
 # -- Project information -----------------------------------------------------
 
 project = 'Pyrad\' Notes'
-copyright = '2021, Pyrad'
+copyright = '2021-2022, Pyrad'
 author = 'Pyrad'
 
 # The full version, including alpha/beta/rc tags
