@@ -1,1 +1,5 @@
+### Ignore the built files using Sphinx (make html)
 build/
+
+### ignore the Visual Studo Code project files
+.vscode/
