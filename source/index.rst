@@ -24,6 +24,12 @@ A Tour of Life (Pyrad's Notes!)
 
 .. toctree::
    :maxdepth: 1
+   :caption: Notes:
+
+   Notes/index
+
+.. toctree::
+   :maxdepth: 1
    :caption: Chinese:
 
    ChinesePoetry/index
