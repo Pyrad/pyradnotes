@@ -4,6 +4,10 @@
 Twenty Thousand Leagues Under the Sea
 =====================================
 
+.. warning:: 
+    This is just several short paragraphs for short description of the
+    syntax of reStructuedtext.
+
 Chapter 1 A Runaway Reef
 ------------------------
 
@@ -66,3 +70,9 @@ fearsome machine.
 
 .. tip:: 
     This is the second chapter
+
+
+\.\.\. this is to be continued \.\.\.
+
+.. error:: 
+    This is not all of this novel
