@@ -6,3 +6,4 @@ Notes
    
    reStructuredtext
    sphinxbasics
+   rstExample
