@@ -5,3 +5,4 @@ Git Basics
     :maxdepth: 1
 
     git
+    gitcmd
