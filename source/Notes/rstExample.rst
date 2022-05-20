@@ -19,6 +19,8 @@ andderanged* the public mind even far inland,
 
 it must be said that ``professional`` seamen were especially alarmed.
 
+.. _myRefAnchor:
+
 Traders, shipowners, captains of vessels, skippers, and master mariners
 from Europe and America, naval officers from every country, and at their
 heels the various national governments on these two continents, were all
@@ -76,3 +78,99 @@ fearsome machine.
 
 .. error:: 
     This is not all of this novel
+
+
+Lists
+---------------------------
+
+chapters to be continued
+
+* chapter 3
+* chapter 4
+* chapter 5
+
+#. chapter 6
+#. chapter 7
+#. chapter 8
+
+Images
+---------------------------
+
+An image of Riho
+
+.. image:: /_static/riho.jpg
+
+Code blocks
+---------------------------
+
+This is an example of Tcl code
+
+.. code:: tcl
+
+    proc isDesiredContext { m } {
+        set res 0
+        if { $m eq "Red-black tree" } {
+            set res 1
+        }
+        return $res
+    }
+
+
+Tables
+---------------------------
+
+================ =============== ===== ===========
+Platform         Self-Contained? Cost  Flexibility
+================ =============== ===== ===========
+Raspberry        No              $30   Limitless
+Lego Mindstorms  Yes             $350  Medium
+================ =============== ===== ===========
+
++----------------+---------------+-----+-----------+
+|Platform        |Self-          |     |           |
+|                |Contained?     |Cost |Flexibility|
++================+===============+=====+===========+
+|Raspberry       |No             |$30  |Limitless  |
++----------------+---------------+-----+-----------+
+|Lego Mindstorms |Yes            |$350 |Medium     |
++----------------+---------------+-----+-----------+
+
+.. list-table:: Comparison
+    :widths: 20 10 10 15
+    :header-rows: 1
+
+    * - Platform
+      - Self-Contained?
+      - Cost
+      - Flexibility
+    * - Raspberry Pi
+      - No
+      - $30
+      - Limitless
+    * - Lego Mindstorms
+      - Yes
+      - $350
+      - Medium
+
+.. csv-table:: Comparison
+    :header: Platform, Self-Contained?, Cost, Flexibility
+    :widths: 15 10 30 30
+
+    Raspberry, No, $30, Limitless
+    Lego Mindstorms, Yes, $350, Medium
+
+
+Links
+---------------------------
+
+External links
+
+My Github page: https://pyrad.github.io/
+
+My Github page: `Pyrad Notes <https://pyrad.github.io/>`_
+
+Link to my file: :doc:`/Git/gitcmd`
+
+Link to my file: :doc:`Chinese Poetry </ChinesePoetry/shici>`
+
+Linke to paragraph: :ref:`4th Paragraph in Chapter 1 <myRefAnchor>`
