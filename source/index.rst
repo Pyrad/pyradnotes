@@ -15,6 +15,12 @@ A Tour of Life (Pyrad's Notes!)
 
 .. toctree::
    :maxdepth: 1
+   :caption: Go:
+
+   Go/index
+
+.. toctree::
+   :maxdepth: 1
    :caption: Java:
 
    Java/index
