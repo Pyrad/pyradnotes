@@ -5,3 +5,4 @@ Chinese Poetry
     :maxdepth: 1
 
     shici
+    famousworks
