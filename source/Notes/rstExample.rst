@@ -1,8 +1,8 @@
 .. This is an example to show usages of reStructuedtext
 
 
-Twenty Thousand Leagues Under the Sea
-=====================================
+Twenty Thousand Leagues Under the Sea (reStructuedtext Sample)
+==============================================================
 
 .. warning:: 
     This is just several short paragraphs for short description of the
