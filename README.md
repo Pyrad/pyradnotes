@@ -11,6 +11,12 @@ All notes are organized by Sphinx + markdown texts, and the web pages are built 
 
 May 17, 2022 22:28
 
+## Quick Usage
+
+- Download the repository files (or just clone it to local)
+- Use command `make html` to build
+- Open the file `.\build\html\index.html` to view notes
+
 ## References
 
 Here are some useful links, relating to **Sphinx**, **reStructuredText**, **ReadTheDocs** and so on.
