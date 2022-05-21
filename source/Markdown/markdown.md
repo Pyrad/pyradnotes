@@ -84,3 +84,13 @@
 >
 > Good day today
 
+
+
+# Math Formula
+
+Refer to page: [Typora数学公式汇总（Markdown）](https://zhuanlan.zhihu.com/p/261750408?utm_source=wechat_session)
+
+Here is an example
+$$
+x + y = z
+$$
