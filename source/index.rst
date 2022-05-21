@@ -15,6 +15,18 @@ A Tour of Life (Pyrad's Notes!)
 
 .. toctree::
    :maxdepth: 1
+   :caption: C++:
+
+   CPP/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Python:
+
+   Python/index
+
+.. toctree::
+   :maxdepth: 1
    :caption: Go:
 
    Go/index
