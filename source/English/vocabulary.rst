@@ -1,5 +1,5 @@
-Vocabulary
-=============================
+Vocabulary  (reStructuredtext)
+======================================
 
 
 .. list-table:: Vocabulary Table
