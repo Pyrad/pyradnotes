@@ -27,3 +27,9 @@ Vocabulary  (reStructuredtext)
     * - **spin off**
       - *N/A*
       - 副产品；创造新的事物而不影响原物的大小（稳定性）；甩掉
+    * - **trigonometry**
+      - / ˌtrɪɡəˈnɒmətri /
+      - 三角学（复数trigonometries）
+    * - **the logarithm of 3 to base 2**
+      - *N/A*
+      - 以2为底的3的对数
