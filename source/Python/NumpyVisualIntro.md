@@ -333,3 +333,58 @@ $$
 |     `a.sort(key=f)`      |      -       |       sort with key        |
 | `a.sort(reversed=False)` |      -       | ascending/descending order |
 
+
+
+## 4. Searching for an element in a vector
+
+### Python list search - index method
+
+Python `list`有`index`方法，而Numpy没有
+
+`a.index(x [, i [, j]])`
+
+这里`x`是要查找的元素，`i`和`j`分别是指定区间的上下限，如果没有找到，会`raise exception`
+
+```python
+>>> a = [12, 0, -1, 78, 99]
+>>> a.index(78)
+3
+>>> a.index(78, 4)
+Traceback (most recent call last):
+  File "<pyshell#6>", line 1, in <module>
+    a.index(78, 4)
+ValueError: 78 is not in list
+```
+
+### Numpy list search
+
+Numpy中有三种办法查找某个元素
+
+`np.where`
+
+```python
+>>> a = [12, 0, -1, 78, 99]
+>>> np.where(a == 78)[0][0]
+3
+
+```
+
+`next` + `np.ndenumerate`（这种需要`Numba`来加速，否则就和上面的`np.where`一样，比较慢）
+
+```python
+>>> a = [12, 0, -1, 78, 99]
+>>> next(i[0] for i, v in np.ndenumerate(a) if v == 78)
+3
+```
+
+`np.searchsorted`
+
+```python
+>>> a = [12, 0, -1, 78, 99]
+>>> b = np.sort(a)
+>>> b
+array([-1,  0, 12, 78, 99])
+>>> np.searchsorted(b, 78)
+3
+```
+
