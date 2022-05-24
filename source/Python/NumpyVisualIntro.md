@@ -388,3 +388,43 @@ array([-1,  0, 12, 78, 99])
 3
 ```
 
+
+
+## 5. Comparing floats
+
+`np.allclose(a, b)`用于容忍误差之内的浮点比较
+
+but, **there is no silver bullet!**
+
+|             表达式             |  结果   |
+| :----------------------------: | :-----: |
+|       `0.1 + 0.2 == 0.3`       | `False` |
+| `np.allclose(0.1 + 0.2, 0.3)`  | `True`  |
+| `math.isclose(0.1 + 0.2, 0.3)` | `True`  |
+
+
+
+|           表达式           |  结果   |
+| :------------------------: | :-----: |
+|       `1e-9 == 2e-9`       | `False` |
+| `np.allclose(1e-9, 2e-9)`  | `True`  |
+| `math.isclose(1e-9, 2e-9)` | `False` |
+
+
+
+|               表达式               |  结果   |
+| :--------------------------------: | :-----: |
+|       `0.1 + 0.2 - 0.3 == 0`       | `True`  |
+| `np.allclose(0.1 + 0.2 - 0.3, 0)`  | `True`  |
+| `math.isclose(0.1 + 0.2 - 0.3, 0)` | `False` |
+
+**注意**
+
+- `np.allclose`假定所有比较数字的尺度为1。
+
+  比如，如果在纳秒级别上，则需要将默认`atol`参数除以1e9：`np.allclose(1e-9,2e-9, atol=1e-17)==False`。
+
+- `math.isclose`不对要比较的数字做任何假设，而是需要用户提供一个合理的`abs_tol`值（`np.allclose`默认的`atol`值为`1e-8`）
+- 一些问题见如下链接
+  -  [floating-point guide](https://floating-point-gui.de/errors/comparison/)
+  - NumPy [issue](https://github.com/numpy/numpy/issues/10161) on GitHub.
