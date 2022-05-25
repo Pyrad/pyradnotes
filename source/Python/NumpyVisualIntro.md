@@ -428,3 +428,103 @@ but, **there is no silver bullet!**
 - 一些问题见如下链接
   -  [floating-point guide](https://floating-point-gui.de/errors/comparison/)
   - NumPy [issue](https://github.com/numpy/numpy/issues/10161) on GitHub.
+
+
+
+## 6. Matrices, the 2D Array
+
+### 基本概念
+
+- 现在在Numpy中，**matrix** 和 **2D Array** 是指同一个概念，可以相互替换使用（interchangeably）
+- 在Numpy中，原先的class `matrix`已经不再使用（deprecated）
+
+定义一个Numpy 2D array：`a = np.array([[1, 2, 3], [4, 5, 6]])`
+
+- 它的`.shape`属性返回一个元组，共有两个元素，第一个是**行数**，第二个是**列数**
+- `len(a)`返回的是2D array的**行数**
+
+```python
+>>> a = np.array([[1, 2, 3], [4, 5, 6]])
+>>> a.dtype
+dtype('int32')
+>>> a.shape
+(2, 3)
+>>> len(a)
+2
+>>> a.shape[0]
+2
+```
+
+### 常用函数
+
+之前的`zeros`，`ones`，`full`，`empty`还有`eye`都可以用来生成2D array
+
+需要注意的是，指定2D array的元组要用括号`()`括起来，表示第一个参数，因为第二个参数是留给`dtype`的
+
+```python
+>>> np.zeros((3, 2))
+array([[0., 0.],
+       [0., 0.],
+       [0., 0.]])
+>>> np.ones((3, 2))
+array([[1., 1.],
+       [1., 1.],
+       [1., 1.]])
+>>> np.full((3, 2), 7)
+array([[7, 7],
+       [7, 7],
+       [7, 7]])
+>>> np.empty((3, 2))
+array([[1., 1.],
+       [1., 1.],
+       [1., 1.]])
+>>> np.eye(3, 3)
+array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]])
+>>> np.eye(3)
+array([[1., 0., 0.],
+       [0., 1., 0.],
+       [0., 0., 1.]])
+```
+
+还有`random`函数
+
+```python
+# x服从[0, 10)上的均匀分布（整数）
+>>> np.random.randint(0, 10, [3, 2])
+array([[7, 1],
+       [6, 6],
+       [2, 1]])
+# x服从[0, 1)上的均匀分布
+>>> np.random.rand(3, 2)
+array([[0.1518058 , 0.47967987],
+       [0.0242219 , 0.46161326],
+       [0.64206284, 0.02072145]])
+# x服从[0, 1)上的均匀分布（浮点数）
+>>> np.random.uniform(1, 10, [3, 2])
+array([[4.60676287, 4.64315581],
+       [9.56576352, 2.2958745 ],
+       [2.18304639, 5.9622002 ]])
+```
+
+`np.random.randn`，x服从标准正态分布，$ N(\mu, \sigma^2), \mu = 0, \sigma = 1 $
+
+```python
+# x服从标准正态分布
+>>> np.random.randn(3, 2)
+array([[-0.95367737, -0.35999719],
+       [-0.27186541,  1.10111502],
+       [-0.36303053,  0.5372727 ]])
+```
+
+`np.random.normal`，x服从正态分布，$ N(\mu, \sigma^2), \mu = 10, \sigma = 2 $
+
+```python
+# x服从正态分布
+>>> np.random.normal(10, 2, [3, 2])
+array([[10.06207497,  9.45178632],
+       [ 9.02901148, 10.92862084],
+       [12.53682855, 10.20647998]])
+```
+
