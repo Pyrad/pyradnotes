@@ -555,3 +555,115 @@ array([[ 2,  4],
 
 
 ![2D Array Slice](../_static/NumpyVisualIntro/chapter6_2d_array_slice.png)
+
+
+
+
+
+## 7. The axis argument
+
+### 轴参数（axis argument）
+
+- Numpy引入`axis`参数，以便实现跨行或跨列操作
+- `axis`参数的值实际上是维度数量。（第一维`axis=0`，第二维`axis=1`，以此类推）
+- 二维数组中，`axis=0`表示列方向，`axis=1`表示行方向
+
+|   ##axis   |          方向          |
+| :--------: | :--------------------: |
+| `axis = 0` | **列**方向（即所有行） |
+| `axis = 1` | **行**方向（即所有列） |
+
+以`sum`为例子
+
+```python
+>>> a = np.array([[1,2,3], [4, 5,6]])
+>>> a.sum()
+21
+>>> a.sum(axis=0)
+array([5, 7, 9])
+>>> a.sum(axis=1)
+array([ 6, 15])
+```
+
+
+
+![Sum axis example](../_static/NumpyVisualIntro/chapter7_2d_array_axis_sum.png)
+
+
+
+### 矩阵的算术运算
+
+- 2D Array支持数组逐个元素之间的运算：`+`，`-`，`*`， `/`，`//`，`**`
+- 2D Array也支持外积（outer product）
+
+```python
+>>> np.array([[1,2],[3,4]]) + np.array([[1,0],[0,1]])
+array([[2, 2],
+       [3, 5]])
+>>> np.array([[1,2],[3,4]]) - np.array([[1,0],[0,1]])
+array([[0, 2],
+       [3, 3]])
+>>> np.array([[1,2],[3,4]]) ** np.array([[2,1],[1,2]])
+array([[ 1,  2],
+       [ 3, 16]], dtype=int32)
+>>> np.array([[1,2],[3,4]]) * np.array([[2,0],[0,2]])
+array([[2, 0],
+       [0, 8]])
+>>> np.array([[1,2],[3,4]]) @ np.array([[2,0],[0,2]])
+array([[2, 4],
+       [6, 8]])
+>>> np.array([[1,2],[3,4]]) / np.array([[2,1],[1,2]])
+array([[0.5, 2. ],
+       [3. , 2. ]])
+```
+
+
+
+![Arithmetic](../_static/NumpyVisualIntro/chapter7_2d_array_matrix_arithmetic.png)
+
+
+
+Numpy通过标量的广播机制（broadcasting from scalar），可以实现以下混合运算
+
+- 向量和矩阵之间
+- 两个向量之间
+
+```python
+>>> a = np.array([[1,2,3], [4, 5,6], [7,8,9]])
+>>> a / 9
+array([[0.11111111, 0.22222222, 0.33333333],
+       [0.44444444, 0.55555556, 0.66666667],
+       [0.77777778, 0.88888889, 1.        ]])
+>>> a * np.array([-1, 0, 1])
+array([[-1,  0,  3],
+       [-4,  0,  6],
+       [-7,  0,  9]])
+>>> a / np.array([[3],[6],[9]])
+array([[0.33333333, 0.66666667, 1.        ],
+       [0.66666667, 0.83333333, 1.        ],
+       [0.77777778, 0.88888889, 1.        ]])
+>>> np.array([1, 2, 3]) * np.array([[1], [2], [3]])		   
+array([[1, 2, 3],
+       [2, 4, 6],
+       [3, 6, 9]])
+```
+
+![Mixed Arithmetic](../_static/NumpyVisualIntro/chapter7_2d_array_mixed_arithmetic.png)
+
+
+
+### 点积和叉积（内积和外积）
+
+```python
+>>> np.array([[1],[2],[3]]) @ np.array([[1,2,3]])				   
+array([[1, 2, 3],
+       [2, 4, 6],
+       [3, 6, 9]])
+
+>>> np.array([1,2,3]) @ np.array([[1],[2],[3]])				   
+array([14])
+```
+
+
+
+![Inner & Outer Product](../_static/NumpyVisualIntro/chapter7_2d_array_inner_outer_product.png)
