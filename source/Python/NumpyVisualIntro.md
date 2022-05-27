@@ -667,3 +667,139 @@ array([14])
 
 
 ![Inner & Outer Product](../_static/NumpyVisualIntro/chapter7_2d_array_inner_outer_product.png)
+
+
+
+## 8. Row vectors & column vectors
+
+- Numpy中共有三种类型的向量
+
+  | 向量类型  |   vector types    |
+  | :-------: | :---------------: |
+  |  1维数组  |     1D arrays     |
+  | 2维行向量 |  2D row vectors   |
+  | 2维列向量 | 2D column vectors |
+
+  三种类型的vector相互之间的转换如下
+
+  ![Different types of vectors](../_static/NumpyVisualIntro/chapter8_diff_type_vector_conversion.png)
+
+  
+
+- 除了一维数组外，所有的数组大小（`shape`属性）都是一个向量
+  - 比如`a.shape == [1, 1, 1, 5, 1, 1]`
+  - 一维数组的大小（`shape`属性）是`(N, )`的形式
+
+- 在Numpy中，一维数组默认是行向量（row vector）
+
+- 注意：Numpy中，一个行向量和只有一个行向量的矩阵是不同的
+
+  **一个行向量**的`shape`属性是`(n, )`
+
+  需要注意的是一个行向量的转置（transpose）仍然是行向量。
+
+  ```python
+  >>> c = np.array([1, 2, 3])
+  >>> c.shape
+  (3,)
+  >>> c.T
+  array([1, 2, 3])
+  ```
+
+  **只有一个行向量的矩阵**的`shape`属性是`(1, n)`
+
+  只有一个行向量的矩阵的转置（transpose）是只有一个列向量的矩阵。
+
+  ```python
+  >>> b = np.array([[1,2,3]])
+  >>> b.shape
+  (1, 3)
+  >>> b.T
+  array([[1],
+         [2],
+         [3]])
+  ```
+
+- 可以通过`reshape`把一个**行向量**转换为一个列向量矩阵或行向量矩阵
+
+  假定现有一个行向量`a`如下
+
+  ```python
+  >>> a = np.array([1, 2, 3, 4, 5, 6])
+  >>> a.shape
+  (6,)
+  ```
+
+  转换为列向量矩阵。这里`reshape`的第一个参数`-1`表示该维度（第一个维度）上自动推断决定
+
+  ```python
+  >>> b = a.reshape(-1, 1)
+  >>> b
+  array([[1],
+         [2],
+         [3],
+         [4],
+         [5],
+         [6]])
+  >>> b.shape
+  (6, 1)
+  ```
+
+  转换为行向量矩阵。这里`reshape`的第二个参数`-1`表示该维度（第二个维度）上自动推断决定
+
+  ```python
+  >>> c = a.reshape(1, -1)
+  >>> c
+  array([[1, 2, 3, 4, 5, 6]])
+  >>> c.shape
+  (1, 6)
+  ```
+
+- 类似的，也可以使用`np.newaxis`来转换上面的行向量
+
+  同样的，假定现有一个行向量`a`如下
+
+  ```python
+  >>> a = np.array([1, 2, 3, 4, 5, 6])
+  >>> a.shape
+  (6,)
+  ```
+  转换为列向量矩阵。
+
+  这里`a[:, None]`中的`None`相当于`np.newaxis`
+
+  ```python
+  >>> b = a[:, None] # 这里可以用np.newaxis替换None
+  >>> b
+  array([[1],
+         [2],
+         [3],
+         [4],
+         [5],
+         [6]])
+  >>> b.shape
+  (6, 1)
+  ```
+
+  转换为行向量矩阵。
+
+  ```python
+  >>> c = a[None, :]
+  >>> c
+  array([[1, 2, 3, 4, 5, 6]])
+  >>> c.shape
+  (1, 6)
+  ```
+
+  
+
+
+
+
+
+
+
+
+
+
+
