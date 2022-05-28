@@ -1085,5 +1085,82 @@ array([[ 0,  0,  0,  0,  0,  0,  0],
 
 
 
+## 10. Meshgrids
 
+假设要产生一个如下的meshgrid
+$$
+A_{ij} = j - i
+$$
+
+
+产生meshgrids的办法，可以有以下4种（这里假定产生的矩阵大小是`3x2`）
+
+### The C way
+
+```python
+>>> A = np.empty((2,3))
+>>> for i in range(2):
+	  for j in range(3):
+		A[i,j] = j - i
+>>> A
+array([[ 0.,  1.,  2.],
+       [-1.,  0.,  1.]])
+```
+
+
+
+### The Python way
+
+```python
+>>> c = [[(j-i) for j in range(3)] for i in range(2)]
+>>> A = np.array(c)
+>>> A
+array([[ 0,  1,  2],
+       [-1,  0,  1]])
+```
+
+
+
+### The Matlab way
+
+```python
+>>> i, j = np.arange(2), np.arange(3)
+>>> ia, ja = np.meshgrid(i, j, indexing='ij')
+>>> ia, ja
+(array([[0, 0, 0],
+       [1, 1, 1]]),
+ array([[0, 1, 2],
+       [0, 1, 2]]))
+>>> A = ja - ia
+>>> A
+array([[ 0,  1,  2],
+       [-1,  0,  1]])
+# 或者
+>>> A = np.fromfunction(lambda i,j : j - i, (2,3))
+>>> A
+array([[ 0.,  1.,  2.],
+       [-1.,  0.,  1.]])
+```
+
+![Meshgrid - Matlab Way](../_static/NumpyVisualIntro/chapter10_meshgrid_matlab_way.png)
+
+
+
+### The Numpy way
+
+```python
+>>> i, j = np.arange(2), np.arange(3)
+>>> IA, JA = np.meshgrid(i, j, sparse=True, indexing='ij')
+>>> IA
+array([[0],
+       [1]])
+>>> JA
+array([[0, 1, 2]])
+>>> A = JA - IA
+>>> A
+array([[ 0,  1,  2],
+       [-1,  0,  1]])
+```
+
+![Meshgrid - Numpy way](../_static/NumpyVisualIntro/chapter10_meshgrid_numpy_way.png)
 
