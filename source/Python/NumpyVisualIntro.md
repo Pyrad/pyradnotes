@@ -793,6 +793,132 @@ array([14])
 
   
 
+## 9. Matrix manipulations
+
+### 拼接和分割函数
+
+|      拼接函数      |  分割函数   |
+| :----------------: | :---------: |
+|    `np.hstack`     | `np.hsplit` |
+|    `np.vstatck`    | `np.vsplit` |
+| `np.column_statck` |             |
+
+
+
+### Numpy中的拼接函数
+
+- `np.hstack`：横向拼接
+
+- `np.vstatck`：纵向拼接
+
+- `np.column_stack`：用于2D array和1D array的横向拼接
+
+  ```python
+  >>> a = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
+  >>> b = np.array([[1,2,3,4], [5,6,7,8]])
+  >>> c = np.array([[1,2], [3,4], [5,6]])
+  # 纵向拼接
+  >>> np.vstack((a, b))
+  array([[ 1,  2,  3,  4],
+         [ 5,  6,  7,  8],
+         [ 9, 10, 11, 12],
+         [ 1,  2,  3,  4],
+         [ 5,  6,  7,  8]])
+  # 横向拼接
+  >>> np.hstack((a, c))
+  array([[ 1,  2,  3,  4,  1,  2],
+         [ 5,  6,  7,  8,  3,  4],
+         [ 9, 10, 11, 12,  5,  6]])
+  # b和c现重新改为1D array
+  >>> b = np.array([1,2,3,4])
+  # 2D array和1D array可以直接做纵向拼接
+  >>> np.vstack((a, b))
+  array([[ 1,  2,  3,  4],
+         [ 5,  6,  7,  8],
+         [ 9, 10, 11, 12],
+         [ 1,  2,  3,  4]])
+  >>> c = np.array([1,3,5])
+  # 2D array和1D array直接做横向拼接会抛异常
+  >>> np.hstack((a, c))
+  Traceback (most recent call last):
+    File "<pyshell#10>", line 1, in <module>
+      np.hstack((a, c))
+    File "<__array_function__ internals>", line 6, in hstack
+    File "C:\Python36\lib\site-packages\numpy\core\shape_base.py", line 346, in hstack
+      return _nx.concatenate(arrs, 1)
+    File "<__array_function__ internals>", line 6, in concatenate
+  ValueError: all the input arrays must have same number of dimensions, but the array at index 0 has 2 dimension(s) and the array at index 1 has 1 dimension(s)
+  # 2D array和转换为行向量的1D array再直接做横向拼接
+  >>> np.hstack((a, c[:,None]))
+  array([[ 1,  2,  3,  4,  1],
+         [ 5,  6,  7,  8,  3],
+         [ 9, 10, 11, 12,  5]])
+  # 或者直接利用np.column_stack来直接拼接2D array和1D array
+  >>> np.column_stack((a, c))
+  array([[ 1,  2,  3,  4,  1],
+         [ 5,  6,  7,  8,  3],
+         [ 9, 10, 11, 12,  5]])
+  ```
+
+  
+
+  ![Matrix Stacking](../_static/NumpyVisualIntro/chapter9_stacking.png)
+
+
+
+### Numpy中的分割函数
+
+和`np.vstack`以及`np.hstack`相对应的，有分割函数
+
+- `np.vsplit`：沿着`x`轴（axis=0）进行分割（纵向分割）
+  - 第二个参数是**行**的索引（数组），表示从第几行起开始分割
+  - 返回一个list，某个元素是分割后的数组
+- `np.hsplit`：沿着`y`轴（axis=1）进行分割（横向分割）
+  - 第二个参数是**列**的索引（数组），表示从第几列起开始分割
+  - 返回一个list，某个元素是分割后的数组
+
+```python
+# 纵向分割
+>>> a = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
+>>> b = np.array([[1,2,3,4], [5,6,7,8]])
+>>> x = np.vstack((a, b))
+>>> np.vsplit(x, [3]) # 第二个参数是行的索引，表示从第几行起开始分割
+[array([[ 1,  2,  3,  4],
+       [ 5,  6,  7,  8],
+       [ 9, 10, 11, 12]]),
+ array([[1, 2, 3, 4],
+       [5, 6, 7, 8]])]
+# 横向分割
+>>> a = np.array([[1,2,3,4], [5,6,7,8], [9,10,11,12]])
+>>> c = np.array([[1,2], [3,4], [5,6]])
+>>> y = np.hstack((a, c))
+>>> np.hsplit(y, [4])  # 第二个参数是列的索引，表示从第几列起开始分割
+[array([[ 1,  2,  3,  4],
+       [ 5,  6,  7,  8],
+       [ 9, 10, 11, 12]]),
+ array([[1, 2],
+       [3, 4],
+       [5, 6]])]
+```
+
+
+
+![Stacking & Splitting](../_static/NumpyVisualIntro/chapter9_stacking_split.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
