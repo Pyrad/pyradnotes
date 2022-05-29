@@ -33,3 +33,6 @@ Vocabulary  (reStructuredtext)
     * - **the logarithm of 3 to base 2**
       - *N/A*
       - 以2为底的3的对数
+    * - **contrived**
+      - / kənˈtraɪvd /
+      - *adj.* 人为的；做作的；不自然的（contrive过去分词）
