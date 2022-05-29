@@ -1164,3 +1164,173 @@ array([[ 0,  1,  2],
 
 ![Meshgrid - Numpy way](../_static/NumpyVisualIntro/chapter10_meshgrid_numpy_way.png)
 
+
+
+
+
+## 11. Matrix Statistics
+
+### 常见统计函数
+
+|      函数       |     作用      |
+| :-------------: | :-----------: |
+|    `np.min`     |    最小值     |
+|    `np.max`     |    最大值     |
+|   `np.argmin`   |  最小值索引   |
+|   `np.argmax`   |  最大值索引   |
+|    `np.any`     | 至少有一个非0 |
+|    `np.all`     |    全部非0    |
+|    `np.sum`     |     求和      |
+|    `np.std`     |    标准差     |
+|    `np.var`     |     方差      |
+|    `np.mean`    |  平均值/期望  |
+|   `np.median`   |  平均值/期望  |
+| `np.percentile` |   百分比值    |
+
+- 各个函数都可以不加`axis`参数来计算所有的元素的统计值
+- 可以加`axis=0`来计算沿列方向的统计值
+- 可以加`axis=1`来计算沿行方向的统计值
+
+### `np.min`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.min(a)
+1
+>>> np.min(a, axis=0)
+array([4, 3, 1])
+>>> np.min(a, axis=1)
+array([4, 1])
+```
+
+### `np.max`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.max(a)
+9
+>>> np.max(a, axis=0)
+array([9, 8, 5])
+>>> np.max(a, axis=1)
+array([8, 9])
+```
+
+### `np.argmin`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.argmin(a)
+5
+# 可以使用unravel_index来获取转换为二维的索引
+>>> np.unravel_index(np.argmin(a), a.shape)
+(1, 2)
+>>> np.argmin(a, axis=0)
+array([0, 1, 1], dtype=int64)
+>>> np.argmin(a, axis=1)
+array([0, 2], dtype=int64)
+```
+
+### `np.argmax`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.argmax(a)
+3
+# 可以使用unravel_index来获取转换为二维的索引
+>>> np.unravel_index(np.argmax(a), a.shape)
+(1, 0)
+>>> np.argmax(a, axis=0)
+array([1, 0, 0], dtype=int64)
+>>> np.argmax(a, axis=1)
+array([1, 0], dtype=int64)
+```
+
+### `np.any`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.any(a)
+True
+>>> np.any(a, axis=0)
+array([ True,  True,  True])
+>>> np.any(a, axis=1)
+array([ True,  True])
+```
+
+### `np.all`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.all(a)
+True
+>>> np.all(a, axis=0)
+array([ True,  True,  True])
+>>> np.all(a, axis=1)
+array([ True,  True])
+```
+
+### `np.sum`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.sum(a)
+30
+>>> np.sum(a, axis=0)
+array([13, 11,  6])
+>>> np.sum(a, axis=1)
+array([17, 13])
+```
+
+### `np.std`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.std(a)
+2.7688746209726918
+>>> np.std(a, axis=0)
+array([2.5, 2.5, 2. ])
+>>> np.std(a, axis=1)
+array([1.69967317, 3.39934634])
+```
+
+### `np.var`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.var(a)
+7.666666666666667
+>>> np.var(a, axis=0)
+array([6.25, 6.25, 4.  ])
+>>> np.var(a, axis=1)
+array([ 2.88888889, 11.55555556])
+```
+
+### `np.mean`, `np.median`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.mean(a)
+5.0
+>>> np.mean(a, axis=0)
+array([6.5, 5.5, 3. ])
+>>> np.mean(a, axis=1)
+array([5.66666667, 4.33333333])
+>>> np.median(a)
+4.5
+>>> np.median(a, axis=0)
+array([6.5, 5.5, 3. ])
+>>> np.median(a, axis=1)
+array([5., 3.])
+```
+
+### `np.percentile`
+
+```python
+>>> a = np.array([[4,8,5], [9,3,1]])
+>>> np.percentile(a, 65)
+5.75
+>>> np.percentile(a, 65, axis=0)
+array([7.25, 6.25, 3.6 ])
+>>> np.percentile(a, 65, axis=1)
+array([5.9, 4.8])
+```
