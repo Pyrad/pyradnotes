@@ -1695,3 +1695,17 @@ array([[[ 1,  2,  3,  4,  1,  2],
 
 
 
+## 14. Summary
+
+### Related functions
+
+|     Functions     | Effect | Notes |
+| :---------------: | :----: | :---: |
+|   `np.zeros()`    |        |       |
+|   `np.empty()`    |        |       |
+|    `np.full()`    |        |       |
+| `np.zeros_like()` |        |       |
+| `np.ones_like()`  |        |       |
+| `np.empty_like()` |        |       |
+| `np.full_like()`  |        |       |
+
