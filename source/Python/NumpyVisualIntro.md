@@ -1699,13 +1699,36 @@ array([[[ 1,  2,  3,  4,  1,  2],
 
 ### Related functions
 
-|     Functions     | Effect | Notes |
-| :---------------: | :----: | :---: |
-|   `np.zeros()`    |        |       |
-|   `np.empty()`    |        |       |
-|    `np.full()`    |        |       |
-| `np.zeros_like()` |        |       |
-| `np.ones_like()`  |        |       |
-| `np.empty_like()` |        |       |
-| `np.full_like()`  |        |       |
+|               Functions               |      Effect       | Notes |
+| :-----------------------------------: | :---------------: | :---: |
+|             `np.zeros()`              |                   |       |
+|             `np.empty()`              |                   |       |
+|              `np.full()`              |                   |       |
+|           `np.zeros_like()`           |                   |       |
+|           `np.ones_like()`            |                   |       |
+|           `np.empty_like()`           |                   |       |
+|           `np.full_like()`            |                   |       |
+|             `np.arange()`             |                   |       |
+|            `np.linspace()`            |                   |       |
+|         `np.random.randint()`         |                   |       |
+|          `np.random.rand()`           |                   |       |
+|          `np.random.uniform`          |                   |       |
+| `np.random.default_rng().intergers()` |                   |       |
+|  `np.random.default_rng().random()`   |                   |       |
+|  `np.random.default_rng().uniform()`  |                   |       |
+|             `np.where()`              |                   |       |
+|              `np.clip()`              |                   |       |
+|             `np.floor()`              |                   |       |
+|              `np.ceil()`              |                   |       |
+|             `np.round()`              |                   |       |
+|              `np.sqrt()`              |                   |       |
+|              `np.exp()`               |                   |       |
+|              `np.log()`               |                   |       |
+|              `np.dot()`               |    `arr @ arr`    |       |
+|             `np.cross()`              |                   |       |
+|             `np.hypot()`              |                   |       |
+|              `np.sort()`              |                   |       |
+|             `arr.index()`             | `arr` is `ndarry` |       |
+|            `np.allclose()`            |                   |       |
+|                                       |                   |       |
 
