@@ -102,6 +102,9 @@ PROJECT(Tutorial VERSION 1.0)
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_STANDARD_REQUIRED True)
 
+MESSAGE(STATUS "[PYRAD] This is the BINARY directory: " ${Tutorial_BINARY_DIR})
+MESSAGE(STATUS "[PYRAD] This is the SOURCE directory: " ${Tutorial_SOURCE_DIR})
+
 # Add the executable
 ADD_EXECUTABLE(Tutorial tutorial.cxx)
 
@@ -120,6 +123,61 @@ TARGET_INCLUDE_DIRECTORIES(Tutorial PUBLIC "${PROJECT_BINARY_DIR}" )
 
 
 ```
+
+
+
+
+
+使用`cmake`进行编译
+
+命令为
+
+```shell
+$ mkdir Step1_build
+$ cd ./Step1_build
+$ cmake ../Step1 -G "Unix Makefiles"
+$ cmake --build .
+```
+
+在windows平台下显示了信息如下：
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step1_build (master)
+$ cmake ../Step1 -G "Unix Makefiles"
+-- The C compiler identification is GNU 8.1.0
+-- The CXX compiler identification is GNU 8.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: D:/procs/mingw64/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: D:/procs/mingw64/bin/c++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- [PYRAD] This is the BINARY directory: D:/Gitee/CMakeOfficialTutorial/Step1_build
+-- [PYRAD] This is the SOURCE directory: D:/Gitee/CMakeOfficialTutorial/Step1
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Gitee/CMakeOfficialTutorial/Step1_build
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step1_build (master)
+$ cmake --build .
+[ 50%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.obj
+[100%] Linking CXX executable Tutorial.exe
+[100%] Built target Tutorial
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step1_build (master)
+$ ls
+cmake_install.cmake  CMakeCache.txt  CMakeFiles/  Makefile  Tutorial.exe*  TutorialConfig.h
+```
+
+
+
+
+
+
 
 
 
@@ -161,9 +219,33 @@ SET(SRC_LIST main.cpp) # 声明了变量SRC_LIST
 SET(SRC_LIST main.cpp t.cpp t2.cpp) # 声明了变量SRC_LIST
 ```
 
-
+其中文件名可以带上后缀，也可以不带后缀，但是最好带上后缀，防止有歧义的情况发生（比如同时存在两个文件`main.cpp`和`main`）。
 
 
 
 ### `MESSAGE` 关键字
+
+这个关键字向终端输出用户的自定义的信息，包括三种
+
+- **`SEND_ERROR`**
+
+  产生错误，跳过生成过程
+
+- **`STATUS`**
+
+  输出信息，前缀是`--`
+
+- **`FATAL_ERROR`**
+
+  立即终止所有的`cmake`过程
+
+在本例中，输出了两条信息，
+
+```cmake
+# 变量${Tutorial_BINARY_DIR}是由cmake通过PROJECT所设定的名字自动赋值得到的
+MESSAGE(STATUS "[PYRAD] This is the BINARY directory: " ${Tutorial_BINARY_DIR})
+
+# 变量${Tutorial_SOURCE_DIR}也是由cmake通过PROJECT所设定的名字自动赋值得到的
+MESSAGE(STATUS "[PYRAD] This is the SOURCE directory: " ${Tutorial_SOURCE_DIR})
+```
 
