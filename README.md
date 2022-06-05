@@ -14,8 +14,14 @@ May 17, 2022 22:28
 ## Quick Usage
 
 - Download the repository files (or just clone it to local)
+
 - Use command `make html` to build
+
 - Open the file `.\build\html\index.html` to view notes
+
+- Refer to a GIF file in `_static` folder to have a quick look
+
+  ![](./source/_static/HowToBuildNotes.gif)
 
 ## References
 
