@@ -7,3 +7,4 @@ Notes
    reStructuredtext
    sphinxbasics
    rstExample
+   CMakeBasics
