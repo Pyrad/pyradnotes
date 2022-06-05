@@ -8,3 +8,4 @@ Notes
    sphinxbasics
    rstExample
    CMakeBasics
+   CMakeTutorialNotes
