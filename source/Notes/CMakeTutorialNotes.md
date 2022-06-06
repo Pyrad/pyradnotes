@@ -11,6 +11,15 @@
 
 
 
+**注意**：与本文对应的repository
+
+| GitHub/Gitee |                             Link                             |
+| :----------: | :----------------------------------------------------------: |
+|    GitHub    | [CMakeOfficialTutorial](https://github.com/Pyrad/CMakeOfficialTutorial.git) |
+|    Gitee     | [CMakeOfficialTutorial](https://gitee.com/pyrad/CMakeOfficialTutorial.git) |
+
+
+
 ## 前期准备
 
 为了能够在windows平台下使用CMake，以避免可能出现的问题，需要准备以下两项
