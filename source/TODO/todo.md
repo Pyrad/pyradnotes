@@ -2,6 +2,8 @@
 
 - **CMake**
   - Record time: 2022-05-29 23:52
+- **GTEST**
+  - Record time: 2022-06-06 20:55:26
 - **Valgrind**
   - Record time: 2022-05-31 20:40
 - **Leetcode & CIG**
