@@ -84,7 +84,7 @@ cmake <SRC_DIR> -G "Unix Makefiles"
 
 
 
-## Step 1
+## Step 1 基本
 
 教程第一节
 
@@ -291,7 +291,7 @@ MESSAGE(STATUS "[PYRAD] This is the SOURCE directory: " ${Tutorial_SOURCE_DIR})
 
 
 
-## Step2
+## Step2 添加库
 
 教程第二节
 
@@ -581,7 +581,7 @@ Usage: D:\Gitee\CMakeOfficialTutorial\Step2_build\Tutorial.exe number
 
 
 
-## Step3
+## Step3 添加库优化
 
 教程第三节
 
@@ -720,7 +720,7 @@ $ cmake --build .
 
 
 
-## Step4
+## Step4 安装和测试
 
 教程第四节
 
@@ -871,3 +871,109 @@ MyInstallPath/
         libMathFunctions.a
 ```
 
+
+
+### 添加测试支持
+
+在top-level的`CMakeLists.txt`中添加如下的testing support
+
+```cmake
+enable_testing()
+
+# PART 1
+# does the application run
+add_test(NAME Runs COMMAND Tutorial 25)
+
+# does the usage message work?
+add_test(NAME Usage COMMAND Tutorial)
+set_tests_properties(Usage
+  PROPERTIES PASS_REGULAR_EXPRESSION "Usage:.*number"
+  )
+
+# PART 2
+# define a function to simplify adding tests
+function(do_test target arg result)
+  add_test(NAME Comp${arg} COMMAND ${target} ${arg})
+  set_tests_properties(Comp${arg}
+    PROPERTIES PASS_REGULAR_EXPRESSION ${result}
+    )
+endfunction()
+
+# do a bunch of result based tests
+do_test(Tutorial 4 "4 is 2")
+do_test(Tutorial 9 "9 is 3")
+do_test(Tutorial 5 "5 is 2.236")
+do_test(Tutorial 7 "7 is 2.645")
+do_test(Tutorial 25 "25 is 5")
+do_test(Tutorial -25 "-25 is (-nan|nan|0)")
+do_test(Tutorial 0.0001 "0.0001 is 0.01")
+```
+
+- 第一部分使用了`cmake`的`add_test`和`set_tests_properties`来做简单测试
+- 第二部分定义了一个定制化的函数，并用来测试
+
+
+
+### 如何运行测试
+
+不要切换到`install`目录下面去，而是要到编译目录下面去（因为有文件`CTestTestfile.cmake`才行，否则`ctest`找不到test）。
+
+使用如下命令测试
+
+```shell
+ctest -N
+ctest -VV
+```
+
+结果
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step4_build (master)
+$ ls
+cmake_install.cmake  CMakeFiles/
+install_manifest.txt  MathFunctions/  Tutorial.exe*
+CMakeCache.txt       CTestTestfile.cmake  Makefile  
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step4_build (master)
+$ ctest.exe -N
+Test project D:/Gitee/CMakeOfficialTutorial/Step4_build
+  Test #1: Runs
+  Test #2: Usage
+  Test #3: Comp4
+  Test #4: Comp9
+  Test #5: Comp5
+  Test #6: Comp7
+  Test #7: Comp25
+  Test #8: Comp-25
+  Test #9: Comp0.0001
+
+Total Tests: 9
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step4_build (master)
+$ ctest.exe -VV
+UpdateCTestConfiguration  from :D:/Gitee/CMakeOfficialTutorial/Step4_build/DartConfiguration.tcl
+UpdateCTestConfiguration  from :D:/Gitee/CMakeOfficialTutorial/Step4_build/DartConfiguration.tcl
+Test project D:/Gitee/CMakeOfficialTutorial/Step4_build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: Runs
+
+1: Test command: D:\Gitee\CMakeOfficialTutorial\Step4_build\Tutorial.exe "25"
+1: Test timeout computed to be: 10000000
+1: Computing sqrt of 25 to be 13
+... ...
+... ...
+9: Computing sqrt of 0.0001 to be 0.01
+9: The square root of 0.0001 is 0.01
+9/9 Test #9: Comp0.0001 .......................   Passed    0.07 sec
+
+100% tests passed, 0 tests failed out of 9
+
+Total Test time (real) =   1.15 sec
+  
+```
