@@ -48,6 +48,12 @@ A Tour of Life (Pyrad's Notes!)
 
 .. toctree::
    :maxdepth: 1
+   :caption: VIM:
+
+   Vim/index
+
+.. toctree::
+   :maxdepth: 1
    :caption: TODO:
 
    TODO/index
