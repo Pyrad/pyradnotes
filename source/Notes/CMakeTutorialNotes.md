@@ -5,8 +5,8 @@
 - [官方教程链接地址](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
 - [CMake下载链接地址](https://cmake.org/download/)
 - [CMake Build System Page](https://cmake.org/cmake/help/latest/manual/cmake-buildsystem.7.html#introduction)
+- [CMake Reference Documentation](https://cmake.org/cmake/help/latest/index.html)
 - [Help Documentation of cmake-commands](https://cmake.org/cmake/help/latest/manual/cmake-commands.7.html)
-
 - [A similar CMake tutorial (not official, but looks useful)](https://www.bilibili.com/video/BV18t4y1Q7sa?p=7)
 
 
@@ -575,5 +575,299 @@ Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step2_build (master)
 $ ./Tutorial.exe
 D:\Gitee\CMakeOfficialTutorial\Step2_build\Tutorial.exe Version 1.0
 Usage: D:\Gitee\CMakeOfficialTutorial\Step2_build\Tutorial.exe number
+```
+
+
+
+
+
+## Step3
+
+教程第三节
+
+
+
+### 新的语法和命令
+
+|            commands            |          commands          |
+| :----------------------------: | :------------------------: |
+| `target_compile_definitions()` | `target_compile_options()` |
+| `target_include_directories()` | `target_link_libraries()`  |
+
+
+
+
+
+本节主要讲述了，如何在一个库（lib）目录里面的`CMakeLists.txt`里面通过添加如下语句，使得当该库（lib）目录在被使用时（即被link时），由cmake自动include当前库的源文件目录。这样，在主目录下面的`CMakeLists.txt`里面就不用再显式地include这个库（lib）的目录以便链接。
+
+```cmake
+target_include_directories(MathFunctions
+                           INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+                           )
+```
+
+
+
+### 改动一
+
+在`MathFunctions/CMakeLists.txt`中，添加如下指令
+
+```cmake
+# Remember INTERFACE means things that consumers 
+# require but the producer doesn't. 
+# State that anybody linking to us needs to include the current source dir
+# to find MathFunctions.h, while we don't.
+target_include_directories(MathFunctions
+                           INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+                           )
+```
+
+
+
+### 改动二
+
+在主目录的`CMakeLists.txt`中，把如下指令
+
+```cmake
+# add the MathFunctions library
+if(USE_MYMATH)
+  add_subdirectory(MathFunctions)
+  list(APPEND EXTRA_LIBS MathFunctions)
+  list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/MathFunctions")
+endif()
+```
+
+修改为
+
+```cmake
+# add the MathFunctions library
+if(USE_MYMATH)
+  add_subdirectory(MathFunctions)
+  list(APPEND EXTRA_LIBS MathFunctions)
+endif()
+```
+
+即，**删除`list(APPEND EXTRA_INCLUDES "${PROJECT_SOURCE_DIR}/MathFunctions")`。**
+
+
+
+对应的，还是在主目录的`CMakeLists.txt`中，把如下指令
+
+```cmake
+# add the binary tree to the search path for include files
+# so that we will find TutorialConfig.h
+target_include_directories(Tutorial PUBLIC
+                           "${PROJECT_BINARY_DIR}"
+                           ${EXTRA_INCLUDES}
+                           )
+```
+
+修改为
+
+```cmake
+# add the binary tree to the search path for include files
+# so that we will find TutorialConfig.h
+target_include_directories(Tutorial PUBLIC
+                           "${PROJECT_BINARY_DIR}"
+                           )
+```
+
+也就是说，cmake会自动查找需要的库的源文件目录，而不用再在主目录的`CMakeLists.txt`中显式指明。
+
+
+
+### 编译结果
+
+同样地，使用如下两条命令进行编译
+
+```shell
+cmake ../Step3 -G "Unix Makefiles"
+cmake --build .
+```
+
+结果
+
+```sh
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step3_build (master)
+$ cmake ../Step3 -G "Unix Makefiles"
+-- The C compiler identification is GNU 8.1.0
+-- The CXX compiler identification is GNU 8.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: D:/procs/mingw64/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: D:/procs/mingw64/bin/c++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Gitee/CMakeOfficialTutorial/Step3_build
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step3_build (master)
+$ cmake --build .
+[ 25%] Building CXX object MathFunctions/CMakeFiles/MathFunctions.dir/mysqrt.cxx.obj
+[ 50%] Linking CXX static library libMathFunctions.a
+[ 50%] Built target MathFunctions
+[ 75%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.obj
+[100%] Linking CXX executable Tutorial.exe
+[100%] Built target Tutorial
+```
+
+
+
+
+
+## Step4
+
+教程第四节
+
+本节主要讲述了如何设置install目录，以便编译完成之后，把对应的二进制文件、头文件以及库文件拷贝到设定好的目录中去。（The install rules are fairly simple: for `MathFunctions` we want to install the library and header file and for the application we want to install the executable and configured header.）
+
+
+
+### 新的语法和命令
+
+|  commands   |       variables        |
+| :---------: | :--------------------: |
+| `install()` | `CMAKE_INSTALL_PREFIX` |
+
+
+
+
+### 改动一
+
+在主目录的`CMakeLists.txt`中，添加如下的指令
+
+```cmake
+install(TARGETS Tutorial DESTINATION bin)
+install(FILES "${PROJECT_BINARY_DIR}/TutorialConfig.h"
+		DESTINATION include
+		)
+```
+
+这样是说明
+
+- 把二进制文件`Tutorial`拷贝到install目录下的`bin`目录中去
+- 把头文件`TutorialConfig.h`拷贝到install目录下的`include`目录中去
+
+需要说明的是，如果在`CMakeLists.txt`中没有指明变量`CMAKE_INSTALL_PREFIX`，那么这个变量的默认值在windows平台是`C:/Program Files(x86)/${PROJECT_NAME}`，在linux平台是`/usr/local`。
+
+所以这两条指令实际上是说
+
+- 把二进制文件`Tutorial`拷贝到`C:/Program Files(x86)/Tutorial/bin`目录里去
+- 把头文件`TutorialConfig.h`拷贝到`C:/Program Files(x86)/Tutorial/include`目录里去去
+
+那么在这里就会有权限的问题，如果后面使用`make --install .`就会出现没有权限拷贝的问题，所以为了避免该问题，需要在`CMakeLists.txt`中设定合适的`CMAKE_INSTALL_PREFIX`
+
+```cmake
+# Set install path
+set(MY_INSTALL_DIR "MyInstallPath")
+set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/${MY_INSTALL_DIR}")
+
+install(TARGETS Tutorial DESTINATION bin)
+install(FILES "${PROJECT_BINARY_DIR}/TutorialConfig.h"
+		DESTINATION include
+		)
+```
+
+或者，另一种办法是在`cmake --install .`时，添加`--prefix <prefix_to_path>`来覆盖`CMAKE_INSTALL_PREFIX`变量的值。
+
+### 改动二
+
+在`MathFunctions/CMakeLists.txt`中，添加如下指令
+
+```cmake
+install(TARGETS MathFunctions DESTINATION lib)
+install(FILES MathFunctions.h DESTINATION include)
+```
+
+同样地，根据前面**改动一**中的说明，这两条指令实际上是说
+
+- 把库文件`libMathFunctions.a`拷贝到install目录下的`lib`目录中去
+- 把头文件`MathFunctions.h`拷贝到install目录下的`include`目录中去
+
+
+
+### 编译和安装
+
+使用如下的三条命令来编译和安装
+
+同样地，使用如下两条命令进行编译
+
+```shell
+cmake ../Step4 -G "Unix Makefiles"
+cmake --build .
+cmake --install .
+```
+
+结果
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step4_build (master)
+$ cmake ../Step4 -G "Unix Makefiles"
+-- The C compiler identification is GNU 8.1.0
+-- The CXX compiler identification is GNU 8.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: D:/procs/mingw64/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: D:/procs/mingw64/bin/c++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Gitee/CMakeOfficialTutorial/Step4_build
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step4_build (master)
+$ cmake --build .
+[ 25%] Building CXX object MathFunctions/CMakeFiles/MathFunctions.dir/mysqrt.cxx.obj
+[ 50%] Linking CXX static library libMathFunctions.a
+[ 50%] Built target MathFunctions
+[ 75%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.obj
+[100%] Linking CXX executable Tutorial.exe
+[100%] Built target Tutorial
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step4_build (master)
+$ cmake --install .
+-- Install configuration: ""
+-- Installing: D:/Gitee/CMakeOfficialTutorial/Step4_build/MyInstallPath/bin/Tutorial.exe
+-- Installing: D:/Gitee/CMakeOfficialTutorial/Step4_build/MyInstallPath/include/TutorialConfig.h
+-- Installing: D:/Gitee/CMakeOfficialTutorial/Step4_build/MyInstallPath/lib/libMathFunctions.a
+-- Installing: D:/Gitee/CMakeOfficialTutorial/Step4_build/MyInstallPath/include/MathFunctions.h
+```
+
+
+
+注意，如果需要在cmake的时候手动指明install path，就用如下指令
+
+```shell
+cmake ../Step3 -G "Unix Makefiles"
+cmake --build .
+cmake --install . --prefix /my/install/prefix
+```
+
+
+
+### 编译安装结果
+
+在编译和安装结束之后，这里`CMakeLists.txt`中指明的目录`MyInstallPath`目录的tree结构如下
+
+```shell
+MyInstallPath/
+├───bin/
+│       Tutorial.exe
+│
+├───include/
+│       MathFunctions.h
+│       TutorialConfig.h
+│
+└───lib/
+        libMathFunctions.a
 ```
 
