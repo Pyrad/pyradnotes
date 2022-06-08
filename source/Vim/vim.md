@@ -215,8 +215,61 @@
 
     
 
- 
+19. Vim diff
+
+    启动命令
+
+    ```powershell
+    vimdiff <FILE_LEFT> <FILE_RIGHT>
+    ```
+
+    或者
+
+    ```powershell
+    vim -d <FILE_LEFT> <FILE_RIGHT>
+    ```
+
+    
+
+    启动之后，两侧的文件滚动是同步的
+
+    `]c` 跳转到**下一个**差异点命令
+
+    `[c` 跳转到**上一个**差异点命令
+
+    
+
+    文件合并命令
+
+    （注意，当前光标所在的文件是当前文件）
+
+    `dp` 把一个差异点中当前文件的内容复制到另一个文件里（是diff put的缩写）
+
+    `do` 把一个差异点中另一个文件的内容复制到当前文件里（是diff get的缩写，因为dg这个命令已经被占用，所以用了do）
+
+    打开/折叠
+
+    `zo` 打开折叠的文本行，意思是folding open（用字母z是因为它像被折叠的样子）
+
+    `zc` 重新折叠文本行，意思是folding close
+
+    
+
+20. Vim colors
+
+    How to tell vim how many colors your terminal could be capable of?
+    `t_Co=256` tells Vim that your terminal is capable of using 256 colors (whether that is correct or not). termguicolors is a relative recent addition in Vim 8 and tells Vim that your terminal is capable of handling rgb colors (e.g. 16 Million colors, whether that is correct or not)
 
 
 
- 
+21. Vim script
+
+    In non-interactive mode:
+
+    ```
+    vim -s <cmds.file.vim> -es <file.to.modify>
+    ```
+
+    If you are inside vim, just `:source <vim_script_file>`
+
+    
