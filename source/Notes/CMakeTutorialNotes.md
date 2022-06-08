@@ -977,3 +977,155 @@ test 1
 Total Test time (real) =   1.15 sec
   
 ```
+
+
+
+
+
+## Step5 系统自省（System Introspection）
+
+教程第五节
+
+本节主要讲述了
+
+
+
+新的语法和命令
+
+|  commands   |            commands            |
+| :---------: | :----------------------------: |
+| `include()` |    `check_symbol_exists()`     |
+|  `unset()`  | `target_compile_definitions()` |
+
+
+
+### 改动一
+
+在`MathFunctions/CMakeLists.txt`中，添加如下指令
+
+```cmake
+# PART 1
+# does this system provide the log and exp functions?
+include(CheckSymbolExists)
+check_symbol_exists(log "math.h" HAVE_LOG)
+check_symbol_exists(exp "math.h" HAVE_EXP)
+if(NOT (HAVE_LOG AND HAVE_EXP))
+  unset(HAVE_LOG CACHE)
+  unset(HAVE_EXP CACHE)
+  set(CMAKE_REQUIRED_LIBRARIES "m")
+  check_symbol_exists(log "math.h" HAVE_LOG)
+  check_symbol_exists(exp "math.h" HAVE_EXP)
+  if(HAVE_LOG AND HAVE_EXP)
+    target_link_libraries(MathFunctions PRIVATE m)
+  endif()
+endif()
+
+# PART 2
+if(HAVE_LOG AND HAVE_EXP)
+  target_compile_definitions(MathFunctions
+                             PRIVATE "HAVE_LOG" "HAVE_EXP")
+endif()
+```
+
+有两部分
+
+- 第一部分（PART 1）
+  - 通过`include(CheckSymbolExists)`引入宏`CheckSymbolExists`，用来检查一个Symbol是否存在
+  - 检查系统中（platform头文件）是否存在`log`和`exp`这两个函数，把检查结果分别存入两个变量`HAVE_LOG`以及`HAVE_EXP`
+  - 如果没有，就说明有可能现在是其他的一些platform，再次做检查
+- 第二部分（PART 2）
+  - 如果前面设置的两个变量`HAVE_LOG`以及`HAVE_EXP`都是`True`，那么就设定两个在源代码中可以使用的宏，名字叫`HAVE_LOG`以及`HAVE_EXP`
+
+### 改动二
+
+在`MathFunctions/mysqrt.cxxt`中，修改代码如下
+
+把如下这行代码
+
+```cpp
+  double result = x;
+```
+
+修改为
+
+```cpp
+#if defined(HAVE_LOG) && defined(HAVE_EXP)
+  double result = exp(log(x) * 0.5);
+  std::cout << "Computing sqrt of " << x << " to be " << result
+            << " using log and exp" << std::endl;
+#else
+  double result = x;
+#endif
+```
+
+可以看到，这里在源代码中检查了宏`HAVE_LOG`以及`HAVE_EXP`，这两个宏是在CMake期间定义的。
+
+同时也要加上`#include <cmath>`这一行。
+
+
+
+### 编译和安装
+
+同样地，使用如下的三条命令来编译和安装
+
+```shell
+cmake ../Step4 -G "Unix Makefiles"
+cmake --build .
+cmake --install . --prefix /my/install/prefix
+```
+
+结果
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step5_build (master)
+$ cmake ../Step5 -G "Unix Makefiles"
+-- The C compiler identification is GNU 8.1.0
+-- The CXX compiler identification is GNU 8.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: D:/procs/mingw64/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: D:/procs/mingw64/bin/c++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for log
+-- Looking for log - found
+-- Looking for exp
+-- Looking for exp - found
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Gitee/CMakeOfficialTutorial/Step5_build
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step5_build (master)
+$ cmake --build .
+[ 25%] Building CXX object MathFunctions/CMakeFiles/MathFunctions.dir/mysqrt.cxx.obj
+[ 50%] Linking CXX static library libMathFunctions.a
+[ 50%] Built target MathFunctions
+[ 75%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.obj
+[100%] Linking CXX executable Tutorial.exe
+[100%] Built target Tutorial
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step5_build (master)
+$ cmake --install .
+-- Install configuration: ""
+-- Installing: D:/Gitee/CMakeOfficialTutorial/Step5_build/MyInstallPath/bin/Tutorial.exe
+-- Installing: D:/Gitee/CMakeOfficialTutorial/Step5_build/MyInstallPath/include/TutorialConfig.h
+-- Installing: D:/Gitee/CMakeOfficialTutorial/Step5_build/MyInstallPath/lib/libMathFunctions.a
+-- Installing: D:/Gitee/CMakeOfficialTutorial/Step5_build/MyInstallPath/include/MathFunctions.h
+```
+
+
+
+需要注意的是，`cmake ../Step4 -G "Unix Makefiles"`时有打印如下信息，
+
+```shell
+-- Looking for log
+-- Looking for log - found
+-- Looking for exp
+-- Looking for exp - found
+```
+
+这表示，按照我们在`CMakeLists.txt`中的定义，在查找当前平台对应的`log`和`exp`函数（并且找到了）。
