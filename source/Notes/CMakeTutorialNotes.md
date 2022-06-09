@@ -1371,3 +1371,99 @@ The square root of 10 is 3.16228
 
 
 
+
+
+
+
+## Step7 生成安装包
+
+教程第七节
+
+
+
+### 简述
+
+本节主要讲述了,通过`cpack`，如何生成一个安装包文件
+
+关于generator的帮助页面：[`cpack-generators(7)`](https://cmake.org/cmake/help/latest/manual/cpack-generators.7.html#manual:cpack-generators(7))
+
+或者可以直接查询：`cpack --help`
+
+
+
+### 新的语法和命令
+
+工具：`cpack`（它是和`cmake`在一个`bin`目录下）
+
+module：`InstallRequiredSystemLibraries`
+
+|           variables            |           variables            |
+| :----------------------------: | :----------------------------: |
+| `CPACK_RESOURCE_FILE_LICENSE`  | `CPACK_PACKAGE_VERSION_MAJOR ` |
+| `CPACK_PACKAGE_VERSION_MINOR ` |    `CPACK_SOURCE_GENERATOR`    |
+
+
+
+其中，在top-level的`CMakeLists.txt`中`include(InstallRequiredSystemLibraries)`这个module，使得它能够找到对应的runtime lib以便生成安装包。
+
+后面的几个变量，是`cpack`在打包过程当中用到的，其中`CPACK_SOURCE_GENERATOR`指定了安装包的文件格式（`.tar.gz`等）
+
+
+
+### 改动
+
+在top-level的`CMakeLists.txt`中，添加如下指令
+
+```cmake
+# For packing use (by cpack)
+include(InstallRequiredSystemLibraries)
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/License.txt")
+set(CPACK_PACKAGE_VERSION_MAJOR "${Tutorial_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${Tutorial_VERSION_MINOR}")
+set(CPACK_SOURCE_GENERATOR "TGZ")
+include(CPack)
+```
+
+
+
+
+
+### 打包
+
+首先仍然需要编译生成二进制文件，然后调用`cpack`打包
+
+```shell
+cmake ../Step7 -G "Unix Makefiles"
+cmake --build .
+cpack -G ZIP
+```
+
+这里需要注意的是，虽然在top-level的`CMakeLists.txt`中指明了generator是`TGZ`，但它需要用到NSIS，否则就无法完成打包（这里本地没有安装NSIS）
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step7_build (master)
+$ cpack
+CPack Error: Cannot find NSIS compiler makensis: likely it is not installed, or not in your PATH
+CPack Error: Could not read NSIS registry value. This is usually caused by NSIS not being installed. Please install NSIS from http://nsis.sourceforge.net
+CPack Error: Cannot initialize the generator NSIS
+```
+
+
+
+所以，这里在`cpack`的command line中重新指明generator为`ZIP`，以便生成`.zip`包
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step7_build (master)
+$ cpack -G ZIP
+CPack: Create package using ZIP
+CPack: Install projects
+CPack: - Run preinstall target for: Tutorial
+CPack: - Install project: Tutorial []
+CPack: Create package
+CPack: - package: D:/Gitee/CMakeOfficialTutorial/Step7_build/Tutorial-1.0-win64.zip generated.
+```
+
+打包完成后，在目录下就生成了安装包`Tutorial-1.0-win64.zip`，正如上述log中所说。
+
+
+
