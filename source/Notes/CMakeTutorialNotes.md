@@ -847,7 +847,7 @@ $ cmake --install .
 注意，如果需要在cmake的时候手动指明install path，就用如下指令
 
 ```shell
-cmake ../Step3 -G "Unix Makefiles"
+cmake ../Step4 -G "Unix Makefiles"
 cmake --build .
 cmake --install . --prefix /my/install/prefix
 ```
@@ -990,7 +990,7 @@ Total Test time (real) =   1.15 sec
 
 
 
-新的语法和命令
+### 新的语法和命令
 
 |  commands   |            commands            |
 | :---------: | :----------------------------: |
@@ -1069,7 +1069,7 @@ endif()
 同样地，使用如下的三条命令来编译和安装
 
 ```shell
-cmake ../Step4 -G "Unix Makefiles"
+cmake ../Step5 -G "Unix Makefiles"
 cmake --build .
 cmake --install . --prefix /my/install/prefix
 ```
@@ -1129,3 +1129,245 @@ $ cmake --install .
 ```
 
 这表示，按照我们在`CMakeLists.txt`中的定义，在查找当前平台对应的`log`和`exp`函数（并且找到了）。
+
+
+
+
+
+## Step6 添加自定义命令和生成文件
+
+教程第六节
+
+
+
+### 简述
+
+本节主要讲述了
+
+- 通过cmake的语法，如何生成一个头文件，使得其他源文件可以引用该头文件
+- 该头文件不是手动写的，而是在cmake编译期间生成的，不在源代码的目录内（当然源代码的目录里有如何生成这个头文件的源代码）
+
+具体地，本节是通过一个源代码文件（C++），生成一个头文件，该头文件里面是一个数组，表示的是10以内的数的平方根的结果，然后由`MathFunctions/mysqrt.cxx`引用它，以便在计算0以内的数的平方根的时候，直接查询该数组得出结果。
+
+
+
+### 新的语法和命令
+
+|        commands        |         variables          |
+| :--------------------: | :------------------------: |
+| `add_custom_command()` | `CMAKE_CURRENT_BINARY_DIR` |
+|                        |                            |
+
+
+
+`CMAKE_CURRENT_BINARY_DIR`是当前cmake编译的目录（full path）
+
+`add_custom_command()`这个command相当于在Makefile中的一条生成-依赖指令，目的是通过定义的一条command来生成一个output，比如教程中的
+
+```cmake
+add_custom_command(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+  COMMAND MakeTable ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+  DEPENDS MakeTable
+)
+```
+
+它相当于是Makefile中的
+
+```makefile
+OUTPUT: DEPENDS
+	COMMAND
+```
+
+具体地是
+
+```makefile
+${CMAKE_CURRENT_BINARY_DIR}/Table.h: MakeTable
+	MakeTable ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+```
+
+也就是说，根据`MakeTable`这个依赖，会生成一个对应的`Table.h`头文件（target）。
+
+
+
+### 改动一
+
+首先删除了上一节中关于`HAVE_LOG`和`HAVE_EXP`的宏的创建、检查和引用的代码部分。
+
+
+
+### 改动二
+
+其次，在`MathFunctions/CMakeLists.txt`中，添加如下两条指令
+
+```cmake
+add_executable(MakeTable MakeTable.cxx)
+
+add_custom_command(
+  OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+  COMMAND MakeTable ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+  DEPENDS MakeTable
+  )
+```
+
+第一条是说，要通过`MakeTable.cxx`生成一个二进制文件（用来运行产生`Table.h`这个文件）
+
+第二条相当于定义了一条规则，要生成一个`Table.h`这个target，它的依赖是`MakeTable`这个二进制文件。
+
+
+
+### 改动三
+
+再次，在`MathFunctions/CMakeLists.txt`中，修改如下两条指令
+
+```cmake
+add_library(MathFunctions
+            mysqrt.cxx
+            ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+            )
+target_include_directories(MathFunctions
+          INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+          PRIVATE ${CMAKE_CURRENT_BINARY_DIR}
+          )
+```
+
+第一条指令是指`mysqrt.cxx`文件在生成`MathFunctions`这个lib是时候，实际上依赖于我们的生成文件`Table.h`的。
+
+第二条指令是把`cmake`当前编译的目录加入到头文件的包含的目录列表中去，以便`mysqrt.cxx`中include这个生成的头文件时，可以找到它。
+
+
+
+### 改动四
+
+最后，需要修改`MathFunctions/mysqrt.cxx`中源代码，见下，需要注意的是，官网上的代码似乎有错，这里做了修复。
+
+```cpp
+#include <iostream>
+#include "MathFunctions.h"
+// A generated header file by cmake
+#include "Table.h"
+// a hack square root calculation using simple operations
+double mysqrt(double x) {
+  if (x <= 0) {    return 0;  }
+  // Use the table to help find an initial value
+  // Note that varialbe sqrtTable is defined in a generated
+  // header file "Table.h"
+  double result = x;
+  if (x >= 1 && x < 10) {
+    std::cout << "Use the table to help find an initial value " << std::endl;
+    result = sqrtTable[static_cast<int>(x)];
+	std::cout << "Computing sqrt of " << x << " to be " << result << std::endl;
+	return result;
+  }
+
+  // do ten iterations
+  for (int i = 0; i < 10; ++i) {
+    if (result <= 0) { result = 0.1; }
+    double delta = x - (result * result);
+    result = result + 0.5 * delta / result;
+    std::cout << "Computing sqrt of " << x << " to be " << result << std::endl;
+  }
+
+  return result;
+}
+```
+
+实际上，生成文件`Table.h`的内容如下，
+
+```cpp
+double sqrtTable[] = {
+0,
+1,
+1.41421,
+1.73205,
+2,
+2.23607,
+2.44949,
+2.64575,
+2.82843,
+3,
+0};
+```
+
+它就是是一个数组，表示的是10以内的数的平方根的结果，然后由`MathFunctions/mysqrt.cxx`引用它，
+
+
+
+### 编译和安装
+
+同样地，使用如下的三条命令来编译和安装
+
+```shell
+cmake ../Step6 -G "Unix Makefiles"
+cmake --build .
+cmake --install . --prefix /my/install/prefix
+```
+
+结果
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step6_build (master)
+$ cmake ../Step6 -G "Unix Makefiles"
+-- The C compiler identification is GNU 8.1.0
+-- The CXX compiler identification is GNU 8.1.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: D:/procs/mingw64/bin/gcc.exe - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: D:/procs/mingw64/bin/c++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Gitee/CMakeOfficialTutorial/Step6_build
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step6_build (master)
+$ cmake --build .
+[ 14%] Building CXX object MathFunctions/CMakeFiles/MakeTable.dir/MakeTable.cxx.obj
+[ 28%] Linking CXX executable MakeTable.exe
+[ 28%] Built target MakeTable
+[ 42%] Generating Table.h
+[ 57%] Building CXX object MathFunctions/CMakeFiles/MathFunctions.dir/mysqrt.cxx.obj
+[ 71%] Linking CXX static library libMathFunctions.a
+[ 71%] Built target MathFunctions
+[ 85%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.obj
+[100%] Linking CXX executable Tutorial.exe
+[100%] Built target Tutorial
+```
+
+注意，在`cmake --build .`时，有明显的信息说明生成了生成文件`Table.h`，如下
+
+```shell
+[ 28%] Built target MakeTable
+[ 42%] Generating Table.h
+```
+
+最后，测试生成的二进制文件，发现在计算10以内的平方根时，确实使用了查表的方法，故结果正确。
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step6_build (master)
+$ ./Tutorial.exe 2
+Use the table to help find an initial value
+Computing sqrt of 2 to be 1.41421
+The square root of 2 is 1.41421
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step6_build (master)
+$ ./Tutorial.exe 10
+Computing sqrt of 10 to be 5.5
+Computing sqrt of 10 to be 3.65909
+Computing sqrt of 10 to be 3.19601
+Computing sqrt of 10 to be 3.16246
+Computing sqrt of 10 to be 3.16228
+Computing sqrt of 10 to be 3.16228
+Computing sqrt of 10 to be 3.16228
+Computing sqrt of 10 to be 3.16228
+Computing sqrt of 10 to be 3.16228
+Computing sqrt of 10 to be 3.16228
+The square root of 10 is 3.16228
+```
+
+
+
