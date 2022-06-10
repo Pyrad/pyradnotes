@@ -1383,7 +1383,7 @@ The square root of 10 is 3.16228
 
 ### 简述
 
-本节主要讲述了,通过`cpack`，如何生成一个安装包文件
+本节主要讲述了，通过`cpack`，如何生成一个安装包文件
 
 关于generator的帮助页面：[`cpack-generators(7)`](https://cmake.org/cmake/help/latest/manual/cpack-generators.7.html#manual:cpack-generators(7))
 
@@ -1464,6 +1464,216 @@ CPack: - package: D:/Gitee/CMakeOfficialTutorial/Step7_build/Tutorial-1.0-win64.
 ```
 
 打包完成后，在目录下就生成了安装包`Tutorial-1.0-win64.zip`，正如上述log中所说。
+
+
+
+
+
+## Step8 添加Testing Dashboard支持
+
+教程第八节
+
+
+
+### 简述
+
+本节主要讲述了如何添加Testing Dashboard的支持。
+
+实际上，`ctest`这里就是QA系统的一部分，它帮助完成编译，运行testcases，并且将结果上传到定义好的网站上去（这里利用了Kitware提供的一个公共网站）。
+
+
+
+工具：`ctest`
+
+module：`CTest`
+
+|       variables       |          variables          |
+| :-------------------: | :-------------------------: |
+| `CTEST_PROJECT_NAME`  | `CTEST_NIGHTLY_START_TIME ` |
+|  `CTEST_DROP_METHOD`  |      `CTEST_DROP_SITE`      |
+| `CTEST_DROP_LOCATION` |   `CTEST_DROP_SITE_CDASH`   |
+
+
+
+### 改动一
+
+因为`CTest`这个module在被`include`进来的时候，会自动调用`enable_testing()`，所以在top-level的`CMakeLists.txt`里面，把
+
+```cmake
+# enable testing
+enable_testing()
+```
+
+替换为
+
+```cmake
+# enable dashboard scripting
+# CTest module will automatically call enable_testing()
+include(CTest)
+```
+
+
+
+### 改动二
+
+在top-level目录下面，需要创建一个`CTestConfig.cmake`文件，用来给`CTest`这个module指明以下信息
+
+- The project name
+- The project "Nightly" start time
+  - The time when a 24 hour "day" starts for this project.
+- The URL of the CDash instance where the submission's generated documents will be sent
+
+
+
+```cmake
+set(CTEST_PROJECT_NAME "CMakeTutorial")
+set(CTEST_NIGHTLY_START_TIME "00:00:00 EST")
+
+set(CTEST_DROP_METHOD "http")
+set(CTEST_DROP_SITE "my.cdash.org")
+set(CTEST_DROP_LOCATION "/submit.php?project=CMakeTutorial")
+set(CTEST_DROP_SITE_CDASH TRUE)
+```
+
+
+
+### 运行结果
+
+首先像以往一样，利用`cmake`生成`Makefile`
+
+```shell
+cmake ../Step8 -G "Unix Makefiles"
+```
+
+但之后不用编译，而是直接运行`ctest`
+
+```cmake
+ctest -VV -D Experimental
+```
+
+运行之后的log如下：
+
+```shell
+
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step8_build (master)
+$ ctest -VV -D Experimental
+UpdateCTestConfiguration  from :D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+Parse Config file:D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+   Site: SSEA
+   Build name: Win32-make
+Create new tag: 20220610-1344 - Experimental
+Configure project
+Configure with command: "D:/procs/CMake/bin/cmake.exe" "D:/Gitee/CMakeOfficialTutorial/Step8"
+Run command: "D:/procs/CMake/bin/cmake.exe" "D:/Gitee/CMakeOfficialTutorial/Step8"
+-- Configuring done
+-- Generating done
+-- Build files have been written to: D:/Gitee/CMakeOfficialTutorial/Step8_build
+Command exited with the value: 0
+UpdateCTestConfiguration  from :D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+Parse Config file:D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+Build project
+MakeCommand:D:/procs/CMake/bin/cmake.exe --build . --config "${CTEST_CONFIGURATION_TYPE}"
+Run command: "D:/procs/CMake/bin/cmake.exe" "--build" "." "--config" "Release"
+[ 14%] Building CXX object MathFunctions/CMakeFiles/MakeTable.dir/MakeTable.cxx.obj
+[ 28%] Linking CXX executable MakeTable.exe
+[ 28%] Built target MakeTable
+[ 42%] Generating Table.h
+[ 57%] Building CXX object MathFunctions/CMakeFiles/MathFunctions.dir/mysqrt.cxx.obj
+[ 71%] Linking CXX static library libMathFunctions.a
+[ 71%] Built target MathFunctions
+[ 85%] Building CXX object CMakeFiles/Tutorial.dir/tutorial.cxx.obj
+[100%] Linking CXX executable Tutorial.exe
+[100%] Built target Tutorial
+Command exited with the value: 0
+MakeCommand:D:/procs/CMake/bin/cmake.exe --build . --config "${CTEST_CONFIGURATION_TYPE}"
+   0 Compiler errors
+   0 Compiler warnings
+UpdateCTestConfiguration  from :D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+Parse Config file:D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+Test project D:/Gitee/CMakeOfficialTutorial/Step8_build
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 1
+    Start 1: Runs
+
+1: Test command: D:\Gitee\CMakeOfficialTutorial\Step8_build\Tutorial.exe "25"
+1: Test timeout computed to be: 1500
+1: Computing sqrt of 25 to be 13
+1: Computing sqrt of 25 to be 7.46154
+1: Computing sqrt of 25 to be 5.40603
+1: Computing sqrt of 25 to be 5.01525
+1: Computing sqrt of 25 to be 5.00002
+1: Computing sqrt of 25 to be 5
+1: Computing sqrt of 25 to be 5
+1: Computing sqrt of 25 to be 5
+1: Computing sqrt of 25 to be 5
+1: Computing sqrt of 25 to be 5
+1: The square root of 25 is 5
+1/9 Test #1: Runs .............................   Passed    0.20 sec
+
+#### 省略了一些log
+
+UpdateCTestConfiguration  from :D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+Parse Config file:D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+ target directory list [D:/Gitee/CMakeOfficialTutorial/Step8_build/CMakeFiles/TargetDirectories.txt]
+Performing coverage
+ COVFILE environment variable not found, not running  bullseye
+   globbing for coverage in: D:/Gitee/CMakeOfficialTutorial/Step8_build/CMakeFiles/Continuous.dir
+   globbing for coverage in: D:/Gitee/CMakeOfficialTutorial/Step8_build/CMakeFiles/ContinuousBuild.dir
+   globbing for coverage in: 
+
+### 省略了一些log
+   
+D:/Gitee/CMakeOfficialTutorial/Step8_build/MathFunctions/CMakeFiles/test.dir
+ Cannot find any GCov coverage files.
+ Not a valid Intel Coverage command.
+ Cannot find any Python Trace.py coverage files.
+ Cannot find Cobertura XML file: D:/Gitee/CMakeOfficialTutorial/Step8_build/coverage.xml
+ Cannot find GTM coverage file: D:/Gitee/CMakeOfficialTutorial/Step8_build/gtm_coverage.mcov
+ Cannot find Cache coverage file: D:/Gitee/CMakeOfficialTutorial/Step8_build/cache_coverage.cmcov
+ Cannot find Jacoco coverage files: D:/Gitee/CMakeOfficialTutorial/Step8/*jacoco.xml
+ Cannot find BlanketJS coverage files: D:/Gitee/CMakeOfficialTutorial/Step8/*.json
+ Cannot find Delphi coverage files: D:/Gitee/CMakeOfficialTutorial/Step8_build/*(*.pas).html
+ Cannot find any coverage files. Ignoring Coverage request.
+UpdateCTestConfiguration  from :D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+Parse Config file:D:/Gitee/CMakeOfficialTutorial/Step8_build/DartConfiguration.tcl
+Submit files
+   SubmitURL: http://my.cdash.org/submit.php?project=CMakeTutorial
+   Upload file: D:/Gitee/CMakeOfficialTutorial/Step8_build/Testing/20220610-1344/Configure.xml to http://my.cdash.org/submit.php?project=CMakeTutorial&FileName=SSEA___Win32-make___20220610-1344-Experimental___XML___Configure.xml&build=Win32-make&site=SSEA&stamp=20220610-1344-Experimental&MD5=68697147e46c795bd021649a4a8fbb06 Size: 1731
+   Uploaded: D:/Gitee/CMakeOfficialTutorial/Step8_build/Testing/20220610-1344/Configure.xml
+   Upload file: D:/Gitee/CMakeOfficialTutorial/Step8_build/Testing/20220610-1344/Build.xml to http://my.cdash.org/submit.php?project=CMakeTutorial&FileName=SSEA___Win32-make___20220610-1344-Experimental___XML___Build.xml&build=Win32-make&site=SSEA&stamp=20220610-1344-Experimental&MD5=5eebae65efe28a7be70508f63cea7428 Size: 1561
+   Uploaded: D:/Gitee/CMakeOfficialTutorial/Step8_build/Testing/20220610-1344/Build.xml
+   Upload file: D:/Gitee/CMakeOfficialTutorial/Step8_build/Testing/20220610-1344/Test.xml to http://my.cdash.org/submit.php?project=CMakeTutorial&FileName=SSEA___Win32-make___20220610-1344-Experimental___XML___Test.xml&build=Win32-make&site=SSEA&stamp=20220610-1344-Experimental&MD5=a2c6321fc5ad2113c587ca5e404c65ba Size: 13335
+   Uploaded: D:/Gitee/CMakeOfficialTutorial/Step8_build/Testing/20220610-1344/Test.xml
+   Upload file: D:/Gitee/CMakeOfficialTutorial/Step8_build/Testing/20220610-1344/Done.xml to http://my.cdash.org/submit.php?project=CMakeTutorial&FileName=SSEA___Win32-make___20220610-1344-Experimental___XML___Done.xml&build=Win32-make&site=SSEA&stamp=20220610-1344-Experimental&MD5=c37457026038fb68e75bd8fb1e50d2ef Size: 112
+   Uploaded: D:/Gitee/CMakeOfficialTutorial/Step8_build/Testing/20220610-1344/Done.xml
+   Submission successful
+
+```
+
+
+
+可以看到，`ctest`自动进行了编译，并且之后运行了`CMakeLists.txt`中的unittest，**然后**，把结果上传到了Kitware的公共网页：https://my.cdash.org/index.php?project=CMakeTutorial.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
