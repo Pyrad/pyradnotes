@@ -1663,7 +1663,28 @@ Submit files
 
 
 
+## Step9 
 
+教程第八节
+
+
+
+### 简述
+
+本节主要讲述了
+
+
+
+### 新的语法和命令
+
+|           command            | variables |
+| :--------------------------: | :-------: |
+| `target_compile_definitions` |           |
+|                              |           |
+
+
+
+其中，在top-level的`CMakeLists.txt`中`include(InstallRequiredSystemLibraries)`这个module，使得它能够找到对应
 
 
 
