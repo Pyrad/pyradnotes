@@ -9,3 +9,4 @@ Notes
    rstExample
    CMakeBasics
    CMakeTutorialNotes
+   software.rst
