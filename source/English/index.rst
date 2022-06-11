@@ -6,3 +6,4 @@ English Related
    
    vocabularyMarkdown.md
    vocabulary.rst
+   wordsPronunciationProgrammers.md
