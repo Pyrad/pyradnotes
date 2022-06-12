@@ -90,7 +90,29 @@ cmake <SRC_DIR> -G "Unix Makefiles"
 
 
 
+### 简述
+
 本节介绍了一个简单的例子，只有一个`cpp`文件（以及稍后引入的通过`cmake`创建的一个头文件），通过引入一个简单的`CMakeLists.txt`来说明了如何编译这个简单的`cpp`源文件。
+
+
+
+### 新的语法和命令
+
+|           functions            |     functions      |
+| :----------------------------: | :----------------: |
+|   `CMAKE_MINIMUM_REQUIRED()`   |    `PROJECT()`     |
+|       `ADD_EXECUTABLE()`       | `CONFIGURE_FILE()` |
+|            `SET()`             |    `MESSAGE()`     |
+| `TARGET_INCLUDE_DIRECTORIES()` |                    |
+
+
+
+|      variables       |           variables           |
+| :------------------: | :---------------------------: |
+| `CMAKE_CXX_STANDARD` | `CMAKE_CXX_STANDARD_REQUIRED` |
+| `CMAKE_MAKE_PROGRAM` |      `CMAKE_C_COMPILER`       |
+| `CMAKE_CXX_COMPILER` |     `PROJECT_BINARY_DIR`      |
+| `PROJECT_SOURCE_DIR` |                               |
 
 
 
@@ -301,11 +323,20 @@ Adding A Library 添加一个库
 
 ### 新的命令和语法
 
-|     commands     |      commands      |        commands         |
-| :--------------: | :----------------: | :---------------------: |
-|  `add_library`   | `add_subdirectory` | `target_link_libraries` |
-|     `option`     |     `if/endif`     |         `list`          |
-| `add_executable` |  `configure_file`  |                         |
+|     functions      |           functions            |         functions         |
+| :----------------: | :----------------------------: | :-----------------------: |
+|  `add_library()`   |      `add_subdirectory()`      | `target_link_libraries()` |
+|     `option()`     |       `configure_file()`       |         `list()`          |
+| `add_executable()` | `target_include_directories()` |                           |
+
+
+
+指令
+
+| instructions | instructions |
+| :----------: | :----------: |
+|  `if/endif`  |              |
+|              |              |
 
 
 
@@ -387,6 +418,18 @@ target_include_directories(Tutorial PUBLIC
 ```
 
 这个指令的**目的**，主要是定义一个可以在cmake期间灵活修改（打开/关闭）的宏，以方便使用。
+
+实际上，`USE_MYMATH`这个宏在两个地方被定了，
+
+- 第一个地方：top-level的`CMakeLists.txt`中，使用CMake的`option()`这个函数定义了`USE_MYMATH`这个宏，并赋予其初始值，这个地方是`USE_MYMATH`这个宏真正被定义的地方，而且是通过CMake来定义的
+
+- 第二个地方：文件`TutorialConfig.h.in`这个文件中。这个地方里面使用了CMake的指令`#cmakedefine`来定义`USE_MYMATH`这个宏，但它在cmake编译期间会被cmake做自动替换，替换为真正的`C/C++`的预编译指令：`#define USE_MYMATH 0` 或 `#define USE_MYMATH 1`
+
+  而由于`USE_MYMATH`这个宏是cmake定义的，所以在cmake期间，可以通过command line option来改变这个宏的值（ON/OFF），而随着改变的，是`TutorialConfig.h.in`这个文件根据cmake的编译指令而生成的文件中真正的`C/C++`的预编译指令所定义的`USE_MYMATH`这个宏值。
+
+  比如，打开这个编译选项，使用`cmake ../Step2 -G Unix Makefiles" -DUSE_MYMATH=ON`（或者直接用`cmake ../Step2 -G Unix Makefiles"`，因为`USE_MYMATH`的默认值是`ON`），那么通过`TutorialConfig.h.in`这个文件生成的头文件`TutorialConfig.h`中，预编译指令就是：`#define USE_MYMATH 1` 。
+
+  如果关闭这个编译选项，使用`cmake ../Step2 -G Unix Makefiles" -DUSE_MYMATH=OFF`，那么通过`TutorialConfig.h.in`这个文件生成的头文件`TutorialConfig.h`中，预编译指令就是：`#define USE_MYMATH 0` ，总之，就是cmake会根据option中定义的宏，在根据编译时的command liine option是否打开，自动替换`#cmakedefine USE_MYMATH`成正确的真正的`C/C++`的预编译指令。
 
 
 
@@ -596,9 +639,14 @@ Usage: D:\Gitee\CMakeOfficialTutorial\Step2_build\Tutorial.exe number
 
 
 
+|  variables  |         variables          |
+| :---------: | :------------------------: |
+| `INTERFACE` | `CMAKE_CURRENT_SOURCE_DIR` |
+|             |                            |
 
 
-本节主要讲述了，如何在一个库（lib）目录里面的`CMakeLists.txt`里面通过添加如下语句，使得当该库（lib）目录在被使用时（即被link时），由cmake自动include当前库的源文件目录。这样，在主目录下面的`CMakeLists.txt`里面就不用再显式地include这个库（lib）的目录以便链接。
+
+本节主要讲述了，如何在一个库（lib）目录里面的`CMakeLists.txt`里面通过添加如下语句，使得当该库（lib）目录在被使用时（即被link时），由cmake自动include当前库的源文件目录。这样，在主目录下面的`CMakeLists.txt`里面就不用再显式地include这个库（lib）的目录以便查找其头文件。（但还是要在top-level的`CMakeLists.txt`里面显示地通过`target_link_libraries`来指明需要链接的目录）
 
 ```cmake
 target_include_directories(MathFunctions
@@ -986,7 +1034,7 @@ Total Test time (real) =   1.15 sec
 
 教程第五节
 
-本节主要讲述了
+本节主要讲述了如何通过cmake指令来查找系统平台是否提供了所预期的函数，并根据检查结果进行（条件选择）编译。
 
 
 
@@ -1034,7 +1082,7 @@ endif()
   - 检查系统中（platform头文件）是否存在`log`和`exp`这两个函数，把检查结果分别存入两个变量`HAVE_LOG`以及`HAVE_EXP`
   - 如果没有，就说明有可能现在是其他的一些platform，再次做检查
 - 第二部分（PART 2）
-  - 如果前面设置的两个变量`HAVE_LOG`以及`HAVE_EXP`都是`True`，那么就设定两个在源代码中可以使用的宏，名字叫`HAVE_LOG`以及`HAVE_EXP`
+  - 如果前面设置的两个变量`HAVE_LOG`以及`HAVE_EXP`都是`True`，那么就设定两个**在源代码中**可以使用的宏，名字叫`HAVE_LOG`以及`HAVE_EXP`
 
 ### 改动二
 
