@@ -17,3 +17,6 @@ This is to keep down some software programs of daily use or which might be very 
     * - **Honeyview** 
       - Image viewer
       - `Honeyview <https://en.bandisoft.com/honeyview/>`_
+    * - **calibre** 
+      - E-book manager
+      - `Calibre <https://calibre-ebook.com/>`_
