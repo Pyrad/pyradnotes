@@ -1719,7 +1719,7 @@ Submit files
 
 ### 简述
 
-本节主要讲述了
+本节主要讲述了如何通过`option`函数来设置变量`BUILD_SHARED_LIBS`，然后编译出动态链接库。
 
 
 
@@ -1734,15 +1734,207 @@ Submit files
 
 其中，在top-level的`CMakeLists.txt`中`include(InstallRequiredSystemLibraries)`这个module，使得它能够找到对应
 
+#### `BUILD_SHARED_LIBS`
+
+> Global flag to cause [`add_library()`](https://cmake.org/cmake/help/latest/command/add_library.html#command:add_library) to create shared libraries if on.
+>
+> If present and true, this will cause all libraries to be built shared unless the library was explicitly added as a static library. This variable is often added to projects as an [`option()`](https://cmake.org/cmake/help/latest/command/option.html#command:option) so that each user of a project can decide if they want to build the project using shared or static libraries.
+
+
+
+### 改动一
+
+在top-level的`CMakeLists.txt`中，添加如下指令
+
+```cmake
+# control where the static and shared libraries are built so that on windows
+# we don't need to tinker with the path to run the executable
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}")
+
+option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+```
+
+其中`option(BUILD_SHARED_LIBS "Build using shared libraries" ON)`就是用来控制编译出来动态链接库（除法显示指定生成静态库）。
+
+
+
+### 改动二
+
+其次，在`MathFunctions/CMakeLists.txt`中，改动完成之后如下
+
+```cmake
+# add the library that runs
+add_library(MathFunctions MathFunctions.cxx)
+
+# state that anybody linking to us needs to include the current source dir
+# to find MathFunctions.h, while we don't.
+target_include_directories(MathFunctions
+                           INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+                           )
+
+# should we use our own math functions
+option(USE_MYMATH "Use tutorial provided math implementation" ON)
+if(USE_MYMATH)
+
+  target_compile_definitions(MathFunctions PRIVATE "USE_MYMATH")
+
+  # first we add the executable that generates the table
+  add_executable(MakeTable MakeTable.cxx)
+
+  # add the command to generate the source code
+  add_custom_command(
+    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+    COMMAND MakeTable ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+    DEPENDS MakeTable
+    )
+
+  # library that just does sqrt
+  add_library(SqrtLibrary STATIC
+              mysqrt.cxx
+              ${CMAKE_CURRENT_BINARY_DIR}/Table.h
+              )
+
+  # state that we depend on our binary dir to find Table.h
+  target_include_directories(SqrtLibrary PRIVATE
+                             ${CMAKE_CURRENT_BINARY_DIR}
+                             )
+
+  target_link_libraries(MathFunctions PRIVATE SqrtLibrary)
+endif()
+
+# define the symbol stating we are using the declspec(dllexport) when
+# building on windows
+target_compile_definitions(MathFunctions PRIVATE "EXPORTING_MYMATH")
+
+# install rules
+set(installable_libs MathFunctions)
+if(TARGET SqrtLibrary)
+  list(APPEND installable_libs SqrtLibrary)
+endif()
+install(TARGETS ${installable_libs} DESTINATION lib)
+install(FILES MathFunctions.h DESTINATION include)
+```
+
+
+
+注意，
+
+- 这里定义要编译出来的库名虽然是`MathFunctions`，但和上节不同的是，它依赖于文件`MathFunctions.cxx`，而不再是`mysqrt.cxx`
+- 文件`mysqrt.cxx`是用来生成另外一个库（`SqrtLibrary`），但这个库是根据宏`USE_MYMATH`来决定是否要生成。
+
+
+
+### 改动三
+
+在`MathFunctions/mysqrt.cxx`中，将函数`double mysqrt(double x)`置于`mathfunctions::detail`这个`namespace`下面。
+
+
+
+### 改动四
+
+We also need to make some changes in `tutorial.cxx`, so that it no longer uses `USE_MYMATH`:
+
+1. Always include `MathFunctions.h`
+2. Always use `mathfunctions::sqrt`
+3. Don't include `cmath`
+
+
+
+### 改动五
+
+在文件`MathFunctions/MathFunctions.h`中，export一个在`namespace mathfunction`下面的函数
+
+```cpp
+#if defined(_WIN32)
+#  if defined(EXPORTING_MYMATH)
+#    define DECLSPEC __declspec(dllexport)
+#  else
+#    define DECLSPEC __declspec(dllimport)
+#  endif
+#else // non windows
+#  define DECLSPEC
+#endif
+
+namespace mathfunctions {
+double DECLSPEC sqrt(double x);
+}
+```
+
+
+
+### 改动六
+
+在`MathFunctions/CMakeLists.txt`中，添加如下指令
+
+```cmake
+# state that SqrtLibrary need PIC when the default is shared libraries
+set_target_properties(SqrtLibrary PROPERTIES
+                      POSITION_INDEPENDENT_CODE ${BUILD_SHARED_LIBS}
+                      )
+
+target_link_libraries(MathFunctions PRIVATE SqrtLibrary)
+```
+
+**根据教程提示，如果不加这一部分会导致链接失败，不过，local测试，不加这一部也能编译通过？？？不值为何？？**
+
+> At this point, if you build everything, you may notice that linking fails as we are combining a static library without position independent code with a library that has position independent code. The solution to this is to explicitly set the [`POSITION_INDEPENDENT_CODE`](https://cmake.org/cmake/help/latest/prop_tgt/POSITION_INDEPENDENT_CODE.html#prop_tgt:POSITION_INDEPENDENT_CODE) target property of SqrtLibrary to be `True` no matter the build type.
 
 
 
 
 
+### 打开`USE_MYMATH`编译
+
+编译（打开`USE_MYMATH`宏）
+
+```cmake
+cmake ../Step9 -G "Unix Makefiles" -DUSE_MYMATH=ON
+cmake --build .
+```
+
+然后测试
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step9_build (master)
+$ ./Tutorial.exe 1
+Use the table to help find an initial value
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+Computing sqrt of 1 to be 1
+The square root of 1 is 1
+```
+
+显然，生成了`SqrtLibrary.a`这个库，并且利用了其中的`mysqrt`来计算平方根。
 
 
 
+### 关闭`USE_MYMATH`编译
 
+使用如下命令，在关闭自定义的宏`USE_MYMATH`之后编译
+
+```shell
+cmake ../Step9 -G "Unix Makefiles" -DUSE_MYMATH=OFF
+cmake --build .
+```
+
+然后测试
+
+```shell
+Pyrad@SSEA MINGW64 /d/Gitee/CMakeOfficialTutorial/Step9_build (master)
+$ ./Tutorial.exe 2
+The square root of 2 is 1.41421
+```
+
+显然，没有生成`SqrtLibrary.a`这个库，用的是标准库中的`sqrt`函数来计算平方根。
 
 
 
