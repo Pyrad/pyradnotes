@@ -36,6 +36,13 @@ date: 2022-04-22 17:48:28
 	git log --oneline --graph -4
 	# Check last one log, normally
 	git log -1
+	# Show commits before/after/between data(s)
+	git log --oneline --after="2022.06.09" --before="2022.06.12"
+	git log --oneline --since="2022.06.09" --until="2022.06.12"
+	git log --oneline --after="2022.06.09"
+	git log --oneline --since="2022.06.09"
+	git log --oneline --before="2022.06.12"
+	git log --oneline --until="2022.06.12"
 	```
 	
 6.	If you add a new file which hasn't been tracked before in the repository,
