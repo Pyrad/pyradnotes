@@ -21,6 +21,12 @@ A Tour of Life (Pyrad's Notes!)
 
 .. toctree::
    :maxdepth: 1
+   :caption: Linux:
+
+   Linux/index
+
+.. toctree::
+   :maxdepth: 1
    :caption: Python:
 
    Python/index

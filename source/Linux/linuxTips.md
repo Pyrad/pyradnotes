@@ -1,12 +1,5 @@
----
-title: LinuxTips
-date: 2022-04-20 22:52:08
-categories:
-- linux related
-tags: linux
----
 
-Tips for Linux daily use
+# Tips for Linux daily use
 
 <!-- more -->
 
@@ -300,3 +293,12 @@ Tips for Linux daily use
     ```
 
 
+
+```shell
+Originally created in Pyrad Blog
+title: LinuxTips
+date: 2022-04-20 22:52:08
+categories:
+- linux related
+tags: linux
+```
