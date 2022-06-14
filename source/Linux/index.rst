@@ -5,3 +5,4 @@ Linux
    :maxdepth: 1
    
    linuxall.md
+   linuxTips.md
