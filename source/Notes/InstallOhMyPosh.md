@@ -52,6 +52,9 @@ eval "$(oh-my-posh --init --shell bash --config ${THEME_DIR}/${THEME_NAME})"
 
 重新启动Tabby，即可生效对应主题的终端`prompt`。
 
+## 6. Theme Preview
+
+可以在网页[Oh-My-Posh Themes](https://ohmyposh.dev/docs/themes)上直接查看各个主题的效果图
 
 
 ## Reference
