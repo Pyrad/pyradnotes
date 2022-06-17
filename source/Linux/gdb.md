@@ -56,4 +56,7 @@ gdb --configuration
 
   [https://github.com/cgdb/cgdb/issues/36](https://github.com/cgdb/cgdb/issues/36)
 
-- 
+## GDB 查看所加载程序的参数
+```gdb
+(gdb) show args
+```
