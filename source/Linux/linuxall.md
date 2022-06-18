@@ -43,3 +43,42 @@ find . -type l -newermt '01 jan 2009 00:00:00' -not -newermt '01 jan 2012 00:00:
 # Find symbolic files and delete them,  between 2 dates
 find . -type l -newermt '01 jan 2009 00:00:00' -not -newermt '01 jan 2012 00:00:00' -delete
 ```
+
+
+
+## `ls` doesn't show colors in Cygwin terminals
+
+Add the following, remember to set alias to `ls` (adding an option `--color=auto` is important)
+
+```bash
+### Check Current OS version
+VERSTR_ALL=""
+OS_INFO=""
+if [[ -f /proc/version ]]; then
+	# Noramlly `cat /proc/verison` returns a character string
+	# E.g., 
+	# MINGW64_NT-6.1-7601 version 3.1.7- ... (GCC) ) 2021-03-26 22:17 UTC
+	# CYGWIN_NT-6.1-7601 version 3.2.0 ... (GCC) ) 2021-03-29 08:42 UTC
+	VERSTR_ALL=`cat /proc/version`
+	if [[ ${VERSTR_ALL:0:9} -eq "CYGWIN_NT" ]]; then
+		### Check first 9 characters
+		# echo "Current is Cygwin: $VERSTR_ALL"
+		OS_INFO=${VERSTR_ALL:0:9}
+	elif [[ ${VERSTR_ALL:0:10} -eq "MINGW64_NT" ]]; then
+		### Check first 10 characters
+		OS_INFO=${VERSTR_ALL:0:10}
+	else
+		OS_INFO="UNKWON"
+	fi
+fi
+
+##############################################################################
+### In Cygwin terminal, set the command ls for its colors, otherwise something 
+### goes with its color display
+##################################################################################
+if [[ $OS_INFO -eq "CYGWIN_NT" ]]; then
+	eval "`dircolors -b /etc/DIR_COLORS`"
+	alias ls='ls --color=auto'
+fi
+```
+
