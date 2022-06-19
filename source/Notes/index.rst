@@ -10,3 +10,5 @@ Notes
    CMakeBasics
    CMakeTutorialNotes
    software.rst
+   InstallOhMyPosh
+   InstallBoostLib

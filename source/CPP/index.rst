@@ -6,3 +6,4 @@ C/C++
 
     CppBasics
     CppAdvanced
+    SmartPointers.md
