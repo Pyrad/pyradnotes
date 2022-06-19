@@ -36,7 +36,13 @@
 
    For the day I ran this, `gcc` I used is from `msys2`and its version is `12.0`, the boost library is `1.79.0`.
 
+5. After build with out errors, it should say the following
 
+   ```bash
+   ...updated 18043 targets...
+   ```
+
+   
 
 ## Reference
 
