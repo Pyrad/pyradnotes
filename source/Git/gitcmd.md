@@ -285,3 +285,39 @@ date: 2022-04-22 17:48:28
 
       
 
+21. 如何修改当前本地的repository目录对应的`fetch origin`
+
+    ```bash
+    ### Check current fetch & push orign
+    Pyrad@SSEA $ git remote -v
+    origin  git@github.com:Pyrad/cpp11.git (fetch)
+    origin  git@github.com:Pyrad/cpp11.git (push)
+    origin  git@gitee.com:pyrad/cpp11.git (push)
+    
+    ### Delete current fetch origin
+    Pyrad@SSEA $ git remote set-url --delete origin git@github.com:Pyrad/cpp11.git
+    
+    ### Check current fetch & push orign again
+    Pyrad@SSEA $ git remote -v
+    origin  git@gitee.com:pyrad/cpp11.git (fetch)
+    origin  git@gitee.com:pyrad/cpp11.git (push)
+    
+    ### Add another repo URL as PUSH origin
+    Pyrad@SSEA $ git remote set-url --add origin git@github.com:Pyrad/cpp11.git
+    
+    ### Check current fetch & push orign at last
+    Pyrad@SSEA $ git remote -v
+    origin  git@gitee.com:pyrad/cpp11.git (fetch)
+    origin  git@gitee.com:pyrad/cpp11.git (push)
+    origin  git@github.com:Pyrad/cpp11.git (push)
+    ```
+
+    注意，目前多个`fetch`的`origin`是不允许的，所以如果在没有删除旧的`fetch origin`之前，就直接添加新的，会报错，错误信息如下。
+
+    ```bash
+    $ git remote set-url origin git@gitee.com:pyrad/cpp11.git
+    warning: remote.origin.url has multiple values
+    fatal: could not set 'remote.origin.url' to 'git@gitee.com:pyrad/cpp11.git'
+    ```
+
+    
