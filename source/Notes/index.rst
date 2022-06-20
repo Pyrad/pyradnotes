@@ -12,3 +12,4 @@ Notes
    software.rst
    InstallOhMyPosh
    InstallBoostLib
+   TerminalOnWindows
