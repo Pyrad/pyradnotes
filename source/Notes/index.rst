@@ -13,3 +13,5 @@ Notes
    InstallOhMyPosh
    InstallBoostLib
    TerminalOnWindows
+   Msys2
+   WinDevEnvSetup
