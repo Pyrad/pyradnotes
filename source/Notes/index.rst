@@ -15,3 +15,4 @@ Notes
    TerminalOnWindows
    Msys2
    WinDevEnvSetup
+   bash
