@@ -273,3 +273,29 @@
     If you are inside vim, just `:source <vim_script_file>`
 
     
+
+22. How to insert special code (unicode) in Vim
+
+    - `i` go to insert mode
+    - `Ctrl + v` go into ins-special-keys mode
+    - `u2713` insert the Unicode character CHECK MARK (U+2713). Here first char `u` tells it the following 4 chars are unicode
+
+    Some powerline special glyphs
+
+    `e0a0` stream
+
+    `e0a1` Line number
+
+    `e0a2` Lock
+
+    `e0a3` (Not sure)
+
+    `e0b0`, `e0b1`, `e0b2`, `e0b3`, `e0b4`, `e0b5`, `e0b6`, `e0b7`, `e0b8`, `e0b9`, `e0ba`
+
+    `e0bb`, `e0bc`, `e0be`, `e0bf`, `e0c0`, `e0c1`, `e0c2`, `e0c3`, `e0c4`, `e0c5`, `e0c6`
+
+    `e0c7`, `e0c8`, `e0ca`, `e0cc`, `e0cd`, `e0ce`, `e0ce`, `e0cf`, `e0d0`, `e0d1`, `e0d2`, `e0d4`
+
+    
+
+23. 
