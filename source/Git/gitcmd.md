@@ -6,6 +6,7 @@ date: 2022-04-22 17:48:28
 
 2.	Set the name and email of current git repo user
 	Globally
+	
 	```shell
 	$ git config --global user.name <USER_NAME>
 	$ git config --global user.email <EMAIL>
@@ -15,7 +16,7 @@ date: 2022-04-22 17:48:28
 	$ git config --local user.name <USER_NAME>
 	$ git config --local user.email <EMAIL>
 	```
-
+	
 3.	To see the existing configurations, use command
 	```shell
 	$ git config --list
@@ -321,3 +322,13 @@ date: 2022-04-22 17:48:28
     ```
 
     
+
+22. 修改`git`提交`commit`时所使用的编辑器
+
+    ```bash
+    $ git config --global core.editor "vim"
+    ```
+
+    
+
+23. xx
