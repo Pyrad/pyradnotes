@@ -102,6 +102,18 @@ Total Installed Size:  21.12 MiB
 
 
 
+## 安装`man`
+
+Package[页面](https://packages.msys2.org/package/man-pages-posix?repo=msys&variant=x86_64)
+
+```bash
+$ pacman -S man-pages-posix
+```
+
+
+
+
+
 
 
 # Tabby
