@@ -48,6 +48,12 @@
 
 ## MSYS2 Setup
 
+### MSYS2 Packages Page
+
+[Package page link](https://packages.msys2.org/queue)
+
+
+
 ### Terminal 中文显示切换为英文
 
 原因是由于环境变量`LANG`被设定为`zh_CN.UTF-8`。为了切换为英文状态，设定为`C.UTF-8`即可
@@ -72,7 +78,7 @@ reference page：[Windows安装MSYS2 切换zsh_整合cmder](https://www.bbsmax.c
 
 
 
-## 安装`pip`
+### 安装`pip`
 
 注意可以先使用命令查询
 
@@ -102,7 +108,7 @@ Total Installed Size:  21.12 MiB
 
 
 
-## 安装`man`
+### 安装`man`
 
 Package[页面](https://packages.msys2.org/package/man-pages-posix?repo=msys&variant=x86_64)
 
