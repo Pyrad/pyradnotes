@@ -118,7 +118,21 @@ $ pacman -S man-pages-posix
 
 
 
+### 安装`cgdb`
 
+不使用`pacman -S cgdb`（看起来会导致python的版本降低）
+
+在[Package Index](https://packages.msys2.org/queue)中搜索`cgdb`，点击搜索出来的结果进入对应的Package infor页面，在对应的页面中下载如下的文件
+
+File：[https://mirror.msys2.org/msys/x86_64/cgdb-0.7.1-3-x86_64.pkg.tar.xz](https://mirror.msys2.org/msys/x86_64/cgdb-0.7.1-3-x86_64.pkg.tar.xz)
+
+下载之后，解压tar ball，把对应的目录拷贝到`/home/Pyrad/procs`下面去，并把`cgdb`设置为alias
+
+```bash
+alias cgdb='/home/Pyrad/procs/cgdb/bin/cgdb'
+```
+
+安装之后，记得在`~/.cgdb/cgdbrc`文件中设定箭头的类型（[官方文档](http://cgdb.github.io/docs/cgdb.html)）
 
 
 
