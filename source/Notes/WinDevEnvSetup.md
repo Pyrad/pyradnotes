@@ -168,7 +168,7 @@ alias cgdb='/home/Pyrad/procs/cgdb/bin/cgdb'
 
   - **TERM**：这项**十分重要**，不能随便乱写，否则会导致**退格键异常**（每按键Backspace一次，光标不能删除左边的字符，反而向右移动一格），这里填写`cygwin`即可。
 
-  - Icon：这项目前还不清楚如何设置才能使tab显示图标
+  - Icon：这项目前还不清楚如何设置才能使tab显示图标（已经于2022-06-25解决，即用`html`标记的写法：`<img src="D:/procs/msys64/mingw64.ico">`）
 
 
 
