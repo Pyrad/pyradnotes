@@ -1,36 +1,34 @@
-# pyradnotes
+# A Tour of Life (Pyrad Notes!)
 
-#### Description
-Pyrad's Notes
+   ## Description
 
-#### Software Architecture
-Software architecture description
+   This is a notebook for Pyrad. 
 
-#### Installation
+   It's old name is *Pyrad's Notes*, and it was originally created on **Gitee**, and all kinds of useful notes are kept down here to remind me of something interesting. Yes, all kinds.
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+   I changed the name to **A Tour of Life** from **Pyrad Notes!**, as I think it's the time to find a place keep down all things over my mind, and to find a way to track my life. Perhaps good, perhaps bad.
 
-#### Instructions
+   All notes are organized by Sphinx + markdown texts, and the web pages are built with help of **ReadTheDocs**.
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+   May 17, 2022 22:28
 
-#### Contribution
+   ## Quick Usage
 
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+   - Download the repository files (or just clone it to local)
 
+   - Use command `make html` to build
 
-#### Gitee Feature
+   - Open the file `.\build\html\index.html` to view notes
 
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+   - Refer to a GIF file in `_static` folder to have a quick look
+
+     ![](D:/Gitee/pyradnotes/source/_static/HowToBuildNotes.gif)
+
+   ## References
+
+   Here are some useful links, relating to **Sphinx**, **reStructuredText**, **ReadTheDocs** and so on.
+
+   - [Sphinx使用手册](https://zh-sphinx-doc.readthedocs.io/en/latest/index.html) （[其目录](https://zh-sphinx-doc.readthedocs.io/en/latest/contents.html)）
+   - [Sphinx Docs](http://www.sphinxsearch.com/docs/)
+   - [reStructuredText(rst)快速入门语法说明](https://www.jianshu.com/p/1885d5570b37)
+   - [*Read the Docs* Tutorial](https://docs.readthedocs.io/en/stable/tutorial/)
