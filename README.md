@@ -1,6 +1,21 @@
 # A Tour of Life (Pyrad Notes!)
 
+## NOTE
+
+This should be ***exactly*** the same for the 2 repositories from 2 different remote:
+
+- Gitee - [Pyrad/pyradnotes](https://gitee.com/pyrad/pyradnotes)
+- Github - [Pyrad/pyradnotes](https://github.com/Pyrad/pyradnotes)
+
+Check the following pages to see how to set multiple remote origins on a same local repo:
+
+- [Multiple Remote Repositories](https://pyrad.github.io/2022/05/16/multiple-remote-repositories/#more)
+- [https://pyrads-notes.readthedocs.io/en/latest/Git/gitcmd.html](https://pyrads-notes.readthedocs.io/en/latest/Git/gitcmd.html)
+
+
+
 ## Description
+
 This is a notebook for Pyrad. 
 
 It's old name is *Pyrad's Notes*, and it was originally created on **Gitee**, and all kinds of useful notes are kept down here to remind me of something interesting. Yes, all kinds.
