@@ -132,13 +132,13 @@
    ```bash
    boost_1_69_0/
    	|---include/
-   	|		|---boost/
-   	|			  |---<all *.hpp headers>
-   	|			  |---<all_header_filer_folders>
+   	|     |---boost/
+   	|          |---<all *.hpp headers>
+   	|          |---<all_header_filer_folders>
    	|			  
    	|---lib/
-   		 |---<all *.so files>
-   		 |---<all *.a files>
+   	     |---<all *.so files>
+   	     |---<all *.a files>
    ```
 
    
