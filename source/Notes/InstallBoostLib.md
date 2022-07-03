@@ -1,4 +1,4 @@
-# Install Boost library (on windows)
+# Install Boost library on windows
 
 
 
@@ -42,8 +42,109 @@
    ...updated 18043 targets...
    ```
 
+
+
+
+# Install Boost library on Linux
+
+
+
+## Steps
+
+1. Make sure `gcc` is installed
+
+2. Download corresponding tar ball from  [official website](https://www.boost.org/).
+
+   We need to pay attention, the `gcc` version should be somewhat applicable to this boost library version.  Otherwise some strange errors come up with compiling.
+
+3. After decompress the tar ball, generate `b2` by using `bootstrap.sh`
+
+   ```bash
+   ./bootstrap.sh  --with-libraries=all --with-toolset=gcc
+   ```
+
    
 
-## Reference
+4. Create a directory for building (not to contaminate current source tree structure)
+
+   ```bash
+   # Give it a name you want
+   # For example, here abs path is: /home/pyrad/swap/boost_1_69_0/PyradBuild
+   mkdir PyradBuild
+   ```
+
+   
+
+5. Use `b2` to compile, specify a build directory in current folder for generating build files (cache, scripts, ...)
+
+   ```bash
+   ./b2 toolset=gcc --build-dir=/home/pyrad/swap/boost_1_69_0/PyradBuild
+   ```
+
+   After it finishes, the following message will appear,
+
+   ```bash
+   The Boost C++ Libraries were successfully built!
+   
+   The following directory should be added to compiler include paths:
+   
+       /home/pyrad/procs/boost_1_72_0
+   
+   The following directory should be added to linker library paths:
+   
+       /home/pyrad/procs/boost_1_72_0/stage/lib
+   ```
+
+   ***Note***
+
+   如果在上面的命令中指定了选项： `--build-type=complete`, 但没有指定`--layout=<versioned|tagged|system>`，那么编译的时候会报错，原因是在linux中，如果指定了`--build-type=complete`，那么就要加上`--layout=versioned`。但这样做会导致生成的`lib`目录中的库文件（`.so`，`.a`）会带有编译器版本，boost library版本等信息的字符串，如下
+
+   ```bash
+   ...
+   libboost_math_c99-gcc9-mt-d-x64-1_69.so
+   libboost_random-gcc9-mt-d-x64-1_69.so
+   libboost_atomic-gcc9-mt-d-x64-1_69.so
+   ...
+   ```
+
+   这样就会导致`cmake`的时候抱怨使用`find_package`不能找到boost library，实际上`cmake`是试图寻找以下这样的名字
+
+   ```bash
+   ...
+   libboost_math_c99.so
+   libboost_random.so
+   libboost_atomic.so
+   ...
+   ```
+
+   在linux中，`--layout`这个选项的默认值是`system`，即产生的库文件名称不带有编译器版本boost库版本等信息（如上）。
+
+   
+
+6. Install the libraries and header files to a path you specify
+
+   ```bash
+   ./b2 install --prefix=<SOME_USER_PATH>
+   ```
+
+   因为没有指定`--layout=versioned`，所以生成的目录结构如下
+
+   ```bash
+   boost_1_69_0/
+   	|---include/
+   	|		|---boost/
+   	|			  |---<all *.hpp headers>
+   	|			  |---<all_header_filer_folders>
+   	|			  
+   	|---lib/
+   		 |---<all *.so files>
+   		 |---<all *.a files>
+   ```
+
+   
+
+
+
+# Reference
 
 [MinGW编译boost库](https://blog.csdn.net/SUKHOI27SMK/article/details/122931498)
