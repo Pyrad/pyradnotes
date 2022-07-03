@@ -121,36 +121,138 @@ Reference articles: [C++ STL 四种智能指针](https://blog.csdn.net/K346K346/
 
 ## std::shared_ptr\<T\>
 
+### Basics
+
 - 被Effective C++称为“引用计数型智能指针”（Reference Counting Smart Pointer，RCSP）
+
+- 基本原理
+
+  - 每个shared_ptr对象内部维护**两个指针**
+    - 第一个**指针**是指向所管理的对象
+    - 第二个**指针**是指向所管理对象的引用计数（注意，这个计数值以指针的方式保存，方便操作）
+
+
+  - 一个简单的示意`SharedPtr`类（仅原理示意）
+
+  ```cpp
+  templat<typename T>;
+  class SharedPtr {
+  public:
+      // ...
+  private:
+      T *_ptr;        // point to a managed object
+      int *_refCount; //should be int*, rather than int
+  };
+  ```
+
+- 特性
+
+  - （**默认构造函数**）创建`shared_pt`新对象，不绑定普通指针，初始化指针，引用计数设置为`0`
+
+    ```cpp
+    ~SharedPtr() : _ptr((T *)0), _refCount(0) {}
+    ```
+
+    
+
+  - （**构造函数**）创建`shared_pt`新对象，绑定普通指针，初始化指针，引用计数设置为`1`
+
+    ```cpp
+    explicit SharedPtr(T *obj) : _ptr(obj), _refCount(new int(1)) {}
+    ```
+
+    
+
+  - （**析构函数**）`shared_ptr`对象离开作用域，通过析构函数来释放所管理的内存，但在释放之前会坚持引用计数，只有其为0时才释放
+
+    ```cpp
+    // check ref count when destructing
+    ~SharedPtr() {
+        if (_ptr && --*_refCount == 0) { delete _ptr; delete _refCount; }
+    }
+    ```
+
+    
+
+  - （**拷贝构造函数**）用一个`shared_ptr`对象初始化另外一个`shared_ptr`对象，引用计数加一，并且指针指向同一片内存
+
+    ```cpp
+    SharedPtr(SharedPtr &other) :
+    	_ptr(other._ptr), _refCount(&(++*other._refCount))
+    ```
+
+    
+
+  - （**赋值运算符重载**）用一个`shared_ptr`对象给另外一个`shared_ptr`对象**赋值**（`=`)，有两步
+
+    - `this`所保存的指针`_ptr`因为要变成指向`other`所保存的指针`_ptr`，所以赋值之前，要将原先的`_refCount`自减`1`（并且检查自减之后是否为`0`，如为`0`，则释放原先的内存）
+    - `this->_ptr`要被赋值为`other->_ptr`，所以`other`所指向的`_refCount`要自增`1`
+
+    ```cpp
+    SharedPtr &operator=(SharedPtr &other){
+        if(this == &other) { return *this; }
+    
+        ++*other._refCount;
+        if (--*_refCount == 0) { delete _ptr; delete _refCount; }
+    
+        _ptr = other._ptr;
+        _refCount = other._refCount;
+        return *this;
+    }
+    ```
+
+    
+
+  - 解引用运算符`*`：直接返回底层引用
+
+    ```cpp
+    T &operator*() {
+        if (_refCount == 0) { return (T*)0; } // or throw exception
+        return *_ptr;
+    }
+    ```
+
+    
+
+  - 指针运算符`->`：
+
+    ```cpp
+    T *operator->() {
+        if(_refCount == 0) { return 0; } // or throw exception
+        return _ptr;
+    }
+    ```
+
+    
+
 - 额外的开销
+
   - `std::shared_ptr<T>`对象包含一个对象的指针，和一个引用计数对象的指针。
   - 时间开销主要在初始化和拷贝操作上，`*`和`->`操作符的开销和`auto_ptr`相同
 
 
 
+### Member Functions (Part)
+
+|   Function    |       Use       |
+| :-----------: | :-------------: |
+|    `get()`    |                 |
+|   `reset()`   |                 |
+| `use_count()` |                 |
+|  `unique()`   | Check if unique |
 
 
 
+### Non-Member Functions (Part)
+
+|        Function         |                   Use                    |
+| :---------------------: | :--------------------------------------: |
+|        `swap()`         | Exchange content of `shared_ptr` objects |
+|     `make_shared()`     |            Make `shared_ptr`             |
+| `static_pointer_cast()` |       Static cast of `shared_ptr`        |
+|     `get_deleter()`     |      Get deleter from `shared_ptr`       |
 
 
-
-### Construction & Destruction
-
-
-
-### Assignment
-
-
-
-### Member Functions
-
-- `get()`
-- `reset()`
-- `swap()`
-- `use_count()`
-- `unique()`
-- `make_shared()`
-- `static_pointer_cast()`
 
 
 
