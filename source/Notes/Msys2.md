@@ -86,7 +86,7 @@ pacman cheatsheet - [link](https://devhints.io/pacman)
 
 MSYS is an variable of CMake - [link](https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html)
 
-
+Remember that I made some changes to file `D:\procs\msys64\mingw64\share\cmake\Modules\FindPackageHandleStandardArgs.cmake`,  remember to restore it by the backup file in a same folder.
 
 
 
