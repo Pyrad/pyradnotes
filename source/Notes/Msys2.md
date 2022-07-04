@@ -66,3 +66,27 @@ reference page：[Windows安装MSYS2 切换zsh_整合cmder](https://www.bbsmax.c
 
 
 
+
+
+
+
+## MSYS2 CMake with boost
+
+
+
+CMake FindBoost doc ([link](https://cmake.org/cmake/help/v3.9/module/FindBoost.html))
+
+A possible workaround/solution mentioned by flynneva - [link](https://github.com/ros-perception/vision_opencv/issues/349)
+
+Guide from MSYS2 - [link](https://www.msys2.org/docs/cmake/)
+
+Another similar issue - [link](https://github.com/giotto-ai/giotto-tda/issues/115)
+
+pacman cheatsheet - [link](https://devhints.io/pacman)
+
+MSYS is an variable of CMake - [link](https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html)
+
+
+
+
+
