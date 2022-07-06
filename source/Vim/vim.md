@@ -94,6 +94,16 @@
 
 其中10就是要替换的第一个关键字所在的行的行号
 
+
+
+## Replace certain words with consecutive numbers
+
+```vim
+:%s/x/\=printf("%d", line('.') - 10)
+```
+
+
+
  
 
 ## 使用range来生成连续整数（[网页链接](https://vim.fandom.com/wiki/Making_a_list_of_numbers)），Eg.
