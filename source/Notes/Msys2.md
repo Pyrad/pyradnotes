@@ -1,4 +1,4 @@
-# MSYS2 Setting Notes
+# MSYS2 Related Setting Notes
 
 
 
@@ -8,7 +8,7 @@
 
 简要步骤
 
-- 下载安装程序
+- 下载安装程序吗
 
 - 安装，并且在安装对话框的最后一步勾选**Run MSYS2 now**（会弹出terminal窗口）
 
