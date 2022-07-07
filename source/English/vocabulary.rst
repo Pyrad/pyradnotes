@@ -36,3 +36,9 @@ Vocabulary  (reStructuredtext)
     * - **contrived**
       - / kənˈtraɪvd /
       - *adj.* 人为的；做作的；不自然的（contrive过去分词）
+    * - **frustum**
+      - / ˈfrʌstəm /
+      - *n.* [数] 截头锥体；平截头体
+    * - **cone**
+      - / koʊn /
+      - *n.* 圆锥体；圆锥形物；锥形路标
