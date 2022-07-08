@@ -10,21 +10,20 @@ A Tour of Life (Pyrad's Notes!)
 
 
 .. list-table:: Quick Link
-    :widths: 20 20 20 20
+    :widths: 20 20 20 20 20
     :header-rows: 0
 
     * - :doc:`Algorithms </AlgorithmsDataStructures/index>`
       - :doc:`C/C++ </CPP/index>`
       - :doc:`Linux </Linux/index>`
       - :doc:`Python </Python/index>`
-    * - :doc:`Golang </Go/index>`
-      - :doc:`Java </Java/index>`
+      - :doc:`Golang </Go/index>`
+    * - :doc:`Java </Java/index>`
       - :doc:`VIM </Vim/index>`
       - :doc:`TODO </TODO/index>`
-    * - :doc:`English </English/index>`
+      - :doc:`English </English/index>`
       - :doc:`Chinese </ChinesePoetry/index>`
-      - 
-      - 
+ 
 
 
 
