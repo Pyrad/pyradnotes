@@ -136,6 +136,15 @@ alias cgdb='/home/Pyrad/procs/cgdb/bin/cgdb'
 
 
 
+#### 安装MSYS2版本的`CMake`
+
+- 要下载安装的cmake版本必须是：**`mingw-w64-x86_64-cmake`**
+  - 这里安装的是**`mingw64/mingw-w64-x86_64-cmake`**
+  - 搜索命令：`pacman -Ss cmake`，然后查找对应的binary
+  - 安装命令：`pacman -S mingw64/mingw-w64-x86_64-cmake`
+
+
+
 #### 安装boost library
 
 - 参考在MSYS2中使用CMake：**[Using CMake in MSYS2](https://www.msys2.org/docs/cmake/)**
@@ -351,7 +360,3 @@ Remember that I made some changes to file `D:\procs\msys64\mingw64\share\cmake\M
     - **添加一项`HOME`环境变量**，`HOME=/home/Pyrad`，否则tabby启动后会把window的用户目录当做`HOME`目录的路径（`HOME=/c/Users/Pyrad`）
 
 
-
-
-
-pacman -Ss pip
