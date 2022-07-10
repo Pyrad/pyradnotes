@@ -7,3 +7,4 @@ This is a section for Vim notes
     :maxdepth: 1
 
     vim
+    vim_plugin
