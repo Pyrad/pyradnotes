@@ -145,6 +145,16 @@ alias cgdb='/home/Pyrad/procs/cgdb/bin/cgdb'
 
 
 
+#### 安装MSYS2版本的`clang`
+
+```bash
+$ pacman -S mingw-w64-clang-x86_64-toolchain
+```
+
+
+
+
+
 #### 安装boost library
 
 - 参考在MSYS2中使用CMake：**[Using CMake in MSYS2](https://www.msys2.org/docs/cmake/)**
@@ -225,7 +235,7 @@ endif()
 
 
 
-#### 编译
+#### CMake 编译
 
 - 使用中推荐的`Ninja` generator
 
@@ -298,6 +308,99 @@ $ cmake ../src/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DBoost_DEBUG=ON
 
 
 
+#### 查找STL header file 头文件目录
+
+在MSYS2的terminal中，可以使用下面的命令查看头文件的目录
+
+```bash
+gcc -v -c -xc++ /dev/null
+```
+
+输出的结果：
+
+```bash
+Pyrad@SSEA MINGW64 /e/temp
+$ gcc -v -c -xc++ /dev/null
+Using built-in specs.
+COLLECT_GCC=D:\procs\msys64\mingw64\bin\gcc.exe
+Target: x86_64-w64-mingw32
+Configured with: ../gcc-12.1.0/configure --prefix=/mingw64 --with-local-prefix=/mingw64/local --build=x86_64-w64-mingw32 --host=x86_64-w64-mingw32 --target=x86_64-w64-mingw32 --with-native-system-header-dir=/mingw64/include --libexecdir=/mingw64/lib --enable-bootstrap --enable-checking=release --with-arch=x86-64 --with-tune=generic --enable-languages=c,lto,c++,fortran,ada,objc,obj-c++,jit --enable-shared --enable-static --enable-libatomic --enable-threads=posix --enable-graphite --enable-fully-dynamic-string --enable-libstdcxx-filesystem-ts --enable-libstdcxx-time --disable-libstdcxx-pch --enable-lto --enable-libgomp --disable-multilib --disable-rpath --disable-win32-registry --disable-nls --disable-werror --disable-symvers --with-libiconv --with-system-zlib --with-gmp=/mingw64 --with-mpfr=/mingw64
+--with-mpc=/mingw64 --with-isl=/mingw64 --with-pkgversion='Rev2, Built by MSYS2 project' --with-bugurl=https://github.com/msys2/MINGW-packages/issues --with-gnu-as --with-gnu-ld --disable-libstdcxx-debug --with-boot-ldflags=-static-libstdc++ --with-stage1-ldflags=-static-libstdc++
+Thread model: posix
+Supported LTO compression algorithms: zlib zstd
+gcc version 12.1.0 (Rev2, Built by MSYS2 project)
+COLLECT_GCC_OPTIONS='-v' '-c' '-mtune=generic' '-march=x86-64'
+ D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/cc1plus.exe -quiet -v -iprefix D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/ -D_REENTRANT nul -quiet -dumpbase nul -mtune=generic -march=x86-64 -version -o D:\procs\msys64\tmp\ccUesFRE.s
+GNU C++17 (Rev2, Built by MSYS2 project) version 12.1.0 (x86_64-w64-mingw32)
+        compiled by GNU C version 12.1.0, GMP version 6.2.1, MPFR version 4.1.0-p13, MPC version 1.2.1, isl version isl-0.24-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+ignoring nonexistent directory "D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/include"
+ignoring duplicate directory "D:/procs/msys64/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../include/c++/12.1.0"
+ignoring duplicate directory "D:/procs/msys64/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../include/c++/12.1.0/x86_64-w64-mingw32"
+ignoring duplicate directory "D:/procs/msys64/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../include/c++/12.1.0/backward"
+ignoring duplicate directory "D:/procs/msys64/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/12.1.0/include"
+ignoring nonexistent directory "D:/a/msys64/mingw64/include"
+ignoring nonexistent directory "/mingw64/include"
+ignoring duplicate directory "D:/procs/msys64/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/12.1.0/include-fixed"
+ignoring nonexistent directory "D:/procs/msys64/mingw64/lib/gcc/../../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/include"
+ignoring nonexistent directory "D:/a/msys64/mingw64/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../include/c++/12.1.0
+ D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../include/c++/12.1.0/x86_64-w64-mingw32
+ D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../include/c++/12.1.0/backward
+ D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/include
+ D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../include
+ D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/include-fixed
+End of search list.
+GNU C++17 (Rev2, Built by MSYS2 project) version 12.1.0 (x86_64-w64-mingw32)
+        compiled by GNU C version 12.1.0, GMP version 6.2.1, MPFR version 4.1.0-p13, MPC version 1.2.1, isl version isl-0.24-GMP
+
+GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+Compiler executable checksum: a11494dd7faf8c9fd9d9562fe7dfbb73
+COLLECT_GCC_OPTIONS='-v' '-c' '-mtune=generic' '-march=x86-64'
+ D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/bin/as.exe -v -o nul.o D:\procs\msys64\tmp\ccUesFRE.s
+GNU assembler version 2.38 (x86_64-w64-mingw32) using BFD version (GNU Binutils) 2.38
+COMPILER_PATH=D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/;D:/procs/msys64/mingw64/bin/../lib/gcc/;D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/bin/
+LIBRARY_PATH=D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/;D:/procs/msys64/mingw64/bin/../lib/gcc/;D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/lib/../lib/;D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../lib/;D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/lib/;D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../
+COLLECT_GCC_OPTIONS='-v' '-c' '-mtune=generic' '-march=x86-64'
+```
+
+
+
+使用`clang`也可以得到类似的结果
+
+```bash
+clang -v -c -xc++ /dev/null
+```
+
+输出结果：
+
+```bash
+Pyrad@SSEA MINGW64 /e/temp
+$ /clang64/bin/clang -v -c -xc++ /dev/null
+clang version 14.0.4
+Target: x86_64-w64-windows-gnu
+Thread model: posix
+InstalledDir: D:/procs/msys64/clang64/bin
+ (in-process)
+ "D:/procs/msys64/clang64/bin/clang.exe" -cc1 -triple x86_64-w64-windows-gnu -emit-obj -mrelax-all --mrelax-relocations -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name nul -mrelocation-model pic -pic-level 2 -mframe-pointer=none -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -mms-bitfields -funwind-tables=2 -target-cpu x86-64 -tune-cpu generic -mllvm -treat-scalable-fixed-error-as-warning -debugger-tuning=gdb -v -fcoverage-compilation-dir=E:/temp -resource-dir D:/procs/msys64/clang64/lib/clang/14.0.4 -internal-isystem D:/procs/msys64/clang64/x86_64-w64-mingw32/include/c++/v1 -internal-isystem D:/procs/msys64/clang64/include/c++/v1 -internal-isystem D:/procs/msys64/clang64/lib/clang/14.0.4/include -internal-isystem D:/procs/msys64/clang64/x86_64-w64-mingw32/include -internal-isystem D:/procs/msys64/clang64/include -fdeprecated-macro -fdebug-compilation-dir=E:/temp -ferror-limit 19 -fmessage-length=135 -fno-use-cxa-atexit -fgnuc-version=4.2.1 -fcxx-exceptions -fexceptions -exception-model=seh -fcolor-diagnostics -faddrsig -o nul.o -x c++ nul
+clang -cc1 version 14.0.4 based upon LLVM 14.0.4 default target x86_64-w64-windows-gnu
+ignoring nonexistent directory "D:/procs/msys64/clang64/x86_64-w64-mingw32/include/c++/v1"
+ignoring nonexistent directory "D:/procs/msys64/clang64/x86_64-w64-mingw32/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ D:/procs/msys64/clang64/include/c++/v1
+ D:/procs/msys64/clang64/lib/clang/14.0.4/include
+ D:/procs/msys64/clang64/include
+End of search list.
+```
+
+
+
+
+
 #### MSYS2 CMake with boost issues
 
 
@@ -358,5 +461,4 @@ Remember that I made some changes to file `D:\procs\msys64\mingw64\share\cmake\M
   
     - **TERM**：这项**十分重要**，不能随便乱写，否则会导致**退格键异常**（每按键Backspace一次，光标不能删除左边的字符，反而向右移动一格），这里填写`cygwin`即可。
     - **添加一项`HOME`环境变量**，`HOME=/home/Pyrad`，否则tabby启动后会把window的用户目录当做`HOME`目录的路径（`HOME=/c/Users/Pyrad`）
-
 
