@@ -316,6 +316,8 @@ $ cmake ../src/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DBoost_DEBUG=ON
 gcc -v -c -xc++ /dev/null
 ```
 
+如果是window powershell，用`null`代替`/dev/null`
+
 输出的结果：
 
 ```bash
