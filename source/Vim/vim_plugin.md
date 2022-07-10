@@ -43,3 +43,71 @@ let g:coc_data_home = 'D:/procs/VimVersion9/vimfiles/coc_nvim_files/data_home'
 ```
 
 该命令会打开一个名为`$coc_config_home/coc-settings.json`的目录，其中`$coc_config_home`见上面的设定，如果没有修改，默认在windows下是`~/AppData/Local/coc`。
+
+
+
+
+
+
+
+## vim-mark
+
+GitHub [link](https://github.com/inkarkat/vim-mark)
+
+Vim-script [link](https://www.vim.org/scripts/script.php?script_id=1238)
+
+
+
+安装（注意，需要同时安装`vim-ingo-library`才能使用）
+
+```vim
+Plug 'inkarkat/vim-ingo-library'
+Plug 'inkarkat/vim-mark'
+```
+
+vim中打开帮助文档
+
+```vim
+:h mark.txt
+```
+
+
+
+
+
+## tagbar
+
+安装（注意，需要同时安装`ctags`才能使用）
+
+注意，'majutsushi/tagbar'似乎不再维护了
+
+```vim
+# Plug 'majutsushi/tagbar'
+Plug 'preservim/tagbar'
+```
+
+根据[preservim/**tagbar**](https://github.com/preservim/tagbar)说明，使用[universal-ctags/**ctags**](https://github.com/universal-ctags)，下载页面是[universal-ctags/**ctags-win32**](https://github.com/universal-ctags)，[release page](https://github.com/universal-ctags/ctags-win32/releases)，下载完成后直接解压到一个目录即可，然后再`vimrc`中设置`ctags`路径
+
+```vim
+""" ------------------------------------------------------
+""" tagbar
+""" ------------------------------------------------------
+function s:setup_tagbar()
+    nmap <F2> :TagbarToggle<CR>
+    ""let g:tagbar_ctags_bin = '~/proc/ctags5.8/bin/ctags'
+    ""let g:tagbar_ctags_bin = '/usr/bin/ctags'
+    let g:tagbar_ctags_bin = 'D:/procs/ctags59/ctags.exe'
+    let g:tagbar_width = 30
+    let g:tagbar_left = 1
+    " Set sort order to 0, it will list the tags in the
+    " order where they appear in the source file, other
+    " than alphabetic order
+    let g:tagbar_sort = 0
+    ""map <F3> :Tagbar<CR>
+endfunction " End of function s:setup_tagbar
+```
+
+
+
+
+
