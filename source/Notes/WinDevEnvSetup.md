@@ -464,3 +464,15 @@ Remember that I made some changes to file `D:\procs\msys64\mingw64\share\cmake\M
     - **TERM**：这项**十分重要**，不能随便乱写，否则会导致**退格键异常**（每按键Backspace一次，光标不能删除左边的字符，反而向右移动一格），这里填写`cygwin`即可。
     - **添加一项`HOME`环境变量**，`HOME=/home/Pyrad`，否则tabby启动后会把window的用户目录当做`HOME`目录的路径（`HOME=/c/Users/Pyrad`）
 
+
+
+
+
+## VIM
+
+### 安装注意事项
+
+因为vim的很多plugin需要用到python的支持（目前主要是python3了），所以要注意
+
+- 下载的vim 32/64bit的版本要和本地的python3的32/64bit的版本一致，否则`:echo has("python3")`永远返回`0`（即vim是64bit版本，那么python也要是64bit版本）
+- 
