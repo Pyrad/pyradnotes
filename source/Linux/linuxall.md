@@ -82,3 +82,25 @@ if [[ $OS_INFO -eq "CYGWIN_NT" ]]; then
 fi
 ```
 
+
+
+## Check fonts in Linux
+
+字体列表
+
+```bash
+fc-list
+```
+
+中文字体
+
+```bash
+fc-list :lang=zh
+```
+
+查看字体详情
+
+```bash
+fc-match -v "FontName"
+```
+
