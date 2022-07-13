@@ -5,6 +5,19 @@ date: 2022-05-19 19:34:26
 
 ## Sphinx Installation
 
+### Python Support
+
+First of all, make sure Python is installed, and currently for `sphinx`, 3.6+ is required. After Python is installed, add the following to the `PATH` variable
+
+```bash
+C:\Python36
+C:\Python36\Scripts
+```
+
+Here is the doc reference when Python is not correctly set: [Install Python for Most Features](https://docs.restructuredtext.net/articles/prerequisites.html#install-python-for-most-features)
+
+
+
 ### Install `sphinx` with `pip`
 
 ```sh
@@ -247,5 +260,4 @@ pip install rstcheck
 ```
 
 **After** all done, restart ***Visual Studio Code***, otherwise the **preview** may not work properly.
-
 
