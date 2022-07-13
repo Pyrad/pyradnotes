@@ -8,3 +8,4 @@ This is a section for Vim notes
 
     vim
     vim_plugin
+    vim_install
