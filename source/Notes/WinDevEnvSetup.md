@@ -480,6 +480,18 @@ Remember that I made some changes to file `D:\procs\msys64\mingw64\share\cmake\M
 
 ## VIM
 
+### 安装Tcl
+
+查看tcl官网，并按照说明安装：[tcl.tk](https://www.tcl.tk/)
+
+- 可以下载源码，并编译安装：[**Source code download**](https://www.tcl.tk/software/tcltk/download.html)
+- 也可以下载由第三方编译好的binary版本：[**Binary distributions**](https://www.tcl.tk/software/tcltk/bindist.html)
+- 这里由于下载ActiveTcl需要先注册，所以下载[IronTcl](https://www.irontcl.com/)，按照其网站说明，直接解压即可使用
+  - Download link：[Tcl/Tk 8.6.7 (x64)](https://www.irontcl.com/downloads/irontcl-amd64-8.6.7.zip) 
+  - Extract the downloaded [**ZIP archive**](https://en.wikipedia.org/wiki/Zip_(file_format)) to the base directory where Tcl/Tk should be installed, while preserving path information.
+  - Optionally, add the directory `<base>\Tcl\bin` to the [**PATH**](https://en.wikipedia.org/wiki/PATH_(variable)) environment variable.
+  - Optionally, create a copy of the file `<base>\Tcl\bin\tclsh86t.exe` named `<base>\Tcl\bin\tclsh.exe` (i.e. in the same directory) to ease integration with other software packages.
+
 ### 安装注意事项
 
 因为vim的很多plugin需要用到python的支持（目前主要是python3了），所以要注意
