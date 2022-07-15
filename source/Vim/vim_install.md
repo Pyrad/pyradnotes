@@ -42,7 +42,7 @@
 
    
 
-6. After build complete, `gvim.exe` will be created in current folder
+6. After build complete, `gvim.exe` will be created in current `src` folder
 
 7. Remember to set environment variables,
 
@@ -60,6 +60,23 @@
    %PYTHON38%\
    ```
 
+8. 或者可以不用把新版本的python加到`PATH`环境变量中去，但是要在`$VIM\_vimr`中添加对应的变量设置，否则同样地`:echo has("python3")`永远返回`0`
+
+   ```vim
+   " ------------------------------------------------------
+   " Python3 support
+   " ------------------------------------------------------
+   function s:setup_python3_dyn()
+       let &pythonthreedll='D:/procs/python38/python38.dll'
+       let &pythonthreehome='D:/procs/python38
+   endfunction " End of function setup_python3_dyn
+   
+   """ ------------------------------------------------------
+   """ Setup for the coc-nvim
+   """ ------------------------------------------------------
+   function s:setup_python3()
+       let g:python3_host_prog='D:/procs/python38/python.exe'
+   endfunction
    
 
 8. After setting environment variables, check if the python3 is support in Vim
@@ -70,4 +87,8 @@
 
    Now it should return `1`, which means python3 is supported.
 
-9. Re-visit file `INSTALLpc.txt` file to check how to add support for Lua, Ruby, Tcl and others.
+10. Re-visit file `INSTALLpc.txt` file to check how to add support for Lua, Ruby, Tcl and others.
+
+11. In order to use `plug.vim`, download it and put it in folder `D:\procs\Vim9Compiled\vim90\runtime\autoload`, otherwise it can't be found.
+
+9. 

@@ -492,9 +492,141 @@ Remember that I made some changes to file `D:\procs\msys64\mingw64\share\cmake\M
   - Optionally, add the directory `<base>\Tcl\bin` to the [**PATH**](https://en.wikipedia.org/wiki/PATH_(variable)) environment variable.
   - Optionally, create a copy of the file `<base>\Tcl\bin\tclsh86t.exe` named `<base>\Tcl\bin\tclsh.exe` (i.e. in the same directory) to ease integration with other software packages.
 
+
+
+### 安装Python
+
+支持Windows 7的最后一版Python是3.8，可以按照这一版来编译Vim，同时也能满足一些vim插件的要求
+
+需要注意的是，安装完Python之后，记得要设置环境变量
+
+- 设置`PYTHONPATH=C:\Python38`
+- 设置`PYTHONHOME=C:\Python38`
+- 像`PATH`环境变量中添加Python的安装位置`C:\Python38`
+
+注意，如果不设置`PYTHONPATH`或者`PYTHONHOME`，有可能导致`python`或`pip`无法启动，并产生以下错误
+
+```powershell
+PS D:\Gitee\pyradnotes> python
+Fatal Python error: Py_Initialize: unable to load the file system codec
+ModuleNotFoundError: No module named 'encodings'
+```
+
+
+
+### 通过`PIP`安装Python module
+
+#### 安装numpy
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com numpy
+```
+
+安装后显示仅安装了`numpy`一项
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe list
+Package    Version
+---------- -------
+numpy      1.23.1
+pip        22.1.2
+setuptools 49.2.1
+```
+
+#### 安装`pandas`
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com pandas
+```
+
+安装后显示安装了：`pytz, six, python-dateutil, pandas`
+
+```powershell
+... ...
+Installing collected packages: pytz, six, python-dateutil, pandas
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe list
+Package         Version
+--------------- -------
+numpy           1.23.1
+pandas          1.4.3
+pip             22.1.2
+python-dateutil 2.8.2
+pytz            2022.1
+setuptools      49.2.1
+six             1.16.0
+```
+
+安装`sympy`
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sympy
+```
+
+安装后显示安装了：`mpmath, sympy`
+
+```powershell
+... ...
+Installing collected packages: mpmath, sympy
+Successfully installed mpmath-1.2.1 sympy-1.10.1
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe list
+Package         Version
+--------------- -------
+mpmath          1.2.1
+numpy           1.23.1
+pandas          1.4.3
+pip             22.1.2
+python-dateutil 2.8.2
+pytz            2022.1
+setuptools      49.2.1
+six             1.16.0
+sympy           1.10.1
+```
+
+
+
+
+
+
+
 ### 安装注意事项
 
 因为vim的很多plugin需要用到python的支持（目前主要是python3了），所以要注意
 
 - 下载的vim 32/64bit的版本要和本地的python3的32/64bit的版本一致，否则`:echo has("python3")`永远返回`0`（即vim是64bit版本，那么python也要是64bit版本）
+
+- 可以不用把新版本的python加到`PATH`环境变量中去，但是要在`$VIM\_vimr`中添加对应的变量设置，否则同样地`:echo has("python3")`永远返回`0`
+
+  ```vim
+  " ------------------------------------------------------
+  " Python3 support
+  " ------------------------------------------------------
+  function s:setup_python3_dyn()
+      let &pythonthreedll='D:/procs/python38/python38.dll'
+      let &pythonthreehome='D:/procs/python38
+  endfunction " End of function setup_python3_dyn
+  
+  """ ------------------------------------------------------
+  """ Setup for the coc-nvim
+  """ ------------------------------------------------------
+  function s:setup_python3()
+      let g:python3_host_prog='D:/procs/python38/python.exe'
+  endfunction
+  
+
+- 在windows下，如果从source编译安装时，在MSYS2的terminal里，使用如下命令编译
+
+  ```bash
+  $ pwd
+  /d/procs/Vim9Compiled/vim90/src
+  $ make -f Make_ming.mak \
+  	PYTHON3=D:/procs/python38 DYNAMIC_PYTHON3=yes PYTHON3_VER=38
+  ```
+
+  之后生成的`gvim.exe`就在这个`src`目录下面，需要注意的是从源码编译时，根据目录结构，`plug.vim`应该放在`D:\procs\Vim9Compiled\vim90\runtime\autoload`下面，以免启动时无法找到并加载。
+
 - 
+
+- 
+
+- 
+
