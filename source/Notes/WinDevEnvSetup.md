@@ -4,6 +4,16 @@
 
 
 
+## Windows itself
+
+### 关闭休眠功能
+
+- 通过管理员打开命令行，然后执行`powercfg -hibernate off`
+- 通过关闭该睡眠功能，可以删除`C:\hiberfil.sys`文件（文件大概6GB大小）
+- 如想再开启，执行`powercfg -hibernate on`即可
+
+
+
 ## MSYS2 Setting Notes
 
 
