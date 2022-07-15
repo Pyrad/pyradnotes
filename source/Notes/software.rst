@@ -20,3 +20,6 @@ This is to keep down some software programs of daily use or which might be very 
     * - **calibre** 
       - E-book manager
       - `Calibre <https://calibre-ebook.com/>`_
+    * - **RapidEE** 
+      - Rapid Environment Editor
+      - `RapidEE <https://www.rapidee.com/en/about>`_
