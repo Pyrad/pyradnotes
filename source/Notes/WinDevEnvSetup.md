@@ -556,7 +556,7 @@ setuptools      49.2.1
 six             1.16.0
 ```
 
-安装`sympy`
+#### 安装`sympy`
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sympy
@@ -582,9 +582,179 @@ six             1.16.0
 sympy           1.10.1
 ```
 
+#### 安装`sphinx`
+
+```powershell
+D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx
+```
+
+安装后显示安装了：
+
+```powershell
+Installing collected packages: snowballstemmer, alabaster, zipp, urllib3, sphinxcontrib-serializinghtml, sphinxcontrib-qthelp, sphinxcontrib-jsmath, sphinxcontrib-htmlhelp, sphinxcontrib-devhelp, sphinxcontrib-applehelp, pyparsing, Pygments, MarkupSafe, imagesize, idna, docutils, colorama, charset-normalizer, certifi, babel, requests, packaging, Jinja2, importlib-metadata, sphinx
+
+Successfully installed Jinja2-3.1.2 MarkupSafe-2.1.1 Pygments-2.12.0 alabaster-0.7.12 babel-2.10.3 certifi-2022.6.15 charset-normalizer-2.1.0 colorama-0.4.5 docutils-0.18.1 idna-3.3 imagesize-1.4.1 importlib-metadata-4.12.0 packaging-21.3 pyparsing-3.0.9 requests-2.28.1 snowballstemmer-2.2.0 sphinx-5.0.2 sphinxcontrib-applehelp-1.0.2 sphinxcontrib-devhelp-1.0.2 sphinxcontrib-htmlhelp-2.0.0 sphinxcontrib-jsmath-1.0.1 sphinxcontrib-qthelp-1.0.3 sphinxcontrib-serializinghtml-1.1.5 urllib3-1.26.10 zipp-3.8.1
+```
+
+#### 安装`recommonmark`
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com recommonmark
+```
+
+显示安装了：`commonmark, recommonmark`
+
+其他的dependency已经在前面安装过了，所以没有安装
+
+```powershell
+Requirement already satisfied: sphinx>=1.3.1 in d:\procs\python38\lib\site-packages (from recommonmark) (5.0.2)
+Requirement already satisfied: sphinxcontrib-htmlhelp>=2.0.0 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark)
+(2.0.0)
+Requirement already satisfied: Jinja2>=2.3 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (3.1.2)
+Requirement already satisfied: imagesize in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (1.4.1)
+Requirement already satisfied: colorama>=0.3.5 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (0.4.5)
+Requirement already satisfied: sphinxcontrib-serializinghtml>=1.1.5 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (1.1.5)
+Requirement already satisfied: sphinxcontrib-applehelp in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (1.0.2)
+Requirement already satisfied: packaging in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (21.3)
+Requirement already satisfied: requests>=2.5.0 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (2.28.1)
+Requirement already satisfied: babel>=1.3 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (2.10.3)
+Requirement already satisfied: Pygments>=2.0 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (2.12.0)
+Requirement already satisfied: alabaster<0.8,>=0.7 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (0.7.12)
+Requirement already satisfied: snowballstemmer>=1.1 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (2.2.0)
+Requirement already satisfied: sphinxcontrib-jsmath in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (1.0.1)
+Requirement already satisfied: sphinxcontrib-qthelp in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (1.0.3)
+Requirement already satisfied: importlib-metadata>=4.4 in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (4.12.0)
+Requirement already satisfied: sphinxcontrib-devhelp in d:\procs\python38\lib\site-packages (from sphinx>=1.3.1->recommonmark) (1.0.2)
+Requirement already satisfied: pytz>=2015.7 in d:\procs\python38\lib\site-packages (from babel>=1.3->sphinx>=1.3.1->recommonmark) (2022.1)
+Requirement already satisfied: zipp>=0.5 in d:\procs\python38\lib\site-packages (from importlib-metadata>=4.4->sphinx>=1.3.1->recommonmark) (3.8.1)
+Requirement already satisfied: MarkupSafe>=2.0 in d:\procs\python38\lib\site-packages (from Jinja2>=2.3->sphinx>=1.3.1->recommonmark) (2.1.1)
+Requirement already satisfied: idna<4,>=2.5 in d:\procs\python38\lib\site-packages (from requests>=2.5.0->sphinx>=1.3.1->recommonmark)
+(3.3)
+Requirement already satisfied: urllib3<1.27,>=1.21.1 in d:\procs\python38\lib\site-packages (from requests>=2.5.0->sphinx>=1.3.1->recommonmark) (1.26.10)
+Requirement already satisfied: certifi>=2017.4.17 in d:\procs\python38\lib\site-packages (from requests>=2.5.0->sphinx>=1.3.1->recommonmark) (2022.6.15)
+Requirement already satisfied: charset-normalizer<3,>=2 in d:\procs\python38\lib\site-packages (from requests>=2.5.0->sphinx>=1.3.1->recommonmark) (2.1.0)
+Requirement already satisfied: pyparsing!=3.0.5,>=2.0.2 in d:\procs\python38\lib\site-packages (from packaging->sphinx>=1.3.1->recommonmark) (3.0.9)
+Installing collected packages: commonmark, recommonmark
+Successfully installed commonmark-0.9.1 recommonmark-0.7.1
+```
 
 
 
+#### 安装`pandoc`
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com pandoc
+```
+
+显示安装了：`pywin32, ply, plumbum, pandoc`
+
+
+
+#### 安装`sphinx_rtd_theme`
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx_rtd_theme
+```
+
+显示安装了：`docutils, sphinx_rtd_theme`
+
+这里发现其实前面docutils已经安装过了，但`sphinx_rtd_theme`会把之前安装好的卸载掉然后重新安装，导致版本降低了（不知有无问题）
+
+
+
+#### 安装`sphinx_markdown_tables`
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx_markdown_tables
+```
+
+显示安装了：`markdown, sphinx_markdown_tables`
+
+
+
+#### 安装`esbonio`
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com esbonio
+```
+
+显示安装了：`pyspellchecker, appdirs, typing-extensions, typeguard, pydantic, pygls, esbonio`
+
+
+
+#### 安装`sphinx-mathjax-offline `
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx-mathjax-offline
+```
+
+显示安装了：`sphinx-mathjax-offline`
+
+
+
+目前通过`pip`的安装module的状态列表
+
+```powershell
+Package                       Version   Installed by which module
+----------------------------- --------- ------------------------------------
+alabaster                     0.7.12	<-- sphinx
+appdirs                       1.4.4		<-- esbonio
+Babel                         2.9.1		<-- sphinx
+certifi                       2021.5.30	<-- sphinx
+charset-normalizer            2.0.3		<-- sphinx
+colorama                      0.4.4		<-- sphinx
+commonmark                    0.9.1		<-- recommonmark
+dataclasses                   0.8           
+docutils                      0.16		<-- sphinx / sphinx_rtd_theme will uninstall it and re-install again
+esbonio                       0.11.2	<-- esbonio
+greenlet                      1.1.2         
+idna                          3.2		<-- sphinx
+imagesize                     1.2.0		<-- sphinx
+importlib-metadata            4.6.4		<-- sphinx
+Jinja2                        3.0.1		<-- sphinx
+Markdown                      3.3.4		<-- sphinx_markdown_tables
+MarkupSafe                    2.0.1		<-- sphinx
+mpmath                        1.2.1		<-- sympy
+msgpack                       1.0.4         
+numpy                         1.19.5	<-- numpy
+packaging                     21.0		<-- sphinx
+pandas                        1.1.5		<-- pandas
+pandoc                        1.1.0		<-- pandoc
+pip                           21.1.3	+++ 
+plumbum                       1.7.0		<-- pandoc
+ply                           3.11		<-- pandoc
+powerline-status              2.7           
+pydantic                      1.8.2		<-- esbonio
+pygls                         0.11.3	<-- esbonio
+Pygments                      2.9.0		<-- sphinx
+pynvim                        0.4.3         
+pyparsing                     2.4.7		<-- sphinx
+pypiwin32                     223           
+pyspellchecker                0.6.3		<-- esbonio
+python-dateutil               2.8.2		<-- pandas
+pytz                          2021.1	<-- pandas
+pywin32                       301		<-- pandoc
+recommonmark                  0.7.1		<-- recommonmark
+requests                      2.26.0	<-- sphinx
+setuptools                    39.0.1	+++ 
+six                           1.16.0	<-- pandas
+snowballstemmer               2.1.0		<-- sphinx
+Sphinx                        4.1.1		<-- sphinx
+sphinx-markdown-tables        0.0.15	<-- sphinx_markdown_tables
+sphinx-mathjax-offline        0.0.1		<-- sphinx-mathjax-offline 
+sphinx-rtd-theme              0.5.2		<-- sphinx_rtd_theme
+sphinxcontrib-applehelp       1.0.2		<-- sphinx
+sphinxcontrib-devhelp         1.0.2		<-- sphinx
+sphinxcontrib-htmlhelp        2.0.0		<-- sphinx
+sphinxcontrib-jsmath          1.0.1		<-- sphinx
+sphinxcontrib-qthelp          1.0.3		<-- sphinx
+sphinxcontrib-serializinghtml 1.1.5		<-- sphinx
+sympy                         1.9		<-- sympy
+typeguard                     2.13.3	<-- esbonio
+typing-extensions             3.10.0.0	<-- esbonio
+urllib3                       1.26.6	<-- sphinx
+zipp                          3.5.0		<-- sphinx
+```
 
 
 
