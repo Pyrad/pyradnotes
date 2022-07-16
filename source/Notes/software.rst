@@ -23,3 +23,6 @@ This is to keep down some software programs of daily use or which might be very 
     * - **RapidEE** 
       - Rapid Environment Editor
       - `RapidEE <https://www.rapidee.com/en/about>`_
+    * - **SpaceSniffer** 
+      - Visualize file size on disks
+      - `SpaceSniffer <http://www.uderzo.it/main_products/space_sniffer/>`_
