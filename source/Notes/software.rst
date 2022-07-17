@@ -26,3 +26,6 @@ This is to keep down some software programs of daily use or which might be very 
     * - **SpaceSniffer** 
       - Visualize file size on disks
       - `SpaceSniffer <http://www.uderzo.it/main_products/space_sniffer/>`_
+    * - **SumatraPDF** 
+      - PDF (and others) reader. Small, fast, customizable, free.
+      - `SumatraPDF <https://www.sumatrapdfreader.org/free-pdf-reader>`_
