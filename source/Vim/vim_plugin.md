@@ -135,3 +135,35 @@ endfunction " End of function s:setup_tagbar
 
 
 
+### air-line
+
+切换buffer
+
+```vim
+let g:airline#extensions#tabline#buffer_idx_mode = 1
+
+" Hotkey to loop around GUI tabs
+" Next buffer tab
+""nmap <TAB> :bNext<CR>
+nmap <TAB> <Plug>AirlineSelectNextTab
+
+" Previous buffer tab
+""nmap <C-TAB> :bprevious<CR>
+nmap <C-TAB> <Plug>AirlineSelectPrevTab
+
+"" Switch to a specific numbered buffer
+nmap <leader>1 <Plug>AirlineSelectTab1
+nmap <leader>2 <Plug>AirlineSelectTab2
+nmap <leader>3 <Plug>AirlineSelectTab3
+nmap <leader>5 <Plug>AirlineSelectTab5
+nmap <leader>6 <Plug>AirlineSelectTab6
+nmap <leader>7 <Plug>AirlineSelectTab7
+nmap <leader>8 <Plug>AirlineSelectTab8
+nmap <leader>9 <Plug>AirlineSelectTab9
+nmap <leader>0 <Plug>AirlineSelectTab0
+```
+
+注意`<leader>`一般会设定为`,`。
+
+
+
