@@ -46,6 +46,30 @@ let g:coc_data_home = 'D:/procs/VimVersion9/vimfiles/coc_nvim_files/data_home'
 
 
 
+### 自动补全
+
+- 动补全默认是**自动开启**
+
+- 末尾带有`~`符号的是snippet format的补全，需要用`Ctrl + N`（或`Ctrl + P`）选定，然后使用`Ctrl + Y`来展开（expand）
+
+  - 当snippet expand被激活时，可以使用`Ctrl + J`和`Ctrl + K`来跳转到下一个或上一个占位符处（placeholder）。比如，如果选定并展开了`for`这个snippet，那么当前就会插入如下的一段代码
+
+    ```cpp
+    for (init-statement; condition; inc-expression) {
+        statements
+    }
+    ```
+
+    并且当前`init-statement`会被选择并处于插入模式（insert mode），写完初始条件之后，就可以使用`Ctrl + J`跳转到下一处（`condition`）并继续书写。如果需要跳转到上一处，使用`Ctrl + K`。
+
+  - 变量`g:coc_snippet_prev`和`g:coc_snippet_next`可以用来调整跳转快捷键
+
+  - 参考帮助文档中的`coc-snippets`小节查看更多
+
+  - 
+
+
+
 
 
 
