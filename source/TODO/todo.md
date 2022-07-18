@@ -2,6 +2,7 @@
 
 - **CMake**
   - Record time: 2022-05-29 23:52
+  - Finished time: 2022-06-12
 - **GTEST**
   - Record time: 2022-06-06 20:55:26
 - **Valgrind**
