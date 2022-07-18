@@ -316,6 +316,14 @@ $ cmake ../src/ -G Ninja -DCMAKE_BUILD_TYPE=Release -DBoost_DEBUG=ON
 
 
 
+#### 输出`compile_commands.json`文件
+
+```bash
+$ cmake -G Ninja ../src -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+```
+
+
+
 
 
 #### 查找STL header file 头文件目录
