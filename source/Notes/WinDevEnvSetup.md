@@ -14,6 +14,34 @@
 
 
 
+## Visual Studio Code
+
+[Do colorization of inactive preprocessor blocks](https://github.com/Microsoft/vscode-cpptools/issues/1466)
+
+Hey @ivsanro1, thanks for bumping this issue. We added a setting in v0.16.0 to turn this off from settings.json.
+
+To disable the setting:
+
+Navigate to settings.json via the default shortcut of `ctrl + ,` or by using the menu bar `File > Preferences > Settings`
+
+Select User Settings or Workspace Settings in the right panel depending on whether you'd prefer the setting to affect your user settings or your workspace settings
+
+In the settings search bar, enter `C_Cpp.dimInactiveRegions`
+
+Move the cursor to the left side of `C_Cpp.dimInactiveRegions` entry in the Default Settings panel (left panel)
+
+Select the pencil icon
+
+Select `false`
+
+Observe that the `C_Cpp.dimInactiveRegions` entry exists in the user/workspace settings panel (right panel), set to `false`
+
+Observe that inactive regions are no longer colorized
+
+I'll edit my former post with a header so that people stumbling upon this thread don't get confused. Thanks again!
+
+
+
 ## MSYS2 Setting Notes
 
 
