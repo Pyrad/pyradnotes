@@ -836,3 +836,13 @@ zipp                          3.5.0		<-- sphinx
 
 - 
 
+
+
+## Clangd
+
+How to check clangd logs
+
+```bash
+$ clangd --check=/path/to/a/file/in/your/project.cc
+```
+
