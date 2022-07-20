@@ -87,3 +87,35 @@ vtable for 'BaseClass' @ 0x80486c8 (subobject @ 0x804b008):
 vtable for ChildClass + 8 in section .rodata of /home/bazis/test
 ```
 
+
+
+## GDB Prints char* to a file
+
+https://stackoverflow.com/questions/14609577/print-character-array-to-file-in-gdb
+
+```gdb
+(gdb) pi open("myoutput_data.log","w").write(gdb.execute("print jclGlobals->pydata.source",to_string=True))
+```
+
+
+
+https://stackoverflow.com/questions/233328/how-do-i-print-the-full-value-of-a-long-string-in-gdb
+
+This is even better, because it honors the newline/carriage return chars instead of escaping them
+
+```gdb
+call (void)puts(your_string)
+```
+
+
+
+## Print length of char*
+
+需要把`strlen`的返回值做一次转换，如下
+
+```gdb
+(gdb) call strlen(charArr)
+'__strlen_sse2_pminub' has unknown return type; cast the call to its declared return type
+(gdb) call (int)strlen(charArr)
+$6 = 5156
+```
