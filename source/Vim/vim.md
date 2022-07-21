@@ -234,7 +234,7 @@ None of the answers above worked for me so this is what I do:
 
 ## Disable 光标闪设置
 
-```powershell
+```vim
 " Disable all blinking:
 :set guicursor+=a:blinkon0
 
@@ -251,13 +251,13 @@ None of the answers above worked for me so this is what I do:
 
 启动命令
 
-```powershell
+```bash
 vimdiff <FILE_LEFT> <FILE_RIGHT>
 ```
 
 或者
 
-```powershell
+```bash
 vim -d <FILE_LEFT> <FILE_RIGHT>
 ```
 
@@ -298,7 +298,7 @@ How to tell vim how many colors your terminal could be capable of?
 
 In non-interactive mode:
 
-```
+```bash
 vim -s <cmds.file.vim> -es <file.to.modify>
 ```
 
@@ -386,3 +386,47 @@ If you are inside vim, just `:source <vim_script_file>`
 
 
 
+# Vim to check if a plugin is loaded
+
+https://vi.stackexchange.com/questions/10939/how-to-see-if-a-plugin-is-active
+
+```vim
+" Method 1
+g:loaded_<plugin_name>
+
+" Method 2
+if exists("loaded_<plugin_name>")
+" ...
+endif
+```
+
+
+
+# How to find zombie process?
+
+https://askubuntu.com/questions/111422/how-to-find-zombie-process
+
+```bash
+$ ps aux | grep 'Z'
+```
+
+What you get is Zombies and anything else with a Z in it, so you will also get the grep:
+
+```bash
+USER       PID     %CPU %MEM  VSZ    RSS TTY      STAT START   TIME COMMAND
+usera      13572   0.0  0.0   7628   992 pts/2    S+   19:40   0:00 grep --color=auto Z
+usera      93572   0.0  0.0   0      0   ??       Z    19:40   0:00 something
+```
+
+Find the zombie's parent:
+
+```bash
+$ pstree -p -s 93572
+```
+
+Will give you:
+
+
+```bash
+init(1)---cnid_metad(1311)---cnid_dbd(5145)
+```
