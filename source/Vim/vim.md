@@ -386,7 +386,7 @@ If you are inside vim, just `:source <vim_script_file>`
 
 
 
-# Vim to check if a plugin is loaded
+## Vim to check if a plugin is loaded
 
 https://vi.stackexchange.com/questions/10939/how-to-see-if-a-plugin-is-active
 
@@ -402,7 +402,7 @@ endif
 
 
 
-# How to find zombie process?
+## How to find zombie process?
 
 https://askubuntu.com/questions/111422/how-to-find-zombie-process
 
@@ -430,3 +430,15 @@ Will give you:
 ```bash
 init(1)---cnid_metad(1311)---cnid_dbd(5145)
 ```
+
+
+
+## VIM设置python3支持和检测python version
+
+注意vim的版本（64or32）必须和python3的版本一致
+
+python3的版本必须和vim中+python3/dyn所指明的python3版本一致，否则`echo has("python3")`只会返回`0`
+
+https://www.jianshu.com/p/18f06d12348c
+
+https://blog.zengrong.net/post/pyton_support_on_vim/
