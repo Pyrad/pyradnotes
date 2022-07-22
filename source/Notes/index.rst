@@ -16,3 +16,4 @@ Notes
    Msys2
    WinDevEnvSetup
    bash
+   Tcl
