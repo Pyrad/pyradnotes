@@ -4,6 +4,12 @@
 
 
 
+## Homebrew
+
+[What is homebrew?](https://docs.brew.sh/Homebrew-on-Linux)
+
+
+
 ## Windows itself
 
 ### 关闭休眠功能
