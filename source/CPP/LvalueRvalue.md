@@ -28,10 +28,10 @@ Reference page: [右值引用与移动语义](https://zhuanlan.zhihu.com/p/54549
 
 - 具名的变量名（即有名字的变量）
 - 左值引用
-- **右值引用也是左值**
-- 返回左值引用的函数或是操作符重载的调用语句。
-- `a=b`, `a+=b`, 等内置的赋值表达式。
-- **前缀自增自减**。如 `++a`, `--a` 是左值。
+- **右值引用也是左值**（*想想这个比较特别，但实际上就应该是这样*）
+- 返回左值引用的函数或是操作符重载的调用语句
+- `a=b`, `a+=b`, 等内置的赋值表达式
+- **前缀自增自减**。如 `++a`, `--a` 是左值
 - **字符串常量**（这是个例外，见如下例子）
 - 左值引用的类型转换语句。如 `static_cast<int&>(x)`
 
@@ -163,4 +163,86 @@ print(1);
 ```
 
 
+
+### 右值引用
+
+**右值引用只能绑定到右值上**
+
+```cpp
+int b = 2;
+// Error, a rvalue reference can ONLY be bound to a rvalue
+// int&& rref_b = b; // error, here b is a lvalue
+
+int &&rref_2 = 2; // ok
+cout << "rref_2=" << rref_2 << endl; // output 2
+rref_2++;
+cout << "rref_2=" << rref_2 << endl; // output 3
+```
+
+
+
+### 移动语义
+
+可以通过`std::move(...)`把一个**左值**标记为**右值**。
+
+`std::move` 唯一做的事情其实就是个**类型转换**，标记为一个xvalue，
+
+[cppreference](https://en.cppreference.com/w/cpp/utility/move)描述原文：
+
+> In particular, `std::move` produces an [xvalue expression](https://en.cppreference.com/w/cpp/language/value_category) that identifies its argument `t`. It is exactly equivalent to a `static_cast` to an rvalue reference type.
+>
+> Parameters
+>
+> `t` - the object to be moved
+>
+> Return value
+>
+> `static_cast<typename std::remove_reference<T>::type&&>(t)`
+
+
+
+因此，**move 并不作任何的资源转移操作。单纯的 move(x) 不会有任何的性能提升，不会有任何的资源转移。**它的作用仅仅是产生一个标识x的右值表达式。
+
+经过`std::move(...)`移动语义，可以把一个**左值**用**右值引用**绑定
+
+```cpp
+int k = 2;
+// int&& rref_k = k; // error,右值引用只能绑定到右值上，k是一个左值
+int&& rref_k = std::move(k); // ok, std::move(k) 是一个右值，可以用右值引用绑定
+```
+
+
+
+
+
+### 函数重载
+
+当函数参数既有左值引用重载，又有右值引用重载的时候, 我们得到重载规则如下:
+
+- 若传入参数是**非const左值**，调用**非const左值引用**重载函数
+- 若传入参数是**const左值**，调用**const左值引用**重载函数
+- 若传入参数是**右值**，调用**右值引用重载函数**(即使是有 `const` 左值引用重载的情况下)
+
+
+
+```cpp
+void f(int& x) { cout << "lvalue reference overload f(" << x << ")\n"; }
+void f(const int& x) { cout << "lvalue reference to const overload f(" << x << ")\n"; }
+void f(int&& x) { cout << "rvalue reference overload f(" << x << ")\n"; }
+
+int main() {
+    int i = 1;
+    const int ci = 2;
+    f(i);  // calls f(int&)
+    f(ci); // calls f(const int&)
+    f(3);  // calls f(int&&) even if f(const int&) exists
+           // but it would call f(const int&) if f(int&&) overload wasn't provided
+    f(std::move(i)); // calls f(int&&)
+
+    // rvalue reference variables are lvalues when used in expressions
+    int&& x = 1;
+    f(x);            // calls f(int& x)
+    f(std::move(x)); // calls f(int&& x)
+}
+```
 
