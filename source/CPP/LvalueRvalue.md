@@ -246,3 +246,141 @@ int main() {
 }
 ```
 
+
+
+## 真正实现资源转移
+
+### 右值引用重载函数 + 移动语义
+
+如前所述，**单纯的 move 不会有任何的资源转移**，如要实现真正的资源转移，必须要配合如下两者来完成：
+
+- **使用带有右值引用的重载函数**
+- **使用`std::move`语义**
+
+### 例子说明
+
+定义两个`class`如下，第一个类`char_string`和第二个类`char_string`的唯一区别是：第二个类有一个**参数是右值引用的重载的构造函数**（即**移动构造函数**）
+
+```cpp
+class char_string {
+public:
+    char_string(const char *s, const int len) {
+        m_len = len;
+        m_ptr = (char*)malloc(m_len);
+        memcpy(m_ptr, s, m_len);
+        fprintf(stdout, "Constructor of char_string(%s)\n", m_ptr);
+    }
+
+    char_string(const char_string &cs) {
+        m_len = cs.len();
+        m_ptr = (char*)malloc(m_len);
+        memcpy(m_ptr, cs.ptr(), m_len);
+        fprintf(stdout, "Copy constructor of char_string(%s)\n", m_ptr);
+    }
+
+    ~char_string() { if (m_ptr) { free(m_ptr); } }
+
+public:
+    char * ptr() const { return m_ptr; }
+    int len() const { return m_len; }
+
+protected:
+    char *m_ptr;
+    int m_len;
+}; // class char_string
+
+class char_string2 {
+public:
+    char_string2(const char *s, const int len) {
+        m_len = len;
+        m_ptr = (char*)malloc(m_len);
+        memcpy(m_ptr, s, m_len);
+        fprintf(stdout, "Constructor of char_string2(%s)\n", m_ptr);
+    }
+
+    char_string2(const char_string2 &cs) {
+        m_len = cs.len();
+        m_ptr = (char*)malloc(m_len);
+        memcpy(m_ptr, cs.ptr(), m_len);
+        fprintf(stdout, "Copy constructor of char_string2(%s)\n", m_ptr);
+    }
+
+    char_string2(char_string2 &&cs) {
+        m_len = cs.len();
+        m_ptr = cs.ptr();
+        cs.reset_ptr();
+        fprintf(stdout, "Move constructor of char_string2(%s)\n", m_ptr);
+    }
+
+    ~char_string2() { if (m_ptr) { free(m_ptr); } }
+
+public:
+    char * ptr() const { return m_ptr; }
+    int len() const { return m_len; }
+    void reset_ptr() { m_ptr = nullptr; }
+
+protected:
+    char *m_ptr;
+    int m_len;
+}; // class char_string2
+```
+
+
+
+然后如下调用
+
+```cpp
+void test_resource_move() {
+    // test 1
+    std::vector<char_string> cvec;
+    char_string tmp("dogs", 4);
+    cvec.push_back(tmp);
+    cvec.clear();
+
+    // test 2
+    std::vector<char_string2> cvec2;
+    char_string2 tmp2("cats", 4);
+    cvec2.push_back(tmp2);
+    cvec2.clear();
+
+    // test 3
+    char_string2 tmp3("fish", 4);
+    cvec2.push_back(std::move(tmp3));
+    cvec2.clear();
+
+} // test_resource_move
+```
+
+得到的结果如下
+
+```bash
+Constructor of char_string(dogs)
+Copy constructor of char_string(dogs)
+Constructor of char_string2(cats)
+Copy constructor of char_string2(cats)
+Constructor of char_string2(fish)
+Move constructor of char_string2(fish)
+```
+
+可以看到
+
+- `test 1`
+
+  因为`char_string`没有移动构造函数，所以向`cvec`中`push_back`的时候，实际上调用的是`push_back(const & T)`，那么就会在里面调用`char_string`的**拷贝构造函数**。
+
+- `test 2`
+
+  虽然`char_string2`有移动构造函数，但传入`push_back`的是一个左值，所以只会调用`push_back`的左值引用的重载函数，即`push_back(const & T)`，那么同样的，里面调用的仍然是`char_string2`的**拷贝构造函数**。
+
+- `test 3`
+
+  这次向`push_back`**传入的是一个右值**，而`std::vector::push_back`**提供了右值引用的重载函数**，所以实际上调用的是`push_back(&& T)`，那么里面就会调用`char_string2`的**移动构造函数**。
+
+所以，必须要**右值引用重载函数 + 移动语义**两者配合使用，才能真正实现资源的转移。
+
+
+
+
+
+
+
