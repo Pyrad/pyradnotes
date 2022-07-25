@@ -2,6 +2,8 @@
 
 Reference page: [右值引用与移动语义](https://zhuanlan.zhihu.com/p/545494408)
 
+代码文件：[`lvalue_rvalue.hpp`](https://github.com/Pyrad/cpp11/blob/master/src/cppfeatures/lvalue_rvalue.hpp)，[`lvalue_rvalue.cpp`](https://github.com/Pyrad/cpp11/blob/master/src/cppfeatures/lvalue_rvalue.cpp)
+
 ## 三种大概分类
 
 现代 c++ 把表达式分为三种主要类型：
@@ -258,6 +260,8 @@ int main() {
 - **使用`std::move`语义**
 
 ### 例子说明
+
+可以查看源文件代码：[`lvalue_rvalue.hpp`](https://github.com/Pyrad/cpp11/blob/master/src/cppfeatures/lvalue_rvalue.hpp)
 
 定义两个`class`如下，第一个类`char_string`和第二个类`char_string`的唯一区别是：第二个类有一个**参数是右值引用的重载的构造函数**（即**移动构造函数**）
 
