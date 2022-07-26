@@ -402,6 +402,8 @@ Move constructor of char_string2(fish)
 
 ### 万能引用与完美转发
 
+Refer to [现代C++之万能引用、完美转发、引用折叠](https://zhuanlan.zhihu.com/p/99524127)
+
 ### 引用折叠
 
 两种情况下允许出现**引用的引用**
