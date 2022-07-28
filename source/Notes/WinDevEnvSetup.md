@@ -853,9 +853,12 @@ pip uninstall -r packagelist.txt -y
 
 ## Clangd
 
-How to check clangd logs
+### How to check clangd logs
 
 ```bash
 $ clangd --check=/path/to/a/file/in/your/project.cc
 ```
 
+### clangd avoid background indexing
+
+https://github.com/clangd/clangd/issues/479
