@@ -800,7 +800,7 @@ zipp                          3.5.0		<-- sphinx
 
 
 
-### 安装注意事项
+#### 安装注意事项
 
 因为vim的很多plugin需要用到python的支持（目前主要是python3了），所以要注意
 
@@ -836,11 +836,18 @@ zipp                          3.5.0		<-- sphinx
 
   之后生成的`gvim.exe`就在这个`src`目录下面，需要注意的是从源码编译时，根据目录结构，`plug.vim`应该放在`D:\procs\Vim9Compiled\vim90\runtime\autoload`下面，以免启动时无法找到并加载。
 
-- 
 
-- 
 
-- 
+#### How to uninstall some/all Python packages?
+
+[Reference page](https://stackoverflow.com/questions/11248073/what-is-the-easiest-way-to-remove-all-packages-installed-by-pip)
+
+```bash
+pip freeze > packagelist.txt
+pip uninstall -r packagelist.txt -y
+```
+
+
 
 
 
