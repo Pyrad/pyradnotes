@@ -48,6 +48,35 @@ I'll edit my former post with a header so that people stumbling upon this thread
 
 
 
+### C++ setting in VSCode
+
+```json
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "C:\\path\\to\\gcc.exe",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}
+```
+
+
+
+
+
 ## MSYS2 Setting Notes
 
 
