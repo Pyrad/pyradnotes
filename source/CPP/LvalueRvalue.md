@@ -447,9 +447,9 @@ rref&& r4 = 1; // type of r4 is int&&
 
 ### 万能引用
 
-万能引用（Universal Reference）又被叫做**转发引用**，**它既可能是左值引用，又可能是右值引用**，有以下两种情况
+万能引用（Universal Reference）又被叫做**转发引用**，**它既可能是左值引用，又可能是右值引用**，有以下两种情况（*实际上还有其他情况，这里没展开说明*）
 
-- 函数参数是**`T &&`**, 且**`T`是这个函数模板的模板类型**
+- **函数参数**是**`T &&`**, 且**`T`是这个函数模板的模板类型**（注意是**函数参数**！**函数参数**！）
 - **`auto &&`**，并且不能是由初始化列表推断出来
 
 ```cpp
@@ -466,10 +466,144 @@ auto&& vec = foo();
 
 
 
-### 万能引用出现的情况
+### 如何区分是否为万能引用
+
+因为`&&`在有的情况下可以表示***右值引用***，但有的时候又是***万能引用***，所以需要一定的规则去判断和区分。
+
+一般地，万能引用（universal reference）有如下定义
 
 > If a variable or parameter is declared to have type **T&&** for some **deduced type** `T`, that variable or parameter is a *universal reference*.
 > 如果一个变量或者参数被声明为**T&&**，其中T是**被推导**的类型，那这个变量或者参数就是一个*universal reference*。
+
+根据万能引用的特点，想要正确使用万能，就需要解答两个问题
+
+- 如何区分一个引用（`&&`）是否是万能引用？
+- 如果是万能引用，如何区分是左值引用还是右值引用？
+
+下面继续介绍
+
+
+
+#### 是否为万能引用？
+
+记住：***只有在发生类型推导*** 的时候 **`&&`** 才代表 **universal reference**
+
+- 一种最常见的情形
+
+```cpp
+template<typename T>
+void f(T&& param);
+```
+
+这种情况，在调用函数`f`的时候，就需要推断参数`param`的类型，那么这时候`T&&`就是一个万能引用（但具体是左值引用还是右值引用，需要再根据下面的规则判断）
+
+- 几个其他显而易见容易判断的例子
+
+```cpp
+template<typename T>
+class Widget {
+    // ...
+    Widget(Widget&& rhs);        // fully specified parameter type ⇒ no type deduction;
+    // ...                       // && ≡ rvalue reference
+};
+ 
+
+```
+
+上面这个例子里面，虽然有类的模板参数`T`，但`Widget&& rhs`显然没有发生类型推导，所以`Widget&&`显然不是万能引用
+
+```cpp
+template<typename T1>
+class Gadget {
+    // ...
+    template<typename T2>
+    Gadget(T2&& rhs);            // deduced parameter type ⇒ type deduction;
+    // ...                       // && ≡ universal reference
+};
+```
+
+上面这个例子里面，类的模板参数是`T1`，除此之外，构造函数同时也是一个函数模板，它的参数是`T2&& rhs`，所以哪怕这个`Gadget`类已经实例化了，但构造一个`Gadget`类的对象，同样需要推导`rhs`的类型，所以这时候`T2&& rhs`就是一个万能引用。
+
+```cpp
+void f(Widget&& param);          // fully specified parameter type ⇒ no type deduction;
+                                 // && ≡ rvalue reference
+```
+
+上面这个例子，显然没有发生类型推导，所以不是万能引用，仅仅是右值引用而已（虽然万能引用最后也可能是绑定到右值的右值引用）
+
+- 容易混淆的几个例子
+
+```cpp
+template<typename T>
+void f(std::vector<T>&& param);     // “&&” means rvalue reference
+```
+
+上面这个函数，这里，同时有类型推导和一个带“`&&`”的参数，但是参数确不具有 “`T&&`” 的形式，而是 “`std::vector<t>&&`”。其结果就是，参数就只是一个普通的rvalue reference，而不再是universal reference。
+
+```cpp
+template<typename T>
+void f(const T&& param);               // “&&” means rvalue reference
+```
+
+上面这个函数，“`T&&`” 正是universal reference所需要的形式，但因为加了`const`，就不再是万能引用了。
+
+```cpp
+template <class T, class Allocator = allocator<T> >
+class vector {
+public:
+    ...
+    void push_back(T&& x);       // fully specified parameter type ⇒ no type deduction;
+    ...                          // && ≡ rvalue reference
+};
+```
+
+上面这个例子，`T`是模板参数，函数参数`T&& x`确实也具有`T&&`的形式，但它却不是universal reference。
+
+这是因为，一旦`class vector`被实例化了之后，`T`的具体类型就被确定下来了，而此时`T&& x`就完全不需要推导类型，因此它并不是一个万能引用，而仅仅是一个rvalue reference。
+
+举个例子如下，
+
+```cpp
+Widget makeWidget();             // factory function for Widget
+std::vector<Widget> vw;
+...
+Widget w;
+vw.push_back(makeWidget());      // create Widget from factory, add it to vw
+```
+
+代码中对 `push_back` 的使用会让编译器实例化类 `std::vector<Widget>` 相应的函数。这个`push_back` 的声明看起来就会像这样
+
+```cpp
+void std::vector<Widget>::push_back(Widget&& x);
+```
+
+所以，显然就不是一个万能引用了。
+
+作为对比，`std::vector` 的`emplace_back`，它类似如下的代码片段
+
+```cpp
+template <class T, class Allocator = allocator<T> >
+class vector {
+public:
+    ...
+    template <class... Args>
+    void emplace_back(Args&&... args); // deduced parameter types ⇒ type deduction;
+    ...                                // && ≡ universal references
+};
+```
+
+>Here, the type parameter Args is independent of vector’s type parameter T, so
+>Args must be deduced each time emplace_back is called. (Okay, Args is really a
+>parameter pack, not a type parameter, but for purposes of this discussion, we can
+>treat it as if it were a type parameter.)
+>
+>—— *Effective Modern CPP*, Scott Meyers
+
+正如上面引用中提到的，这里确实具有万能引用的形式（`Args&&`），而`args`实际上是一堆参数，而且在函数调用的时候，每个参数都需要被推导，所以，此时`Args&&`就是一个万能引用。
+
+
+
+#### 万能引用是左值引用还是右值引用？
 
 因为万能引用也是**引用**，所以也是**引用**，而且正是万能引用的的initializer决定了它到底代表的是左值引用（lvalue reference）还是右值引用（ rvalue reference）
 
@@ -675,5 +809,6 @@ Move constructor of char_string2(fish)
 ## Reference Pages
 
 - [Microsoft - Lvalues and Rvalues (C++)](https://docs.microsoft.com/en-us/cpp/cpp/lvalues-and-rvalues-visual-cpp?view=msvc-170)
-- [Is it possible to print a variable's type in standard C++?](https://newbedev.com/is-it-possible-to-print-a-variable-s-type-in-standard-c/#:~:text=C%2B%2B11%20update%20to%20a%20very%20old%20question%3A%20Print,which%20can%20turn%20an%20expression%20into%20a%20type.)
-- 
+- [Is it possible to print a variable's type in standard C++?](https://newbedev.com/is-it-possible-to-print-a-variable-s-type-in-standard-c/#)
+- [Modern-cpp-tutorial on the fly by changkun](https://github.com/changkun/modern-cpp-tutorial)
+
