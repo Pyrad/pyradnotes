@@ -413,7 +413,7 @@ target_include_directories(Tutorial PUBLIC
 
 在`TutorialConfig.h.in`文件中，添加如下指令
 
-```shell
+```cpp
 #cmakedefine USE_MYMATH
 ```
 
@@ -1595,7 +1595,7 @@ cmake ../Step8 -G "Unix Makefiles"
 
 但之后不用编译，而是直接运行`ctest`
 
-```cmake
+```bash
 ctest -VV -D Experimental
 ```
 
@@ -1889,7 +1889,7 @@ target_link_libraries(MathFunctions PRIVATE SqrtLibrary)
 
 编译（打开`USE_MYMATH`宏）
 
-```cmake
+```bash
 cmake ../Step9 -G "Unix Makefiles" -DUSE_MYMATH=ON
 cmake --build .
 ```

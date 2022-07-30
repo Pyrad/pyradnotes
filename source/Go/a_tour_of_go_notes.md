@@ -357,7 +357,7 @@ go install golang.org/x/website/tour@latest
   ```go
   // 最后打印出来的顺序是Hello, world!
   func print() {
-      defer fmt.Println("world!)
+      defer fmt.Println("world!")
       fmt.Println("Hello, ")
   }
   

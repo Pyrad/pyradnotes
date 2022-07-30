@@ -4,7 +4,7 @@ This is to keep all possible stuffs related to GDB
 
 ## 打印函数里面的static variable
 
-```gdb
+```bash
 (gdb) p 'longc_perf_test::longc_perf_cnt_7()::cnt'
 ```
 
@@ -16,7 +16,7 @@ This is to keep all possible stuffs related to GDB
 
 [https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_109.html](https://ftp.gnu.org/old-gnu/Manuals/gdb/html_node/gdb_109.html)
 
-```gdb
+```bash
 whatis variable_name
 
 ptype variable_name
@@ -26,8 +26,8 @@ ptype variable_name
 
 ## 查看gdb是否在编译时期设置了python support
 
-```shell
-gdb --configuration
+```bash
+(gdb) gdb --configuration
 ```
 
 
@@ -50,7 +50,7 @@ gdb --configuration
 
 - Write the desired input to a file "input.txt", then redirect in gdb
 
-  ```shell
+  ```bash
   (gdb) r program-arg-list < input.txt
   ```
 
@@ -60,7 +60,7 @@ gdb --configuration
 
 ## GDB 查看所加载程序的参数
 
-```gdb
+```bash
 (gdb) show args
 ```
 
@@ -68,9 +68,9 @@ gdb --configuration
 
 ## GDB check vtable from a pointer/reference to base class object
 
-```gdb
+```bash
 (gdb) run
-Starting program: /home/bazis/test
+#Starting program: /home/bazis/test
 
 Program received signal SIGTRAP, Trace/breakpoint trap.
 main (argc=1, argv=0xbffff064) at test.cpp:23
@@ -93,7 +93,7 @@ vtable for ChildClass + 8 in section .rodata of /home/bazis/test
 
 https://stackoverflow.com/questions/14609577/print-character-array-to-file-in-gdb
 
-```gdb
+```bash
 (gdb) pi open("myoutput_data.log","w").write(gdb.execute("print jclGlobals->pydata.source",to_string=True))
 ```
 
@@ -103,7 +103,7 @@ https://stackoverflow.com/questions/233328/how-do-i-print-the-full-value-of-a-lo
 
 This is even better, because it honors the newline/carriage return chars instead of escaping them
 
-```gdb
+```bash
 call (void)puts(your_string)
 ```
 
@@ -113,7 +113,7 @@ call (void)puts(your_string)
 
 需要把`strlen`的返回值做一次转换，如下
 
-```gdb
+```bash
 (gdb) call strlen(charArr)
 '__strlen_sse2_pminub' has unknown return type; cast the call to its declared return type
 (gdb) call (int)strlen(charArr)

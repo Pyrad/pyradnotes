@@ -80,18 +80,18 @@ Reference articles: [C++ STL 四种智能指针](https://blog.csdn.net/K346K346/
   ```cpp
   std::unique_ptr<string> demo(const char *s) {
       std::unique_ptr<string> temp(new string(s));
-      return temp; // 临时变量，右值
+      return temp; // A temporary value, which is an rvalue
   }
   
   std::unique_ptr<string> ps;
-  ps = demo('Unique Special Case') // 此时允许拷贝
+  ps = demo("Unique Special Case") // allow copy sematics
   ```
 
 - `std::uniqute_ptr<T>`可以管理动态数组，因为它有`std::uniqute_ptr<T[]>`的重载版本，销毁动态对象时使用`delete T[]`
 
   ```cpp
   std::uniqute_ptr<int []> p(new int[3]{0, 1, 2});
-  p[0] = 0; // 重载了operator[]
+  p[0] = 0; // overloaded: operator[]
   ```
 
 - `std::uniqute_ptr<T, D>`可以自定义删除操作（deleter）
