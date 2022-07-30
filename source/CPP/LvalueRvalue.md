@@ -356,6 +356,8 @@ result()
 
 等到`process_shape`调用完毕，按照临时变量的构造顺序的**逆序**，依次析构`circle`和`triangle`。
 
+
+
 ### 有声明周期延长
 
 为方便对临时对象的使用，C++ 对临时对象有**特殊的生命周期延长规则**
@@ -396,6 +398,113 @@ result()
 ```
 
 可以看到，直到`process_shape`函数构造`result`时的打印顺序都是一致的，但离开了`process_shape`函数的作用域之后，发现构造的临时对象`result()`并没有被析构，反而是等到了连传入`process_shape`的临时参数都析构了之后，在离开调用它的函数`test_has_extend`的时候，才被析构。
+
+
+
+## 万能引用与完美转发
+
+Refer to [现代C++之万能引用、完美转发、引用折叠](https://zhuanlan.zhihu.com/p/99524127)
+
+万能引用，即**Forwarding Reference**，a.k.a **Universal Reference**
+
+### 引用折叠
+
+两种情况下允许出现**引用的引用**
+
+- **模板**
+- **typedef**
+
+这些引用会按照一定的规则最终折叠起来
+
+- **右值引用的右值引用**折叠为**右值引用**
+- 其他所有类型折叠为**左值引用**
+
+举例
+
+```cpp
+typedef int&  lref;
+typedef int&& rref;
+int n;
+
+lref&  r1 = n; // type of r1 is int&
+lref&& r2 = n; // type of r2 is int&
+rref&  r3 = n; // type of r3 is int&
+rref&& r4 = 1; // type of r4 is int&&
+```
+
+
+
+### 符号`&&`
+
+类型声明中，`&&`并不总意味着右值引用（rvalue reference），它实际上可以代表两种含义
+
+- **rvalue reference，右值引用**
+- **lvalue reference，左值引用**
+
+就是说，有时候，`&&`看上去像是一个右值引用（rvalue reference），实际上却代表一个左值引用（lvalue reference，`&`）。
+
+
+
+### 万能引用
+
+万能引用（Universal Reference）又被叫做**转发引用**，**它既可能是左值引用，又可能是右值引用**，有以下两种情况
+
+- 函数参数是**`T &&`**, 且**`T`是这个函数模板的模板类型**
+- **`auto &&`**，并且不能是由初始化列表推断出来
+
+```cpp
+// Case 1
+template<class T>
+int f(T&& x) // x is a forwarding reference
+{
+    // ...
+}
+
+// Case 2
+auto&& vec = foo();
+```
+
+
+
+### 万能引用出现的情况
+
+> If a variable or parameter is declared to have type **T&&** for some **deduced type** `T`, that variable or parameter is a *universal reference*.
+> 如果一个变量或者参数被声明为**T&&**，其中T是**被推导**的类型，那这个变量或者参数就是一个*universal reference*。
+
+因为万能引用也是**引用**，所以也是**引用**，而且正是万能引用的的initializer决定了它到底代表的是左值引用（lvalue reference）还是右值引用（ rvalue reference）
+
+- **如果用来初始化universal reference的表达式是一个左值，那么universal reference就变成lvalue reference**
+- **如果用来初始化universal reference的表达式是一个右值，那么universal reference就变成rvalue reference**
+
+
+
+根据前面的万能引用出现的情况，利用`auto`做如下举例
+
+- Part 1中，`curf`是一个**右值引用**，所以它是**左值**（具名变量就是左值），那么用一个左值去初始化`auto &&r`，那么实际上得到的`r`，就是一个**左值引用**！而且可以取得其地址
+- Part 2中，`v`是`std::vector`，而重载的运算符`operator[]`返回的实际上是一个**左值引用**(rvalue ref)，即一个左值，所以实际上`auto &&val`是用一个左值去初始化的，所以实际上`val`同样是一个**左值引用**！而且可以取得其地址
+
+```cpp
+// static foo foo::get_foo() { return foo(); }
+// Part 1
+foo &&curf = foo::get_foo();
+auto &&r = curf;
+fprintf(stdout, "The address of r is %p\n", &r); // 0x00000000003cf640
+
+// Part 2
+std::vector<int> v{-1, 0, 1};
+auto &&val = v[0];
+fprintf(stdout, "The address of val is %p\n", &val); // 0x0000000000419f10
+```
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -535,6 +644,14 @@ Move constructor of char_string2(fish)
 
 
 
+
+
+
+
+
+
+
+
 ## 何时实现移动构造函数？
 
 - 移动构造函数对比拷贝构造函数而言，**大多数地方都是相同的复制操作**
@@ -551,79 +668,12 @@ Move constructor of char_string2(fish)
 
 
 
-### 万能引用与完美转发
-
-Refer to [现代C++之万能引用、完美转发、引用折叠](https://zhuanlan.zhihu.com/p/99524127)
-
-### 引用折叠
-
-两种情况下允许出现**引用的引用**
-
-- **模板**
-- **typedef**
-
-这些引用会按照一定的规则最终折叠起来
-
-- **右值引用的右值引用**折叠为**右值引用**
-- 其他所有类型折叠为**左值引用**
-
-举例
-
-```cpp
-typedef int&  lref;
-typedef int&& rref;
-int n;
-
-lref&  r1 = n; // type of r1 is int&
-lref&& r2 = n; // type of r2 is int&
-rref&  r3 = n; // type of r3 is int&
-rref&& r4 = 1; // type of r4 is int&&
-```
 
 
 
 
+## Reference Pages
 
-### 万能引用 （Forwarding Reference，a.k.a Universal Reference）
-
-#### &&
-
-类型声明中，`&&`并不总意味着右值引用（rvalue reference），它实际上可以代表两种含义
-
-- **rvalue reference，右值引用**
-- **lvalue reference，左值引用**
-
-就是说，有时候，`&&`看上去像是一个右值引用（rvalue reference），实际上却代表一个左值引用（lvalue reference，`&`）。
-
-
-
-#### 万能引用
-
-万能引用（Universal Reference）又被叫做**转发引用**，**它既可能是左值引用，又可能是右值引用**，有以下两种情况
-
-- 函数参数是**`T &&`**, 且**`T`是这个函数模板的模板类型**
-- **`auto &&`**，并且不能是由初始化列表推断出来
-
-```cpp
-// Case 1
-template<class T>
-int f(T&& x) // x is a forwarding reference
-{
-    // ...
-}
-
-// Case 2
-auto&& vec = foo();
-```
-
-
-
-#### 万能引用出现的情况
-
-> If a variable or parameter is declared to have type **T&&** for some **deduced type** `T`, that variable or parameter is a *universal reference*.
-> 如果一个变量或者参数被声明为**T&&**，其中T是**被推导**的类型，那这个变量或者参数就是一个*universal reference*。
-
-因为万能引用也是**引用**，所以也是**引用**，而且正是万能引用的的initializer决定了它到底代表的是左值引用（lvalue reference）还是右值引用（ rvalue reference）
-
-- 如果用来初始化universal reference的表达式是一个左值，那么universal reference就变成lvalue reference
-- 如果用来初始化universal reference的表达式是一个右值，那么universal reference就变成rvalue reference
+- [Microsoft - Lvalues and Rvalues (C++)](https://docs.microsoft.com/en-us/cpp/cpp/lvalues-and-rvalues-visual-cpp?view=msvc-170)
+- [Is it possible to print a variable's type in standard C++?](https://newbedev.com/is-it-possible-to-print-a-variable-s-type-in-standard-c/#:~:text=C%2B%2B11%20update%20to%20a%20very%20old%20question%3A%20Print,which%20can%20turn%20an%20expression%20into%20a%20type.)
+- 
