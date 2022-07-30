@@ -20,6 +20,47 @@
 
 
 
+## Windows Powershell
+
+### 修改prompt
+
+reference pages
+
+- [Change the Execution Policy](https://codeyarns.com/tech/2011-07-30-powershell-change-the-execution-policy.html)
+- [Profile Script](https://codeyarns.com/tech/2011-07-30-powershell-profile-script.html)
+- [Change the Color of the Prompt](https://codeyarns.com/tech/2011-09-02-powershell-change-the-color-of-the-prompt.html#:~:text=PowerShell%20opens%20up%20in%20a%20soothing%20white-on-blue%20console,method%20and%20placing%20it%20in%20your%20profile%20script.)
+
+首先，修改**execution policy**
+
+```powershell
+Set-ExecutionPolicy RemoteSigned
+```
+
+其次，powershell默认不会创建`profile script`，因此需要在特定位置创建特定名称的`profile script`文件
+
+可以在`powershell`中键入`$profile`命令，然后得到下面类似的路径以及文件名
+
+```powershell
+C:\Users\Pyrad\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
+```
+
+这个文件其实就相当于`~/.bashrc`文件
+
+如上创建文件，再定义一个函数`Prompt`，这个函数会覆盖默认的`Prompt`函数
+
+```powershell
+function Prompt
+{
+    $promptString = "PS " + $(Get-Location) + ">"
+    Write-Host $promptString -NoNewline -ForegroundColor Yellow
+    return " "
+}
+```
+
+
+
+
+
 ## Visual Studio Code
 
 [Do colorization of inactive preprocessor blocks](https://github.com/Microsoft/vscode-cpptools/issues/1466)
