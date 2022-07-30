@@ -100,7 +100,7 @@ fprintf(stdout, "&\"hello, world\" = %p\n", &"hello, world");
 举例纯右值如下：
 
 - 除字符串以外的常量，如 `1`，`true`，`nullptr`
-- 返回非引用的函数或操作符重载的调用语句。
+- **返回非引用的函数或操作符重载的调用语句**
 - **后缀自增自减**是右值：`a++`, `a--`
 - `a+b`, `a << b` 等一般表达式
 - `&a`，对变量取地址的表达式是右值
@@ -115,16 +115,39 @@ fprintf(stdout, "&\"hello, world\" = %p\n", &"hello, world");
 
 ### 概念
 
-**xvalue** 叫将亡值，顾名思义，就是即将销毁的东西。**xvalue** 也是**右值**的一种。
+**xvalue** 叫将亡值（e**X**piring value），顾名思义，就是即将销毁的东西。**xvalue** 也是**右值**的一种。
 
 ### 常见的两种xvalue
 
-主要记住这两种就行了：
+主要记住前面两种就行了，第三种不如前两种常见
 
 - 返回**右值引用**的函数或者操作符重载的调用表达式。
   - 如某个函数返回值是 **`std::move(x)`**并且函数返回类型是 **`T&&`**
-- 目标为**右值引用**的类型转换表达式
+
+  - 再比如下面，调用`f()`，返回的就是一个`xvalue`
+
+    ```cpp
+    int&& f(){ return 3; }
+    ```
+
+- 对对象类型右值引用的转换（目标为**右值引用**的类型转换表达式）
   - 如 **`static<int&&>(a)`**
+
+- 类成员访问表达式，指定非引用类型的非静态数据成员，其中对象表达式是xvalue
+
+  ```cpp
+  struct As { int i; };
+  As&& f(){ return As(); }
+  int main() {
+      // The expression f().i belongs to the xvalue category,
+      // because As::i is a non-static data member of non-reference type,
+      // and the subexpression f() belongs to the xvlaue category.
+      f().i;
+      return 0;
+  }
+  ```
+
+  
 
 **xvalue** 和 **prvalue** 都是属于右值，不必对它们过度的区分。
 
@@ -247,6 +270,134 @@ int main() {
     f(std::move(x)); // calls f(int&& x)
 }
 ```
+
+
+
+## 生命周期延长
+
+临时对象生命周期C++ 的规则是：**一个临时对象，会在包含这个临时对象的完整表达式估值完成后、按生成顺序的逆序被销毁，除非有生命周期延长发生。**
+
+可以查看源文件代码：[`lvalue_rvalue.hpp`](https://github.com/Pyrad/cpp11/blob/master/src/cppfeatures/lvalue_rvalue.hpp)
+
+定义以下几个`class`和函数
+
+```c++
+class shape {
+public:
+    shape() { std::cout << "shape" << std::endl; }
+    virtual ~shape() { std::cout << "~shape" << std::endl; }
+};
+class circle : public shape {
+public:
+    circle() { std::cout << "circle" << std::endl; }
+    ~circle() { std::cout << "~circle" << std::endl; }
+};
+class triangle : public shape {
+public:
+    triangle() { std::cout << "triangle" << std::endl; }
+    ~triangle() { std::cout << "~triangle" << std::endl; }
+};
+class rectangle : public shape {
+public:
+    rectangle() { std::cout << "rectangle" << std::endl; }
+    ~rectangle() { std::cout << "~rectangle" << std::endl; }
+};
+class result {
+public:
+    result() { std::cout << "result()" << std::endl; }
+    ~result() { std::cout << "~result()" << std::endl; }
+};
+result process_shape(const shape &shape1, const shape &shape2) {
+    std::cout << "process_shape()" << std::endl;
+    return result();
+}
+
+```
+
+### 无声明周期延长
+
+在主程序中做如下的调用
+
+```cpp
+// call process_shape
+void test_no_extend() {
+    fprintf(stdout, "----- BEGIN of function %s -----\n", __FUNCTION__);
+	process_shape(circle(), triangle());
+    fprintf(stdout, "----- END of function %s -----\n\n", __FUNCTION__);
+}
+test_no_extend();
+```
+
+在调用函数`process_shape`之后，打印出来的顺序如下
+
+```bash
+----- BEGIN of function test_no_extend -----
+shape
+triangle
+shape
+circle
+process_shape()
+result()
+~result()
+~circle
+~shape
+~triangle
+~shape
+----- END of function test_no_extend -----
+```
+
+首先是构造`process_shape`的第二个参数`triangle()`，它是一个继承自`shape`的`class`，所以首先调用`shape`的构造函数，然后再调用`triangle`这个子类的构造函数。
+
+其次是构造`process_shape`的第一个参数`circle()`，构造过程类似上述。
+
+因为函数压栈是从左至右依次将参数压入堆栈，所以参数的构造顺序是从右至左。
+
+之后`process_shape`函数内构造`result()`，在离开函数`process_shape`之后这个临时变量的作用域就结束了，所以调用`result`的析构函数。
+
+等到`process_shape`调用完毕，按照临时变量的构造顺序的**逆序**，依次析构`circle`和`triangle`。
+
+### 有声明周期延长
+
+为方便对临时对象的使用，C++ 对临时对象有**特殊的生命周期延长规则**
+
+- **如果一个 prvalue 被绑定到一个引用上，它的生命周期则会延长到跟这个引用变量一样长。**
+
+需要**特别注意**的是，这个延长生命周期的规则只适用于`prvalue`，对于`xvalue`就无效了
+
+如果在主程序中做如下的调用，把`process_shape`函数的返回值用一个右值引用来引用起来
+
+```cpp
+// call process_shape
+void test_has_extend() {
+    fprintf(stdout, "----- BEGIN of function %s -----\n", __FUNCTION__);
+	result &&r = process_shape(circle(), triangle());
+    fprintf(stdout, "----- END of function %s -----\n\n", __FUNCTION__);
+}
+test_no_extend();
+```
+
+那么打印的输出结果就是
+
+```bash
+----- BEGIN of function test_has_extend -----
+shape
+triangle
+shape
+circle
+process_shape()
+result()
+~circle
+~shape
+~triangle
+~shape
+----- END of function test_has_extend -----
+
+~result()
+```
+
+可以看到，直到`process_shape`函数构造`result`时的打印顺序都是一致的，但离开了`process_shape`函数的作用域之后，发现构造的临时对象`result()`并没有被析构，反而是等到了连传入`process_shape`的临时参数都析构了之后，在离开调用它的函数`test_has_extend`的时候，才被析构。
+
+
 
 
 
@@ -435,7 +586,20 @@ rref&& r4 = 1; // type of r4 is int&&
 
 ### 万能引用 （Forwarding Reference，a.k.a Universal Reference）
 
-万能引用又被叫做**转发引用**，**它既可能是左值引用，又可能是右值引用**，有以下两种情况
+#### &&
+
+类型声明中，`&&`并不总意味着右值引用（rvalue reference），它实际上可以代表两种含义
+
+- **rvalue reference，右值引用**
+- **lvalue reference，左值引用**
+
+就是说，有时候，`&&`看上去像是一个右值引用（rvalue reference），实际上却代表一个左值引用（lvalue reference，`&`）。
+
+
+
+#### 万能引用
+
+万能引用（Universal Reference）又被叫做**转发引用**，**它既可能是左值引用，又可能是右值引用**，有以下两种情况
 
 - 函数参数是**`T &&`**, 且**`T`是这个函数模板的模板类型**
 - **`auto &&`**，并且不能是由初始化列表推断出来
@@ -452,3 +616,14 @@ int f(T&& x) // x is a forwarding reference
 auto&& vec = foo();
 ```
 
+
+
+#### 万能引用出现的情况
+
+> If a variable or parameter is declared to have type **T&&** for some **deduced type** `T`, that variable or parameter is a *universal reference*.
+> 如果一个变量或者参数被声明为**T&&**，其中T是**被推导**的类型，那这个变量或者参数就是一个*universal reference*。
+
+因为万能引用也是**引用**，所以也是**引用**，而且正是万能引用的的initializer决定了它到底代表的是左值引用（lvalue reference）还是右值引用（ rvalue reference）
+
+- 如果用来初始化universal reference的表达式是一个左值，那么universal reference就变成lvalue reference
+- 如果用来初始化universal reference的表达式是一个右值，那么universal reference就变成rvalue reference
