@@ -273,6 +273,8 @@ int main() {
 
 
 
+
+
 ## 生命周期延长
 
 临时对象生命周期C++ 的规则是：**一个临时对象，会在包含这个临时对象的完整表达式估值完成后、按生成顺序的逆序被销毁，除非有生命周期延长发生。**
@@ -398,6 +400,78 @@ result()
 ```
 
 可以看到，直到`process_shape`函数构造`result`时的打印顺序都是一致的，但离开了`process_shape`函数的作用域之后，发现构造的临时对象`result()`并没有被析构，反而是等到了连传入`process_shape`的临时参数都析构了之后，在离开调用它的函数`test_has_extend`的时候，才被析构。
+
+
+
+## 表达式的左右值性与类型无关
+
+值类别和值类型（***value category*** vs ***value type***）
+
+### 值类别 *Value Category*
+
+- 指左值、右值相关的概念
+  - 白话：就是左值还是右值
+- 分为左值性（***lvaluenes***）和右值性（***rvalueness***）
+
+### 值类型 *Value Type*
+
+- 指引用类型（***reference type***），表示是否代表实际值，还是引用另外一个数值
+  - 白话：就是引用还是非引用（值）
+
+- 所有的原生类型、枚举、结构、联合、类都代表***值类型***，引用（`&`）和指针（`*`）是***引用类型***
+
+**表达式的 lvalueness (左值性)或者 rvalueness (右值性)和它的类型无关。**
+
+```cpp
+Widget makeWidget();                       // factory function for Widget
+ 
+Widget&& var1 = makeWidget()               // var1 is an lvalue, but
+                                           // its type is rvalue reference (to Widget)
+ 
+Widget var2 = static_cast<Widget&&>(var1); // the cast expression yields an rvalue, but
+                                           // its type is rvalue reference  (to Widget)
+```
+
+`var1`：**类别**是左值，**类型**是右值引用
+
+`static_cast<Widget&&>(var1)`：**类别**是右值，但**类型**是右值引用
+
+从`lvalue`（左值）转换为`rvalue`（右值）的常规方式是使用`std::move`。
+
+
+
+### 为何对右值引用使用移动语义？
+
+```cpp
+template<typename T>
+class Widget {
+    ...
+    Widget(Widget&& rhs);        // rhs’s type is rvalue reference,
+    ...                          // but rhs itself is an lvalue
+};
+```
+
+上面`Widget`构造函数中，`rhs`是一个右值引用（值类型），但它本身是一个左值（值类别）。因为右值引用只能绑定到右值上，所以肯定是有个右值传入。
+
+但`rhs`本身又是左值，所以如果想要使用到绑定到`rhs`上的右值（rvalue）的右值性（rvalueness）的时候，就需要用`std::move`把它转换回一个右值（rvalue）。转换的目的是想把它作为一个移动操作的source。
+
+
+
+```cpp
+template<typename T1>
+class Gadget {
+    ...
+    template <typename T2>
+    Gadget(T2&& rhs);            // rhs is a universal reference whose type will
+    ...                          // eventually become an rvalue reference or
+};                               // an lvalue reference, but rhs itself is an lvalue
+```
+
+上面的`Gadget`的构造函数中，`rhs`是一个万能引用（universal reference），它既可能绑定到一个右值上，也可能绑定到一个右值上，但因为`rhs`本身是一个具名变量，所以它的值类别是左值。
+
+试想，如果`rhs`绑定到了一个右值上，当我们想利用它的右值性（rvalueness）的时候，我们就需要使用`std::move`把`rhs`转换回一个rvalue；但是如果`rhs`绑定到了一个左值上，那么我们就不想把它当做一个rvalue，自然也不想使用`std::mvoe`对它做转换。
+
+**一个绑定到universal reference上的对象可能具有 lvalueness 或者 rvalueness，正是因为有这种二义性**，所以催生了`std::forward`。
 
 
 
