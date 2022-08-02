@@ -885,4 +885,6 @@ Move constructor of char_string2(fish)
 - [Microsoft - Lvalues and Rvalues (C++)](https://docs.microsoft.com/en-us/cpp/cpp/lvalues-and-rvalues-visual-cpp?view=msvc-170)
 - [Is it possible to print a variable's type in standard C++?](https://newbedev.com/is-it-possible-to-print-a-variable-s-type-in-standard-c/#)
 - [Modern-cpp-tutorial on the fly by changkun](https://github.com/changkun/modern-cpp-tutorial)
+-  [现代C++之万能引用、完美转发、引用折叠](https://zhuanlan.zhihu.com/p/99524127)
+- [右值引用与移动语义](https://zhuanlan.zhihu.com/p/545494408)
 
