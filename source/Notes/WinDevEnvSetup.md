@@ -700,13 +700,27 @@ sympy           1.10.1
 D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx
 ```
 
+鉴于安装`sphinx_rtd_theme`会把`sphinx`这个module一起安装，所以省略安装`sphinx` module，而是直接安装`sphinx_rtd_theme` module。
+
+如果先安装`sphinx`，再按照`sphinx_rtd_theme`，`sphinx_rtd_theme`会把之前安装好的卸载掉然后重新安装，导致版本降低了。
+
+#### 安装`sphinx_rtd_theme`
+
+```powershell
+PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx_rtd_theme
+```
+
 安装后显示安装了：
 
 ```powershell
 Installing collected packages: snowballstemmer, alabaster, zipp, urllib3, sphinxcontrib-serializinghtml, sphinxcontrib-qthelp, sphinxcontrib-jsmath, sphinxcontrib-htmlhelp, sphinxcontrib-devhelp, sphinxcontrib-applehelp, pyparsing, Pygments, MarkupSafe, imagesize, idna, docutils, colorama, charset-normalizer, certifi, babel, requests, packaging, Jinja2, importlib-metadata, sphinx
 
-Successfully installed Jinja2-3.1.2 MarkupSafe-2.1.1 Pygments-2.12.0 alabaster-0.7.12 babel-2.10.3 certifi-2022.6.15 charset-normalizer-2.1.0 colorama-0.4.5 docutils-0.18.1 idna-3.3 imagesize-1.4.1 importlib-metadata-4.12.0 packaging-21.3 pyparsing-3.0.9 requests-2.28.1 snowballstemmer-2.2.0 sphinx-5.0.2 sphinxcontrib-applehelp-1.0.2 sphinxcontrib-devhelp-1.0.2 sphinxcontrib-htmlhelp-2.0.0 sphinxcontrib-jsmath-1.0.1 sphinxcontrib-qthelp-1.0.3 sphinxcontrib-serializinghtml-1.1.5 urllib3-1.26.10 zipp-3.8.1
+Successfully installed Jinja2-3.1.2 MarkupSafe-2.1.1 Pygments-2.12.0 alabaster-0.7.12 babel-2.10.3 certifi-2022.6.15 charset-normalizer-2.1.0 colorama-0.4.5 docutils-0.18.1 idna-3.3 imagesize-1.4.1 importlib-metadata-4.12.0 packaging-21.3 pyparsing-3.0.9 requests-2.28.1 snowballstemmer-2.2.0 sphinx-5.0.2 sphinxcontrib-applehelp-1.0.2 sphinxcontrib-devhelp-1.0.2 sphinxcontrib-htmlhelp-2.0.0 sphinxcontrib-jsmath-1.0.1 sphinxcontrib-qthelp-1.0.3 sphinxcontrib-serializinghtml-1.1.5 urllib3-1.26.10 zipp-3.8.1 sphinx_rtd_theme
 ```
+
+
+
+
 
 #### 安装`recommonmark`
 
@@ -759,18 +773,6 @@ PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.a
 ```
 
 显示安装了：`pywin32, ply, plumbum, pandoc`
-
-
-
-#### 安装`sphinx_rtd_theme`
-
-```powershell
-PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx_rtd_theme
-```
-
-显示安装了：`docutils, sphinx_rtd_theme`
-
-这里发现其实前面docutils已经安装过了，但`sphinx_rtd_theme`会把之前安装好的卸载掉然后重新安装，导致版本降低了（不知有无问题）
 
 
 
