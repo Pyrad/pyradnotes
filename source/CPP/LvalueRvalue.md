@@ -481,33 +481,6 @@ Refer to [现代C++之万能引用、完美转发、引用折叠](https://zhuanl
 
 万能引用，即**Forwarding Reference**，a.k.a **Universal Reference**
 
-### 引用折叠
-
-引用折叠，即 ***Reference Collapsing***
-
-两种情况下允许出现**引用的引用**
-
-- **模板**
-- **typedef**
-
-这些引用会按照一定的规则最终折叠起来
-
-- **右值引用的右值引用**折叠为**右值引用**
-- 其他所有类型折叠为**左值引用**
-
-举例
-
-```cpp
-typedef int&  lref;
-typedef int&& rref;
-int n;
-
-lref&  r1 = n; // type of r1 is int&
-lref&& r2 = n; // type of r2 is int&
-rref&  r3 = n; // type of r3 is int&
-rref&& r4 = 1; // type of r4 is int&&
-```
-
 
 
 ### 符号`&&`
@@ -710,7 +683,79 @@ fprintf(stdout, "The address of val is %p\n", &val); // 0x0000000000419f10
 
 
 
+### 万能引用模板参数类型推导
 
+概况地，同一个类型的 ***lvalue*** 和 ***rvalue*** 会被推导为不同的类型。这可能会导致编译器遇到出现 ***引用的引用*** 这个问题。
+
+具体地
+
+- 类型为`T`的 ***lvalue*** 被推导为`T&`（即 lvalue reference to `T`）
+- 类型为T的 ***rvalue*** 被推导为`T`（注意，不是rvalue reference）
+
+举例，如果有如下的函数模板，其参数为一个万能引用。
+
+```cpp
+template<typename T>
+void f(T&& param);
+```
+
+如果有如下的调用
+
+```cpp
+int x;
+f(10); // invoke f on rvalue
+f(x);  // invoke f on lvalue
+```
+
+当使用 ***rvalue 10***，来调用函数`f`的时候，`T` 被推导为`int`，实例化的`f`看起来如下
+
+```cpp
+void f(int&& param); // f instantiated from rvalue
+```
+
+但是当我们用 ***lvalue x*** 来调用 `f` 的时候，`T` 被推导为`int&`，而实例化的 `f` 就包含了一个引用的引用:
+
+```cpp
+void f(int& && param);           // initial instantiation of f with lvalue
+```
+
+这里出现了***引用的引用*** ，为了解决这个问题，**C++11** 引入了引用折叠（***Reference Collapsing***）。
+
+
+
+### 引用折叠
+
+引用折叠，即 ***Reference Collapsing***，是为了解决可能出现的 ***引用的引用*** 这个问题。
+
+因为有**lvalue reference** 以及 **rvalue reference**，所以**引用的引用**就有四种组合
+
+- **lvalue** reference to **lvalue** reference
+- **lvalue** reference to **rvalue** reference
+- **rvalue** reference to **lvalue** reference
+- **rvalue** reference to **rvalue** reference
+
+这些引用会按照一定的规则最终折叠起来
+
+- **右值引用的右值引用**折叠为**右值引用** （ An rvalue reference to an rvalue reference will be collapsed to an rvalue reference）
+- 其他所有类型折叠为**左值引用** （lvalue reference）
+
+两种情况下允许出现**引用的引用**
+
+- **模板**
+- **typedef**
+
+举例
+
+```cpp
+typedef int&  lref;
+typedef int&& rref;
+int n;
+
+lref&  r1 = n; // type of r1 is int&
+lref&& r2 = n; // type of r2 is int&
+rref&  r3 = n; // type of r3 is int&
+rref&& r4 = 1; // type of r4 is int&&
+```
 
 
 
