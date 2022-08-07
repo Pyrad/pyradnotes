@@ -652,14 +652,14 @@ public:
 
 
 
-#### 万能引用是左值引用还是右值引用？
+#### 万能引用 左值引用or右值引用？
 
 因为万能引用也是**引用**，所以也是**引用**，而且正是万能引用的的initializer决定了它到底代表的是左值引用（lvalue reference）还是右值引用（ rvalue reference）
 
 - **如果用来初始化universal reference的表达式是一个左值，那么universal reference就变成lvalue reference**
 - **如果用来初始化universal reference的表达式是一个右值，那么universal reference就变成rvalue reference**
 
-
+##### 举例1
 
 根据前面的万能引用出现的情况，利用`auto`做如下举例
 
@@ -681,16 +681,124 @@ fprintf(stdout, "The address of val is %p\n", &val); // 0x0000000000419f10
 
 
 
+##### 举例2
+
+使用 *template function* 做举例，定义一个带有 *universal reference* （万能引用）的模板函数如下，
+
+```cpp
+template<typename T>
+void show_universal_reference_with_str(T &&param, const char *s) {
+    constexpr const bool is_lr = std::is_lvalue_reference<decltype(param)>::value;
+    constexpr const bool is_rr = std::is_rvalue_reference<decltype(param)>::value;
+    constexpr const bool is_intgl = std::is_integral<decltype(param)>::value;
+
+    constexpr const bool is_T_lr = std::is_lvalue_reference<T>::value;
+    constexpr const bool is_T_rr = std::is_rvalue_reference<T>::value;
+    constexpr const bool is_T_intgl = std::is_integral<T>::value;
+
+    fprintf(stdout, "Parameter type info (param = %s)\n", s);
+    fprintf(stdout, "  param is: lvalue ref(%s)", is_lr ? "1" : "0");
+    fprintf(stdout, " rvalue ref(%s)", is_rr ? "1" : "0");
+    fprintf(stdout, " integral(%s)\n", is_intgl ? "1" : "0");
+    fprintf(stdout, "      T is: lvalue ref(%s)", is_T_lr ? "1" : "0");
+    fprintf(stdout, " rvalue ref(%s)", is_T_rr ? "1" : "0");
+    fprintf(stdout, " integral(%s)\n", is_T_intgl ? "1" : "0");
+} // show_universal_reference_with_str
+
+#define SHOW_UNI_REF(v) show_universal_reference_with_str(v, #v)
+```
+
+调用如下函数
+
+```cpp
+void test_show_lr_ref() {
+    int x = 10; int &&a = 13; int &b = x; int m = 19;
+
+    SHOW_UNI_REF(a); SHOW_UNI_REF(b);  SHOW_UNI_REF(x);
+    SHOW_UNI_REF(std::move(x)); SHOW_UNI_REF(static_cast<int&&>(x));
+    SHOW_UNI_REF(14);
+
+    foo &&curf = foo::get_foo(); SHOW_UNI_REF(curf);
+    SHOW_UNI_REF(foo::get_foo());
+
+    auto &&r = curf; SHOW_UNI_REF(r);
+
+    std::vector<int> v{-1, 0, 1}; SHOW_UNI_REF(v[0]);
+    auto &&val = v[0]; SHOW_UNI_REF(val);
+
+} // test_show_lr_ref
+
+test_show_lr_ref();
+```
+
+得到如下的打印输出
+
+```bash
+Parameter type info (param = a)
+  param is: lvalue ref(1) rvalue ref(0) integral(0)
+      T is: lvalue ref(1) rvalue ref(0) integral(0)
+Parameter type info (param = b)
+  param is: lvalue ref(1) rvalue ref(0) integral(0)
+      T is: lvalue ref(1) rvalue ref(0) integral(0)
+Parameter type info (param = x)
+  param is: lvalue ref(1) rvalue ref(0) integral(0)
+      T is: lvalue ref(1) rvalue ref(0) integral(0)
+Parameter type info (param = std::move(x))
+  param is: lvalue ref(0) rvalue ref(1) integral(0)
+      T is: lvalue ref(0) rvalue ref(0) integral(1)
+Parameter type info (param = static_cast<int&&>(x))
+  param is: lvalue ref(0) rvalue ref(1) integral(0)
+      T is: lvalue ref(0) rvalue ref(0) integral(1)
+Parameter type info (param = 14)
+  param is: lvalue ref(0) rvalue ref(1) integral(0)
+      T is: lvalue ref(0) rvalue ref(0) integral(1)
+Parameter type info (param = curf)
+  param is: lvalue ref(1) rvalue ref(0) integral(0)
+      T is: lvalue ref(1) rvalue ref(0) integral(0)
+Parameter type info (param = foo::get_foo())
+  param is: lvalue ref(0) rvalue ref(1) integral(0)
+      T is: lvalue ref(0) rvalue ref(0) integral(0)
+Parameter type info (param = r)
+  param is: lvalue ref(1) rvalue ref(0) integral(0)
+      T is: lvalue ref(1) rvalue ref(0) integral(0)
+Parameter type info (param = v[0])
+  param is: lvalue ref(1) rvalue ref(0) integral(0)
+      T is: lvalue ref(1) rvalue ref(0) integral(0)
+Parameter type info (param = val)
+  param is: lvalue ref(1) rvalue ref(0) integral(0)
+      T is: lvalue ref(1) rvalue ref(0) integral(0)
+```
+
+对于`a`，`b`而言，虽然它们分别是左值引用和右值引用，但这是它们的类型（value type），而它们的类别（value category）依然是左值，所以万能引用是被一个左值初始化，所以万能引用被推导为左值引用。
+
+对于`x`，它显然是一个左值，所以万能引用被推导为左值引用。
+
+对于`std::move(x)`，它把`x`转换为了一个右值，所以万能引用被推导为右值引用。
+
+同样地，`static_cast<int&&>(x)`把`x`转换为了一个右值，所以万能引用被推导为右值引用。
+
+对于`14`，它是一个右值，所以万能引用被推导为右值引用。
+
+对于`curf`，类似上面的`a`和`b`，它是一个右值引用，但这是它的类型（value type），而它的类别（value category）依然是左值，所以万能引用是被一个左值初始化，所以万能引用被推导为左值引用。
+
+对于`foo::get_foo()`，它返回一个右值，那么万能引用是被一个右值初始化，所以万能引用被推导为右值引用。
+
+对于`r`，这里出现了两处万能引用，首先是`auto &&r = curf`，这表明`r`是被一个左值初始化，所以`r`被推导为一个左值引用。当然它本身也是一个左值，当它再被传入模板函数时，万能引用就被推导为左值引用。
+
+对于`v[0]`，它是`vector`的一个重载成员函数，返回一个左值引用。同样地不管左值引用还是右值引用，它们本身也是一个左值，所以传入模板函数时，万能引用就被推导为左值引用。
+
+对于`val`，这里也出现了两处万能引用，首先是`auto &&val = v[0]`，这表明`val`是被一个左值初始化，所以`val`被推导为一个左值引用。当然它本身也是一个左值，当它再被传入模板函数时，万能引用就被推导为左值引用。
+
 
 
 ### 万能引用模板参数类型推导
 
-概况地，同一个类型的 ***lvalue*** 和 ***rvalue*** 会被推导为不同的类型。这可能会导致编译器遇到出现 ***引用的引用*** 这个问题。
+概况地，同一个类型的 ***lvalue*** 和 ***rvalue*** 会被推导为不同的类型。这可能会导致编译器遇到出现 ***引用的引用*** 这个问题。（C++98和C++03标准里面对引用的引用会报错）
 
 具体地
 
 - 类型为`T`的 ***lvalue*** 被推导为`T&`（即 lvalue reference to `T`）
-- 类型为T的 ***rvalue*** 被推导为`T`（注意，不是rvalue reference）
+- 类型为`T`的 ***rvalue*** 被推导为`T`（注意，不是rvalue reference）
 
 举例，如果有如下的函数模板，其参数为一个万能引用。
 
@@ -725,6 +833,8 @@ void f(int& && param);           // initial instantiation of f with lvalue
 
 ### 引用折叠
 
+#### 引用折叠的规则
+
 引用折叠，即 ***Reference Collapsing***，是为了解决可能出现的 ***引用的引用*** 这个问题。
 
 因为有**lvalue reference** 以及 **rvalue reference**，所以**引用的引用**就有四种组合
@@ -736,8 +846,12 @@ void f(int& && param);           // initial instantiation of f with lvalue
 
 这些引用会按照一定的规则最终折叠起来
 
-- **右值引用的右值引用**折叠为**右值引用** （ An rvalue reference to an rvalue reference will be collapsed to an rvalue reference）
+- **右值引用的右值引用**折叠为**右值引用**
+  - An rvalue reference to an rvalue reference will be collapsed to an rvalue reference
+
 - 其他所有类型折叠为**左值引用** （lvalue reference）
+  - 即组合当中含有**左值引用**的
+
 
 两种情况下允许出现**引用的引用**
 
@@ -759,9 +873,71 @@ rref&& r4 = 1; // type of r4 is int&&
 
 
 
+#### 引用折叠举例
 
+实际上，在前面如何区分万能引用被推导为左值引用和右值引用的时候，也可以使用引用折叠来解释。
 
+##### 举例2
 
+出现于`auto`处的引用折叠
+
+```cpp
+Widget&& var1 = someWidget;      // var1 is of type Widget&& (no use of auto here)
+auto&& var2 = var1;              // var2 is of type Widget& (see below)
+```
+
+如上面举例，`var1` 是一个右值引用，它被用来初始化一个`auto &&`。
+
+- 按照之前的解释，`var1`虽然是一个右值引用，但它本身也是一个左值，所以用左值初始化一个万能引用，得到的就是一个左值引用。
+- 如果按照引用折叠解释，`var1`是一个引用，当用引用去初始化一个万能引用的时候，类型中所带的引用就被忽略带，所以`var1`就被当做`Widget`来看待，而它是一个左值，所以得到的就是一个左值引用。
+
+##### 举例3
+
+出现于`typedef`处的引用折叠
+
+```cpp
+template<typename T>
+class foo2 {
+public:
+    typedef T& LvalueRefType;
+    typedef T&& RvalueRefType;
+public:
+    void judge_0() {
+        static_assert(std::is_lvalue_reference<LvalueRefType>::value,
+                        "LvalueRefType & is lvalue ref");
+        static_assert(std::is_lvalue_reference<RvalueRefType>::value,
+                        "RvalueRefType & is lvalue ref");
+        fprintf(stdout, "LvalueRefType and RvalueRefType is lvalue ref\n");
+    }
+    void judge_1() {
+        static_assert(std::is_lvalue_reference<LvalueRefType>::value,
+                        "LvalueRefType & is lvalue ref");
+        static_assert(std::is_rvalue_reference<RvalueRefType>::value,
+                        "RvalueRefType & is rvalue ref");
+        fprintf(stdout, "LvalueRefType is lvalue ref and RvalueRefType is rvalue ref\n");
+    }
+}; // class foo2
+```
+
+在如下函数中创建对象并分别调用函数`judge_0`和`judge_1`
+
+```cpp
+void test_ref_collapse() {
+    foo2<int&> myf1;
+    myf1.judge_0();
+    // myf1.judge_1(); // Compiler will issue an static_assert error
+
+    foo2<int&&> myf2;
+    // myf2.judge_0(); // Compiler will issue an static_assert error
+    myf2.judge_1();
+}
+```
+
+根据引用折叠的规则，只要带有左值引用的（`lvalue reference`）的，都最终会被折叠为**左值引用**；而只有右值引用的右值引用会折叠为**右值引用**。
+
+因为`myf1`的模板参数类型是`int&`，所以实际上`LvalueRefType`和`RvalueRefType`都是左值引用，因此它可以调用函数`myf1.judge_0()`，但是不能调用`myf1.judge_1()`，因为`myf1.judge_1()`中断言`RvalueRefType`为右值引用（但实际上它在此处为左值引用）。
+
+因为`myf2`的模板参数类型是`int&&`，所以根据引用折叠规则，`LvalueRefType`是左值引用，而`RvalueRefType`是右值引用，因此它可以调用函数`myf1.judge_1()`，但是不能调用`myf1.judge_0()`，因为`myf1.judge_0()`中断言`RvalueRefType`为左值引用（但实际上它在此处为右值引用）。
 
 
 
@@ -934,4 +1110,6 @@ Move constructor of char_string2(fish)
 - [Modern-cpp-tutorial on the fly by changkun](https://github.com/changkun/modern-cpp-tutorial)
 -  [现代C++之万能引用、完美转发、引用折叠](https://zhuanlan.zhihu.com/p/99524127)
 - [右值引用与移动语义](https://zhuanlan.zhihu.com/p/545494408)
+- [C++编译期获得完整类型名称](https://zhuanlan.zhihu.com/p/443591951)
+- [C++ 生成式的编译期类型名](https://zhuanlan.zhihu.com/p/336243278)
 
