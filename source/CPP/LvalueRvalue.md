@@ -403,7 +403,7 @@ result()
 
 
 
-## 表达式的左右值性与类型无关
+## 值类别 vs. 值类型
 
 值类别和值类型（***value category*** vs ***value type***）
 
@@ -954,6 +954,108 @@ void test_ref_collapse() {
 但实际上，`decltype` 的类型推导规则其实和模板或者 `auto` 的类型推导不一样，即 `decltype` 对一个具名的、非引用类型的变量，会推导为类型 `T` (i.e., 一个非引用类型)，在相同条件下，`模板`和 `auto` 却会推导出 `T&`。
 
 这里的细节比较隐晦，参见 [Universal References in C++11 -- Scott Meyers](https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers#FurtherInformation)。
+
+
+
+### `std::remove_reference`
+
+`std::remove_reference`的（可能）[实现](https://en.cppreference.com/w/cpp/types/remove_reference)，以及左值引用和右值引用的特化（specialization）版本
+
+```cpp
+template< class T > struct remove_reference      { typedef T type; };
+// Specialization for lvalue reference
+template< class T > struct remove_reference<T&>  { typedef T type; };
+// Specialization for rvalue reference
+template< class T > struct remove_reference<T&&> { typedef T type; };
+```
+
+可见，`remove_reference`的作用是去除`T`中的引用部分，只获取其中的类型部分。
+
+无论`T`是左值还是右值，最后只获取它的类型部分。
+
+
+
+### 完美转发
+
+在STL中，完美转发由`std::forward`实现。
+
+在文件`./c++/10.3.0/bits/move.h`中，有定义`std::forward`和`std::move`的源代码
+
+#### `std::forward`转发左值
+
+```cpp
+/**
+ *  @brief  Forward an lvalue.
+ *  @return The parameter cast to the specified type.
+ *
+ *  This function is used to implement "perfect forwarding".
+ */
+template<typename _Tp>
+  constexpr _Tp&&
+  forward(typename std::remove_reference<_Tp>::type& __t) noexcept
+  { return static_cast<_Tp&&>(__t); }
+```
+
+在转发**左值**的源代码中，参数`__t`实际上接收的是一个**左值引用**，因为`std::remove_reference<_Tp>::type`就是不带有引用的类型（见前面的`std::remove_reference`）。
+
+这就导致`_Tp`被推导为**左值引用**，即`_Tp&`，这样就导致在`return`语句中的引用折叠为`_Tp& &&`，根据引用折叠的规则，它会被折叠为一个**左值引用**，即`_Tp&`。
+
+同样地，返回值的引用折叠为`_Tp& &&`，同样地，根据引用折叠的规则，它会被折叠为一个**左值引用**，即`_Tp&`。
+
+
+
+#### `std::forward`转发右值
+
+```cpp
+/**
+ *  @brief  Forward an rvalue.
+ *  @return The parameter cast to the specified type.
+ *
+ *  This function is used to implement "perfect forwarding".
+ */
+template<typename _Tp>
+  constexpr _Tp&&
+  forward(typename std::remove_reference<_Tp>::type&& __t) noexcept
+  {
+    static_assert(!std::is_lvalue_reference<_Tp>::value, "template argument"
+          " substituting _Tp is an lvalue reference type");
+    return static_cast<_Tp&&>(__t);
+  }
+```
+
+在转发**右值**的源代码中，参数`__t`实际上接收的是一个**右值引用**，因为`std::remove_reference<_Tp>::type`就是不带有引用的类型（见前面的`std::remove_reference`）。
+
+这就导致`_Tp`被推导为**右值引用**，即`_Tp&&`，这样就导致在`return`语句中的引用折叠为`_Tp&& &&`，根据引用折叠的规则，它会被折叠为一个**右值引用**，即`_Tp&&`。
+
+同样地，返回值的引用折叠为`_Tp& &&`，同样地，根据引用折叠的规则，它会被折叠为一个**右值引用**，即`_Tp&`。
+
+
+
+#### `std::move`
+
+STL中`std::move`的源代码
+
+```cpp
+/**
+ *  @brief  Convert a value to an rvalue.
+ *  @param  __t  A thing of arbitrary type.
+ *  @return The parameter cast to an rvalue-reference to allow moving it.
+ */
+template<typename _Tp>
+  constexpr typename std::remove_reference<_Tp>::type&&
+  move(_Tp&& __t) noexcept
+  { return static_cast<typename std::remove_reference<_Tp>::type&&>(__t); }
+```
+
+传入参数`__t`是一个万能引用，它会根据传入参数的左右值性（lvalueness or rvalueness）而得出该参数是一个左值引用（绑定到左值）还是右值引用（绑定到右值）。
+
+根据前面`std::remove_reference`的作用，实际上根据`__t`的引用类型，不管是左值引用`_Tp&`还是右值`_Tp&&`，都会得出`std::remove_reference<_Tp>::type&&`是一个**右值引用**，因为`std::remove_reference<_Tp>::type` 是一个不带有引用的类型。
+
+同样地，返回值的类型也是一个**右值引用**。
+
+综上所述，`std::move` 实现了将传入的左值或右值强制转换为**右值引用**的功能。
+
+
 
 
 
