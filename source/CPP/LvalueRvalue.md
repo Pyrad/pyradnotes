@@ -496,7 +496,7 @@ Refer to [现代C++之万能引用、完美转发、引用折叠](https://zhuanl
 
 ### 万能引用
 
-万能引用（Universal Reference）又被叫做**转发引用**，**它既可能是左值引用，又可能是右值引用**，有以下两种情况（*实际上还有其他情况，这里没展开说明*）
+万能引用（***Universal Reference***）又被叫做**转发引用**（***forwarding reference***），**它既可能是左值引用，又可能是右值引用**，有以下两种情况（*实际上还有其他情况，这里没展开说明*）
 
 - **函数参数**是**`T &&`**, 且**`T`是这个函数模板的模板类型**（注意是**函数参数**！**函数参数**！）
 - **`auto &&`**，并且不能是由初始化列表推断出来
@@ -873,11 +873,15 @@ rref&& r4 = 1; // type of r4 is int&&
 
 
 
-#### 引用折叠举例
+#### 引用折叠出现的情况
 
 实际上，在前面如何区分万能引用被推导为左值引用和右值引用的时候，也可以使用引用折叠来解释。
 
-##### 举例2
+##### 出现于万能引用函数参数处
+
+
+
+##### 出现于`auto`处
 
 出现于`auto`处的引用折叠
 
@@ -891,7 +895,9 @@ auto&& var2 = var1;              // var2 is of type Widget& (see below)
 - 按照之前的解释，`var1`虽然是一个右值引用，但它本身也是一个左值，所以用左值初始化一个万能引用，得到的就是一个左值引用。
 - 如果按照引用折叠解释，`var1`是一个引用，当用引用去初始化一个万能引用的时候，类型中所带的引用就被忽略带，所以`var1`就被当做`Widget`来看待，而它是一个左值，所以得到的就是一个左值引用。
 
-##### 举例3
+
+
+##### 出现于`typdef`处
 
 出现于`typedef`处的引用折叠
 
@@ -938,6 +944,18 @@ void test_ref_collapse() {
 因为`myf1`的模板参数类型是`int&`，所以实际上`LvalueRefType`和`RvalueRefType`都是左值引用，因此它可以调用函数`myf1.judge_0()`，但是不能调用`myf1.judge_1()`，因为`myf1.judge_1()`中断言`RvalueRefType`为右值引用（但实际上它在此处为左值引用）。
 
 因为`myf2`的模板参数类型是`int&&`，所以根据引用折叠规则，`LvalueRefType`是左值引用，而`RvalueRefType`是右值引用，因此它可以调用函数`myf1.judge_1()`，但是不能调用`myf1.judge_0()`，因为`myf1.judge_0()`中断言`RvalueRefType`为左值引用（但实际上它在此处为右值引用）。
+
+
+
+##### 出现于`decltype`处
+
+`decltype` 对表达式进行类型推导时候可能会返回 `T` 或者 `T&`，然后`decltype` 会应用 C++11 的引用折叠规则。
+
+但实际上，`decltype` 的类型推导规则其实和模板或者 `auto` 的类型推导不一样，即 `decltype` 对一个具名的、非引用类型的变量，会推导为类型 `T` (i.e., 一个非引用类型)，在相同条件下，`模板`和 `auto` 却会推导出 `T&`。
+
+这里的细节比较隐晦，参见 [Universal References in C++11 -- Scott Meyers](https://isocpp.org/blog/2012/11/universal-references-in-c11-scott-meyers#FurtherInformation)。
+
+
 
 
 
