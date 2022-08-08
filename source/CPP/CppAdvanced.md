@@ -13,3 +13,4 @@ This file shows some advanced usages of C/C++
 - What is **NRVO** ?
   - **N**amed **R**eturn **V**alue **O**ptimization（返回值优化）
 
+- What is **copy elision** ?
