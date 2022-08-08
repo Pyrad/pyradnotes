@@ -381,3 +381,18 @@ https://blog.zengrong.net/post/pyton_support_on_vim/
 ```vim
 :help index
 ```
+
+
+
+## Check on which OS it is running
+
+The best way is to use [`has()`](http://vimhelp.appspot.com/eval.txt.html#has()), with this function you can check for features of Vim; OS specific features from [`:help feature-list`](http://vimhelp.appspot.com/eval.txt.html#feature-list):
+
+```vim
+if has('unix')
+	echo "On Unix!"
+endif
+```
+
+[Detect OS in Vimscript](https://vi.stackexchange.com/questions/2572/detect-os-in-vimscript)
+
