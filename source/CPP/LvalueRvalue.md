@@ -1057,6 +1057,22 @@ template<typename _Tp>
 
 
 
+## `&&`的部分总结
+
+> （1）在类型声明当中， `&&`  要不就是一个 rvalue reference ，要不就是一个 *universal reference* – 一种可以解析为 lvalue reference 或者 rvalue reference的引用。对于某个被推导的类型`T`，universal references 总是以 `T&&` 的形式出现。
+>
+> （2）*引用折叠*是 会让 universal references （其实就是一个处于引用折叠背景下的 rvalue references ) 有时解析为 lvalue references 有时解析为 rvalue references 的根本机制。引用折叠只会在一些特定的可能会产生"引用的引用"场景下生效。 这些场景包括模板类型推导，`auto` 类型推导， `typedef` 的形成和使用，以及`decltype` 表达式。
+>
+> （3）`std::move` 与 `std::forward`本质都是`static_cast`转换，**对于右值引用使用`std::move`，对于万能引用使用`std::forward`**。`std::move` 解决的问题是对于一个本身是左值的右值引用变量需要绑定到一个右值上，所以需要使用一个能够传递右值的工具，而 `std::move` 就干了这个事。而 `std::forward` 解决的问题是一个绑定到 universal reference 上的对象可能具有 lvalueness 或者 rvalueness，正是因为有这种二义性，所以催生了`std::forward`: 如果一个本身是 左值 的 万能引用如果绑定在了一个 右边值 上面，就把它重新转换为右值。函数的名字 (“`forward`”) 的意思就是。**我们希望在传递参数的时候，可以保存参数原来的lvalueness 或 rvalueness，即是说把参数转发给另一个函数。**
+>
+> （4）移动语义使得在 C++ 里返回大对象（如容器）的函数和运算符成为现实，因 而可以提高代码的简洁性和可读性，提高程序员的生产率。
+>
+> 
+>
+> ​                                                                                        ——*引用自 [现代C++之万能引用、完美转发、引用折叠](https://zhuanlan.zhihu.com/p/99524127)*
+
+
+
 
 
 
@@ -1232,4 +1248,6 @@ Move constructor of char_string2(fish)
 - [右值引用与移动语义](https://zhuanlan.zhihu.com/p/545494408)
 - [C++编译期获得完整类型名称](https://zhuanlan.zhihu.com/p/443591951)
 - [C++ 生成式的编译期类型名](https://zhuanlan.zhihu.com/p/336243278)
+- [c++中返回值优化（RVO）和命名返回值优化（NRVO）介绍](https://blog.csdn.net/lr_shadow/article/details/123332927)
+- 
 
