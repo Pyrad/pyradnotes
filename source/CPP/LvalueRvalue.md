@@ -1249,5 +1249,5 @@ Move constructor of char_string2(fish)
 - [C++编译期获得完整类型名称](https://zhuanlan.zhihu.com/p/443591951)
 - [C++ 生成式的编译期类型名](https://zhuanlan.zhihu.com/p/336243278)
 - [c++中返回值优化（RVO）和命名返回值优化（NRVO）介绍](https://blog.csdn.net/lr_shadow/article/details/123332927)
-- 
+- [What are copy elision and return value optimization?](https://stackoverflow.com/questions/12953127/what-are-copy-elision-and-return-value-optimization)
 
