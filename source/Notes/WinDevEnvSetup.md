@@ -934,3 +934,44 @@ $ clangd --check=/path/to/a/file/in/your/project.cc
 ### clangd avoid background indexing
 
 https://github.com/clangd/clangd/issues/479
+
+
+## Homebrew
+
+### Installation
+
+查看官网安装指导[页面](https://docs.brew.sh/Installation)，并对照[Installation — Homebrew Documentation](https://docs.brew.sh/Installation#alternative-installs) 这一小节如下安装
+
+```shell
+# Make a directory named homebrew (of course other names can be used)
+mkdir homebrew 
+# Download the tarball and extract it to the directory just made
+curl -L https://github.com/Homebrew/brew/tarball/master | tar xz --strip 1 -C homebrew
+```
+
+为了绕开GFW，使用清华开源镜像来加速，可以参考清华开源镜像的说明以及如下博客页面
+
+[homebrew | 镜像站使用帮助 | 清华大学开源软件镜像站 | Tsinghua Open Source Mirror](https://mirrors.tuna.tsinghua.edu.cn/help/homebrew/)
+
+[Homebrew 国内使用加速 - Cocowool - 博客园](https://www.cnblogs.com/cocowool/p/speedup-homebrew.html)
+
+```shell
+# Set some env vars in Linux
+export HOMEBREW_BREW_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/brew.git"
+export HOMEBREW_CORE_GIT_REMOTE="https://mirrors.tuna.tsinghua.edu.cn/git/homebrew/homebrew-core.git"
+export HOMEBREW_BOTTLE_DOMAIN="https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles"
+```
+
+然后更新
+
+```shell
+brew update --force --quiet
+chmod -R go-w "$(brew --prefix)/share/zsh"
+```
+
+之后就可以安装需要的package了，比如`gcc`
+
+```shell
+brew install gcc
+```
+
