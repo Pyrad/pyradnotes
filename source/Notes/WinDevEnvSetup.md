@@ -4,12 +4,6 @@
 
 
 
-## Homebrew
-
-[What is homebrew?](https://docs.brew.sh/Homebrew-on-Linux)
-
-
-
 ## Windows itself
 
 ### 关闭休眠功能
@@ -937,6 +931,12 @@ https://github.com/clangd/clangd/issues/479
 
 
 ## Homebrew
+
+### Introduction
+
+[What is homebrew?](https://docs.brew.sh/Homebrew-on-Linux)
+
+
 
 ### Installation
 
