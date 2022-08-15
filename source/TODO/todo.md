@@ -19,3 +19,5 @@
   - Record  time: 2022-07-24 16:35
 - **pybind11**
   - Record time: 2022-07-27 22:15
+- **Effective Modern C++**
+  - Record time: 2022-08-15 22:11

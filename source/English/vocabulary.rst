@@ -42,3 +42,18 @@ Vocabulary  (reStructuredtext)
     * - **cone**
       - / koʊn /
       - *n.* 圆锥体；圆锥形物；锥形路标
+    * - **facelift**
+      - /ˈfeɪslɪft/
+      - *n.* 整容手术（除去面部皱纹）
+    * - **consummate**
+      - /ˈkɑːnsəmət/
+      - *adj.* 至上的；完美的；圆满的
+    * - **lucid**
+      - /ˈluːsɪd/
+      - *adj.* 明晰的，易懂的；头脑清楚的，思路清晰的；
+    * - **eminently**
+      - /ˈemɪnəntli/
+      - *adv.* 非常，特别，极其（含褒义）；突出地；显著地
+    * - **vetting**
+      - /ˈvetɪŋ/
+      - *n.* 审查，审核
