@@ -193,7 +193,7 @@ f(expr); // call f with some expression
 
 ### 第一种情况
 
-`ParamType`是一个**指针**或**引用**，但不是**万能引用**
+**`ParamType`是一个指针或引用，但不是万能引用**
 
 这种情况下，对于类型`T`的推导原则如下。（是的！我们实际上当然是在推导类型`T`，而不是`ParamType`！，因为类型`T`推导出来之后，`ParamType`也就确定了，因为`ParamType`实际上这里指的是`T`带一个修饰关键字的变种类型，比如`const T&`）
 
@@ -203,16 +203,12 @@ f(expr); // call f with some expression
 
 
 
-这种情况下，函数`f`如下（以左值引用为例）
+这种情况下，函数`f`如下（以左值引用为例），并且定义了一些变量：
 
 ```cpp
 template<typename T>
-void f(T& param); // param is a reference
-```
+void f(T &param); // param is a reference
 
-假如定义了如下变量
-
-```cpp
 int x = 27; // x is an int
 const int cx = x; // cx is a const int
 const int &rx = x; // rx is a reference to x as a const int
@@ -227,20 +223,165 @@ f(rx);	// T is const int, param's type is const int&
 ```
 
 - 调用函数`f(x)`，按照上述规则，推导过程如下
-  - 忽略`ParamType`的引用部分，得到`T`。
+  - 忽略`ParamType`的引用部分，得到`T`
   - 此时`x`不是引用，所以略过第二条规则
   - 直接用`int`和`T`匹配，推导出`T`就是`int`（同时也推导出`ParamType`就是`T&`）
 - 调用函数`f(cx)`，按照上述规则，推导过程如下
-  - 忽略`ParamType`的引用部分，得到`T`。
+  - 忽略`ParamType`的引用部分，得到`T`
   - 此时`cx`不是引用，所以略过第二条规则
   - 直接用`const int`和`T`匹配，推导出`T`就是`const int`（同时也推导出`ParamType`就是`const int&`）
 - 调用函数`f(rx)`，按照上述规则，推导过程如下
-  - 忽略`ParamType`的引用部分，得到`T`。
+  - 忽略`ParamType`的引用部分，得到`T`
   - 此时`rx`是引用，所以忽略它的引用部分得到`const int`。
   - 直接用`const int`和`T`匹配，推导出`T`就是`const int`（同时也推导出`ParamType`就是`const intT&`）
 
 
 
-**Stop at page 13**
+如果`ParamType`是带有`const`修饰符的类型，`f`函数如下
 
-2022年8月17日22:42:49
+```cpp
+template<typename T>
+void f(const T &param); // param is a reference
+
+int x = 27; // x is an int
+const int cx = x; // cx is a const int
+const int &rx = x; // rx is a reference to x as a const int
+```
+
+同样地有如下的函数调用，那么编译器就会推断出类型`T`如下
+
+```cpp
+f(x);	// T is int, param's type is const int&
+f(cx);	// T is int, param's type is const int&
+f(rx);	// T is int, param's type is const int&
+```
+
+这种情况下，稍有区别的是，因为已经假定了`param`的类型是`const`了，所以对于类型`T`的推导就不用再考虑`const`修饰符了。
+
+- 调用函数`f(x)`，按照上述规则，推导过程如下
+  - 忽略`ParamType`的引用部分（以及`const`修饰符），得到`T`。
+  - 此时`x`不是引用，所以略过第二条规则
+  - 直接用`int`和`T`匹配，推导出`T`就是`int`（同时也推导出`ParamType`就是`T&`）
+- 调用函数`f(cx)`，按照上述规则，推导过程如下
+  - 忽略`ParamType`的引用部分（以及`const`修饰符），得到`T`。
+  - 此时`cx`不是引用，所以略过第二条规则。但同时忽略`cx`的`const`，得到`int`
+  - 直接用`int`和`T`匹配，推导出`T`就是`int`（同时也推导出`ParamType`就是`const int&`）
+- 调用函数`f(rx)`，按照上述规则，推导过程如下
+  - 忽略`ParamType`的引用部分（以及`const`修饰符），得到`T`。
+  - 此时`rx`是引用，所以忽略它的引用部分，同时也忽略`const`，得到`int`。
+  - 直接用`int`和`T`匹配，推导出`T`就是`int`（同时也推导出`ParamType`就是`const intT&`）
+
+
+
+如果`ParamType`是不带有`const`修饰符的类型，`f`函数如下
+
+```cpp
+template<typename T>
+void f(T *param); // param is a pointer
+
+int x = 27; // x is an int
+const int *px = &x; // px is a pointer to const int
+```
+
+有如下的函数调用，那么编译器就会推断出类型`T`如下
+
+```cpp
+f(&x);	// T is int, param's type is int*
+f(px);	// T is const int, param's type is const int*
+```
+
+- 调用函数`f(&x)`，按照上述规则，推导过程如下
+  - 忽略`ParamType`的指针部分，得到`T`
+  - 此时`x`不是指针，所以略过第二条规则
+  - 直接用`int`和`T`匹配，推导出`T`就是`int`（同时也推导出`ParamType`就是`int*`）
+
+- 调用函数`f(px)`，按照上述规则，推导过程如下
+
+  - 忽略`ParamType`的指针部分，得到`T`
+
+  - 此时`px`是指针，所以忽略它的引用部分得到`const int`。
+
+  - 直接用`const int`和`T`匹配，推导出`T`就是`const int`（同时也推导出`ParamType`就是`const int*`）
+
+
+
+类似的，如果`ParamType`是带有`const`修饰符的类型，`f`函数如下
+
+```cpp
+template<typename T>
+void f(const T *param); // param is a pointer
+
+int x = 27; // x is an int
+const int *px = &x; // px is a pointer to const int
+```
+
+有如下的函数调用，那么编译器就会推断出类型`T`如下
+
+```cpp
+f(&x);	// T is int, param's type is const int*
+f(px);	// T is int, param's type is const int*
+```
+
+同样的，这种情况下，因为已经假定了`param`的类型是`const`了，所以对于类型`T`的推导就不用再考虑`const`修饰符了。
+
+- 调用函数`f(&x)`，按照上述规则，推导过程如下
+  - 忽略`ParamType`的指针部分（以及`const`修饰符），得到`T`
+  - 此时`x`不是指针，所以略过第二条规则
+  - 直接用`int`和`T`匹配，推导出`T`就是`int`（同时也推导出`ParamType`就是`const int*`）
+
+- 调用函数`f(px)`，按照上述规则，推导过程如下
+
+  - 忽略`ParamType`的指针部分（以及`const`修饰符），得到`T`
+
+  - 此时`px`是指针，所以忽略它的引用部分，同时也忽略`const`，得到`int`。
+
+  - 直接用`int`和`T`匹配，推导出`T`就是`int`（同时也推导出`ParamType`就是`const int*`）
+
+
+
+### 第二种情况
+
+**`ParamType`是一个万能引用**
+
+这种情况有些特殊，对于类型`T`的推导原则如下。
+
+- 如果`expr`是一个左值，那么`T`和`ParamType`都会被推导为**左值引用**
+  - 这是在模板类型推导中，`T`会被推导为引用的唯一一种情况
+  - 尽管`ParamType`使用了像右值引用一样的声明语法，但它最终却推导成了左值引用。
+- 如果`expr`是一个右值，那么就按照前面提到的第一种情况进行推导
+  - 首先忽略`ParamType`的引用部分（即`&&`）
+  - 如果`expr`是一个引用，也忽略它的引用部分（即`&&`）
+  - 按照模式匹配的办法，匹配`expr`和`ParamType`，并以此决**定类型`T`**
+
+这种情况下，函数`f`如下（以左值引用为例），并且定义了一些变量：
+
+```cpp
+template<typename T>
+void f(T &&param); // param is now a universal reference
+
+int x = 27;			// x is an int
+const int cx = x;	// cx is a const int
+const int &rx = x;	// rx is a reference to x as a const int
+```
+
+并且以其为表达式调用函数`f`，那么编译器就会推断出类型`T`如下
+
+```cpp
+f(x);	// x is lvalue, so T is int&, param's type is also int&
+f(cx);	// cx is lvalue, so T is const int&, param's type is also const int&
+f(rx);	// rx is lvalue, so T is const int&, param's type is also const int&
+f(27);	// 27 is rvalue, so T is int, param's type is therefore int&&
+```
+
+- 调用函数`f(x)`
+  - `x`是一个左值（因为是具名变量），所以`T`被推导为`int &`，同时`ParamType`也被推导为`int &`
+- 调用函数`f(cx)`
+  - `cx`是一个左值（因为是具名变量），所以`T`被推导为`const int &`，同时`ParamType`也被推导为`const int &`
+- 调用函数`f(rx)`
+  - `rx`是一个左值引用，但同样的，因为是具名变量，所以它也是左值，所以`T`被推导为`const int &`，同时`ParamType`也被推导为`const int &`
+
+- 调用函数`f(27)`
+  - `27`是一个右值，所以按照前面提到的第一种情况推导
+  - 首先忽略`T&&`的引用部分，得到`T`
+  - 其次`27`是右值，但不是引用（而是`int`）
+  - 直接用`int`和`T`匹配，得到`T`就是`int`，所以得到`ParamType`就是`int &&`
