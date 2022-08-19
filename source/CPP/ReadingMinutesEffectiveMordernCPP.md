@@ -44,6 +44,8 @@ a pinch of 一撮，少许
 
 adornment 装饰；装饰品（书中提到的是指一个类型的const or reference qualifiers）
 
+niche *n.*合适（称心）的工作（活动）; *adj.* （产品）针对特定小群体的
+
 
 
 # Introduction
@@ -203,20 +205,22 @@ f(expr); // call f with some expression
 
 
 
-这种情况下，函数`f`如下（以左值引用为例），并且定义了一些变量：
+#### `ParamType` - `T&`
+
+如果`ParamType`是非`const`的引用类型，`f`函数如下，
 
 ```cpp
 template<typename T>
-void f(T &param); // param is a reference
+void f(T &param);	// param is a reference
+```
 
+定义了一些变量，并且以其为表达式调用函数`f`，那么编译器就会推断出类型`T`如下
+
+```cpp
 int x = 27; // x is an int
 const int cx = x; // cx is a const int
 const int &rx = x; // rx is a reference to x as a const int
-```
 
-并且以其为表达式调用函数`f`，那么编译器就会推断出类型`T`如下
-
-```cpp
 f(x);	// T is int, param's type is int&
 f(cx);	// T is const int, param's type is const int&
 f(rx);	// T is const int, param's type is const int&
@@ -237,20 +241,22 @@ f(rx);	// T is const int, param's type is const int&
 
 
 
-如果`ParamType`是带有`const`修饰符的类型，`f`函数如下
+#### `ParamType` - `const T&`
+
+如果`ParamType`是`const`的引用类型，`f`函数如下
 
 ```cpp
 template<typename T>
-void f(const T &param); // param is a reference
+void f(const T &param);	// param is a reference
+```
 
+同样地有如下变量定义，和函数调用，那么编译器就会推断出类型`T`如下
+
+```cpp
 int x = 27; // x is an int
 const int cx = x; // cx is a const int
 const int &rx = x; // rx is a reference to x as a const int
-```
 
-同样地有如下的函数调用，那么编译器就会推断出类型`T`如下
-
-```cpp
 f(x);	// T is int, param's type is const int&
 f(cx);	// T is int, param's type is const int&
 f(rx);	// T is int, param's type is const int&
@@ -273,19 +279,21 @@ f(rx);	// T is int, param's type is const int&
 
 
 
-如果`ParamType`是不带有`const`修饰符的类型，`f`函数如下
+#### `ParamType` - `T*`
+
+如果`ParamType`是非`const`的指针类型，`f`函数如下
 
 ```cpp
 template<typename T>
 void f(T *param); // param is a pointer
-
-int x = 27; // x is an int
-const int *px = &x; // px is a pointer to const int
 ```
 
-有如下的函数调用，那么编译器就会推断出类型`T`如下
+有如下变量定义，和函数调用，那么编译器就会推断出类型`T`如下
 
 ```cpp
+int x = 27; // x is an int
+const int *px = &x; // px is a pointer to const int
+
 f(&x);	// T is int, param's type is int*
 f(px);	// T is const int, param's type is const int*
 ```
@@ -305,19 +313,21 @@ f(px);	// T is const int, param's type is const int*
 
 
 
-类似的，如果`ParamType`是带有`const`修饰符的类型，`f`函数如下
+#### `ParamType` - `const T*`
+
+如果`ParamType`是`const`的指针类型，`f`函数如下
 
 ```cpp
 template<typename T>
 void f(const T *param); // param is a pointer
-
-int x = 27; // x is an int
-const int *px = &x; // px is a pointer to const int
 ```
 
-有如下的函数调用，那么编译器就会推断出类型`T`如下
+有如下变量定义，和函数调用，那么编译器就会推断出类型`T`如下
 
 ```cpp
+int x = 27; // x is an int
+const int *px = &x; // px is a pointer to const int
+
 f(&x);	// T is int, param's type is const int*
 f(px);	// T is int, param's type is const int*
 ```
@@ -353,20 +363,20 @@ f(px);	// T is int, param's type is const int*
   - 如果`expr`是一个引用，也忽略它的引用部分（即`&&`）
   - 按照模式匹配的办法，匹配`expr`和`ParamType`，并以此决**定类型`T`**
 
-这种情况下，函数`f`如下（以左值引用为例），并且定义了一些变量：
+这种情况下，函数`f`如下
 
 ```cpp
 template<typename T>
 void f(T &&param); // param is now a universal reference
+```
 
+定义了一些变量，并且以其为表达式调用函数`f`，那么编译器就会推断出类型`T`如下
+
+```cpp
 int x = 27;			// x is an int
 const int cx = x;	// cx is a const int
 const int &rx = x;	// rx is a reference to x as a const int
-```
 
-并且以其为表达式调用函数`f`，那么编译器就会推断出类型`T`如下
-
-```cpp
 f(x);	// x is lvalue, so T is int&, param's type is also int&
 f(cx);	// cx is lvalue, so T is const int&, param's type is also const int&
 f(rx);	// rx is lvalue, so T is const int&, param's type is also const int&
@@ -385,3 +395,59 @@ f(27);	// 27 is rvalue, so T is int, param's type is therefore int&&
   - 首先忽略`T&&`的引用部分，得到`T`
   - 其次`27`是右值，但不是引用（而是`int`）
   - 直接用`int`和`T`匹配，得到`T`就是`int`，所以得到`ParamType`就是`int &&`
+
+
+
+### 第三种情况
+
+**`ParamType`既不是指针，也不是任何一种引用**
+
+这种情况下，处理的是**值传递**（pass-by-value），那么`param`就是一个传入值的拷贝（新对象）。
+
+推导规则如下，
+
+- 如果`expr`是一个引用，忽略它的引用部分
+- 如果`expr`同时还是`const`或`volatile`，忽略它的`const`或`volatile`部分
+
+这种情况下，函数`f`如下
+
+```cpp
+template<typename T>
+void f(T param); // param is now passed by value
+```
+
+定义了一些变量，并且以其为表达式调用函数`f`，那么编译器就会推断出类型`T`如下
+
+```cpp
+int x = 27;			// as before
+const int cx = x;	// as before
+const int& rx = x;	// as before
+const char* const p = "Fun with pointers" // ptr is const pointer to const object
+
+f(x);	// T's and param's types are both int
+f(cx);	// T's and param's types are again both int
+f(rx);	// T's and param's types are still both int
+f(p);	// T's and param's types are const int*
+```
+
+- 调用函数`f(x)`
+  - `x`不是引用
+  - `x`既也不是`const`，也不是`volatile`
+  - 因此直接用`x`的类型`int`和`T`做匹配，所以推导出`T`就是`int`，因此`param`的类型也是`int`（非`const`）
+- 调用函数`f(cx)`
+  - `x`不是引用
+  - `x`是`const`，但不是`volatile`，所以只用忽略`const`
+  - 因此直接`int`和`T`做匹配，所以推导出`T`就是`int`，因此`param`的类型也是`int`（非`const`）
+- 调用函数`f(rx)`
+  - `x`是引用，所以忽略它的引用部分
+  - `x`是`const`，但不是`volatile`，所以只用忽略`const`
+  - 因此直接`int`和`T`做匹配，所以推导出`T`就是`int`，因此`param`的类型也是`int`（非`const`）
+- 调用函数`f(p)`
+  - `x`不是引用
+  - `x`是`const`，这个`const`指的是这个`pointer`不能指向其他的内存地址，即这个`pointer`本身是`const`，所以忽略它（因为值传递就是拷贝）。不是`volatile`所以不管`volatile`。
+  - 因此直接`const char*`和`T`做匹配，所以推导出`T`就是`const char*`，因此`param`的类型也是`const char*`，即指针是指向一个内容不可以被修改的地址，但这个指针本身是可以指向其它内存地址的。
+
+
+
+
+
