@@ -353,6 +353,8 @@ f(px);	// T is int, param's type is const int*
 
 **`ParamType`是一个万能引用**
 
+#### `ParamType` - `T&&`
+
 这种情况有些特殊，对于类型`T`的推导原则如下。
 
 - 如果`expr`是一个左值，那么`T`和`ParamType`都会被推导为**左值引用**
@@ -401,6 +403,8 @@ f(27);	// 27 is rvalue, so T is int, param's type is therefore int&&
 ### 第三种情况
 
 **`ParamType`既不是指针，也不是任何一种引用**
+
+#### `ParamType` - `T`
 
 这种情况下，处理的是**值传递**（pass-by-value），那么`param`就是一个传入值的拷贝（新对象）。
 
