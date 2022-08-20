@@ -12,7 +12,7 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 # Words
 
-coax
+coax */kəʊks/* *v.*哄，劝诱；连哄带劝地得到；小心地摆弄（机器或装置）
 
 turf
 
@@ -52,7 +52,9 @@ curve ball 使其很难被击打的弧线球
 
 mondo *adj.*绝对的；完全的；（非正式）非凡的，卓绝的；相当
 
+stir up 激起；煽动；搅拌；唤起
 
+turbidity *n.*[分化] 浊度；浑浊；混浊度；混乱
 
 
 
@@ -513,6 +515,8 @@ f(name); // what types are deduced for T and param?
 
 由于声明了引用`&`的缘故，此时，`T`被推导为`const char [13]`，而不再推导为指针了，同时`ParamType`变为`const char (&)[13]`。
 
+
+
 利用这种特性，可以通过声明成`T&`，在编译期间计算得到一个数组的长度。
 
 ```cpp
@@ -535,4 +539,36 @@ std::array<int, arraySize(keyVals)> mappedVals; // mappedVals' size is 7
 ```
 
 
+
+### 如果实参是函数
+
+同样地，如果是函数作为参数，也会和数组的array-to-pointer decay rule一样，函数会退化为函数指针。
+
+```cpp
+void someFunc(int, double); // someFunc is a function; type is void(int, double)
+
+template<typename T>
+void f1(T param); // in f1, param passed by value
+
+template<typename T>
+void f2(T &param); // in f2, param passed by ref
+
+f1(someFunc); // param deduced as ptr-to-func; type is void (*)(int, double)
+f2(someFunc); // param deduced as ref-to-func; type is void (&)(int, double)
+```
+
+`f1`声明的是值传递，如果函数作为参数传入，会推导出来类型`T`是函数指针：`void (*)(int, double)`
+
+`f2`声明的是引用传递，如果函数作为参数传入，会推导出来类型`T`是函数引用：`void (&)(int, double)`
+
+
+
+### Things To Remember
+
+> Things to Remember
+>
+> - During template type deduction, arguments that are references are treated as non-references, i.e., their reference-ness is ignored.
+> - When deducing types for universal reference parameters, lvalue arguments get special treatment.
+> - When deducing types for by-value parameters, `const` and/or`volatile` arguments are treated as non-`const` and non-`volatile`.
+> - During template type deduction, arguments that are array or function names decay to pointers, unless they’re used to initialize references.
 
