@@ -46,6 +46,18 @@ adornment 装饰；装饰品（书中提到的是指一个类型的const or refe
 
 niche *n.*合适（称心）的工作（活动）; *adj.* （产品）针对特定小群体的
 
+foliage *n.*（植物的）枝叶，叶子
+
+curve ball 使其很难被击打的弧线球
+
+mondo *adj.*绝对的；完全的；（非正式）非凡的，卓绝的；相当
+
+
+
+
+
+
+
 
 
 # Introduction
@@ -452,6 +464,75 @@ f(p);	// T's and param's types are const int*
   - 因此直接`const char*`和`T`做匹配，所以推导出`T`就是`const char*`，因此`param`的类型也是`const char*`，即指针是指向一个内容不可以被修改的地址，但这个指针本身是可以指向其它内存地址的。
 
 
+
+### 如果实参是数组
+
+定义数组变量
+
+```cpp
+const char name[] = "J. P. Briggs";	// name's type is const char[13]
+const char * ptrToName = name;		// array decays to pointer
+```
+
+首先，在C中，如果用一个数组去初始化一个指针，那么指针就指向数组的第一个元素，这叫作**array decays**。
+
+这个**array-to-pointer decay rule**，和这里讨论的类型推导无关，是C的特性。
+
+类似的，如果函数的参数是一个数组，那么实际上下面两种函数声明是等价的
+
+```cpp
+void myFunc(int param[]);
+void myFunc(int* param); // same function as above
+```
+
+这实际上表明，指针和数组实际上是等价的。
+
+
+
+函数模板`f`声明如下，调用函数并传入数组作为参数
+
+```cpp
+template<typename T>
+void f(T param); // template with by-value parameter
+
+f(name); // what types are deduced for T and param?
+```
+
+此时，`T`被推导为`const char*`。这是由于传入的数组，被等价地认为是一个指针，然后再进行类型推导。
+
+
+
+函数模板`f`声明如下，调用函数并传入数组作为参数
+
+```cpp
+template<typename T>
+void f(T &param); // template with by-value parameter
+
+f(name); // what types are deduced for T and param?
+```
+
+由于声明了引用`&`的缘故，此时，`T`被推导为`const char [13]`，而不再推导为指针了，同时`ParamType`变为`const char (&)[13]`。
+
+利用这种特性，可以通过声明成`T&`，在编译期间计算得到一个数组的长度。
+
+```cpp
+// Return size of an array as a compile-time constant. (The
+// array parameter has no name, because we care only about
+// the number of elements it contains.)
+template<typename T, std::size_t N> 
+constexpr std::size_t arraySize(T (&)[N]) noexcept {
+    return N;
+}
+```
+
+使用举例
+
+```cpp
+int keyVals[] = { 1, 3, 7, 9, 11, 22, 35 }; // keyVals has 7 elements
+int mappedVals[arraySize(keyVals)]; // so does mappedVals
+
+std::array<int, arraySize(keyVals)> mappedVals; // mappedVals' size is 7
+```
 
 
 
