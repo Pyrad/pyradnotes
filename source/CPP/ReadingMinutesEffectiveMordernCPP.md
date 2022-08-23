@@ -56,6 +56,8 @@ stir up 激起；煽动；搅拌；唤起
 
 turbidity *n.*[分化] 浊度；浑浊；混浊度；混乱
 
+purview *n.*范围，权限；视界；条款
+
 
 
 
@@ -172,7 +174,7 @@ C++标准委员会提到的**Undefined Behavior**（UB），指的是它们的�
 
 ## Item 1: Understand template type deduction
 
-一个模板函数`f`的声明（定义），这里`ParamType`表示函数形参`param`的类型名称
+一个（通用的）模板函数`f`的声明（定义），这里`ParamType`表示函数形参`param`的类型名称
 
 ```cpp
 template<typename T>
@@ -571,4 +573,115 @@ f2(someFunc); // param deduced as ref-to-func; type is void (&)(int, double)
 > - When deducing types for universal reference parameters, lvalue arguments get special treatment.
 > - When deducing types for by-value parameters, `const` and/or`volatile` arguments are treated as non-`const` and non-`volatile`.
 > - During template type deduction, arguments that are array or function names decay to pointers, unless they’re used to initialize references.
+
+
+
+## Item 2: Understand auto type deduction
+
+`auto` 类型推导就是`template` 类型推导（有一个例外）
+
+> `auto` type deduction ***is*** template type deduction.
+>
+> There’s a direct mapping between `template` type deduction and `auto` type deduction.
+>
+> Deducing types for auto is, with only one exception, the same as deducing types for templates.
+
+
+
+在Item 1中，（通用的）函数模板和对应的调用分别如下
+
+```cpp
+template<typename T>
+void f(ParamType param); // A template function declarition
+
+f(expr); // call f with some expression
+         // compilers deduce T and ParamType from expr
+```
+
+而编译器负责推导类型`T`以及类型`ParamType`。
+
+对应于`auto`的类型推导，`auto`扮演了`T`的角色，而对应变量的***type specifier***扮演了`ParamType`的角色，例如
+
+```cpp
+auto x = 27;		// auto is T, type specifier is auto (ParamType is auto)
+const auto cx = x;	// auto is T, type specifier is const auto (ParamType is const auto)
+const auto& rx = x;// auto is T, type specifier is const auto& (ParamType is const auto&)
+```
+
+为了推导类型，编译器就好像假设存在以下对应的`template`函数（和相应的函数调用）一样
+
+```cpp
+template<typename T> 		// conceptual template for
+void func_for_x(T param);	// deducing x's type
+func_for_x(27);				// conceptual call: param's
+							// deduced type is x's type
+
+template<typename T>				// conceptual template for
+void func_for_cx(const T param);	// deducing cx's type
+func_for_cx(x);						// conceptual call: param's
+									// deduced type is cx's type
+
+template<typename T>				// conceptual template for
+void func_for_rx(const T& param);	// deducing rx's type
+func_for_rx(x);						// conceptual call: param's
+									// deduced type is rx's type
+```
+
+
+
+### `auto`类型推导的情况
+
+在Item1中，对template函数，根据`ParamType`把推导类型的情况分成了三种。
+
+类似的，对于`auto` 可以根据 ***type specifier*** 把情况也分成三种。
+
+- **type specifier 是一个指针或引用，但不是万能引用**
+- **type specifier 是万能引用**
+- **type specifier 既不是指针也不是任何一种引用**
+
+> - Case 1: The type specifier is a pointer or reference, but not a universal reference.
+> - Case 2: The type specifier is a universal reference.
+> - Case 3: The type specifier is neither a pointer nor a reference.
+
+
+
+> As you can see, auto type deduction works like template type deduction. They’re essentially two sides of the same coin.
+
+
+
+### `auto`推导和`template`推导唯一的不同
+
+简单来说，唯一的区别是：
+
+**如果使用列表初始化，`auto`会推导为`std::initializer_list<TypeName>`类型，而`template`的推导却不能推断出来`std::initializer_list<TypeName>`类型。**
+
+（这里的`TypeName`是指某个确定的类型名）
+
+例如，可以如下定义一个`int`值，虽然形式不同，但值都是一样的：`int`。
+
+```cpp
+int x1 = 27;	// C++98
+int x2(27);		// C++98
+int x3 = { 27 };	// C++11
+int x4{ 27 };		// C++11
+```
+
+如果使用`auto`关键字替换上面的`int`，得到下面的定义（可以编译通过）
+
+```cpp
+auto x1 = 27;		// type is int, value is 27
+auto x2(27);		// ditto
+auto x3 = { 27 };	// type is std::initializer_list<int>, value is { 27 }
+auto x4{ 27 };		// ditto
+```
+
+但前面两个（`x1`，`x2`）的类型被推导为`int`，而后面两个（`x3`，`x4`）被推断为`std::initializer_list<int>`，其值是`{27}`。
+
+需要注意的是，如果在花括号里面的值不是同一种类型的话，会编译失败
+
+```cpp
+auto x5 = { 1, 2, 3.0 }; // error! can't deduce T for std::initializer_list<T>
+```
+
+
 
