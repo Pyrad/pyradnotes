@@ -58,7 +58,7 @@ turbidity *n.*[分化] 浊度；浑浊；混浊度；混乱
 
 purview *n.*范围，权限；视界；条款
 
-
+as a matter of course 理所当然的（事）；自然地
 
 
 
@@ -687,11 +687,7 @@ auto& func2 = someFunc; // func2's type is void (&)(int, double)
 
 ### `auto`推导和`template`推导唯一的不同
 
-简单来说，唯一的区别是：
-
-**如果使用列表初始化，`auto`会推导为`std::initializer_list<TypeName>`类型，而`template`的推导却不能推断出来`std::initializer_list<TypeName>`类型。**
-
-（这里的`TypeName`是指某个确定的类型名）
+#### `auto`的几种初始化情况
 
 例如，可以如下定义一个`int`值，虽然形式不同，但值都是一样的：`int`。
 
@@ -713,11 +709,84 @@ auto x4{ 27 };		// ditto
 
 但前面两个（`x1`，`x2`）的类型被推导为`int`，而后面两个（`x3`，`x4`）被推断为`std::initializer_list<int>`，其值是`{27}`。
 
-需要注意的是，如果在花括号里面的值不是同一种类型的话，会编译失败
+需要注意的两点
+
+- 如果在花括号里面的值不是同一种类型的话，会编译失败
 
 ```cpp
 auto x5 = { 1, 2, 3.0 }; // error! can't deduce T for std::initializer_list<T>
 ```
 
+- 对于上面的`x3`，`x4`和`x5`，它们同时发生了两种类型推导
+  - 因为使用了花括号（braces），所以它们必须被推导为`std::initializer_list`
+  - 因为`std::initializer_list<T>`是类模板，所以类型`T`也必须要被推导
 
 
+
+#### 唯一的不同
+
+简单来说，唯一的区别是：
+
+**如果使用列表初始化，`auto`会推导为`std::initializer_list<TypeName>`类型，而`template`的推导却不能推断出来`std::initializer_list<TypeName>`类型。**
+
+> The treatment of braced initializers is the only way in which auto type deduction and template type deduction differ. 
+
+（这里的`TypeName`是指某个确定的类型名）
+
+换句话说，使用同一个列表（braced initializer），去初始化一个使用`auto`声明的变量，会推断为一个`std::initializer_list`，但是用同样的这个列表，传递给一个模板函数，推断会失败。
+
+> So the only real difference between auto and template type deduction is that auto assumes that a braced initializer represents a std::initializer_list, but template type deduction doesn’t.
+
+```cpp
+auto x = { 11, 23, 9 }; // x's type is std::initializer_list<int>
+
+template<typename T>	// template with parameter
+void f(T param);		// declaration equivalent to x's declaration
+
+f({ 11, 23, 9 });		// error! can't deduce type for T
+```
+
+上面的例子中，使用用一个列表`{ 11, 23, 9 }`，`auto`推断出来了`std::initializer_list<int>`，而`T`却推断失败了。
+
+如果想要使`T`推断成功，需要把`ParamType`声明称为如下的形式
+
+```cpp
+template<typename T>
+void f(std::initializer_list<T> initList);
+
+f({ 11, 23, 9 }); // T deduced as int, and initList's type is std::initializer_list<int>
+```
+
+
+
+#### `auto` 在C++14 中的特点
+
+在C++14中，
+
+- 允许声明函数的返回值是`auto`，并进行类型推导
+- 允许lambda中形参声明为`auto`，并进行类型推导
+
+但上面提到的两种语法，使用的是模板类型推导（template type deduction），而不是`auto`类型推导。
+
+也就是说，如果传递一个列表，上面两种情况下，`auto`进行类型推导会失败。
+
+```cpp
+// C++14, return type is auto which is permitted
+auto createInitList() {
+	return { 1, 2, 3 }; // error!! can't deduce type
+} // for { 1, 2, 3 }
+
+
+// C++14, lambda's paramter can be auto
+std::vector<int> v;
+auto resetV = &v](const auto& newValue) { v = newValue; }; // C++14
+resetV({ 1, 2, 3 }); // error!! can't deduce type
+// for { 1, 2, 3 }
+```
+
+
+
+#### Things to Remember
+
+> - `auto` type deduction is usually the same as template type deduction, but `auto` type deduction assumes that a braced initializer represents a `std::initializer_list`, and template type deduction doesn’t.
+> - `auto` in a function return type or a lambda parameter implies template type deduction, not `auto type` deduction.
