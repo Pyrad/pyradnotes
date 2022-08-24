@@ -8,4 +8,4 @@ C/C++
     CppAdvanced
     SmartPointers.md
     LvalueRvalue
-    ReadingMinutesEffectiveMordernCPP
+    ReadingMinutesEffectiveModernCPP
