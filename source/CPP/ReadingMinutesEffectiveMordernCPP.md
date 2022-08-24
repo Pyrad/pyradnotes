@@ -649,6 +649,42 @@ func_for_rx(x);						// conceptual call: param's
 
 
 
+三种情况对应的例子
+
+```cpp
+// Case 1: A reference/pointer, but not a universal reference
+const auto& rx = x;
+
+// Case 2: A universal reference
+auto&& uref1 = x;	// x is int and lvalue, so uref1's type is int&
+auto&& uref2 = cx;	// cx is const int and lvalue, so uref2's type is const int&
+auto&& uref3 = 27;	// 27 is int and rvalue, so uref3's type is int&&
+
+// Case 3: Neither a pointer nor a reference of any kind
+auto x = 27;
+const auto cx = x;
+```
+
+
+
+和Item1中相对应的，如果是数组或者函数的时候，会发生同样的 array-to-pointer decay和function-to-pointer decay rule。
+
+```cpp
+const char name[] = "R. N. Briggs"; // name's type is const char[13]
+
+auto arr1 = name; // arr1's type is const char*
+auto& arr2 = name; // arr2's type is const char (&)[13]
+
+void someFunc(int, double); // someFunc is a function; type is void(int, double)
+
+auto func1 = someFunc; // func1's type is void (*)(int, double)
+auto& func2 = someFunc; // func2's type is void (&)(int, double)
+```
+
+
+
+
+
 ### `auto`推导和`template`推导唯一的不同
 
 简单来说，唯一的区别是：
