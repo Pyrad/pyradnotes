@@ -60,9 +60,9 @@ purview *n.*范围，权限；视界；条款
 
 as a matter of course 理所当然的（事）；自然地
 
+revelation *n.*被揭示的真相，被揭露的内情；揭露，披露；出乎意料的事物，令人惊喜的发现；（上帝的）启示，默示；《启示录》（《圣经·新约》末卷，讲述上帝对圣约翰有关未来的启示）
 
-
-
+parrot *v.*机械地模仿，鹦鹉学舌般重复
 
 # Introduction
 
@@ -704,10 +704,14 @@ int x4{ 27 };		// C++11
 auto x1 = 27;		// type is int, value is 27
 auto x2(27);		// ditto
 auto x3 = { 27 };	// type is std::initializer_list<int>, value is { 27 }
-auto x4{ 27 };		// ditto
+auto x4{ 27 };		// type is int, in win7, MSYS2, g++ version 12.1.0
 ```
 
-但前面两个（`x1`，`x2`）的类型被推导为`int`，而后面两个（`x3`，`x4`）被推断为`std::initializer_list<int>`，其值是`{27}`。
+但前面两个（`x1`，`x2`）的类型被推导为`int`，而后面的（`x3`）被推断为`std::initializer_list<int>`，其值是`{27}`。而最后的`x4`，实际上也被推导为`int`，而并不是`std::initializer_list<int>`。
+
+**注意，经过验证，发现`x4`实际上也被推导为`int`，而并不是`std::initializer_list<int>`。环境是win7, MSYS2, g++ version 12.1.0。**
+
+
 
 需要注意的两点
 
@@ -790,3 +794,27 @@ resetV({ 1, 2, 3 }); // error!! can't deduce type
 
 > - `auto` type deduction is usually the same as template type deduction, but `auto` type deduction assumes that a braced initializer represents a `std::initializer_list`, and template type deduction doesn’t.
 > - `auto` in a function return type or a lambda parameter implies template type deduction, not `auto type` deduction.
+
+
+
+
+
+## Item 3: Understand `decltype`
+
+
+
+
+
+
+
+> In C++11, perhaps the primary use for `decltype` is declaring function templates where the function’s return type depends on its parameter types. 
+
+
+
+**trailing return type**
+
+- C++11中就可以使用
+- 优点是因为类型后置了，所以函数参数可以在类型中使用
+
+> Rather, it indicates that C++11’s *trailing return type* syntax is being used, i.e., that the function’s return type will be declared following the parameter list (after the “->”). A trailing return type has the  advantage that the function’s parameters can be used in the specification of the return type.
+
