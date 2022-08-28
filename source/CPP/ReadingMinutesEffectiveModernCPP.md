@@ -64,6 +64,14 @@ revelation *n.*被揭示的真相，被揭露的内情；揭露，披露；出�
 
 parrot *v.*机械地模仿，鹦鹉学舌般重复
 
+compilable 可编译的
+
+elicit *v.*引出，得到；
+
+palatable *adj.*美味的，可口的；愉快的
+
+
+
 # Introduction
 
 > A useful heuristic to determine whether an expression is an lvalue is to ask if you
@@ -801,20 +809,212 @@ resetV({ 1, 2, 3 }); // error!! can't deduce type
 
 ## Item 3: Understand `decltype`
 
+关键字`decltype`可以告知我们一个名字或者一个表达式的类型。
+
+### `decltype` 用法示例
+
+`decltype`的一些例子
+
+```cpp
+const int i = 0;			// decltype(i) is const int
+bool f(const Widget &w);	// decltype(w) is const Widget&
+							// decltype(f) is bool(const Widget&)
+struct Point {
+	int x, y;				// decltype(Point::x) is int
+};							// decltype(Point::y) is int
+
+Widget w;					// decltype(w) is Widget
+if (f(w)) {}				// decltype(f(w)) is bool
+
+template<typename T>		// simplified version of std::vector
+class vector {
+public:
+	// ...
+	T& operator[](std::size_t index);
+	// ...
+};
+vector<int> v;				// decltype(v) is vector<int>
+
+if (v[0] == 0) 				// decltype(v[0]) is int&
+```
 
 
 
+### Trailing Return Type优点
 
-
+`decltyp`在C++11中最主要的用法，也许是当函数返回值的类型取决于其参数时，声明它（一个函数返回值）的类型
 
 > In C++11, perhaps the primary use for `decltype` is declaring function templates where the function’s return type depends on its parameter types. 
 
+比如下面的例子，返回值是输入参数的`[]`操作返回值，那么就可以使用所谓的**Trailing Return Type**来声明其返回值的类型。
+
+```cpp
+template<typename Container, typename Index>
+auto authAndAccess(Container &c, Index i) -> decltype(c[i]) {
+	authenticateUser();
+	return c[i];
+}
+```
+
+在使用**Trailing Return Type**来声明函数的返回值的时候，函数名前面的`auto`和类型推导无关，这个`auto`只是用来说明C++11的**Trailing Return Type**被用来声明函数返回值类型。
 
 
-**trailing return type**
+
+**trailing return type**的优点
 
 - C++11中就可以使用
 - 优点是因为类型后置了，所以函数参数可以在类型中使用
 
 > Rather, it indicates that C++11’s *trailing return type* syntax is being used, i.e., that the function’s return type will be declared following the parameter list (after the “->”). A trailing return type has the  advantage that the function’s parameters can be used in the specification of the return type.
+
+
+
+### 使用`decltype`的潜在陷阱
+
+#### 陷阱在函数返回值推导
+
+在C++11中可以使用**Trailing Return Type**来利用`decltype`声明返回值类型
+
+```cpp
+template<typename Container, typename Index>
+auto authAndAccess(Container &c, Index i) -> decltype(c[i]) {
+	authenticateUser();
+	return c[i];
+}
+```
+
+可以使用上面的定义来修改容器中的元素
+
+```cpp
+std::vector<int> ivec{0, 1, 2, 3, 4, 5};
+authAndAccess(ivec, 0) = 100;
+```
+
+
+
+在C++14中，支持省略**Trailing Return Type**，而直接由`auto`来推导函数返回值类型
+
+```cpp
+template<typename Container, typename Index>
+auto authAndAccess(Container &c, Index i) {
+	authenticateUser();
+	return c[i];
+}
+```
+
+但此时如果使用上述函数定义，那么如下的使用就会编译失败
+
+```cpp
+std::vector<int> ivec{0, 1, 2, 3, 4, 5};
+authAndAccess(ivec, 0) = 100; // fail to compile if use the definition above
+```
+
+原因是，在C++14中，`auto`在作为函数返回值进行类型推导时，遵循的依据和进行`template`类型推导时的相同，即如果返回值中带有引用（reference-ness，`&`），那么这个引用就会被忽略，然后进行推导。
+
+这就导致上面的函数实际上推导出来的是，返回一个新的对象，而它是一个rvalue，那么给一个右值赋值，就会产生编译错误。
+
+为了避免这个问题，在C++14中，可以使用`decltype(auto)`来解决。这里
+
+- `auto`是声明这里的类型需要被推导
+- `decltype`是说明在推导的过程中，采用的是`decltype`的rule
+
+> `auto` specifies that the type is to be deduced, and `decltype` says that `decltype` rules should be used during the deduction.
+
+```cpp
+template<typename Container, typename Index>
+decltype(auto) authAndAccess(Container &c, Index i) {
+	authenticateUser();
+	return c[i];
+}
+```
+
+
+
+上面几个函数中的 `c` 都是左值引用，所以必须绑定到左值上。
+
+为了能够绑定到右值，可以使用万能引用，而且为了保留返回值的引用特性（reference-ness），需要使用完美转发（perfect forwarding：`std::forward`）
+
+```cpp
+// Need C++14 support
+template<typename Container, typename Index>
+decltype(auto) authAndAccess(Container &&c, Index i) {
+	authenticateUser();
+	return std::forward<Container>(c)[i];
+}
+// C++11 support is enough
+template<typename Container, typename Index>
+auto authAndAccess(Container &&c, Index i) -> decltype(std::forward<Container>(c)[i]) {
+	authenticateUser();
+	return std::forward<Container>(c)[i];
+}
+
+// get_temp_vec() returns an rvalue
+auto val0 = authAndAccess(get_temp_vec(), 1);
+```
+
+此外，`decltype(auto)`还可以用在其它地方
+
+```cpp
+Widget w;
+const Widget& cw = w;
+auto myWidget1 = cw;	// auto type deduction: myWidget1's type is Widget
+decltype(auto) myWidget2 = cw;	// decltype type deduction:
+								// myWidget2's type is const Widget&
+```
+
+
+
+#### 陷阱在左值表达式
+
+> if an `lvalue` expression other than a name has type `T`, `decltype` reports that type as `T&`.
+
+
+
+使用`decltype(x)`和`decltype((x))`，得到的类型是不同的
+
+```cpp
+int x = 0;	// decltype(x) is int
+			// decltype((x)) is int&
+```
+
+这样的情况在C++14中的函数返回值为`auto`的时候，需要特别注意。
+
+在下面的`f2`中，实际上的返回值是`int&`类型，所以它实际上返回了一个local variable的引用，这实际上是应该避免的。
+
+```cpp
+decltype(auto) f1() {
+	int x = 0;
+	return x; // decltype(x) is int, so f1 returns int
+}
+decltype(auto) f2() {
+	int x = 0;
+	return (x); // decltype((x)) is int&, so f2 returns int&
+}
+```
+
+
+
+Things to Remember
+
+> - `decltype` almost always yields the type of a variable or expression without any modifications.
+> - For lvalue expressions of type T other than names, `decltype` always reports a type of `T&`.
+> - C++14 supports `decltype(auto)`, which, like auto, deduces a type from its initializer, but it performs the type deduction using the `decltype` rules.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
