@@ -1006,6 +1006,33 @@ Things to Remember
 
 
 
+## Item 4: Know how to view deduced types
+
+
+
+本节中指出，可以使用`boost::type_index`中的类来获取类型的名称，并且可以使用对应的函数获得可读性较强的名称字符串。
+
+- 头文件：`boost/type_index.hpp`
+- 类：`boost::typeindex::type_id_with_cvr<T>`
+- 函数：`boost::typeindex::type_id_with_cvr<T>().pretty_name()`
+
+```cpp
+#include <boost/type_index.hpp>
+template<typename T>
+void f(const T& param) {
+	using std::cout;
+	using boost::typeindex::type_id_with_cvr;
+	// show T
+	cout << "T = "
+		<< type_id_with_cvr<T>().pretty_name()
+		<< '\n';
+	// show param's type
+	cout << "param = "
+		<< type_id_with_cvr<decltype(param)>().pretty_name()
+		<< '\n';
+}
+```
+
 
 
 
