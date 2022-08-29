@@ -15,3 +15,4 @@ This file shows some advanced usages of C/C++
 - What is **copy elision** ?
 - What is **RTTI**?
   - **RTTI = Run-Time Type Information**
+- What is **closure type**？
