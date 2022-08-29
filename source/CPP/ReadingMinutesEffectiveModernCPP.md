@@ -80,7 +80,7 @@ potholes  *n.*凹坑；坑槽；洞坑（pothole 的复数形式）
 
 notwithstanding *prep.*虽然，尽管；*adv.*尽管如此；*conj.*虽然，尽管
 
-
+amiss *adj.*有毛病的，有缺陷的；出差错的；*adv.*错误地
 
 
 
@@ -1053,11 +1053,43 @@ void f(const T& param) {
 
 # Chapter 2 `auto`
 
+
+
 ## Item 5: Prefer `auto` to explicit type declarations
 
 
 
 > The type of a closure is known only to the compiler, hence can’t be written out.
+
+
+
+### `auto`的优点
+
+- 避免未初始化的值（`auto`定义变量必须初始化）
+
+```cpp
+int x1;			// potentially uninitialized
+auto x2;		// error! initializer required
+auto x3 = 0;	// fine, x's value is well-defined
+```
+
+- 可以表示只有编译器才知道的类型（**闭包closure**）
+  - lambda可以包含一个闭包
+  - `std::function` 也可以包含一个闭包
+
+```cpp
+auto derefUPLess =							// comparison func.
+	[](const std::unique_ptr<Widget>& p1,	// for Widgets
+	const std::unique_ptr<Widget>& p2)		// pointed to by
+	{ return *p1 < *p2; };					// std::unique_ptrs
+
+// Need C++14 support
+auto derefLess =							// C++14 comparison
+	[](const auto& p1, const auto& p2)		// function for values pointed
+	{ return *p1 < *p2; };					// to by anything pointer-like
+```
+
+
 
 
 
@@ -1091,3 +1123,20 @@ void f(const T& param) {
 - verbose variable declarations
 - the ability to directly hold closures
 - ability to avoid “type shortcuts” (says by Scott Meyers)
+
+
+
+
+
+
+
+
+
+
+
+# Reference Pages
+
+[C++的闭包(closure)](https://zhuanlan.zhihu.com/p/121628510)
+
+[C++ 闭包和匿名函数](https://zhuanlan.zhihu.com/p/303391384)
+
