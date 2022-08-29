@@ -70,6 +70,20 @@ elicit *v.*引出，得到；
 
 palatable *adj.*美味的，可口的；愉快的
 
+bedevil *vt.*使痛苦；虐待；使苦恼
+
+dutifully *adv.*忠实地；忠贞地；尽责地，忠诚地
+
+ins and outs 复杂细节；进进出出；盛衰
+
+potholes  *n.*凹坑；坑槽；洞坑（pothole 的复数形式）
+
+notwithstanding *prep.*虽然，尽管；*adv.*尽管如此；*conj.*虽然，尽管
+
+
+
+
+
 
 
 # Introduction
@@ -1037,11 +1051,43 @@ void f(const T& param) {
 
 
 
+# Chapter 2 `auto`
+
+## Item 5: Prefer `auto` to explicit type declarations
+
+
+
+> The type of a closure is known only to the compiler, hence can’t be written out.
 
 
 
 
 
+> What’s a `std::function` object?
+>
+> `std::function` is a template in the C++11 Standard Library that generalizes the idea of a function pointer. Whereas function pointers can point only to functions, however, `std::function` objects can refer to any callable object, i.e., to anything that can be invoked like a function. 
+>
+> Just as you must specify the type of function to point to when you create a function pointer (i.e., the signature of the functions you want to point to), you must specify the type of function to refer to when you create a `std::function` object. 
 
 
 
+### `std::function`对象是什么？
+
+- `std::function` 是C++11标准库中的一个模板（类），目的是使函数指针的思想通用化
+- `std::function` 对象可以引用任何可调用（callable）的对象，而函数指针只能指向函数
+- `std::function` 对象的初始化，是通过指明模板参数，即函数的signature来实现的（与创建函数指针类似）
+
+
+
+### `auto`和`std::function`包含闭包时的差异
+
+
+
+
+
+### Advantages of `auto`
+
+- avoidance of uninitialized variables
+- verbose variable declarations
+- the ability to directly hold closures
+- ability to avoid “type shortcuts” (says by Scott Meyers)
