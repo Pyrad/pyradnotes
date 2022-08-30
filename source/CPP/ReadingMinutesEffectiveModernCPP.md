@@ -1128,7 +1128,9 @@ auto derefLess =							// C++14 comparison
 
 
 
+`std::unordered_map`中，key的部分实际上是`const`。
 
+即`std::unordered_map`中存储的元素，在插入map之后，如果再次从map中取得（访问），得到的类型实际上是`std::pair<const KeyType, ValueType>`，这里的`KeyType`和`ValueType`分别是key的类型和value的类型。
 
 
 
