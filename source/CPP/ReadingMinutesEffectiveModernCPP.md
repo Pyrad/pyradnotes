@@ -1113,7 +1113,16 @@ auto derefLess =							// C++14 comparison
 
 ### `auto`和`std::function`包含闭包时的差异
 
+除了语法的详细程度、以及需要重复参数的类型名称，`std::function`和`auto`实际上是有一些差别的。
 
+简单来说就是`std::function`比`auto`包含闭包时，要占用更多内存，而且调用运行比较慢。
+
+- 使用`auto`声明的变量，它的类型和它所包含的的闭包类型一致。它所占用的内存空间大小，实际上就是它所包含的闭包占用的内存空间大小。
+- 使用`std::function`声明的变量，它实际上是`std::function`这个template类的一个实例，这个实例包含了一个闭包。所以`std::function`对于任意一个函数signature，它所占用的内存大小是固定的。这样导致的问题是它所包含的闭包也许要使用更多的内存空间，此时`std::function`就要在堆上申请更多的内存来存储这个闭包。由于实现的细节和内联的限制，通过`std::function`来调用一个闭包，几乎必然比通过调用`auto`声明的对象要**慢，而且占用更多内存（还有out-of-memory的exception）**。
+
+
+
+> An `auto`-declared variable holding a closure has the same type as the closure, and as such it uses only as much memory as the closure requires. The type of a `std::function`-declared variable holding a closure is an instantiation of the `std::function` template, and that has a fixed size for any given signature. This size may not be adequate for the closure it’s asked to store, and when that’s the case, the std::function constructor will allocate heap memory to store the closure.
 
 
 
@@ -1126,11 +1135,13 @@ auto derefLess =							// C++14 comparison
 
 
 
-
+### `std::unordered_map`的迭代器的返回值
 
 `std::unordered_map`中，key的部分实际上是`const`。
 
 即`std::unordered_map`中存储的元素，在插入map之后，如果再次从map中取得（访问），得到的类型实际上是`std::pair<const KeyType, ValueType>`，这里的`KeyType`和`ValueType`分别是key的类型和value的类型。
+
+所以，如果是在使用`auto`声明的`for`循环中，编译器可以帮助避免这个临时变量的问题。
 
 
 
