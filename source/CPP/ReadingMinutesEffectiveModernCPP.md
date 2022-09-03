@@ -102,6 +102,10 @@ tip-off *n.*密报；警告；举报
 
 
 
+boast of *v.* 吹牛，自夸
+
+
+
 Usage of ***contrast***
 
 > Contrast that with what happens in the `auto`-ized declaration for ...
