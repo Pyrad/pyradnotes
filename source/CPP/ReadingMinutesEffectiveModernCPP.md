@@ -82,6 +82,32 @@ notwithstanding *prep.*虽然，尽管；*adv.*尽管如此；*conj.*虽然，�
 
 amiss *adj.*有毛病的，有缺陷的；出差错的；*adv.*错误地
 
+zig *n.*急转；锯齿形转角 *vi.*转弯
+
+zag *n.*急转；急变；锯齿形转角 *vi.*急转；急变；急弯
+
+innocuous *adj.*无害的；无伤大雅的
+
+afield *adv.*在远方地；遥远地；远离家乡地；在田野，在野外 *adj.*远方的；遥远的；远离家乡的
+
+Pantheon *n.*万神殿；名流群
+
+compatriot *n.*同胞，同国人；同事，伙伴
+
+
+
+blindside *v.*出其不意地袭击；（使）遭受意外的打击；拦腰撞上（其他车辆）
+
+tip-off *n.*密报；警告；举报
+
+
+
+Usage of ***contrast***
+
+> Contrast that with what happens in the `auto`-ized declaration for ...
+
+
+
 
 
 
@@ -1142,6 +1168,124 @@ auto derefLess =							// C++14 comparison
 即`std::unordered_map`中存储的元素，在插入map之后，如果再次从map中取得（访问），得到的类型实际上是`std::pair<const KeyType, ValueType>`，这里的`KeyType`和`ValueType`分别是key的类型和value的类型。
 
 所以，如果是在使用`auto`声明的`for`循环中，编译器可以帮助避免这个临时变量的问题。
+
+
+
+
+
+## Item 6: Use the explicitly typed initializer idiom when `auto` deduces undesired types
+
+
+
+### `auto` with proxy classes : operator `[]` in `std::vector<bool>`
+
+一般地，`std::vector<T>::operator[]`都会返回容器中对应索引元素的引用（即T&），但`std::vector<bool>`是例外，它的`operator[]`返回一个新的object，类型是一个class `std::vector<bool>::reference`，它可以转换为`bool`类型，或者由`bool`类型转换而来。
+
+这个class是定义在`std::vector<bool>`中。
+
+```cpp
+class vector<bool>::reference {
+  friend class vector;
+  reference() noexcept;                                 // no public constructor
+public:
+  ~reference();
+  operator bool () const noexcept;                      // convert to bool
+  reference& operator= (const bool x) noexcept;         // assign from bool
+  reference& operator= (const reference& x) noexcept;   // assign from bit
+  void flip();                                          // flip bit value.
+};
+```
+
+所以，如果使用类似`bool b = bvec[0]`的操作，`bvec[0]`会返回一个`std::vector<bool>::reference`，然后它被隐式地转换为一个`bool`，而不是一个`bool&`。
+
+这个问题产生的原因是，`std::vector<bool>`是`std::vector`的一个特化template，它内部使用了`bits`来存储这些对应的`bool`值（一个`bit`对应一个`bool`），但**C++禁止引用`bits`**，所以就不能像正常的`std::vector`一样，`operator[]`返回`T&`，所以引入了这个class，来模拟`bool&`的行为。
+
+
+
+### 使用`static_cast`帮助`auto`进行类型推导
+
+为了防止`auto`在某些情况下被Proxy Class所诱导而推导出所需的类型，可以使用`static_cast`来帮助编译器进行正确推导出我们想要的类型。
+
+如书中所述，下面的代码在`auto`处会被推导称为一个`std::vector<bool>::reference`。
+
+```cpp
+std::vector<bool> features(const Widget& w);
+
+Widget w;
+auto highPriority = features(w)[5]; // is w high priority?
+processWidget(w, highPriority); // process w in accord with its priority
+```
+
+这个`std::vector<bool>::reference`就是一个proxy class，它的行为取决于它的实现。
+
+书中提到了一种可能的实现：使用一个指针指向`bits`，并加上一个offset，以便找到对应的`bit`。
+
+在这样的实现下，上面的代码就回产生undefined behavior。
+
+原因是`features(w)`返回一个临时的`std::vector<bool>`，进而`features(w)[5]`返回一个`std::vector<bool>::reference`，然后再赋值给`highPriority`并由编译器来推导其类型，而此时临时的`std::vector<bool>`已经被销毁，这就导致`std::vector<bool>::reference`中的指针变成了一个dangling pointer，那么就可能会出问题。
+
+解决这个问题的办法，是使用`static_cast`，它显式地（在编译期间）将起转换成`bool`（`std::vector<bool>::reference`提供的`bool`转换），然后编译器再将`highPriority`推导为`bool`类型。
+
+```cpp
+auto highPriority = static_cast<bool>(features(w)[5]);
+```
+
+
+
+> some classes in C++ libraries employing a technique known as expression templates
+
+> As a general rule, “invisible” proxy classes don’t play well with `auto`
+
+
+
+### 使用`static_cast`类显式说明正在做特意的转换
+
+如书中所述，可以使用`static_cast`，除了帮助转换proxy class以便`auto`正确推导外，还可以利用它，显式说明当前正在做特意的转换，以便引起注意。
+
+```cpp
+double calcEpsilon(); // return tolerance value
+
+float ep = calcEpsilon(); // impliclitly convert: double → float
+auto ep = static_cast<float>(calcEpsilon()); // Use static_cast + auto
+```
+
+
+
+Things to Remember
+
+> - “Invisible” proxy types can cause `auto` to deduce the “wrong” type for an initializing expression.
+>
+> - The explicitly typed initializer idiom forces `auto` to deduce the type you want it to have.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
