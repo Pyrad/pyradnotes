@@ -1265,11 +1265,30 @@ Things to Remember
 
 
 
+# Chapter 3 Moving to Modern C++
 
+C++11和C++14值得大书特书的突出特性
 
+- auto
 
+- smart pointers
 
+- move semantics
 
+- lambdas
+
+- concurrency
+
+需要解答并掌握背后原因的结果问题
+
+- When should you use braces instead of parentheses for object creation?
+  - 创建对象时，为什么应该使用花括号（`{}`）而不是圆括号（`()`）
+- Why are alias declarations better than `typedef`s?
+  - 为什么`alias`声明要比`typedef`更好？
+- How does `constexpr` differ from `const`?
+  - `constexpr`和`const`相比，有何不同？
+- What’s the relationship between `const` member functions and thread safety? 
+  - `const`成员函数和线程安全之间有什么关系？
 
 
 
