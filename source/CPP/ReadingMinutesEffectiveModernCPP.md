@@ -104,6 +104,8 @@ tip-off *n.*密报；警告；举报
 
 boast of *v.* 吹牛，自夸
 
+newbie *n.*网络新手；新兵
+
 
 
 Usage of ***contrast***
@@ -1294,6 +1296,83 @@ C++11和C++14值得大书特书的突出特性
 
 
 
+## Item 7: Distinguish between `()` and `{}` when creating objects
+
+C++中，初始化对象的语法主要有如下几种
+
+- 括号（`()`，parentheses）
+- 等号（`=`，equal sign）
+- 花括号（`{}`，curly braces）
+- 等号+花括号（`= {}`，equals-sign-plus-braces）
+
+```cpp
+int x(0);		// initializer is in parentheses
+int y = 0;		// initializer follows "="
+int z{ 0 };		// initializer is in braces
+int z = { 0 };	// initializer uses "=" and braces
+```
+
+C++中通常把”等号+花括号“（equals-sign-plus-braces）的形式等同于花括号
+
+其中，花括号是由C++11引入的，称为**uniform initialization**，Scott Meyers更喜欢叫它**braced initialization**。
+
+
+
+### braced initialization为何uniform？
+
+几个特点
+
+- 可以指定一个集合来初始化容器
+  - C++98做不到
+- 可以用来指定类数据成员的默认初始化值
+  - 等号`=`也可以用于此用途，但圆括号`()`不行
+- 可以用来初始化uncopyable objects （比如`std::atomic`）
+  - 圆括号`()`也可以用于此用途，但等号`=`不行
+
+由此可见，`{}`花括号初始化为什么叫做**uniform initialization**了
+
+```cpp
+std::vector<int> v{ 1, 3, 5 }; // v's initial content is 1, 3, 5
+
+class Widget {
+	private:
+	int x{ 0 };	// fine, x's default value is 0
+	int y = 0;	// also fine
+	int z(0);	// error!!!
+};
+
+std::atomic<int> ai1{ 0 };	// fine
+std::atomic<int> ai2(0);	// fine
+std::atomic<int> ai3 = 0;	// error!!!
+```
+
+
+
+### 花括号初始化的两个新特点
+
+- 防止类型范围缩减转换（**narrowing conversions**）
+- 防止“最烦人解析”（**most vexing parse**）
+
+
+
+关于第一个，实际上是说用一个类型范围较大的值去初始化一个范围类型较小的值，编译会失败
+
+```cpp
+double x = 0, y = 1, z = 2;
+int sum1{ x + y + z };	// error! sum of doubles may not be expressible as int
+int sum2(x + y + z);	// okay (value of expression truncated to an int)
+int sum3 = x + y + z;	// ditto
+```
+
+第二个，实际上是说，在调用默认构造函数（或者调用有默认值的构造函数而没有传参）时，编译器无法区分到底是在调用一个构造函数，还是在声明一个函数（因为看起来没有任何区别）。而使用花括号初始化，就能避免这个问题。
+
+```cpp
+Widget w1(10);	// call Widget ctor with argument 10
+Widget w2();	// most vexing parse! declares a function
+				// named w2 that returns a Widget!
+Widget w3{}; // calls Widget ctor with no args
+```
+
 
 
 
@@ -1319,4 +1398,6 @@ C++11和C++14值得大书特书的突出特性
 [C++的闭包(closure)](https://zhuanlan.zhihu.com/p/121628510)
 
 [C++ 闭包和匿名函数](https://zhuanlan.zhihu.com/p/303391384)
+
+[C++ most vexing parse（C++最令人烦恼的解析）](https://zhuanlan.zhihu.com/p/391558669)
 
