@@ -16,3 +16,6 @@ This file shows some advanced usages of C/C++
 - What is **RTTI**?
   - **RTTI = Run-Time Type Information**
 - What is **closure type**？
+- What is **most vexing parse** ?
+- What is **narrowing conversions** ?
+  - （类型）范围缩减转换
