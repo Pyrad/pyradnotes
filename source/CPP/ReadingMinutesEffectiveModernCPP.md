@@ -108,6 +108,26 @@ newbie *n.*网络新手；新兵
 
 
 
+demarcate *vt.*划分界线；区别
+
+arcane *adj.*神秘的，晦涩难懂的
+
+burbling *v.*语无伦次地讲话；潺潺做声；（航空）产生气流（burble 的现在分词）；
+
+​                *n.*潺潺的水声；（诗歌）汩汩的水声；激动人心的演讲
+
+deliberation *n.*考虑，思考；从容，审慎；审议，商议；考虑，细想
+
+unrivaled *adj.*无敌的；至高无上的；无比的
+
+waylay *vt.*伏击；埋伏
+
+concede *v.*（通常指不情愿地）承认；认（输），承认（失败）；授予，让与；让对手得分
+
+consensus *n.*一致看法，共识
+
+
+
 Usage of ***contrast***
 
 > Contrast that with what happens in the `auto`-ized declaration for ...
@@ -1348,14 +1368,20 @@ std::atomic<int> ai3 = 0;	// error!!!
 
 
 
-### 花括号初始化的两个新特点
+### 花括号初始化的优点和缺点
+
+#### 优点
 
 - 防止类型范围缩减转换（**narrowing conversions**）
 - 防止“最烦人解析”（**most vexing parse**）
 
+#### 缺点
 
+- 当存在参数为`std::initializer_list`的构造函数时，可能导致非预期的重载构造函数被调用
 
-关于第一个，实际上是说用一个类型范围较大的值去初始化一个范围类型较小的值，编译会失败
+#### 优缺点的例子
+
+关于第一个**优点**，实际上是说用一个类型范围较大的值去初始化一个范围类型较小的值，编译会失败
 
 ```cpp
 double x = 0, y = 1, z = 2;
@@ -1364,7 +1390,7 @@ int sum2(x + y + z);	// okay (value of expression truncated to an int)
 int sum3 = x + y + z;	// ditto
 ```
 
-第二个，实际上是说，在调用默认构造函数（或者调用有默认值的构造函数而没有传参）时，编译器无法区分到底是在调用一个构造函数，还是在声明一个函数（因为看起来没有任何区别）。而使用花括号初始化，就能避免这个问题。
+第二个**优点**，实际上是说，在调用默认构造函数（或者调用有默认值的构造函数而没有传参）时，编译器无法区分到底是在调用一个构造函数，还是在声明一个函数（因为看起来没有任何区别）。而使用花括号初始化，就能避免这个问题。
 
 ```cpp
 Widget w1(10);	// call Widget ctor with argument 10
@@ -1375,13 +1401,155 @@ Widget w3{}; // calls Widget ctor with no args
 
 
 
+关于**缺点**，当没有参数为`std::initializer_list`的构造函数时，花括号和圆括号初始化会得到一致的结果
+
+```cpp
+class Widget {
+public:
+	Widget(int i, bool b); // ctors not declaring
+	Widget(int i, double d); // std::initializer_list params
+};
+Widget w1(10, true);	// calls first ctor
+Widget w2{10, true};	// also calls first ctor
+Widget w3(10, 5.0);		// calls second ctor
+Widget w4{10, 5.0};		// also calls second ctor
+```
+
+但是当存在参数为`std::initializer_list`的构造函数时，只要哪怕存在一种**类型转换的可能**，花括号和初始化会就会调用参数为`std::initializer_list`的重载构造函数，但这会导致一些意外情况发生。
+
+这里说的至少一种**类型转换的可能**，包括narrowing conversion。（尽管花括号初始化禁止narrowing conversion，但编译器确实会这么做，并最终导致编译失败，下面的第三个例子说明了这个问题）
 
 
 
+比如下面的第一个例子，花括号初始化时，发现`10`、`true`和`5`都能转换为`long double`（花括号初始化不允许narrowing conversion，但允许向范围更大的类型转换），那么就会将它们转换为`long double`，并调用带有参数为`std::initializer_list`的重载构造函数，但事实上，这两个重载函数调用，并不是最佳的匹配。
+
+```cpp
+class Widget {
+public:
+	Widget(int i, bool b); // ctors not declaring
+	Widget(int i, double d); // std::initializer_list params
+    Widget(std::initializer_list<long double> il); // added
+};
+
+Widget w1(10, true); // uses parens and, as before, calls first ctor
+Widget w2{10, true}; // uses braces, but now calls std::initializer_list ctor
+                     // (10 and true convert to long double)
+Widget w3(10, 5.0);  // uses parens and, as before, calls second ctor
+Widget w4{10, 5.0};  // uses braces, but now calls std::initializer_list ctor
+                     // (10 and 5.0 convert to long double)
+```
+
+下面的第二个例子说明了，甚至连copy-ctor和move-ctor都存在被“劫持”的可能（因为object重载了一个转换为`float`的运算符，导致编译器发现可以从`float`向`long double`发生类型转换，从而调用参数为`std::initializer_list`的重载构造函数，但这并不是所希望的）
+
+```cpp
+class Widget {
+public:
+	Widget(int i, bool b); // as before
+	Widget(int i, double d); // as before
+	Widget(std::initializer_list<long double> il); // as before
+	operator float() const; // convert to float
+};
+
+Widget w5(w4);	// uses parens, calls copy ctor
+Widget w6{w4};	// uses braces, calls std::initializer_list ctor
+                // (w4 converts to float, and float converts to long double)
+Widget w7(std::move(w4)); // uses parens, calls move ctor
+Widget w8{std::move(w4)}; // uses braces, calls std::initializer_list ctor
+                          // (for same reason as w6)
+```
+
+下面的第三个例子说明了，在极端情况下，甚至可能因为编译器倾向选择带有`std::initializer_list`的重载构造函数，而导致最终编译失败。（原因是编译器发现存在带有`std::initializer_list`的重载构造函数，而又使用了花括号初始化，并且发现从`int`（`10`）或`double`（`5.0`）向`bool`转换是可能的（narrowing conversion），从而调用它，但是这是narrowing conversion，而花括号初始化禁止narrowing conversion，从而最终导致编译失败）
+
+```cpp
+class Widget {
+	public:
+	Widget(int i, bool b); // as before
+	Widget(int i, double d); // as before
+	Widget(std::initializer_list<bool> il); // element type is now bool
+                                            // no implicitconversion funcs
+}; 
+
+Widget w{10, 5.0}; // error!!! requires narrowing conversions
+```
 
 
 
+所以只有当没有发生类型转换的可能时，编译器才考虑其他重载的构造函数。
 
+这里编译器会发现不能从`int`（`10`）或`double`（`5.0`）或`bool`（`true`）向`std::string`发生类型转换，所以最终编译器会找其他最佳匹配的重载构造函数。
+
+```cpp
+class Widget {
+public:
+	Widget(int i, bool b); // as before
+	Widget(int i, double d); // as before
+    
+	// std::initializer_list element type is now std::string
+	Widget(std::initializer_list<std::string> il);// no implicit conversion funcs
+};
+
+Widget w1(10, true); // uses parens, still calls first ctor
+Widget w2{10, true}; // uses braces, now calls first ctor
+Widget w3(10, 5.0); // uses parens, still calls second ctor
+Widget w4{10, 5.0}; // uses braces, now calls second ctor
+```
+
+
+
+### 默认构造函数和空的`std::initializer_list`构造函数
+
+如果既有默认构造函数，又有一个带有`std::initializer_list`的重载构造函数，那么调用花括号初始化对象时，如果花括号里面是空的，那么调用那个构造函数？
+
+答案是默认构造函数。
+
+这里编译器把空的花括号认为是没有参数，而不是一个空的`std::initializer_list`。如果想要调用一个空的`std::initializer_list`来调用带有`std::initializer_list`参数的重载构造函数，那么就把`{}`（表示一个空的`std::initializer_list`）放到一个圆括号中（即`({})`）或者花括号中（`{{}}`）。见下面的例子。
+
+```cpp
+class Widget {
+	public:
+	Widget(); // default ctor
+	Widget(std::initializer_list<int> il); // std::initializer_list ctor
+                                           // no implicit conversion funcs
+};
+Widget w1; // calls default ctor
+Widget w2{}; // also calls default ctor
+Widget w3(); // most vexing parse! declares a function!
+Widget w4({}); // calls std::initializer_list ctor with empty list
+Widget w5{{}}; // ditto
+```
+
+
+
+### `vector`中经常碰到的区别
+
+在`std::vector`构造时，经常会碰到使用圆括号和花括号会导致不同初始化的问题，这是由于`std::vector`有一个接受两个参数的构造函数（参数为个数和每个元素的值），但这会导致使用圆括号和花括号初始化对象，创建为完全不同的两个`std::vector`。
+
+```cpp
+std::vector<int> v1(10, 20); // use non-std::initializer_list ctor: create 10-element
+                             // std::vector, all elements have value of 20
+std::vector<int> v2{10, 20}; // use std::initializer_list ctor: create 2-element 
+                             // std::vector, element values are 10 and 20
+```
+
+Scott Meyers提到vector里面的这种设计，后来被认为是错误的。
+
+
+
+Scott Meyers提到这两种初始化方式的拥趸的观点，他建议选其中一种，并保持一致即可
+
+> Braces-by-default folks are attracted by their unrivaled breadth of applicability, their prohibition of narrowing conversions, and their immunity to C++’s most vexing parse. Such folks understand that in some cases (e.g., creation of a std::vector with a given size and initial element value), parentheses are required. On the other hand, the go-parentheses-go crowd embraces parentheses as their default argument delimiter. They’re attracted to its consistency with the C++98 syntactic tradition, its avoidance of the auto-deduced-a-`std::initializer_list` problem, and the knowledge that their object creation calls won’t be inadvertently waylaid by `std::initializer_list` constructors. They concede that sometimes only braces will do (e.g.,when creating a container with particular values).There’s no consensus that either approach is better than the other, so my advice is to pick one and apply it consistently.
+
+
+
+### Things to Remember
+
+> - Braced initialization is the most widely usable initialization syntax, it prevents narrowing conversions, and it’s immune to C++’s most vexing parse.
+>
+> - During constructor overload resolution, braced initializers are matched to `std::initializer_list` parameters if at all possible, even if other constructors offer seemingly better matches.
+>
+> - An example of where the choice between parentheses and braces can make a significant difference is creating a `std::vector<numeric type>` with two arguments.
+>
+> - Choosing between parentheses and braces for object creation inside templates can be challenging.
 
 
 
