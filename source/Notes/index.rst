@@ -17,3 +17,4 @@ Notes
    WinDevEnvSetup
    bash
    Tcl
+   geometry
