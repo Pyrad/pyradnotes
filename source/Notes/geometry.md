@@ -47,3 +47,9 @@
 
 
 
+[Computational Geometry: Algorithms and Applications (Book Page)](http://www.cs.uu.nl/geobook/)
+
+[Junhui Deng's Page](https://dsa.cs.tsinghua.edu.cn/~deng/cg/index.htm)
+
+
+
