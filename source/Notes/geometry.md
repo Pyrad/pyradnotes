@@ -26,6 +26,10 @@
 
 [libigl](https://libigl.github.io/)
 
+[Welcome to Geometry Central (C++ Library)](http://geometry-central.net/)
+
+[Polyscope - C++](https://polyscope.run/)
+
 
 
 
@@ -52,6 +56,20 @@
 [Junhui Deng's Page](https://dsa.cs.tsinghua.edu.cn/~deng/cg/index.htm)
 
 [Algorithm complexity from book Computational Geometry](https://zhuanlan.zhihu.com/p/344392726)
+
+[矩形对线段的裁剪 - tkstar的文章 - 知乎](https://zhuanlan.zhihu.com/p/556047765)
+
+[计算机图形学几何处理如何入门？ - 知乎](https://www.zhihu.com/question/513726207)
+
+[**Ke-Sen Huang's Home Page**](http://kesen.realtimerendering.com/)
+
+
+
+[计算几何书籍列表 - StubbornHuang](https://www.stubbornhuang.com/1256/)
+
+[计算几何书籍列表 - StubbornHuang - Github](https://github.com/HW140701/Book-list-of-computational-geometry-and-computer-graphics)
+
+
 
 
 
