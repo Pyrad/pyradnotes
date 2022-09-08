@@ -1,5 +1,7 @@
 # Geometry
 
+
+
 ## Geometry Libraries
 
 [Wykobi](http://www.wykobi.com/)
@@ -25,6 +27,12 @@
 [libigl](https://libigl.github.io/)
 
 
+
+
+
+
+
+
 ## Reference Web Pages
 
 [c++ - 2D Geometry library: LGPL alternative to CGAL? - Stack Overflow](https://stackoverflow.com/questions/9349220/2d-geometry-library-lgpl-alternative-to-cgal)
@@ -34,3 +42,8 @@
 [List of numerical libraries - Wikipedia](https://en.wikipedia.org/wiki/List_of_numerical_libraries)
 
 [Category:Geometric algorithms - Wikipedia](https://en.wikipedia.org/wiki/Category:Geometric_algorithms)
+
+[Computational Geometry Wiki](https://en.wikipedia.org/wiki/Computational_geometry)
+
+
+
