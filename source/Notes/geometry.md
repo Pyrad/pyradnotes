@@ -37,7 +37,12 @@
 
 
 
-## Reference Web Pages
+
+
+
+## Geometry Libraries Reference Web Pages
+
+
 
 [c++ - 2D Geometry library: LGPL alternative to CGAL? - Stack Overflow](https://stackoverflow.com/questions/9349220/2d-geometry-library-lgpl-alternative-to-cgal)
 
@@ -72,4 +77,22 @@
 
 
 [Search Baidu Pan - 盘131](https://www.pan131.com/)
+
+
+
+
+
+
+
+## 图形分割
+
+[图分割Graph Partitioning技术总结](https://zhuanlan.zhihu.com/p/446152634)
+
+[图像分割 传统方法 整理](https://zhuanlan.zhihu.com/p/30732385)
+
+[数字图像处理中常用图像分割算法有哪些？](https://www.zhihu.com/question/26085954/answer/152232547)
+
+[最全综述 | 图像分割算法](https://zhuanlan.zhihu.com/p/540084832)
+
+
 
