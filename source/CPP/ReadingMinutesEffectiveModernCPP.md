@@ -1643,8 +1643,8 @@ bool f3(Widget* pw);					// mutex is locked
 
 ```cpp
 std::mutex f1m, f2m, f3m; // mutexes for f1, f2, and f3
-using MuxGuard = // C++11 typedef; see Item 9
-std::lock_guard<std::mutex>;
+using MuxGuard = std::lock_guard<std::mutex>; // C++11 typedef; see Item 9
+
 {
 	MuxGuard g(f1m);		// lock mutex for f1
 	auto result = f1(0);	// pass 0 as null ptr to f1
