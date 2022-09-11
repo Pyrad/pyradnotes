@@ -126,6 +126,24 @@ concede *v.*（通常指不情愿地）承认；认（输），承认（失败�
 
 consensus *n.*一致看法，共识
 
+grudge *n.*怨恨，嫌隙 *v.*（因不满而）不愿意给（或允许）；嫉恨，妒忌（某人）做成（某事）
+
+grudgingly *adv.*勉强地；不情愿地
+
+implication *n.*可能的影响（或作用、结果）；含意，暗指；牵连，涉及
+
+leeway *n.*余地；风压差；偏航；落后
+
+run-of-the-mill *adj.*普通的；非精选的
+
+run-of-the-mine *adj.*普通的，不突出的；（煤）未分类的
+
+ironclad *adj.*装甲的；打不破的；坚固的； *n.*装甲舰
+
+
+
+
+
 
 
 Usage of ***contrast***
@@ -1556,6 +1574,132 @@ Scott Meyers提到这两种初始化方式的拥趸的观点，他建议选其�
 > - An example of where the choice between parentheses and braces can make a significant difference is creating a `std::vector<numeric type>` with two arguments.
 >
 > - Choosing between parentheses and braces for object creation inside templates can be challenging.
+
+
+
+
+
+## Item 8: Prefer `nullptr` to `0` and `NULL`
+
+### `0` and `NULL`
+
+理论上，当在需要指针的时候，如果编译器发现只有`0`可以使用，那么它会（不情愿地）把`0`当做（空）指针使用。同样地，对待`NULL`也是如此。可能不同的是，根据具体实现的不同`NULL`可以被定义为`int`，`long int`等。
+
+在C++98中，这可能导致的主要影响是，函数重载会不能匹配到指针类型的重载函数。
+
+```cpp
+void f(int);	// three overloads of f
+void f(bool);
+void f(void*);
+
+f(0);			// calls f(int), not f(void*)
+f(NULL);		// might not compile, but typically calls f(int). Never calls f(void*)
+```
+
+上面`f(NULL)`可能不能编译的原因是：如果`NULL`被定义为`0L`，那么实际上`long`转`int`，`long`转`bool`，以及`0L`转`void*`，对编译器来讲是同样好的，所以会产生歧义（模棱两可）。
+
+
+
+### C++11 introduced`nullptr`
+
+C++11中引入了`nullptr`，它的实际类型是`std::nullptr_t`（which is a wonderfully circular definition）。
+
+`std::nullptr_t`可以隐式地转换成所有类型的原生指针。
+
+> The type `std::nullptr_t` implicitly converts to all raw pointer types
+
+在上述例子中，如果存在一种参数是指针类型的重载函数，那么就可以使用`nullptr`来调用，避免编译器不能匹配想要正确匹配的重载函数了。
+
+```cpp
+/** With examples above **/
+f(nullptr); // calls f(void*) overload
+```
+
+
+
+使用`nullptr`而不是`0`或是`NULL`可以避免重载函数匹配的问题，除此之外，还可以提高代码可读性，尤其是当何`auto`一起使用时（It can also improve **code clarity**, especially when `auto` variables are involved）。下面的例子说明了，使用`nullptr`时，可以一眼就发现`result`实际上是一个指针类型。
+
+```cpp
+auto result = findRecord( /* arguments */ );
+if (result == 0) { /* ... */ }
+
+auto result = findRecord( /* arguments */ );
+if (result == nullptr) { /* ... */ }
+```
+
+
+
+### Template with `nullptr`
+
+假设有以下三个函数，每个的参数都是一种（不同类型的）指针
+
+```cpp
+int f1(std::shared_ptr<Widget> spw);	// call these only when
+double f2(std::unique_ptr<Widget> upw);	// the appropriate
+bool f3(Widget* pw);					// mutex is locked
+```
+
+如果使用`0`和`NULL`，也可以工作（但事实上并不理想）
+
+```cpp
+std::mutex f1m, f2m, f3m; // mutexes for f1, f2, and f3
+using MuxGuard = // C++11 typedef; see Item 9
+std::lock_guard<std::mutex>;
+{
+	MuxGuard g(f1m);		// lock mutex for f1
+	auto result = f1(0);	// pass 0 as null ptr to f1
+} // unlock mutex
+
+{
+	MuxGuard g(f2m);		// lock mutex for f2
+	auto result = f2(NULL);	// pass NULL as null ptr to f2
+} // unlock mutex
+
+{
+	MuxGuard g(f3m);			// lock mutex for f3
+	auto result = f3(nullptr);	// pass nullptr as null ptr to f3
+} // unlock mutex
+```
+
+
+
+因为看起来代码调用函数的步骤都是类似的，所以可以写成Template的形式（如果是C++14，返回类型可以直接写成`decltype(auto)`）
+
+```cpp
+template<typename FuncType, typename MuxType, typename PtrType>
+auto lockAndCall(FuncType func, MuxType& mutex, PtrType ptr) -> decltype(func(ptr)) {
+	MuxGuard g(mutex);
+	return func(ptr);
+}
+```
+
+那么相应的调用就如下
+
+```cpp
+auto result1 = lockAndCall(f1, f1m, 0);			// error!
+auto result2 = lockAndCall(f2, f2m, NULL);		// error!
+auto result3 = lockAndCall(f3, f3m, nullptr);	// fine
+```
+
+如上注释中所注明，第一个和第二个调用实际上会编译失败。
+
+第一个：因为`0`始终都会被编译器认为是`int`类型，所以模板中`ptr`会被推导为`int`类型，但对于`f1m`而言，它接受的参数却是`std::shared_ptr<Widget>`，而显然`int`不能（隐式地）转换成`std::shared_ptr<Widget>`，所以或编译失败。
+
+第二个：和第一个中的`0`类似，`NULL`按照它被定义的类型，或被编译器认为是`int`或是`int-like`的类型，这将同样导致编译推导`ptr`的类型是`int`或是`int-like`的类型，而`f2m`实际上接收的参数类型是`std::unique_ptr<Widget>`。所以编译失败。
+
+第三个：会编译成功。原因是`nullptr`本身的类型是`std::nullptr_t`，这同样也是编译器推导出来的类型，而`std::nullptr_t`可以隐式地转换成任意一种原生指针（这里的`Widget*`），所以最后编译通过。
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
