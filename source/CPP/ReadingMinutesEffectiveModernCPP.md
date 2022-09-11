@@ -140,9 +140,23 @@ run-of-the-mine *adj.*普通的，不突出的；（煤）未分类的
 
 ironclad *adj.*装甲的；打不破的；坚固的； *n.*装甲舰
 
+carpal *n.*腕关节；*adj.*腕关节的
+
+carpal tunnel syndrome 腕管综合征
+
+cumbersome *adj.*笨重的；繁琐的，复杂的；（话语或措词）冗长的
+
+concoct *vt.*编造；调制（食物或饮品）
+
+assortment *n.*各种各样，混合
+
+**inferior** *adj.*次的，较差的；低等的，下级的；自卑的；（法庭，特别法庭）下级的；（商品，服务）需求量在衰退期中较之繁荣期更大的，低档的；（位置）下方的，下位的，靠下的；（字母，数字，符号）下标的；低等的；*n.*下级，（地位或成就）低于他人者；下标字母，下标数字，下标符号
 
 
 
+belatedly *adv.*延迟地；延续地
+
+child's play 容易干的事；轻而易举之事
 
 
 
@@ -1695,19 +1709,61 @@ auto result3 = lockAndCall(f3, f3m, nullptr);	// fine
 
 
 
+## Item 9: Prefer alias declarations to `typedef`
 
 
 
+Scott Meyers调侃了一下，如果写个很长的类型名称，会增加得腕管综合征的风险。
+
+> Just thinking about it probably increases the risk of carpal tunnel syndrome.
 
 
 
+为什么用`using` alias declaration，而不是老式的（C++98）的`typedef`，其中就一定有令人信服的技术原因。
+
+> it’s reasonable to wonder whether there is a solid technical reason for preferring one over the other.
 
 
 
+如果是要定义一个函数指针的alias，可以明显看到`using` alias的形式稍微好读一些，但这并不是使用`using` alias的形式的主要原因。
+
+```cpp
+// FP is a synonym for a pointer to a function taking an int and
+// a const std::string& and returning nothing
+typedef void (*FP)(int, const std::string&); // typedef same meaning as above
+using FP = void (*)(int, const std::string&); // alias declaration
+```
 
 
 
+实际上，使用`using` alias declaration的主要原因是：template。
 
+`typedef`不能对template使用。
+
+如果对template使用`using` alias declaration，这时叫做 **alias templates**。
+
+> alias declaration can be templatized, in which case they’re called ***alias templates***
+
+> With an alias template, it’s a piece of cake.
+
+
+
+`using` alias declaration for template的写法
+
+```cpp
+template<typename T> // MyAllocList<T>
+using MyAllocList = std::list<T, MyAlloc<T>>; // is synonym for std::list<T, MyAlloc<T>>
+```
+
+
+
+template metaprogramming = TMP
+
+
+
+C++11的type traits，实际上是由嵌套在template struct里的`typedef`实现的。是的，就是本节讲的要我们避免使用的`typedef`。但它这么做，是由历史原因的。
+
+C++11 type traits are implemented as nested typedefs inside templatized structs.
 
 
 
