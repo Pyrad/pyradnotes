@@ -154,9 +154,25 @@ assortment *n.*各种各样，混合
 
 
 
-belatedly *adv.*延迟地；延续地
+**belatedly** *adv.*延迟地；延续地
 
-child's play 容易干的事；轻而易举之事
+**child's play** 容易干的事；轻而易举之事
+
+
+
+**travesty** *n.*歪曲；滑稽作品；拙劣的模仿作品；*vt.*歪曲；滑稽地模仿
+
+**wanton** *adj.*嬉戏的；繁茂的；荒唐的；无节制的；放纵的；*n.*荡妇；水性杨花的女人 *vi.*放肆；嬉戏；闲荡；*vt.*挥霍
+
+**enumerator** *n.*人口普查员，计数员
+
+**susceptible** *adj.*易得病的，易受影响的；（人）易受感动的，易动感情的；可能有······的，容许······的；<正式>（尤指想法或陈述）能被理解（或证明、解释）的
+
+**nonsensical** *adj.*无意义的；荒谬的
+
+**tuple** 美*/ˈtjʊpəl; ˈtʌpəl/*  *n.*[计] 元组，重数
+
+**sleek ** *adj.*光滑的，光亮的；线条流畅的，造型优美的；时髦阔气的；油嘴滑舌的；*v.*使平整光亮；掩盖；打扮整洁
 
 
 
@@ -165,6 +181,8 @@ Usage of ***contrast***
 > Contrast that with what happens in the `auto`-ized declaration for ...
 
 
+
+get away 离开；逃脱；出发
 
 
 
@@ -1870,9 +1888,11 @@ template metaprogramming = TMP
 
 
 
+## Item 10: Prefer scoped `enum`s to unscoped `enum`s
 
 
 
+*compile constant* ：编译时常量
 
 
 
