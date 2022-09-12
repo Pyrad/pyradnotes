@@ -1896,6 +1896,102 @@ template metaprogramming = TMP
 
 
 
+## C++11风格的scoped `enum`的优点
+
+C++11, scoped `enum`
+
+C++98, unscoped `enum`
+
+和C++98风格的`enum`（对应地，被称做unscoped `enum`，正式用语）相比，C++11风格的scoped `enum`主要有三大优点
+
+
+
+### 1. C++11风格的`enum class`限定了作用范围
+
+C++98风格的enumerator的名字属于它所被定义的scope中，这意味着在同一个scope中，不能再有（和enumerator里对应名字）相同的名字，否则会导致重命名问题（namespace pollution）。
+
+而C++11风格的`enum`，它所定义的enumerator names并不会泄露（leak into）到这个`enum class`所定义的作用域中，这意味着在同一个作用域中，可以有和`enum class`里面的enumerator name相同的名字。
+
+```cpp
+// C++98 style enumerator
+enum Color { black, white, red }; // black, white, red are in same scope as Color
+auto white = false; // error! white already declared in this scope
+
+// C++11 style enumerator
+enum class Color { black, white, red }; // black, white, red are scoped to Color
+auto white = false; // fine, no other "white" in scope
+
+Color c = white; // error! no enumerator named "white" is in this scope
+Color c = Color::white; // fine
+auto c = Color::white; // also fine (and in accord with Item 5's advice)
+```
+
+需要注意的是，如果要使用`enum class`中所定义的enumerator names，必须在前面加上enumerator的限定（如`Color::white`）
+
+
+
+### 2. C++11风格的`enum class`的枚举变量不会隐式转换成integral types
+
+C++11风格的`enum class`的枚举变量是强类型的，它们不会隐式地转换成整型（或long等），因此，它们也不会隐式地转换成比如floating的其他类型。
+
+```cpp
+enum Color { black, white, red }; // unscoped enum
+std::vector<std::size_t> primeFactors(std::size_t x); // func. returning
+                                                      // prime factors of x
+Color c = red;
+if (c < 14.5) {						// compare Color to double (!)
+	auto factors = primeFactors(c);	// compute prime factors of a Color (!)
+}
+```
+
+上面的例子中，C++98风格的`enum`（unscoped `enum`）的enumerator会发生隐式地转换，从而和floating point做比较，实际上这并不是所期望的。
+
+如果使用scoped `enum`（C++11风格），那么上述的代码就会编译失败，从而提醒书写者做修改。
+
+如果书写者原本的意图就是要和floating做对比，那么就使用`static_cast<double>`进行转换。
+
+
+
+### 3. C++11风格的`enum class`的可以直接先声明后定义
+
+在C++11中，实际上scoped `enum`和unscoped `enum`都可以进行先声明后定义。
+
+但区别在于，unscoped `enum`必须在声明的时候，同时指明其潜在的类型（specify the underlying type），scoped `enum`在声明的时候即可以指定其潜在的类型，也可以不指定其潜在的类型。
+
+unscoped `enum`是C++98中的，编译器要做优化（使用最少的bit来容纳所定义的enumerator，比如使用`char`），所以需要提前知道它的类型（即大小）。C++11中对此做了提高，就可以在声明的时候就得出其所需的类型（即bit大小，默认是`int`）。
+
+```cpp
+// C++98 style enumerator forward declaration
+enum Status: std::uint32_t;
+
+// C++1 style enumerator forward declaration
+enum class Status; // forward declaration
+enum class Status: std::uint32_t; ; // forward declaration, now the underlying type
+                                    // for Status is std::uint32_t (from <cstdint>)
+```
+
+
+
+## 更适合unscoped `enum`的场景
+
+虽然一般情况下，最好使用scoped `enum`，但少数情况下也许unscoped `enum`也有用武之地。
+
+Scott Meyers提到了一种，即使用`std::tuple`。
+
+因为`std::tuple`定义了之后，在获取其中的元素值时，需要使用`std::get<N>`，这里的`N`是从`0`开始的整数。
+
+那么由于scoped `enum`中的enumerators是强类型，不能隐式转换成integral types，因此unscoped `enum`就可以直接使用而发生隐式的转换，从而简洁地完成。比如`std::get<FIRST>`。
+
+那么为什么要用`enum`？因为这样可以给每个位置一个直观的名字，否则`0`、`1`、`2`这些，谁也不知道代表什么含义。
+
+
+
+
+
+
+
+
+
 
 
 # Reference Pages
