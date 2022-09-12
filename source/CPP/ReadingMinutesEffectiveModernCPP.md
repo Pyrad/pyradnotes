@@ -1713,11 +1713,7 @@ auto result3 = lockAndCall(f3, f3m, nullptr);	// fine
 
 
 
-Scott Meyers调侃了一下，如果写个很长的类型名称，会增加得腕管综合征的风险。
-
-> Just thinking about it probably increases the risk of carpal tunnel syndrome.
-
-
+### 使用alias declaration而不是`typdef`的原因
 
 为什么用`using` alias declaration，而不是老式的（C++98）的`typedef`，其中就一定有令人信服的技术原因。
 
@@ -1725,7 +1721,15 @@ Scott Meyers调侃了一下，如果写个很长的类型名称，会增加得�
 
 
 
-如果是要定义一个函数指针的alias，可以明显看到`using` alias的形式稍微好读一些，但这并不是使用`using` alias的形式的主要原因。
+- 原因一（次要）
+
+  Scott Meyers调侃了一下，如果写个很长的类型名称，会增加得腕管综合征的风险。
+
+  > Just thinking about it probably increases the risk of carpal tunnel syndrome.
+
+- 原因二（次要）
+
+  如果是要定义一个函数指针的alias，可以明显看到`using` alias的形式稍微好读一些，但这并不是使用`using` alias的形式的主要原因。
 
 ```cpp
 // FP is a synonym for a pointer to a function taking an int and
@@ -1734,36 +1738,143 @@ typedef void (*FP)(int, const std::string&); // typedef same meaning as above
 using FP = void (*)(int, const std::string&); // alias declaration
 ```
 
+- **原因三（主要）**
+
+  实际上，使用`using` alias declaration的主要原因是：**template**。（**`typedef`是不能对template使用**）
+
+  如果对template使用`using` alias declaration，这时叫做 **alias templates**。
+
+  > alias declaration can be templatized, in which case they’re called ***alias templates***
+  >
+  > With an alias template, it’s a piece of cake.
 
 
-实际上，使用`using` alias declaration的主要原因是：template。
 
-`typedef`不能对template使用。
+### Alias declarations (`using`) for templates
 
-如果对template使用`using` alias declaration，这时叫做 **alias templates**。
-
-> alias declaration can be templatized, in which case they’re called ***alias templates***
-
-> With an alias template, it’s a piece of cake.
-
-
+#### `using name = qualifier` vs. `typedef`
 
 `using` alias declaration for template的写法
 
 ```cpp
-template<typename T> // MyAllocList<T>
-using MyAllocList = std::list<T, MyAlloc<T>>; // is synonym for std::list<T, MyAlloc<T>>
+template<typename T>						  // MyAllocList<T> is synonym 
+using MyAllocList = std::list<T, MyAlloc<T>>; // for std::list<T, MyAlloc<T>>
+```
+
+而如果使用`typedef`来写template的alias，就需要在class内部定义类型
+
+```cpp
+template<typename T>						// MyAllocList<T>::type
+struct MyAllocList {						// is synonym for
+	typedef std::list<T, MyAlloc<T>> type;	// std::list<T, MyAlloc<T>>
+};
+
+MyAllocList<Widget>::type lw; // client code
+```
+
+
+
+#### template中使用typedef定义的alias会遇到*dependent type*
+
+更糟糕的是，如果使用`typedef`，当想在一个template中，声明一个如上用`typedef`定义的alias，那么就要用到***dependent type***。
+
+```cpp
+// If use typedef as above, then to use this alias in class Widget
+template<typename T>
+class Widget {							// Widget<T> contains
+private:								// a MyAllocList<T>
+	typename MyAllocList<T>::type list; // as a data member
+};
+
+```
+
+前面加上`typename`关键字的原因是，编译器并不能分辨出`MyAllocList<T>::type`实际上定义了一个类型，还是别的东西，比如说，一个class的member。
+
+Scott Meyers在解释这个dependent type的时候，举了个例子：
+
+> For example, some misguided soul may have concocted something like this:
+
+```cpp
+class Wine { /*something*/ };
+template<>					// MyAllocList specialization
+class MyAllocList<Wine> {	// for when T is Wine
+private:
+	enum class WineType { White, Red, Rose };
+	WineType type; // in this class, type is a data member!
+}
+```
+
+这个例子是说，如果特化了`MyAllocList`这个class（for class `Wine`），并且在这个特化的class里定义了一个叫做`type`的成员变量，那么当使用`MyAllocList<Wine>::type`的时候，就不再是指一个类型，而是一个特化类的成员了！
+
+但是如果使用`using name = qualifier`形式的alias，情况就不同了
+
+```cpp
+// If use "using name = qualifier: as above, then to use this alias in class Widget
+template<typename T>
+class Widget {
+private:
+	MyAllocList<T> list; // no "typename", no "::type"
+};
+```
+
+可以看到，如果使用`using name = qualifier`形式的alias，那么在使用这template alias的时候，就不用在前面加`typename`关键字了。
+
+Scott Meyers解释了，虽然`MyAllocList<T>`看起来像是***dependent type***，但实际上编译器遇到`MyAllocList`知道它是an alias template（而它必须是给类型命名的），所以这里`MyAllocList<T>`对编译器而言，就是*non-dependent type*，这时候，既不需要，也不允许添加`typename`！
+
+
+
+#### 使用STL时可能遇到需要添加`typename`的*dependent type*
+
+Scott Meyers提到了在C++11 STL中，几种实际上是利用`typedef`而实现的alias（for template），那么，如果要把它们用于template当中的时候，就需要在它们的前面添加`typename`关键字而告之编译器，这是类型名。
+
+```cpp
+std::remove_const<T>::type			// yields T from const T
+std::remove_reference<T>::type		// yields T from T& and T&&
+std::add_lvalue_reference<T>::type	// yields T& from T
+```
+
+C++11的type traits，实际上是由嵌套在template struct里的`typedef`实现的。是的，就是本节讲的要我们避免使用的`typedef`。但它这么做，是由历史原因的。
+
+> C++11 type traits are implemented as nested typedefs inside templatized structs.
+
+实际上，在C++14 STL中，每个对应的type traits都有一个使用`using name = qualifier`实现的alias template，从而可以不需要在template中使用时，前面加上`typename`了。（都是是对应的名字后面加上后缀`_t`）。
+
+```cpp
+std::remove_const<T>::type			// C++11: const T → T
+std::remove_const_t<T>				// C++14 equivalent
+std::remove_reference<T>::type		// C++11: T&/T&& → T
+std::remove_reference_t<T>			// C++14 equivalent
+std::add_lvalue_reference<T>::type	// C++11: T → T&
+std::add_lvalue_reference_t<T>		// C++14 equivalent
+```
+
+Scott Meyers建议使用C++14的写法，并提到如何在C++11中使用C++14的写法（虽然不是C++14的实现）
+
+```cpp
+template <class T> using remove_const_t = typename remove_const<T>::type;
+template <class T> using remove_reference_t = typename remove_reference<T>::type;
+template <class T> using add_lvalue_reference_t = typename add_lvalue_reference<T>::type;
 ```
 
 
 
 template metaprogramming = TMP
 
+### Things to Remember
+
+> - `typedef`s don’t support templatization, but alias declarations do.
+> - Alias templates avoid the `::type` suffix and, in templates, the `typename` prefix often required to refer to typedefs.
+> - C++14 offers alias templates for all the C++11 type traits transformations.
 
 
-C++11的type traits，实际上是由嵌套在template struct里的`typedef`实现的。是的，就是本节讲的要我们避免使用的`typedef`。但它这么做，是由历史原因的。
 
-C++11 type traits are implemented as nested typedefs inside templatized structs.
+
+
+
+
+
+
+
 
 
 
