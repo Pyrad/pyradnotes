@@ -1713,7 +1713,7 @@ auto result3 = lockAndCall(f3, f3m, nullptr);	// fine
 
 
 
-### 使用alias declaration而不是`typdef`的原因
+### 使用alias declaration而不是`typedef`的原因
 
 为什么用`using` alias declaration，而不是老式的（C++98）的`typedef`，其中就一定有令人信服的技术原因。
 
@@ -1721,11 +1721,15 @@ auto result3 = lockAndCall(f3, f3m, nullptr);	// fine
 
 
 
-- 原因一（次要）
+- **原因一（主要）**
 
-  Scott Meyers调侃了一下，如果写个很长的类型名称，会增加得腕管综合征的风险。
+  使用`using` alias declaration的主要原因是：**template**。（**`typedef`是不能对template使用**）
 
-  > Just thinking about it probably increases the risk of carpal tunnel syndrome.
+  如果对template使用`using` alias declaration，这时叫做 **alias templates**。
+
+  > alias declaration can be templatized, in which case they’re called ***alias templates***
+  >
+  > With an alias template, it’s a piece of cake.
 
 - 原因二（次要）
 
@@ -1738,15 +1742,11 @@ typedef void (*FP)(int, const std::string&); // typedef same meaning as above
 using FP = void (*)(int, const std::string&); // alias declaration
 ```
 
-- **原因三（主要）**
+- 原因三（次要）
 
-  实际上，使用`using` alias declaration的主要原因是：**template**。（**`typedef`是不能对template使用**）
+  Scott Meyers调侃了一下，如果写个很长的类型名称，会增加得腕管综合征的风险。
 
-  如果对template使用`using` alias declaration，这时叫做 **alias templates**。
-
-  > alias declaration can be templatized, in which case they’re called ***alias templates***
-  >
-  > With an alias template, it’s a piece of cake.
+  > Just thinking about it probably increases the risk of carpal tunnel syndrome.
 
 
 
