@@ -1896,7 +1896,7 @@ template metaprogramming = TMP
 
 
 
-## C++11风格的scoped `enum`的优点
+### C++11风格的scoped `enum`的优点
 
 C++11, scoped `enum`
 
@@ -1906,7 +1906,7 @@ C++98, unscoped `enum`
 
 
 
-### 1. C++11风格的`enum class`限定了作用范围
+#### 1. C++11风格的`enum class`限定了作用范围
 
 C++98风格的enumerator的名字属于它所被定义的scope中，这意味着在同一个scope中，不能再有（和enumerator里对应名字）相同的名字，否则会导致重命名问题（namespace pollution）。
 
@@ -1930,7 +1930,7 @@ auto c = Color::white; // also fine (and in accord with Item 5's advice)
 
 
 
-### 2. C++11风格的`enum class`的枚举变量不会隐式转换成integral types
+#### 2. C++11风格的`enum class`的枚举变量不会隐式转换成integral types
 
 C++11风格的`enum class`的枚举变量是强类型的，它们不会隐式地转换成整型（或long等），因此，它们也不会隐式地转换成比如floating的其他类型。
 
@@ -1952,7 +1952,7 @@ if (c < 14.5) {						// compare Color to double (!)
 
 
 
-### 3. C++11风格的`enum class`的可以直接先声明后定义
+#### 3. C++11风格的`enum class`的可以直接先声明后定义
 
 在C++11中，实际上scoped `enum`和unscoped `enum`都可以进行先声明后定义。
 
@@ -1972,7 +1972,7 @@ enum class Status: std::uint32_t; ; // forward declaration, now the underlying t
 
 
 
-## 更适合unscoped `enum`的场景
+### 更适合unscoped `enum`的场景
 
 虽然一般情况下，最好使用scoped `enum`，但少数情况下也许unscoped `enum`也有用武之地。
 
@@ -1983,6 +1983,15 @@ Scott Meyers提到了一种，即使用`std::tuple`。
 那么由于scoped `enum`中的enumerators是强类型，不能隐式转换成integral types，因此unscoped `enum`就可以直接使用而发生隐式的转换，从而简洁地完成。比如`std::get<FIRST>`。
 
 那么为什么要用`enum`？因为这样可以给每个位置一个直观的名字，否则`0`、`1`、`2`这些，谁也不知道代表什么含义。
+
+
+
+> Things to Remember
+>
+> - C++98-style `enum`s are now known as unscoped `enum`s.
+> - Enumerators of scoped `enum`s are visible only within the `enum`. They convert to other types only with a cast.
+> - Both scoped and unscoped `enum`s support specification of the underlying type. The default underlying type for scoped `enum`s is int. Unscoped `enum`s have no default underlying type.
+> - Scoped `enum`s may always be forward-declared. Unscoped `enum`s may be forward-declared only if their declaration specifies an underlying type.
 
 
 
