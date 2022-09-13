@@ -170,9 +170,19 @@ assortment *n.*各种各样，混合
 
 **nonsensical** *adj.*无意义的；荒谬的
 
-**tuple** 美*/ˈtjʊpəl; ˈtʌpəl/*  *n.*[计] 元组，重数
+**tuple** 美*/ˈtjʊpəl; ˈtʌpəl/*  *n.* [计] 元组，重数
 
-**sleek ** *adj.*光滑的，光亮的；线条流畅的，造型优美的；时髦阔气的；油嘴滑舌的；*v.*使平整光亮；掩盖；打扮整洁
+**sleek ** *adj.* 光滑的，光亮的；线条流畅的，造型优美的；时髦阔气的；油嘴滑舌的；*v.*使平整光亮；掩盖；打扮整洁
+
+
+
+**peasy** *adj.* 像豌豆的；<非正式，英>容易的，简单的 （用法：Easy, peasy.）
+
+**supersede** *vt.* 替代，取代
+
+**entail** *v.* 使必要，需要；<旧>遗赠（财产），限定继承；使人承担
+
+**dissipate**  *v.* （使某事物）消散，消失；挥霍，耗费；放荡
 
 
 
@@ -1992,6 +2002,112 @@ Scott Meyers提到了一种，即使用`std::tuple`。
 > - Enumerators of scoped `enum`s are visible only within the `enum`. They convert to other types only with a cast.
 > - Both scoped and unscoped `enum`s support specification of the underlying type. The default underlying type for scoped `enum`s is int. Unscoped `enum`s have no default underlying type.
 > - Scoped `enum`s may always be forward-declared. Unscoped `enum`s may be forward-declared only if their declaration specifies an underlying type.
+
+
+
+## Item 11: Prefer deleted functions to private undefined ones
+
+
+
+### C++98声明不可用函数
+
+为了防止某些函数被使用（通常是copy-constructor和copy assignment operator），在C++98中，可以声明它们为`private`，但是不定义它们。
+
+比如`basic_ios`的声明
+
+```cpp
+template <class charT, class traits = char_traits<charT> >
+class basic_ios : public ios_base {
+public:
+    // ...
+private:
+	basic_ios(const basic_ios& );			// not defined
+	basic_ios& operator=(const basic_ios&);	// not defined
+};
+```
+
+
+
+### C++11声明不可用函数
+
+在C++11中，可以使用`delete`关键字，来声明一个函数不可使用。
+
+使用`delete`关键字标记的函数，最好放在`public`作用域中，否则有的编译器可能会报告是`private`或者不起作用（没有能被编译器识别为`delete`函数）。
+
+```cpp
+template <class charT, class traits = char_traits<charT> >
+class basic_ios : public ios_base {
+public:
+    // ...
+	basic_ios(const basic_ios& ) = delete;
+	basic_ios& operator=(const basic_ios&) = delete;
+    // ...
+};
+```
+
+
+
+### C++11做法的优点
+
+- 比起C++98声明为一个private成员函数，C++11标记为`delete`的函数，不仅不能在class之外使用，而且在class内或friend class里也不可使用。
+
+- 和C++98的做法相比，`delete`关键字不仅可以用于类的成员函数，还可以使用在非类的成员函数上。
+
+  比如，有函数`bool isLucky(int number);`，它接收`int`类型的参数，但实际上有`char`、`bool`等可以隐式转换成`int`，导致一些可能非预期的调用。为了避免这些情况，就可以把这些对应的函数标记为`delete`
+
+```cpp
+bool isLucky(int number);		// original function
+
+bool isLucky(char) = delete;	// reject chars
+bool isLucky(bool) = delete;	// reject bools
+bool isLucky(double) = delete;	// reject doubles and floats
+```
+
+上面定义的`bool isLucky(double) = delete;`，之所以也会导致`float`类型的overload函数也被`delete`，原因是，在从`float`向`int`或`double`转换的时候，C++会倾向于转换为`double`而不是`int`。因此如果调用`float`类型的overload，实际上会调用`double`的overload函数。
+
+- 另外的一个`delete`函数可以做到，但C++98风格的`private`函数做不到的是，可以禁止使用本应该被禁止的template instantiation。
+
+```cpp
+template<typename T>
+void processPointer(T* ptr);
+
+template<>
+void processPointer<void>(void*) = delete;
+template<>
+void processPointer<char>(char*) = delete;
+template<>
+void processPointer<const void>(const void*) = delete;
+template<>
+void processPointer<const char>(const char*) = delete;
+```
+
+如上，在处理指针类型的template的时候，有两种指针是特殊的角色，需要特殊处理。即`void*`已经`char*`。
+
+**`void*`指针不能解引用，也不能自增或自减。而`char*`通常代表C风格的字符串。**这两种通常需要特殊处理。
+
+所以可以如上声明`delete`函数。
+
+- 还有一个有点：一个在class内的template function，如果需要把它的某个特化禁用，只能用C++11的`delete`。
+
+  这是由于，C++98风格的禁用函数，其声明需要是`private`，但模板的特化又必须在`namespace` scope，因此会编译失败。而C++11风格的禁用函数，就可以将其声明在class scope之外（同时也声明是`delete`）
+
+```cpp
+class Widget {
+public:
+	template<typename T>
+	void processPointer(T* ptr) { /*...*/ }
+};
+
+template<>											// still public,
+void Widget::processPointer<void>(void*) = delete;	// but deleted
+```
+
+
+
+> Things to Remember
+>
+> - Prefer deleted functions to private undefined ones.
+> - Any function may be deleted, including non-member functions and template instantiations.
 
 
 
