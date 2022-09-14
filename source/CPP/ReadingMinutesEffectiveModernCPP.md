@@ -2113,7 +2113,7 @@ void Widget::processPointer<void>(void*) = delete;	// but deleted
 
 
 
-
+## Item 12: Declare overriding functions override
 
 
 
