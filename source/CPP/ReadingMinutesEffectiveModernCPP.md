@@ -194,19 +194,51 @@ assortment *n.*各种各样，混合
 
 **ramification** *n.* 衍生物；分枝，分叉；支流；（衍生的）结果、影响
 
-**contemplate** *v. *沉思，深思熟虑；盘算，打算；凝视，注视；考虑接受（发生某事的可能性）
+**contemplate** *v.* 沉思，深思熟虑；盘算，打算；凝视，注视；考虑接受（发生某事的可能性）
 
 **see the light of day** 重见天日；问世；为公众所熟知come into existence; be made public, 
 
+**halfhearted** *adj.* 不认真的；不热心的；无兴趣的
+
+**it is anything but** not at all (used for emphasis)
+
+**grisly** *adj.* 可怕的；厉害的；严重的
+
+**contort** *vt.* 扭曲；曲解；*vi.* 扭曲（Use: some amount of contorting.）
+
+**sledgehammer** *n.* （有柄的）大锤；猛烈的打击；*v.* 用大锤打；猛力打；*adj.* 手下不留情的；强力的
+
+**eminent** *adj.* （在某领域或职业中）卓越的，出众的；突出的，明显的
+
+**at the end of the day** 最终；到头来；不管怎么说
 
 
-Usage of ***contrast***
+
+
+
+
+
+
+
+Usage of **contrast**
 
 > Contrast that with what happens in the `auto`-ized declaration for ...
 
 Usage of **see the light of day** 
 
-> This is hardly the most encapsulated design that’s seen the light of day
+> This is hardly the most encapsulated design ***that’s seen the light of day***
+
+Usage of **it is anything but**
+
+> Revising the code to use `const_iterator`s should be trivial, but in C++98, ***it was anything but***.
+>
+> This grisly ending is anything but sentimental
+
+Usage of **tidy up**
+
+> In C++11, it’s eminently practical, and C++14 ***tidies up*** the few bits of unfinished business that C++11 left behind.
+
+
 
 
 
@@ -2275,6 +2307,128 @@ auto vals2 = makeWidget().data();	// calls rvalue overload for Widget::data,
 
 > - Declare overriding functions `override`.
 > - Member function reference qualifiers make it possible to treat `lvalue` and `rvalue` objects `(*this) `differently.
+
+
+
+
+
+## Item 13: Prefer `const_iterator`s to `iterator`s
+
+
+
+### C++98中的`const_iterator`不实用
+
+虽然C++98中也有`const_iterator`，但是它并不实用，Scott举例进行了说明。
+
+比如想在一个`vector`中查找`1983`出现的地方，并且插入`1998`。一般地，C++98的写法如下：
+
+```cpp
+std::vector<int> values;
+std::vector<int>::iterator it = std::find(values.begin(),values.end(), 1983);
+values.insert(it, 1998);
+```
+
+这里，实际上对原先vector中的元素没有进行任何修改，所以`const_iterator`是比`iterator`更好的选择，但是如果要在C++98中使用`const_iterator`，那么就需要改写如下：
+
+```cpp
+typedef std::vector<int>::iterator IterT; // typedefs
+typedef std::vector<int>::const_iterator ConstIterT;
+std::vector<int> values;
+ConstIterT ci = std::find(static_cast<ConstIterT>(values.begin()), // cast
+						  static_cast<ConstIterT>(values.end()), 1983);// cast
+values.insert(static_cast<IterT>(ci), 1998); // may not compile
+```
+
+这里的问题在于
+
+- 从一个non-`const`容器中，得到一个`const_iterator`不太容易，
+- 因为`std::vector::insert`需要的是一个`iterator`（C++98），而把一个`const_iterator`转换成`iterator`可能会编译失败（`static_cast`和`reinterpret_cast`甚至也不行）
+
+最终，C++98中，`const_iterator`不那么实用
+
+
+
+### C++11提升了对`const_iterator`的支持
+
+C++11中就可以从一个container（包括non-`const`）中容易地得到一个`const_iterator`，而且STL的成员函数（比如`insert`和`erase`）也实用`const_iterator`。
+
+```cpp
+std::vector<int> values; // as before
+
+auto it = std::find(values.cbegin(),values.cend(), 1983); // use cbegin and cend
+values.insert(it, 1998);
+```
+
+
+
+
+
+### C++11中`const_iterator`的缺憾
+
+C++11中`const_iterator`的一大缺憾是，它给container或container-like的数据结构提供了`begin`和`end`的non-member function，但是没有提供`cbegin`和`cend`的non-member function。（C++14中做了改进）
+
+这会使得在有些情况下，如果要写模板的时候会比较麻烦。比如有如下的模板函数
+
+```cpp
+// in container, find first occurrence of targetVal, then insert insertVal
+template<typename C, typename V>
+void findAndInsert(C& container, const V& targetVal, const V& insertVal)
+{
+	using std::cbegin;
+	using std::cend;
+    // Use non-member cbegin & cend
+	auto it = std::find(cbegin(container), cend(container), targetVal);
+    container.insert(it, insertVal);
+}
+```
+
+实际上，因为C++11没有提供`cbegin`，`cend`，`rbegin`，`rend`，`crbegin`以及`crend`（C++14纠正了这一短视的疏忽），所以上面的代码在C++11中会编译失败。
+
+Scott Meyers提供了在C++11中，给这类container的一个non-member function。
+
+```cpp
+template <class C>
+auto cbegin(const C& container)->decltype(std::begin(container))
+{
+    return std::begin(container); // see explanation below
+}
+```
+
+第一眼看上去会很意外，因为它没有调用container的成员函数`cbegin`。Scott Meyers做了解释
+
+- 第一，container这个参数有可能是一个container-like的数据结构，有`begin`成员函数，但没有`cbegin`成员函数。
+- 第二，因为container是`const &`，而`std::begin`在作用于`const`类型的容器上时，会生成`const_iterator`。
+
+
+
+### Things to Remember
+
+> - Prefer `const_iterators` to iterators.
+> - In maximally generic code, prefer non-member versions of `begin`, `end`, `rbegin`, etc., over their member function counterparts.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
