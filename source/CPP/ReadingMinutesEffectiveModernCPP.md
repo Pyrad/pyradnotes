@@ -186,9 +186,27 @@ assortment *n.*各种各样，混合
 
 
 
+**dishearten** *vt.* 使灰心，使沮丧，使气馁
+
+**kvetch** *n.* （美）吹毛求疵的人；*vi.* （美）经常性地发牢骚；抱怨
+
+**gauge** *v.* 估计，判断；测量
+
+**ramification** *n.* 衍生物；分枝，分叉；支流；（衍生的）结果、影响
+
+**contemplate** *v. *沉思，深思熟虑；盘算，打算；凝视，注视；考虑接受（发生某事的可能性）
+
+**see the light of day** 重见天日；问世；为公众所熟知come into existence; be made public, 
+
+
+
 Usage of ***contrast***
 
 > Contrast that with what happens in the `auto`-ized declaration for ...
+
+Usage of **see the light of day** 
+
+> This is hardly the most encapsulated design that’s seen the light of day
 
 
 
@@ -1996,10 +2014,10 @@ Scott Meyers提到了一种，即使用`std::tuple`。
 
 
 
-> Things to Remember
->
+### Things to Remember
+
 > - C++98-style `enum`s are now known as unscoped `enum`s.
-> - Enumerators of scoped `enum`s are visible only within the `enum`. They convert to other types only with a cast.
+>- Enumerators of scoped `enum`s are visible only within the `enum`. They convert to other types only with a cast.
 > - Both scoped and unscoped `enum`s support specification of the underlying type. The default underlying type for scoped `enum`s is int. Unscoped `enum`s have no default underlying type.
 > - Scoped `enum`s may always be forward-declared. Unscoped `enum`s may be forward-declared only if their declaration specifies an underlying type.
 
@@ -2104,16 +2122,159 @@ void Widget::processPointer<void>(void*) = delete;	// but deleted
 
 
 
-> Things to Remember
->
+### Things to Remember
+
 > - Prefer deleted functions to private undefined ones.
-> - Any function may be deleted, including non-member functions and template instantiations.
+>- Any function may be deleted, including non-member functions and template instantiations.
 
 
 
 
 
 ## Item 12: Declare overriding functions override
+
+**override** 函数覆盖（子类函数覆盖父类函数）
+
+**overload** 函数重载
+
+
+
+### C++11中函数覆盖的条件
+
+函数覆盖（子类函数覆盖父类函数）需要满足的条件
+
+- 父类函数需要标记为`virtual`
+- 父类和子类的函数名必须相同
+- 父类和子类函数的参数类型必须相同
+- 父类和子类函数的`const`性质必须相同
+- 父类和子类函数的返回值类型和异常必须兼容
+- 父类和子类函数的引用修饰（**reference qualifiers**）必须也相同（C++11引入）
+
+关于最后一项引用修饰（**reference qualifiers**），指的是成员函数是否能被 lvalue 或 rvalue 的对象所调用。
+
+如下，带有`&`修饰和`&&`修饰的成员函数，可以有同样的名字、参数类型和返回值。
+
+其中，带有`&`修饰的函数，必须由**左值**对象调用；带有`&&`修饰的函数，必须由**右值**对象调用；
+
+```cpp
+class Widget {
+public:
+	void doWork() &;	// this version of doWork applies only when *this is an lvalue
+	void doWork() &&;	// this version of doWork applies only when *this is an rvalue
+};
+
+Widget makeWidget();	// factory function (returns rvalue)
+Widget w;				// normal object (an lvalue)
+
+w.doWork();				// calls Widget::doWork for lvalues (i.e., Widget::doWork &)
+makeWidget().doWork();	// calls Widget::doWork for rvalues (i.e., Widget::doWork &&)
+```
+
+
+
+Scott Meyers举了个例子，列出了以下实际上没有发生函数覆盖的原因
+
+```c++
+class Base {
+public:
+	virtual void mf1() const;
+	virtual void mf2(int x);
+	virtual void mf3() &;
+	void mf4() const;
+};
+class Derived: public Base {
+public:
+	virtual void mf1();
+	virtual void mf2(unsigned int x);
+	virtual void mf3() &&;
+	void mf4() const;
+};
+```
+
+- `mf1` is declared `const` in `Base`, but not in `Derived`.
+
+- `mf2` takes an int in `Base`, but an unsigned int in `Derived`.
+
+- `mf3` is lvalue-qualified in `Base`, but rvalue-qualified in `Derived`.
+
+- `mf4` isn’t declared virtual in `Base`.
+
+Scott在这里想要说明的是，class overrides写正确了很重要，但很容易写错。
+
+
+
+### C++11引入`override`关键字
+
+`override`关键字的作用
+
+- 使编译器识别哪些函数是意图用作`overrides`，但实际上在子类中没有正确实现。
+- 如果想要在父类中修改函数signature，如果有`override`关键字，可以在修改之后由编译器体现产生的影响大小（错误多少）
+- `override`关键字只有出现在成员函数声明的末尾时，才会起表名函数覆盖的作用，否则，它也可以当做正常的函数名（变量名等）使用。
+
+```cpp
+class Warning { // potential legacy class from C++98
+public:
+	void override(); // legal in both C++98 and C++11 (with the same meaning)
+};
+```
+
+
+
+### 成员函数的`&`和`&&`修饰
+
+Scott Meyers举例说明了，在某些情况下，使用`&&`修饰一个成员函数，可以避免不必要的拷贝
+
+```cpp
+class Widget {
+public:
+    using DataType = std::vector<double>;
+	DataType& data() { return values; }
+private:
+	DataType values;
+};
+
+Widget makeWidget() {
+    /* ... */ // This function returns an object (rvalue) in the end.
+}
+
+Widget w;
+auto vals1 = w.data();				// copy w.values into vals1
+auto vals2 = makeWidget().data();	// copy values inside the Widget into vals2
+```
+
+- `w`是一个左值，`w.data()`返回的是一个左值引用，而左值引用同样是左值，所以编译器会使用拷贝构造函数来初始化`vals1`。
+
+- `makeWidget()`返回的是一个右值，但`Wideget::data()`返回的是一个左值引用，编译器还是会按照字面理解，从而调用拷贝构造函数来初始化`vals2`。
+
+  但实际上`makeWidget()`返回的是一个右值（实际上C++14里它是将亡值xvalue），那么把这个右值里面的`std::vector`拷贝到一个新的object中，实际上是没有必要的（因为右值即将被销毁），所以更好的办法是调用移动构造函数。
+
+
+
+改进如下，即同时定义了`&`和`&&`修饰符限定的成员函数，以此来告之编译器左值对象来调用`&`成员函数，而右值对象来调用`&&`成员函数。
+
+```cpp
+class Widget {
+public:
+	using DataType = std::vector<double>;
+	DataType& data() & { return values; } // for lvalue Widgets,  return lvalue
+	DataType data() && { return std::move(values); } // for rvalue Widgets, return rvalue
+private:
+	DataType values;
+};
+
+Widget w;
+auto vals1 = w.data();				// calls lvalue overload for Widget::data,
+									// copy-constructs vals1
+auto vals2 = makeWidget().data();	// calls rvalue overload for Widget::data,
+									// move-constructs vals2
+```
+
+
+
+### Things to Remember
+
+> - Declare overriding functions `override`.
+> - Member function reference qualifiers make it possible to treat `lvalue` and `rvalue` objects `(*this) `differently.
 
 
 
