@@ -12,6 +12,8 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 # Words
 
+## Vocabulary
+
 coax */kəʊks/* *v.*哄，劝诱；连哄带劝地得到；小心地摆弄（机器或装置）
 
 turf
@@ -212,11 +214,27 @@ assortment *n.*各种各样，混合
 
 **at the end of the day** 最终；到头来；不管怎么说
 
+**temperamental** *adj.* 喜怒无常的，性情多变的；气质的，性情的；（机器、汽车等）性能不稳定的，易坏的
+
+**dichotomy** *n.* 二分法；两分；分裂；双歧分枝
+
+**unwind** *v.* 放松，松弛；解开，展开
+
+**preeminent** *adj.* 卓越的；超群的
+
+**roundabout** *adj.* 绕路的，迂回的；（说话）绕圈子的，不直截了当的
+
+**bleak** *adj.* 不乐观的，无望的；无遮掩的，荒凉的；阴冷的，寒冷的；沮丧的，阴郁的；（人或其表情）冷漠的，冷峻的
+
+**kindle** *v.* 点燃，开始燃烧；激起，激发；（感情）激动起来；（兔）产仔；照亮，（使）发亮；着火
+
+**hoop** *n.* （金属、木或类似材料制成的）箍，环（尤指用于箍桶或制框架）；
+
+**saddle** *n.* 鞍，马鞍；*v.* 使承担（责任、任务），使负重担
 
 
 
-
-
+## Usages & Sentences
 
 
 
@@ -240,9 +258,37 @@ Usage of **tidy up**
 
 
 
+本末倒置的短语（习语）
+
+- **put the cart before the horse** 前后颠倒
+- **the tail wagging the dog** 尾巴摇狗，本末倒置
+- **see the forest for the trees** 只见树木不见森林
+
+> Twisting a function’s implementation to permit a `noexcept` declaration is **the tail wagging the dog**. Is **putting the cart before the horse**. Is not seeing the forest for the trees. Is…choose your favorite metaphor
+
+
+
+
+
+if at all possible 如果可能的话
+
 
 
 get away 离开；逃脱；出发
+
+
+
+## Error-prone pronunciation 
+
+**declare** 的读音是 */dɪˈkler/*，**e**发音是***/i/***。
+
+但是**declaration** 的读音是 */ˌd**e**kləˈreɪʃn/*，并不是*/ˌd**i**kləˈreɪʃn/*。即**e**发音是***/e/***，而不是***/i/***。
+
+**swap** 的读音是*/sw**ɑː**p/*，即**a**的读音是***/ɑː/***。
+
+**clause** */kl**ɔː**z/*
+
+
 
 
 
@@ -2410,6 +2456,85 @@ auto cbegin(const C& container)->decltype(std::begin(container))
 
 
 
+## Item 14: Declare functions `noexcept` if they won’t emit exceptions.
+
+
+
+### C++11和C++98异常声明的不同
+
+因为改变C++98中的exception specification，可能会导致client code（因为用户可能会依赖这个exception specification而编写代码），所以C++98中的exception specification用处不像想象中的那么大（因为你需要总结可能抛出异常的类型）。
+
+C++11中，加入了`noexcept`，能保证该函数不会抛出异常（即非黑即白，就两种情况：抛或不抛），从而使得编译器在发现万一有异常时，能够报错提醒。
+
+```cpp
+int f(int x) throw(); // no exceptions from f: C++98 style
+int f(int x) noexcept; // no exceptions from f: C++11 style
+```
+
+
+
+### C++11比C++98异常声明可以优化编译结果
+
+C++98的异常在runtime时发生：
+
+- 函数调用栈会被展开给调用者（caller）
+- （调用者或其他）进行一些处理
+- 程序结束运行
+
+C++11的异常在runtime时发生：
+
+- 和C++98相比，调用栈**可能会**（***possibly***）被展开给调用者（caller），然后再结束运行
+
+所以C++11的`noexcept`带来的潜在好处是
+
+- （可能）不必要保留调用栈的信息
+- 不需要保证`noexcept`函数里面的object是按照逆序的顺序依次析构
+
+```cpp
+RetType function(params) noexcept; // most optimizable
+RetType function(params) throw(); // less optimizable
+RetType function(params); // less optimizable
+```
+
+
+
+## `std::vector`和`std::pair`用到的`noexcept`
+
+#### `std::vector::push_back`的`noexcept`
+
+`std::vector::push_back`在C++98中是保证不抛出异常的。但它的潜在问题是，可能会发生扩容。一旦发生扩容，那么就需要把原来`vector`里的东西拷贝到新分配的内存中取，那么拷贝构造就比较耗费时间（比如，每个元素的拷贝实际上很花时间）
+
+C++11中引入了移动语义（move semantic），所以可以优化。比如发生扩容的时候，就可以把原先内存上的元素通过移动语义，“移动”到新的内存上去（需要元素支持移动语义），这样就能提升性能。
+
+但通过移动语义产生的潜在问题是：如果移动前n个元素没问题，但移动第n+1个元素是发生了异常，这时候前n个元素已经被修改，没有办法复原旧内存上的这n个元素，因为把新内存上的元素再视图移动回去时，还是可能发生异常。
+
+所以`std::vector::push_back`的做法是：**能move就move，但如果不能，就copy**。
+
+但能不能move就需要保证不跑异常。那么依靠什么来保证？答案是通过函数声明的`noexcept`。
+
+> `std::vector::push_back` takes advantage of this “move if you can, but copy if you must” strategy, 
+
+
+
+### `std::pair::swap`的`noexcept`
+
+`std::pair::swap`是另一种风格的异常保证：依赖于需要交换两个元素的交换函数是否被声明成了`noexcept`，即条件依赖的`noexcept`声明。
+
+```cpp
+// Swapping 2 arrays
+template <class T, size_t N>
+void swap(T (&a)[N], T (&b)[N]) noexcept(noexcept(swap(*a, *b)));
+
+// Swapping 2 arrays
+template <class T1, class T2>
+struct pair {
+	void swap(pair& p) noexcept(noexcept(swap(first, p.first)) && noexcept(swap(second, p.second)));
+};
+```
+
+第一个函数，是用来实现两个数组的交换，它是不是`noexcept`，依赖于交换两个数组中的元素的操作是否是`noexcept`。
+
+第二个函数，是`std::pair`的`swap`，它的`noexcept`，是依赖于分别交换`first`和`second`的操作是否是`noexcept`。
 
 
 
@@ -2421,10 +2546,11 @@ auto cbegin(const C& container)->decltype(std::begin(container))
 
 
 
+C++11中**默认的**，和内存释放想相关的函数，以及所有的析构函数（包括用户定义的和编译器生成的），都被隐式地声明成为了`noexcept`。（可以手动加上`noexecpt`，但不符合传统，所以就不用自己加）
 
+> By default, all memory deallocation functions and all destructors—both user-defined and compiler-generated—are implicitly `noexcept`.
 
-
-
+但有一种情况，destructor不是被隐式地声明为`noexecept`，这种情况是：有成员的析构函数被显示地声明成了`noexcept(false)`，即可能会抛出异常。C++11中，STL里面没有这样的析构函数。
 
 
 
