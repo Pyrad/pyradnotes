@@ -240,6 +240,10 @@ assortment *n.*各种各样，混合
 
 **blithely** */ˈblaɪðli/* *adv.* 快活地；无忧无虑地
 
+**overkill** *n.* 过犹不及，过分行为；超量毁伤
+
+**immaterial** *adj.* 非物质的；无形的；不重要的；非实质的
+
 
 
 ## Usages & Sentences
@@ -312,7 +316,9 @@ a的b次方：a to the b；b-th power of a
 
 **compilation**  */ˌkɑːmp**ɪ**ˈleɪʃn/*
 
+**polynomial** */ˌpɒliˈn**əʊ**miəl/*
 
+**atomic** */əˈt**ɒ**mɪk/*
 
 
 
@@ -2793,6 +2799,184 @@ constexpr auto reflectedMid = reflection(mid);  // reflectedMid's value is
 > - `constexpr` is part of an object’s or function’s interface.
 
 
+
+
+
+
+
+## Item 16: Make `const` member functions thread safe.
+
+本节主要讲的是，在`const`成员函数中，如果有`mutable`变量，那么在多线程环境中，修改此`mutable`变量将可能引起一些的意外情况，以及如何处理的措施。
+
+本节，Scott Meyers主要通过举例进行了说明。
+
+
+
+### `mutable`成员变量
+
+`mutable` 关键字用在成员变量上，可以突破`const`成员函数的限制，在`const`成员函数修改这个类的成员变量，但理论上，它不应该修改可以改变这个类的状态的成员变量，所以需要类的定义者拿捏和把握。
+
+
+
+### 修改`mutable`成员变量的`const`成员函数
+
+有一个`const`成员函数，会修改`mutable`成员变量。如果这个函数被多个线程调用，很显然，变量`rootsAreValid`和`rootVals`的结果会发生问题。
+
+```cpp
+class Polynomial {
+	public:
+	using RootsType = std::vector<double>;
+	RootsType roots() const {
+		if (!rootsAreValid) {	// if cache not valid
+            /* ... */			// compute roots, store them in rootVals
+			rootsAreValid = true;
+		}
+		return rootVals;
+	}
+private:
+	mutable bool rootsAreValid{ false };
+	mutable RootsType rootVals{};
+};
+```
+
+
+
+### 使用`std::mutex`
+
+为了解决前面提到的data racing问题，解决的办法有二（如下），但不管那种，如果定义了`std::mutex`或者`std::atomic`作为成员变量，那么这个类的对象就不可拷贝，只能移动了（not copyable，move-only）
+
+- 使用`std::mutex`
+- 使用`std::atomic`（或对应的`concurrent` variables）
+
+```cpp
+// Use mutex to resolve data racing issues
+class Polynomial {
+	public:
+	using RootsType = std::vector<double>;
+	RootsType roots() const {
+        std::lock_guard<std::mutex> g(m); // lock mutex        <-------
+		if (!rootsAreValid) {	// if cache not valid
+            /* ... */			// compute roots, store them in rootVals
+			rootsAreValid = true;
+		}
+		return rootVals;
+	}
+private:
+    mutable std::mutex m;	// mutex        <-------
+	mutable bool rootsAreValid{ false };
+	mutable RootsType rootVals{};
+};
+```
+
+
+
+### 使用`std::atomic`
+
+但有时候使用`std::mutex`开销比较大，这时候`std::atomic`是更好的选择。
+
+比如有一个计算调用次数的成员函数，可以使用`std::atomic`变量，缓解加锁解锁的性能问题。
+
+```cpp
+class Point { // 2D point
+	public:
+	double distanceFromOrigin() const noexcept {
+		++callCount; // atomic increment
+		return std::sqrt((x * x) + (y * y));
+	}
+private:
+	mutable std::atomic<unsigned> callCount{ 0 };
+	double x, y;
+};
+```
+
+
+
+### 使用多个`std::atomic`的可能问题
+
+假设定义了如下的类，有成员函数和成员变量。
+
+```cpp
+class Widget {
+public:
+	int Widget::magicValue() const;
+private:
+    mutable std::atomic<bool> cacheValid{ false };
+	mutable std::atomic<int> cachedValue;
+};
+```
+
+成员函数`Widget::magicValue() `的实现有两种办法
+
+- 第一种办法
+
+```cpp
+int Widget::magicValue() const {
+	if (cacheValid) return cachedValue;
+	else {
+        auto val1 = expensiveComputation1();
+		auto val2 = expensiveComputation2();
+		cachedValue = val1 + val2; // uh oh, part 1
+		cacheValid = true; // uh oh, part 2
+		return cachedValue;
+	}
+}
+```
+
+- 第二种办法
+
+```cpp
+int Widget::magicValue() const
+{
+	if (cacheValid) return cachedValue;
+	else {
+		auto val1 = expensiveComputation1();
+		auto val2 = expensiveComputation2();
+		cacheValid = true; // uh oh, part 1
+		return cachedValue = val1 + val2; // uh oh, part 2
+	}
+}
+```
+
+
+
+第一种办法的问题是，
+
+-  如果一个线程发现`cacheValid`是`false`，然后开始做计算，然后把计算结果赋值给`cachedValue`，但还没有把`cacheValid`修改为`true`
+- 此时，有另外一个（或者好多个）线程查看发现`cacheValid`是`false`，然后也都开始做计算，那么实际上这时候，重复的计算就没有避免，这个`cache`的设计就失效了。
+
+第二种办法的问题是，
+
+- 如果一个线程发现`cacheValid`是`false`，然后首先把`cacheValid`修改为`true`，但还没有来得及修改`cachedValue`
+- 此时，有另外一个（或者好多个）线程查看发现`cacheValid`是`true`，然后直接就误认为`cachedValue`已经算好了，就直接拿它返回，实际上返回的是错误的值
+
+那么在这种情况下，正确的做法就是使用`std::mutex`
+
+```cpp
+class Widget {
+int magicValue() const {
+	std::lock_guard<std::mutex> guard(m); // lock m
+	if (cacheValid) return cachedValue;
+	else {
+		auto val1 = expensiveComputation1();
+		auto val2 = expensiveComputation2();
+		cachedValue = val1 + val2;
+		cacheValid = true;
+		return cachedValue;
+	}
+}
+private:
+	mutable std::mutex m;
+    mutable std::atomic<bool> cacheValid{ false };
+	mutable std::atomic<int> cachedValue;
+}
+```
+
+
+
+### Things to Remember
+
+> - Make `const` member functions thread safe unless you’re certain they’ll never be used in a concurrent context
+> - Use of `std::atomic` variables may offer better performance than a `mutex`, but they’re suited for manipulation of only a single variable or memory location.
 
 
 
