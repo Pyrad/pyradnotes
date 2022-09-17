@@ -232,6 +232,14 @@ assortment *n.*各种各样，混合
 
 **saddle** *n.* 鞍，马鞍；*v.* 使承担（责任、任务），使负重担
 
+**nuanced** */ˈnuːˌɑːnst/* *adj.*微妙的；具有细微差别的
+
+**intriguing** *adj.* 非常有趣的，引人入胜的
+
+**beefed up** 通常作**beef up** *vt.* 加强（增援，充实）；补充（人数，兵力）等
+
+**blithely** */ˈblaɪðli/* *adv.* 快活地；无忧无虑地
+
 
 
 ## Usages & Sentences
@@ -260,7 +268,9 @@ Usage of **temper**
 
 > I must temper your enthusiasm.
 
+Usage of **take for granted**
 
+> for now I’ll just say that you can’t assume that the results of `constexpr` functions are `const`, nor can you take for granted that their values are known during compilation.
 
 
 
@@ -284,6 +294,10 @@ if at all possible 如果可能的话
 
 get away 离开；逃脱；出发
 
+cut through 穿过；刺穿；抄近路走过
+
+a的b次方：a to the b；b-th power of a
+
 
 
 ## Error-prone pronunciation 
@@ -296,7 +310,7 @@ get away 离开；逃脱；出发
 
 **clause** */kl**ɔː**z/*
 
-
+**compilation**  */ˌkɑːmp**ɪ**ˈleɪʃn/*
 
 
 
@@ -2609,6 +2623,174 @@ void doWork() noexcept {
 > - `noexcept` functions are more optimizable than non-noexcept functions.
 > - `noexcept` is particularly valuable for the move operations, swap, memory deallocation functions, and destructors.
 > - Most functions are exception-neutral rather than `noexcept`.
+
+
+
+
+
+## Item 15: Use constexpr whenever possible.
+
+`constexpr`
+
+- 用于变量时，通常不意味一个值是常量（`const`），而是它在编译期间已知（Conceptually, `constexpr` indicates a value that’s not only constant, it’s known during compilation. ）
+- 用于函数时，更多是，它是一种特性（feature），详细解释见下。
+
+
+
+### `constexpr` on objects
+
+通常认为一个object被声明为`constexpr`，就意味着它的值在编译期间就已知（实际上是在translation期间，因为translation不仅包括编译，还包括链接），好处是它们可以放在只读的内存位置上。
+
+通常可以声明为`constexpr`的对象（或值）
+
+- array sizes
+- integral template arguments (including lengths of `std::array` objects)
+- enumerator values
+- alignment specifiers, and more.
+
+通常，`constexpr`就是`const`，但`const`不一定是`constexpr`。（Simply put, all `constexpr`objects are `const`, but not all `const`objects are `constexpr`.）
+
+
+
+### `constexpr` on functions
+
+当`constexpr`用于函数的时候，正确的理解是这样的：
+
+- `constexpr`函数可以用在需要**编译期常量**的上下文中（注意这个是前提：**即需要编译期间常量的环境**）。如果传入的函数参数值**是**编译期可知的常量，那么函数的结果就在编译期间被计算生成。如果传入的函数参数值**不是**编译期可知的常量，那么编译失败。
+- （*如果不是在需要编译期间常量的环境中时*）如果`constexpr`函数是被一个（或多个）编译期间不可知的值所调用，那么这个`constexpr`函数就像一个普通的函数一样，在运行时计算结果。（意味着不需要两个版本的函数，一个给编译期间用，一个给运行时用）
+
+简言之，**在需要编译期间常量的地方，`constexpr`函数的参数必须也是编译期间常量，在不需要编译期间常量的地方，`constexpr`函数的参数既可以是编译期间常量，也可以不是编译期间常量。**
+
+C++11成员函数如果是`constexpr`，那么它也会同时被隐式地声明为`const`。所以一般getter可以是`constexpr`，但setter不行（C++14放松了限制）
+
+
+
+### 一个既能编译期计算又能运行时计算的函数例子
+
+**在C++11中，`constexpr`函数里（最多）只能有一个return语句**，而C++14放松了这个限制。所以C++11中可以使用三元运算符（和递归模拟循环）来绕开这个限制。
+
+比如，需要一个编译期间计算幂值的函数。
+
+```cpp
+// C++11 constexpr function allows no more than one executable statement: a return
+constexpr int pow(int base, int exp) noexcept {
+	return (exp == 0 ? 1 : base * pow(base, exp - 1));
+}
+
+// C++14 restrictions are looser
+constexpr int pow(int base, int exp) noexcept // C++14 {
+	auto result = 1;
+	for (int i = 0; i < exp; ++i) result *= base;
+	return result;
+}
+
+```
+
+因为`constexpr`函数，它可以用在需要编译期间常量的上下文中，所以可以指定数组的大小。
+
+当然，条件是：需要参数也是编译期间可知的
+
+```c++
+constexpr auto numConds = 5; // # of conditions
+std::array<int, pow(3, numConds)> results; // results has 3^numConds elements
+```
+
+当然，`constexpr`函数也可以用在不需要编译期间常量的上下文中，这时候参数可以是编译期间可知的，也可以是运行期间可知的，它们分别产生编译期间就可知的结果，以及只有运行期期间可知的结果。下面就是一个编译期间计算结果环境的使用该函数。
+
+```cpp
+auto base = readFromDB("base"); // get these values
+auto exp = readFromDB("exponent"); // at runtime
+auto baseToExp = pow(base, exp); // call pow function at runtime
+```
+
+
+
+### 可以是`constexpr`的object
+
+- C++11中所有的built-in types（除void外）都是literal type，所以可以声明为`constexpr`
+- 自定义的类也可以是`constexpr`（因为构造函数和成员函数也可以是`constexpr`）
+
+一个自定义类可以是`constexpr`的例子
+
+```cpp
+class Point {
+public:
+	constexpr Point(double xVal = 0, double yVal = 0) noexcept: x(xVal), y(yVal) {}
+	constexpr double xValue() const noexcept { return x; }
+	constexpr double yValue() const noexcept { return y; }
+	void setX(double newX) noexcept { x = newX; }
+	void setY(double newY) noexcept { y = newY; }
+private:
+	double x, y;
+};
+```
+
+这里，因为`Point`构造函数的两个参数可以是编译期间常量，所以这个构造函数可以声明为`constexpr`。这样创建的`Point` object也是编译期间的常量。
+
+```cpp
+constexpr Point p1(9.4, 27.7); // fine, "runs" constexpr ctor during compilation
+constexpr Point p2(28.8, 5.3); // also fine
+```
+
+成员函数`xValue()`和`yValue()`，因为可以使用一个`constexpr` object来调用它们，所以它们也可以是`constexpr`。
+
+可以利用这两个getter的这个性质，写出下面的函数，并初始化另一个`constexpr` object。
+
+```cpp
+constexpr Point midpoint(const Point& p1, const Point& p2) noexcept {
+	return { (p1.xValue() + p2.xValue()) / 2,	// call constexpr
+			 (p1.yValue() + p2.yValue()) / 2 };	// member funcs
+}
+constexpr auto mid = midpoint(p1, p2);	// init constexpr object w/result of
+										// constexpr function
+```
+
+在C++11中，两个setter是不能声明为`constexpr`的，原因是
+
+- 它们会修改对象，而`constexpr`成员函数会被隐式地声明为`const`
+- 返回值类型是`void`，但`void`不是literal type
+
+但C++14中解除了这个限制，所以只要setter也可以声明为`constexpr`。（只要stter函数的参数也是编译期间可知的，那么它们也是编译期间就可计算的）
+
+```cpp
+class Point {
+public:
+    // ...
+	constexpr void setX(double newX) noexcept { x = newX; } // C++14
+	constexpr void setY(double newY) noexcept { y = newY; } // C++14
+};
+```
+
+那么也可以利用这样的setter来写出另外的`constexpr`函数
+
+```cpp
+// (Valid since C++14) return reflection of p with respect to the origin
+constexpr Point reflection(const Point& p) noexcept {
+	Point result; // create non-const Point
+	result.setX(-p.xValue()); // set its x and y values
+	result.setY(-p.yValue());
+	return result; // return copy of it
+}
+
+// Use
+constexpr Point p1(9.4, 27.7);
+constexpr Point p2(28.8, 5.3);
+constexpr auto mid = midpoint(p1, p2);
+constexpr auto reflectedMid = reflection(mid);  // reflectedMid's value is
+												// (-19.1 -16.5) and known
+												// during compilation
+```
+
+
+
+
+
+### Things to Remember
+
+> - `constexpr` objects are `const` and are initialized with values known during compilation.
+> - `constexpr` functions can produce compile-time results when called with arguments whose values are known during compilation.
+> - `constexpr` objects and functions may be used in a wider range of contexts than non-`constexpr` objects and functions.
+> - `constexpr` is part of an object’s or function’s interface.
 
 
 
