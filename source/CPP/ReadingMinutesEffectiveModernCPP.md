@@ -244,6 +244,8 @@ assortment *n.*各种各样，混合
 
 **immaterial** *adj.* 非物质的；无形的；不重要的；非实质的
 
+**parlance** *n.* 说法；用语；语调；发言
+
 
 
 ## Usages & Sentences
