@@ -256,6 +256,14 @@ Usage of **tidy up**
 
 > In C++11, it’s eminently practical, and C++14 ***tidies up*** the few bits of unfinished business that C++11 left behind.
 
+Usage of **temper**
+
+> I must temper your enthusiasm.
+
+
+
+
+
 
 
 本末倒置的短语（习语）
@@ -2498,7 +2506,7 @@ RetType function(params); // less optimizable
 
 
 
-## `std::vector`和`std::pair`用到的`noexcept`
+### `std::vector`和`std::pair`用到的`noexcept`
 
 #### `std::vector::push_back`的`noexcept`
 
@@ -2516,7 +2524,7 @@ C++11中引入了移动语义（move semantic），所以可以优化。比如�
 
 
 
-### `std::pair::swap`的`noexcept`
+#### `std::pair::swap`的`noexcept`
 
 `std::pair::swap`是另一种风格的异常保证：依赖于需要交换两个元素的交换函数是否被声明成了`noexcept`，即条件依赖的`noexcept`声明。
 
@@ -2528,7 +2536,8 @@ void swap(T (&a)[N], T (&b)[N]) noexcept(noexcept(swap(*a, *b)));
 // Swapping 2 arrays
 template <class T1, class T2>
 struct pair {
-	void swap(pair& p) noexcept(noexcept(swap(first, p.first)) && noexcept(swap(second, p.second)));
+	void swap(pair& p) noexcept(noexcept(swap(first, p.first)) && 
+                       noexcept(swap(second, p.second)));
 };
 ```
 
@@ -2538,19 +2547,68 @@ struct pair {
 
 
 
+#### 要不要`noexcept`？
+
+实际上比起`noexcept`带来的编译优化的好处，程序的正确性更重要，并且，一个函数（通常叫做***exception-neutral***）里面实际上也很有可能调用其他会抛出异常的函数。
+
+所以Scott Meyers也说了，为了将一个函数声明成`noexcept`，而去修改函数的逻辑实现，这就变成了本末倒置。
+
+> Twisting a function’s implementation to permit a `noexcept` declaration is **the tail wagging the dog**. Is **putting the cart before the horse**. Is not seeing the forest for the trees. Is…choose your favorite metaphor
 
 
 
+C++98认为，释放内存的函数和析构函数如果抛异常，是一种不好的风格。
 
-
-
-
-
-C++11中**默认的**，和内存释放想相关的函数，以及所有的析构函数（包括用户定义的和编译器生成的），都被隐式地声明成为了`noexcept`。（可以手动加上`noexecpt`，但不符合传统，所以就不用自己加）
+C++11中**默认的**，和**内存释放相关**的函数，以及所有的**析构函数**（包括用户定义的和编译器生成的），都被隐式地声明成为了`noexcept`。（可以手动加上`noexecpt`，但不符合传统，所以就不用自己加）
 
 > By default, all memory deallocation functions and all destructors—both user-defined and compiler-generated—are implicitly `noexcept`.
 
 但有一种情况，destructor不是被隐式地声明为`noexecept`，这种情况是：有成员的析构函数被显示地声明成了`noexcept(false)`，即可能会抛出异常。C++11中，STL里面没有这样的析构函数。
+
+
+
+### Wide contract和narrow contract
+
+什么是***Wide contract function***？
+
+- 没有先决条件
+- 不论程序状态如何，都可以调用
+- 对传入的参数没有限制约束
+- 不会出现未定义的情况（undefined behavior）
+
+什么是***narrow contract function***？
+
+- 不满足**wide contract**的function
+- 如果违反了先决条件，结果就可能是未定义（undefined behavior）
+
+
+
+`noexcept`函数可以调用实际上有exception的函数
+
+Scott Meyers最后举例，说明实际上编译对于声明了`noexcept`的函数，如果调用实际上会抛异常的函数，也会编译通过。
+
+```cpp
+void setup(); // functions defined elsewhere
+void cleanup();
+void doWork() noexcept {
+	setup(); // set up work to be done do the actual work
+	cleanup(); // perform cleanup actions
+}
+```
+
+出现这样看似矛盾的情况的原因：
+
+- 被调用的函数可能是C写的（没有C++中的`noexcept`保证）
+- 是C++98中的函数，没有使用C++11的exception specification，但还没有改为C++11的形式
+
+
+
+### Things to Remember
+
+> - `noexcept` is part of a function’s interface, and that means that callers may depend on it.
+> - `noexcept` functions are more optimizable than non-noexcept functions.
+> - `noexcept` is particularly valuable for the move operations, swap, memory deallocation functions, and destructors.
+> - Most functions are exception-neutral rather than `noexcept`.
 
 
 
