@@ -14,169 +14,157 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 ## Vocabulary
 
-coax */kəʊks/* *v.*哄，劝诱；连哄带劝地得到；小心地摆弄（机器或装置）
+**coax** */kəʊks/* *v.*哄，劝诱；连哄带劝地得到；小心地摆弄（机器或装置）
 
-turf
+**turf**
 
-indebted
+**indebted**
 
-exasperation
+**exasperation**
 
-pervasive
+**pervasive**
 
-heuristic
+**heuristic**
 
-variadic 
+**variadic **
 
-steer clear of 避开; 躲避; 绕开;
+**steer clear of** 避开; 躲避; 绕开;
 
-tyranny 暴虐，专横
+**tyranny** 暴虐，专横
 
-reason about 推出
+**reason about** 推出
 
-all but impossible 几乎不可能
+**all but impossible** 几乎不可能
 
-enigmatic 神秘的；高深莫测的；谜一般的
+**enigmatic** 神秘的；高深莫测的；谜一般的
 
-hard-pressed 被紧紧追赶的；任务紧急而繁忙的；处境艰难的
+**hard-pressed** 被紧紧追赶的；任务紧急而繁忙的；处境艰难的
 
-hazy 雾蒙蒙的，朦胧的；记不清的，模糊的；
+**hazy** 雾蒙蒙的，朦胧的；记不清的，模糊的；
 
-a pinch of 一撮，少许
+**a pinch of** 一撮，少许
 
-adornment 装饰；装饰品（书中提到的是指一个类型的const or reference qualifiers）
+**adornment** 装饰；装饰品（书中提到的是指一个类型的const or reference qualifiers）
 
-niche *n.*合适（称心）的工作（活动）; *adj.* （产品）针对特定小群体的
+**niche** *n.* 合适（称心）的工作（活动）; *adj.* （产品）针对特定小群体的
 
-foliage *n.*（植物的）枝叶，叶子
+**foliage** *n.* （植物的）枝叶，叶子
 
-curve ball 使其很难被击打的弧线球
+**curve ball** 使其很难被击打的弧线球
 
-mondo *adj.*绝对的；完全的；（非正式）非凡的，卓绝的；相当
+**mondo** *adj.* 绝对的；完全的；（非正式）非凡的，卓绝的；相当
 
-stir up 激起；煽动；搅拌；唤起
+**stir up** 激起；煽动；搅拌；唤起
 
-turbidity *n.*[分化] 浊度；浑浊；混浊度；混乱
+**turbidity** *n.* [分化] 浊度；浑浊；混浊度；混乱
 
-purview *n.*范围，权限；视界；条款
+**purview** *n.* 范围，权限；视界；条款
 
-as a matter of course 理所当然的（事）；自然地
+**as a matter of course** 理所当然的（事）；自然地
 
-revelation *n.*被揭示的真相，被揭露的内情；揭露，披露；出乎意料的事物，令人惊喜的发现；（上帝的）启示，默示；《启示录》（《圣经·新约》末卷，讲述上帝对圣约翰有关未来的启示）
+**revelation** *n.* 被揭示的真相，被揭露的内情；揭露，披露；出乎意料的事物，令人惊喜的发现；（上帝的）启示，默示；《启示录》（《圣经·新约》末卷，讲述上帝对圣约翰有关未来的启示）
 
-parrot *v.*机械地模仿，鹦鹉学舌般重复
+**parrot** *v.* 机械地模仿，鹦鹉学舌般重复
 
-compilable 可编译的
+**compilable** 可编译的
 
-elicit *v.*引出，得到；
+**elicit** *v.* 引出，得到；
 
-palatable *adj.*美味的，可口的；愉快的
+**palatable** *adj.* 美味的，可口的；愉快的
 
-bedevil *vt.*使痛苦；虐待；使苦恼
+**bedevil** *vt.* 使痛苦；虐待；使苦恼
 
-dutifully *adv.*忠实地；忠贞地；尽责地，忠诚地
+**dutifully** *adv.* 忠实地；忠贞地；尽责地，忠诚地
 
-ins and outs 复杂细节；进进出出；盛衰
+**ins and outs** 复杂细节；进进出出；盛衰
 
-potholes  *n.*凹坑；坑槽；洞坑（pothole 的复数形式）
+**potholes**  *n.* 凹坑；坑槽；洞坑（pothole 的复数形式）
 
-notwithstanding *prep.*虽然，尽管；*adv.*尽管如此；*conj.*虽然，尽管
+**notwithstanding** *prep.* 虽然，尽管；*adv.*尽管如此；*conj.*虽然，尽管
 
-amiss *adj.*有毛病的，有缺陷的；出差错的；*adv.*错误地
+**amiss** *adj.* 有毛病的，有缺陷的；出差错的；*adv.*错误地
 
-zig *n.*急转；锯齿形转角 *vi.*转弯
+**zig** *n.* 急转；锯齿形转角 *vi.*转弯
 
-zag *n.*急转；急变；锯齿形转角 *vi.*急转；急变；急弯
+**zag** *n.* 急转；急变；锯齿形转角 *vi.*急转；急变；急弯
 
-innocuous *adj.*无害的；无伤大雅的
+**innocuous** *adj.* 无害的；无伤大雅的
 
-afield *adv.*在远方地；遥远地；远离家乡地；在田野，在野外 *adj.*远方的；遥远的；远离家乡的
+**afield** *adv.* 在远方地；遥远地；远离家乡地；在田野，在野外 *adj.*远方的；遥远的；远离家乡的
 
-Pantheon *n.*万神殿；名流群
+**Pantheon** *n.* 万神殿；名流群
 
-compatriot *n.*同胞，同国人；同事，伙伴
+**compatriot** *n.* 同胞，同国人；同事，伙伴
 
+**blindside** *v.* 出其不意地袭击；（使）遭受意外的打击；拦腰撞上（其他车辆）
 
+**tip-off** *n.* 密报；警告；举报
 
-blindside *v.*出其不意地袭击；（使）遭受意外的打击；拦腰撞上（其他车辆）
+**boast of** *v.* 吹牛，自夸
 
-tip-off *n.*密报；警告；举报
+**newbie** *n.* 网络新手；新兵
 
+**demarcate** *vt.* 划分界线；区别
 
+**arcane** *adj.* 神秘的，晦涩难懂的
 
-boast of *v.* 吹牛，自夸
+**burbling** *v.* 语无伦次地讲话；潺潺做声；（航空）产生气流（burble 的现在分词）；
 
-newbie *n.*网络新手；新兵
+​                *n.* 潺潺的水声；（诗歌）汩汩的水声；激动人心的演讲
 
+**deliberation** *n.* 考虑，思考；从容，审慎；审议，商议；考虑，细想
 
+**unrivaled** *adj. *无敌的；至高无上的；无比的
 
-demarcate *vt.*划分界线；区别
+**waylay** *vt.* 伏击；埋伏
 
-arcane *adj.*神秘的，晦涩难懂的
+**concede** *v.* （通常指不情愿地）承认；认（输），承认（失败）；授予，让与；让对手得分
 
-burbling *v.*语无伦次地讲话；潺潺做声；（航空）产生气流（burble 的现在分词）；
+**consensus** *n.* 一致看法，共识
 
-​                *n.*潺潺的水声；（诗歌）汩汩的水声；激动人心的演讲
+**grudge** *n.* 怨恨，嫌隙 *v.* （因不满而）不愿意给（或允许）；嫉恨，妒忌（某人）做成（某事）
 
-deliberation *n.*考虑，思考；从容，审慎；审议，商议；考虑，细想
+**grudgingly** *adv.* 勉强地；不情愿地
 
-unrivaled *adj.*无敌的；至高无上的；无比的
+**implication** *n.* 可能的影响（或作用、结果）；含意，暗指；牵连，涉及
 
-waylay *vt.*伏击；埋伏
+**leeway** *n.* 余地；风压差；偏航；落后
 
-concede *v.*（通常指不情愿地）承认；认（输），承认（失败）；授予，让与；让对手得分
+**run-of-the-mill** *adj.* 普通的；非精选的
 
-consensus *n.*一致看法，共识
+**run-of-the-mine** *adj.* 普通的，不突出的；（煤）未分类的
 
-grudge *n.*怨恨，嫌隙 *v.*（因不满而）不愿意给（或允许）；嫉恨，妒忌（某人）做成（某事）
+**ironclad** *adj.* 装甲的；打不破的；坚固的； *n.*装甲舰
 
-grudgingly *adv.*勉强地；不情愿地
+**carpal** *n.* 腕关节；*adj.*腕关节的
 
-implication *n.*可能的影响（或作用、结果）；含意，暗指；牵连，涉及
+**carpal tunnel syndrome** 腕管综合征
 
-leeway *n.*余地；风压差；偏航；落后
+**cumbersome** *adj. *笨重的；繁琐的，复杂的；（话语或措词）冗长的
 
-run-of-the-mill *adj.*普通的；非精选的
+**concoct** *vt.* 编造；调制（食物或饮品）
 
-run-of-the-mine *adj.*普通的，不突出的；（煤）未分类的
+**assortment** *n.* 各种各样，混合
 
-ironclad *adj.*装甲的；打不破的；坚固的； *n.*装甲舰
+**inferior** *adj.* 次的，较差的；低等的，下级的；自卑的；（法庭，特别法庭）下级的；（商品，服务）需求量在衰退期中较之繁荣期更大的，低档的；（位置）下方的，下位的，靠下的；（字母，数字，符号）下标的；低等的；*n.*下级，（地位或成就）低于他人者；下标字母，下标数字，下标符号
 
-carpal *n.*腕关节；*adj.*腕关节的
-
-carpal tunnel syndrome 腕管综合征
-
-cumbersome *adj.*笨重的；繁琐的，复杂的；（话语或措词）冗长的
-
-concoct *vt.*编造；调制（食物或饮品）
-
-assortment *n.*各种各样，混合
-
-**inferior** *adj.*次的，较差的；低等的，下级的；自卑的；（法庭，特别法庭）下级的；（商品，服务）需求量在衰退期中较之繁荣期更大的，低档的；（位置）下方的，下位的，靠下的；（字母，数字，符号）下标的；低等的；*n.*下级，（地位或成就）低于他人者；下标字母，下标数字，下标符号
-
-
-
-**belatedly** *adv.*延迟地；延续地
+**belatedly** *adv.* 延迟地；延续地
 
 **child's play** 容易干的事；轻而易举之事
 
+**travesty** *n.* 歪曲；滑稽作品；拙劣的模仿作品；*vt.*歪曲；滑稽地模仿
 
+**wanton** *adj.* 嬉戏的；繁茂的；荒唐的；无节制的；放纵的；*n.* 荡妇；水性杨花的女人 *vi.* 放肆；嬉戏；闲荡；*vt.* 挥霍
 
-**travesty** *n.*歪曲；滑稽作品；拙劣的模仿作品；*vt.*歪曲；滑稽地模仿
+**enumerator** *n.* 人口普查员，计数员
 
-**wanton** *adj.*嬉戏的；繁茂的；荒唐的；无节制的；放纵的；*n.*荡妇；水性杨花的女人 *vi.*放肆；嬉戏；闲荡；*vt.*挥霍
+**susceptible** *adj.* 易得病的，易受影响的；（人）易受感动的，易动感情的；可能有······的，容许······的；<正式>（尤指想法或陈述）能被理解（或证明、解释）的
 
-**enumerator** *n.*人口普查员，计数员
-
-**susceptible** *adj.*易得病的，易受影响的；（人）易受感动的，易动感情的；可能有······的，容许······的；<正式>（尤指想法或陈述）能被理解（或证明、解释）的
-
-**nonsensical** *adj.*无意义的；荒谬的
+**nonsensical** *adj.* 无意义的；荒谬的
 
 **tuple** 美*/ˈtjʊpəl; ˈtʌpəl/*  *n.* [计] 元组，重数
 
 **sleek ** *adj.* 光滑的，光亮的；线条流畅的，造型优美的；时髦阔气的；油嘴滑舌的；*v.*使平整光亮；掩盖；打扮整洁
-
-
 
 **peasy** *adj.* 像豌豆的；<非正式，英>容易的，简单的 （用法：Easy, peasy.）
 
@@ -185,8 +173,6 @@ assortment *n.*各种各样，混合
 **entail** *v.* 使必要，需要；<旧>遗赠（财产），限定继承；使人承担
 
 **dissipate**  *v.* （使某事物）消散，消失；挥霍，耗费；放荡
-
-
 
 **dishearten** *vt.* 使灰心，使沮丧，使气馁
 
@@ -245,6 +231,20 @@ assortment *n.*各种各样，混合
 **immaterial** *adj.* 非物质的；无形的；不重要的；非实质的
 
 **parlance** *n.* 说法；用语；语调；发言
+
+**inductee** *n.* 应召入伍的士兵；就任者
+
+**preclude** *v.* <正式>阻止，妨碍（preclude *sb.* from）
+
+**rationale** *n.* <正式>根本原因，逻辑依据
+
+**sidestep** *vt.* 回避；横跨一步躲避
+
+**blather** *v.* 喋喋不休；絮絮叨叨；啰嗦地说；*n.* 废话；胡说
+
+
+
+
 
 
 
@@ -2979,6 +2979,167 @@ private:
 
 > - Make `const` member functions thread safe unless you’re certain they’ll never be used in a concurrent context
 > - Use of `std::atomic` variables may offer better performance than a `mutex`, but they’re suited for manipulation of only a single variable or memory location.
+
+
+
+
+
+## Item 17: Understand special member function generation.
+
+special member function指的是C++编译器愿意帮助生成的特殊成员函数。它们仅仅在需要的时候才会被编译器生成。
+
+> the special member functions are the ones that C++ is willing to generate on its own
+>
+> These functions are generated only if they’re needed
+
+
+
+### C++98 special member function
+
+C++98有四种special member function
+
+- The default constructor
+- The  destructor
+- The  copy constructor
+- The  copy assignment operator
+
+对于默认构造函数，只有你不提供任何的构造函数的时候，编译器才会帮助生成。否则哪怕只有一个构造函数是接受参数的，那么编译器就不会帮助生成默认构造函数。
+
+编译器生成的这些特殊成员函数，默认是`public`和`inline`，并且不是`virtual`。
+
+除非子类所继承的父类有析构函数是`virtual`，那么编译器生成的子类析构函数也是`virtual`。
+
+
+
+### C++11 special member function
+
+C++11除了C++98中的四种特殊成员函数之外，还有两个
+
+- The move constructor
+- The move assignment operator
+
+移动构造函数和移动赋值操作符，类似拷贝构造函数，仅在需要时被编译器生成。
+
+移动构造函数的执行，也是类似拷贝构造函数，即对每个non-`static`成员变量执行"memberwise moves"。（对每个成员执行移动构造）。
+
+移动赋值操作符，也是对每个non-`static`成员变量执行"move assignment"。（对每个成员执行移动赋值）。
+
+如果有基类，那么也移动构造（或移动赋值）其基类部分。
+
+虽然移动构造和移动赋值采用的是"memberwise moves"，但如果其成员没有提供移动构造或移动赋值，实际上是用的是拷贝构造或拷贝复制。所以"memberwise moves"更多是一种request。
+
+
+
+### Copy operation interacts move operation
+
+**拷贝构造和拷贝赋值不相互冲突**：定义了拷贝构造函数，没有定义拷贝赋值操作符，但如果需要，编译器还是会帮助生成拷贝赋值操作符。同样地，定义拷贝赋值操作符，没有定义拷贝构造函数，但如果需要，编译器还是会帮助生成拷贝赋值操作符。
+
+**移动构造和移动赋值相互冲突**：定义了移动构造函数，没有定义移动赋值操作符，那么编译器就不会帮助生成移动赋值操作符。反之同理。原因是编译器认为有自定义的拷贝构造，那么就暗示移动构造就和一般的memberwise moves不同，也就不适用于移动赋值操作符。反过来也一样。
+
+如果**显示定义了拷贝构造函数（或拷贝赋值）**，那么也编译器也不会再生成移动构造和移动赋值。原因是，编译器认为既然你定义了拷贝构造，那么普通的memberwise copy就不适用了，那么进一步推理，memberwise moves也就不适用了，所以就不再生成了。
+
+类似的，如果**显示定义了移动构造（或移动赋值）**，那么也编译器也不会再生成拷贝构造函数和拷贝赋值，原因同上。
+
+
+
+### Rule of Three
+
+如果你定义了以下任何一个，那么这三个就应该被全部定义（原因是和内存管理相关）
+
+- The copy constructor
+- The copy assignment operator
+- The destructor
+
+实际上在C++98中，如果你定义了一个destructor，就意味着，内存管理可能是你自定义的操作，所以理论上就不该再由编译器生成copy operation，但C++98中没有对此做出限制。C++11也没有做出限制的原因是，怕破坏太多的历史遗留代码。
+
+但对于move operation，C++11更新了这一点：**如果有一个自定义的destructor，那么编译器就不再会生成move operation（即移动构造和移动赋值）**
+
+
+
+### Move operation被编译器生成的条件
+
+- No copy operations are declared in the class.
+- No move operations are declared in the class.
+- No destructor is declared in the class.
+
+
+
+### 一个潜在影响性能的例子
+
+```cpp
+class StringTable {
+public:
+	StringTable() { makeLogEntry("Creating StringTable object"); } // added
+	~StringTable() { makeLogEntry("Destroying StringTable object"); }// also
+    // other funcs
+}
+```
+
+因为有自定义的析构函数（destructor），那么编译器就不再生成移动构造函数和移动赋值操作符。代码虽然可以编译通过，并且功能也正确，但实际上这个类的一个对象，如果被要求“移动“时，实际上编译器会使用拷贝操作来代替，这样就降低了性能。
+
+
+
+### C++11中特殊成员函数的生成规则
+
+- **默认构造函数**
+
+  没有用户定义的构造函数时，才由编译器生成。
+
+- **析构函数**
+
+  编译器生成的析构函数，默认是`noexcept`，并且只有当基类是`virtual`的时候，才会声明为`virtual`
+
+- **拷贝构造函数**
+
+  没有用户定义的拷贝构造时，才由编译器生成。
+
+  如果有移动构造或移动赋值，就会被声明为`delete`。
+
+  如果有用户自定义的拷贝构造或析构函数时，就不会再由编译器生成。
+
+- **拷贝赋值操作符**
+
+  没有用户定义的拷贝赋值时，才由编译器生成。
+
+  如果有移动构造或移动赋值，就会被声明为`delete`。
+
+  如果有用户自定义的拷贝赋值或析构函数时，就不会再由编译器生成。
+
+- **移动构造函数和移动赋值操作符**
+
+  当有用户自定义的拷贝操作（拷贝构造和拷贝赋值），移动操作（移动构造和移动赋值）和析构函数时，编译器就不再生成。
+
+> - **Default constructor:** Same rules as C++98. Generated only if the class contains no user-declared constructors.
+> - **Destructor:** Essentially same rules as C++98; sole difference is that destructors are `noexcept` by default. As in C++98, virtual only if a base class destructor is virtual.
+> - **Copy constructor:** Same runtime behavior as C++98: memberwise copy construction of non-`static` data members. Generated only if the class lacks a user-declared copy constructor. Deleted if the class declares a move operation. Generation of this function in a class with a user-declared copy assignment operator or destructor is deprecated.
+> - **Copy assignment operator:** Same runtime behavior as C++98: memberwise copy assignment of non-`static` data members. Generated only if the class lacks a user-declared copy assignment operator. Deleted if the class declares a move operation. Generation of this function in a class with a user-declared copy constructor or destructor is deprecated.
+> - **Move constructor** and **move assignment operator:** Each performs memberwise moving of non-`static` data members. Generated only if the class contains no user-declared copy operations, move operations, or destructor.
+
+
+
+### 特殊成员函数生成规则的罕见例外
+
+当有类似于拷贝构造（或拷贝赋值或其它）的template函数时，如果满足需要的条件，编译器仍然会生成拷贝构造（和拷贝和其它），哪怕template函数在实例化之后会产生相同的函数signature。Scott Meyers会在item26中说明这一情况。
+
+```cpp
+class Widget {
+	template<typename T> // construct Widget
+	Widget(const T& rhs); // from anything
+	template<typename T> // assign Widget
+	Widget& operator=(const T& rhs); // from anything
+};
+```
+
+
+
+### Things to Remember
+
+> - The special member functions are those compilers may generate on their own: default constructor, destructor, copy operations, and move operations.
+> - Move operations are generated only for classes lacking explicitly declared move operations, copy operations, and a destructor.
+> - The copy constructor is generated only for classes lacking an explicitly declared copy constructor, and it’s deleted if a move operation is declared. The copy assignment operator is generated only for classes lacking an explicitly declared copy assignment operator, and it’s deleted if a move operation is declared. Generation of the copy operations in classes with an explicitly declared destructor is deprecated.
+> - Member function templates never suppress generation of special member functions.
+
+
 
 
 
