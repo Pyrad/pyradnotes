@@ -242,9 +242,15 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **blather** *v.* 喋喋不休；絮絮叨叨；啰嗦地说；*n.* 废话；胡说
 
+**ascertain** *v.* 查明，确定
 
+**slight** *adj.* 轻微的，少量的；（人）瘦小的，纤弱的；不深奥的，不重要的
 
+**lapse** *n.* 过失，小失误；（两件事发生的）间隔时间；（活动的）暂停，中断；开始说，开始做；（因未继续缴费而导致的）终止，结束; *v.* （时间）流逝；（合同、协议等）失效，期满终止；（状态，活动）中止，结束；背弃，放弃（宗教信仰）；开始（以某种方式）说话、行事（lapse into）
 
+**ostensible** *adj.* 表面的；假装的
+
+**co-opt** *vt.* 由现会员选举；指派
 
 
 
@@ -3144,6 +3150,32 @@ class Widget {
 
 
 # Chapter 4 Smart Pointers
+
+原生指针的几大“罪过”
+
+- 不能说明它指向一个对象还是一个数组
+- 当使用完毕时，不知道是否应该释放它（这个指针是否拥有内存资源的管理权）
+- 如果要释放，不知道是用`delete`，还是需要其他不同的释放方式?
+- 如果决定用`delete`，是该用`delete`就可以（对象），还是`delete []`（数组）？
+- 代码太多时，正确找到每个应该释放的地方不太容易。忘记释放会导致内存泄漏，而多次释放会导致未定义的行为
+- 不知道这个指针是否是一个悬空的指针（dangling pointer，指向一块不再拥有资源管理权的指针）
+
+
+
+C++11中的4种指针
+
+- `std::auto_ptr`
+- `std::unique_ptr`
+- `std::shared_ptr`
+- `std::weak_ptr`
+
+`std::auto_ptr`被`std::unique_ptr`所替代，除非要编译C++98的legacy code，否则就不再应该使用`std::auto_ptr`。
+
+
+
+
+
+
 
 
 
