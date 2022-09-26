@@ -252,6 +252,18 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **co-opt** *vt.* 由现会员选举；指派
 
+**atypical** *adj.* 非典型的；不合规则的
+
+**frolic** *v.* 嬉戏；调情；*n.* 嬉戏，嬉闹；调情；*adj.* 欢乐的，嬉戏的
+
+**blissful** *adj.* 极乐的；使人幸福的；无忧无虑的；充满喜悦的
+
+**veritably** *adv.* 真实地；真正地
+
+**bliss** *n.* 极乐，天赐之福；天堂，乐园；*v.* <非正式>乐不可支，欣喜若狂
+
+
+
 
 
 ## Usages & Sentences
@@ -3173,9 +3185,182 @@ C++11中的4种指针
 
 
 
+## Item 18: Use `std::unique_ptr` for exclusive-ownership resource management
+
+### `std::unique_ptr`的特点和典型用法
+
+通常认为，`std::unique_ptr`和原生指针占据同样大小的内存。
+
+`std::unique_ptr`体现的是独占资源的语义。
+
+移动一个`std::unique_ptr`，就是将其占据的资源管理权从source pointer转移到了destination pointer，并且同时source pointer被置为`nullptr`。
+
+因为`std::unique_ptr`体现的是独占资源的语义，所以它不可复制（否则出现两个都占有同一资源的指针，并且都声称是独占，从而导致重复释放资源，会导致错误）。所以`std::unique_ptr`是*move-only type*。
+
+一般默认`delete`是`std::unique_ptr`释放资源（原生指针）的操作。
 
 
 
+典型的用法是，一个factory function，返回一个`std::unique_ptr`。
+
+```cpp
+class Investment { /* ... */ };
+class Stock: public Investment { /* ... */ };
+class Bond: public Investment { /* ... */ };
+class RealEstate: public Investment { /* ... */ };
+
+template<typename... Ts>		// return std::unique_ptr
+std::unique_ptr<Investment>		// to an object created
+makeInvestment(Ts&&... params);	// from the given args
+
+// pInvestment is of type std::unique_ptr<Investment>
+auto pInvestment = makeInvestment( arguments );
+```
+
+
+
+`std::unique_ptr`也可以用作容器元素。当它被move为容器元素，而容器又作为一个class的data member时，当这个class的object被销毁时，容器里的`std::unique_ptr`同样也会按照它初始化时设定的delete函数，来释放资源。
+
+一般情况下，这个ownership chain如果被打断（比如early function return or break from a loop），`std::unique_ptr`所占用的资源也会被释放。
+
+但也有一些例外，这些一般来自于程序的异常终止，比如，异常传播到线程主函数以外，违反了`noexcept`的声明，以及`std::abort`会exit function（ std::_Exit, std::exit, or std::quick_exit）被调用时，都会导致`std::unique_ptr`所占用的资源无法被释放。
+
+
+
+### `std::unique_ptr`使用自定义的deleter
+
+除了使用默认的`delete`操作符来在合适的时机释放原生指针所指向的内存资源，还可以使用定制化的*deleter*来代替`delete`操作符，这个*deleter*可以是函数，仿函数，以及lambda。
+
+```cpp
+// custom deleter (a lambda expression)
+auto delInvmt = [](Investment* pInvestment) {
+	makeLogEntry(pInvestment);
+	delete pInvestment;
+};
+
+// revised return type
+template<typename... Ts>
+std::unique_ptr<Investment, decltype(delInvmt)>
+makeInvestment(Ts&&... params) {
+    // ptr to be returned
+	std::unique_ptr<Investment, decltype(delInvmt)> pInv(nullptr, delInvmt);
+    if ( /* a Stock object should be created */ ) {
+		pInv.reset(new Stock(std::forward<Ts>(params)...));
+	} else if ( /* a Bond object should be created */ ) {
+		pInv.reset(new Bond(std::forward<Ts>(params)...));
+	} else if ( /* a RealEstate object should be created */ ) {
+		pInv.reset(new RealEstate(std::forward<Ts>(params)...));
+	}
+	return pInv;
+}
+```
+
+从上面的例子，可以有以下几点总结
+
+- 使用lambda不仅方便，而且比传统的函数更有效
+- 当使用custom deleter的时候，`std::unique_ptr`的第二个模板参数就得是这个deleter的类型（这里使用`decltype`）
+- 当使用custom deleter的时候，初始化一个`std::unique_ptr`对象的第一个参数是原生指针，第二个参数就得是这个custom deleter
+- C++11不允许从原生指针到智能指针的隐式转换，所以需要使用`reset`
+- 使用`std::forward`的原因是为了保留参数的左值和右值属性
+- custom deleter的参数是一个基类的指针，那么就**要求基类的析构函数是虚函数**
+
+
+
+上面的例子，如果使用C++14，封装特征就可以变得更好
+
+```cpp
+template<typename... Ts>
+std::unique_ptr<Investment, decltype(delInvmt)>
+makeInvestment(Ts&&... params) {
+    auto delInvmt = [](Investment* pInvestment) {
+		makeLogEntry(pInvestment);
+		delete pInvestment;
+	};
+    
+    // ptr to be returned
+	std::unique_ptr<Investment, decltype(delInvmt)> pInv(nullptr, delInvmt);
+    if ( /* a Stock object should be created */ ) {
+		pInv.reset(new Stock(std::forward<Ts>(params)...));
+	} else if ( /* a Bond object should be created */ ) {
+		pInv.reset(new Bond(std::forward<Ts>(params)...));
+	} else if ( /* a RealEstate object should be created */ ) {
+		pInv.reset(new RealEstate(std::forward<Ts>(params)...));
+	}
+	return pInv;
+}
+```
+
+
+
+### `std::unique_ptr`的大小问题
+
+当deleter是默认的`delete`时，`std::unique_ptr`的大小和原生指针的大小是一样的。
+
+当deleter是函数指针时，`std::unique_ptr`的大小一般会从一个word变到两个word。
+
+当deleter是function object时，`std::unique_ptr`的大小变化要看这个函数的state。对于stateless function object（比如没有capture的lambda），大小就不会有什么变化。因此，如果deleter既可以是函数，又可以是captureless lambda expression的时候，使用lambda会更好。
+
+当function object deleter有extensive state的时候，会导致`std::unique_ptr`大小有显著的增加，这时候就该考虑是否该修改当前的设计了。
+
+```cpp
+// custom deleter, as stateless lambda
+auto delInvmt1 = [](Investment* pInvestment) {
+	makeLogEntry(pInvestment);
+	delete pInvestment;
+};
+
+ // return type has size of  Investment*
+template<typename... Ts>
+std::unique_ptr<Investment, decltype(delInvmt1)>
+makeInvestment(Ts&&... args);
+
+// custom deleter as function
+void delInvmt2(Investment* pInvestment) {
+	makeLogEntry(pInvestment);
+	delete pInvestment;
+}
+
+// return type has size of  Investment* plus at least size of function pointer!
+template<typename... Ts>
+std::unique_ptr<Investment, void (*)(Investment*)>
+makeInvestment(Ts&&... params);
+```
+
+
+
+### `std::unique_ptr`的两种形式
+
+`std::unique_ptr`有两种形式
+
+- `std::unique_ptr<T>` 单个对象
+- `std::unique_ptr<T[]>` 数组
+
+单个对象的形式，不会有索引`[]`操作符的重载，而数组形式，不会有解引用（`operator*`，`operator->`）操作符的重载。
+
+Scott Meyers建议，不要使用`std::unique_ptr<T[]>`（`std::unique_ptr`的数组形式），因为`std::array`，`std::vector`和`std::string`等都是比它更好的使用方法。而唯一比较好的使用方式，是声明一个由C-API返回的的原生指针所指向堆内存的资源管理权。
+
+
+
+`std::unique_ptr`可以很方便转换为`std::shared_ptr`
+
+`std::unique_ptr`最吸引人的特点，就是它可以方便有效地（隐式）转换为一个`std::shared_ptr`。
+
+```cpp
+// converts std::unique_ptr to std::shared_ptr
+std::shared_ptr<Investment> sp = makeInvestment( arguments );
+```
+
+因为factory function不知道使用者更想使用`std::unique_ptr`还是一个`std::shared_ptr`，所以返回一个`std::unique_ptr`是最好的办法。
+
+
+
+
+
+### Things to Remember
+
+> - std::unique_ptr is a small, fast, move-only smart pointer for managing resources with exclusive-ownership semantics.
+> - By default, resource destruction takes place via delete, but custom deleters can be specified. Stateful deleters and function pointers as deleters increase the size of std::unique_ptr objects.
+> - Converting a std::unique_ptr to a std::shared_ptr is easy.
 
 
 
