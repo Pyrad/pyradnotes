@@ -262,6 +262,22 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **bliss** *n.* 极乐，天赐之福；天堂，乐园；*v.* <非正式>乐不可支，欣喜若狂
 
+**jeer** *v.* 嘲笑；戏弄；奚落
+
+**generality** *n.* 概论；普遍性；大部分
+
+**bravado** *n.* 虚张声势；冒险
+
+**akin** *adj.* 相似的，类似的；有血缘关系的
+
+**mnemonic** */nɪˈmɑːnɪk/* *adj.* 记忆的；助记的；记忆术的
+
+**pique** *vt.* 使愤恨，使恼怒；激起（兴趣，好奇心）； 赢（某人）三十分
+
+**abomination** *n.* 厌恶；憎恨；令人厌恶的事物
+
+**stylistic** *adj.* 体裁上的；格式上的；文体论的
+
 
 
 
@@ -309,6 +325,8 @@ Usage of **take for granted**
 > Twisting a function’s implementation to permit a `noexcept` declaration is **the tail wagging the dog**. Is **putting the cart before the horse**. Is not seeing the forest for the trees. Is…choose your favorite metaphor
 
 
+
+in and of itself 就其本身而言（**without considering anything else**）
 
 
 
@@ -3361,6 +3379,154 @@ std::shared_ptr<Investment> sp = makeInvestment( arguments );
 > - std::unique_ptr is a small, fast, move-only smart pointer for managing resources with exclusive-ownership semantics.
 > - By default, resource destruction takes place via delete, but custom deleters can be specified. Stateful deleters and function pointers as deleters increase the size of std::unique_ptr objects.
 > - Converting a std::unique_ptr to a std::shared_ptr is easy.
+
+
+
+
+
+## Item 19: Use `std::shared_ptr` for shared-ownership resource management
+
+C++关于资源管理的需求：像Garbage collection一样自动工作的系统，适用于所有的资源，并且有可预测的释放时机。
+
+`std::shared_ptr`是C++11给出的答案。
+
+
+
+### `std::shared_ptr`的特点
+
+- 指向同一份内存资源，每个指针不是独占该资源（shared ownership）
+- 有计数器来记录指向同一资源的数量（reference count）
+- 构造函数增加reference count；析构函数减少reference count；赋值运算符减少***lhs***的reference count，同时它也增加***rhs***的reference count
+- 当一个`std::shared_ptr`的计数器（在自减之后）为0时，`std::shared_ptr`就会释放该资源
+
+
+
+### 计数器的代价（performance implication）
+
+- `std::shared_ptr`是一个原生指针的两倍大小
+
+  这是由于它包含两个指针：一个指向内存，一个指向reference count（STL的实现方式）
+
+- reference count实际上是一个字（word）
+
+  32-bit机器的字就是4字节，64-bit机器的字就是8字节。
+
+- 指向reference count的指针，必须是动态分配的（dynamically allocated）
+
+  这是因为，reference count是要跟随所指向的对象，并依次记录其引用个数，但被引用的对象却对此一无所知，所以它们并没有用来存储reference count的地方，所以reference count的指针必须用动态分配的方式。这种动态分配方式的开销，可以通过`std::make_shared`来避免，但有些情况下，`std::make_shared`不能使用。
+
+- reference count的自增和自减操作，必须是原子操作（atomic）
+
+  这是为了防止多线程时出现问题（比如，一个线程正在做析构操作，而另一个线程正在拷贝那个同样被引用的对象）
+
+
+
+### 为何构造函数不总是自增reference count？
+
+`std::shared_ptr`的构造函数，***通常*** 会自增reference count（`std::shared_ptr` constructors only ***usually*** increment the reference count for the object they point to）。
+
+但有例外，例外就是**移动构造**（**move construction**）。因为移动构造时，旧指针会被重置为`nullptr`，而新指针会指向原先旧指针指向的object，因为reference count不会增加。
+
+也因为这样，移动`std::shared_ptr`要比拷贝`std::shared_ptr`更快（move construction，move assignment）
+
+
+
+### `std::shared_ptr`的deleter
+
+`std::shared_ptr`默认的deleter，就是`delete`操作符。
+
+`std::shared_ptr`也支持自定义的deleter，但是这个自定义的操作符，只出现在初始化的参数中，而不像`std::unique_ptr`也要同时出现在模板参数中。
+
+也就是说，自定义的deleter，并不是`std::shared_ptr`这个指针类型的一部分。
+
+```cpp
+ // custom deleter
+auto loggingDel = [](Widget *pw) { makeLogEntry(pw); delete pw; };
+
+// deleter type is part of ptr type
+std::unique_ptr<Widget, decltype(loggingDel)> upw(new Widget, loggingDel);
+
+// deleter type is not part of ptr type
+std::shared_ptr<Widget> spw(new Widget, loggingDel);
+```
+
+这同样意味着，拥有不同deleter的`std::shared_ptr`，可以是同一种指针类型（而`std::unique_ptr`却不行），而且既然是同一种类型，就可以相互赋值、当做同一个容器中的元素、当做同一个函数参数等等。
+
+```cpp
+ // custom deleters, each with a different type
+auto customDeleter1 = [](Widget *pw) { /* ... */ };
+auto customDeleter2 = [](Widget *pw) { /* ... */ };
+
+std::shared_ptr<Widget> pw1(new Widget, customDeleter1);
+std::shared_ptr<Widget> pw2(new Widget, customDeleter2);
+
+std::vector<std::shared_ptr<Widget>> vpw{ pw1, pw2 };
+```
+
+
+
+### `std::shared_ptr`的大小问题
+
+如前所述，`std::shared_ptr`的包含两个指针，所以就是两个指针的大小。
+
+但如果指定了自定义的deleter，实际上`std::shared_ptr`的大小也不会改变（哪怕这个deleter是一个function object）
+
+原因其实是，前面提到的reference count的指针，实际上是一个指向control block的指针（如下图），它指向的是一块堆上的内存，而它包含有reference count，weak count，custom deleter，allocator等。所以，实际上，当使用自定义的deleter的时候，`std::shared_ptr`是使用了更多的内存。
+
+
+
+![Control block of std::shared_ptr](../_static/EffectiveModernCpp/shared_ptr_ctrl_blk.png)
+
+
+
+### 关于control block的rules
+
+至少，我们希望control block是在创建第一个指向object的`std::shared_ptr`的时候创建的，但创建一个`std::shared_ptr`的时候，函数并不能知道是不是还有其他的`std::shared_ptr`引用了同样的对象。
+
+所以，就只好使用以下的规则
+
+- `std::make_shared`总是创建一个control block。
+
+  因为它会生成一个新的对象并指向它，所以在`std::make_shared`调用的时候，这个新的对象没有control block。
+
+- 当使用unique-ownership的指针创建一个`std::shared_ptr`的时候，创建一个control block。
+
+  因为unique-ownership的指针没有control block，所以此时可以创建一个control block。
+
+- 当使用原生指针（raw pointer）创建一个`std::shared_ptr`的时候，创建一个control block。
+
+  如果想用一个已经有control block的对象创建`std::shared_ptr`，就应该传入`std::shared_ptr`或`std::weak_ptr`，而不应该使用原生指针（raw pointer）。
+
+这也就是为什么使用同一个原生指针（raw pointer）来创建两个或多个`std::shared_ptr`时，会出现重复释放的问题。
+
+原因就是多个control block被创建出来，因此就有多个reference count，因此也就会产生多次释放。
+
+```cpp
+auto pw = new Widget; // pw is raw ptr
+
+std::shared_ptr<Widget> spw1(pw, loggingDel); // create control block for *pw
+
+std::shared_ptr<Widget> spw2(pw, loggingDel); // create 2nd control block for *pw!
+```
+
+所以，通常的写法是，把`new`出来的结果直接当做`std::shared_ptr`的初始化参数使用，然后再用生成好的`std::shared_ptr`去初始化其他的`std::shared_ptr`
+
+```cpp
+std::shared_ptr<Widget> spw1(new Widget, loggingDel); // direct use of new
+std::shared_ptr<Widget> spw2(spw1);  // spw2 uses same control block as spw1
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
