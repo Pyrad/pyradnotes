@@ -278,7 +278,13 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **stylistic** *adj.* 体裁上的；格式上的；文体论的
 
+**albeit** *conj.* 虽然，尽管
 
+**wane** *v.* （月亮）缺，亏；衰落，减少；消逝
+
+**annulment** */əˈnʌlmənt/* *n.* 取消；废除
+
+**dispensation** */ˌdɪspenˈseɪʃn/* *n.* 分配；免除；豁免；天命
 
 
 
@@ -313,6 +319,10 @@ Usage of **take for granted**
 > for now I’ll just say that you can’t assume that the results of `constexpr` functions are `const`, nor can you take for granted that their values are known during compilation.
 
 
+
+Usage of **’til-death-do-us-part** （至死不渝）
+
+> The ownership contract between a resource and the `std::shared_ptr`s that point to it is of the **’til-death-do-us-part** variety. 
 
 
 
@@ -3518,15 +3528,138 @@ std::shared_ptr<Widget> spw2(spw1);  // spw2 uses same control block as spw1
 
 
 
+### 为什么有`enable_shared_from_this`
+
+和control block相关的、一个可能发生的错误如下
+
+```cpp
+class Widget {
+public:
+    void process();
+    /* ... */
+};
+
+std::vector<std::shared_ptr<Widget>> processedWidgets;
+
+void Widget::process() {
+	// process the Widget
+
+    // add it to list of processed Widgets, this is wrong!!!
+    processedWidgets.emplace_back(this);
+}
+```
+
+假设我们有一个class `Widget`，并且有一个`vector`存储的是`shared_ptr`的智能指针。
+
+如果class `Widget`有一个成员函数叫`Widget::process()`，它在处理了一些事情之后，把`this`指针当做`vector::emplace_back`的参数传入，从而在这个`vector`的末尾构造了一个新的`shared_ptr`，这个`shared_ptr`指向的是当前的`*this`，并且**它同时创建了一个新的control block**。
+
+问题就出在这个地方：因为看起来虽然没问题，并且编译也可以通过，但如果在这个class的外面，还有其他的`shared_ptr`指向`*this`，那么问题就来了，指向同一个内存地址，但是有多个control block对应它，导致有多个reference count，那么最后就一定会产生重复释放的问题。
+
+
+
+为了解决上面的问题，C++ STL里面引入了`std::enable_shared_from_this`。
+
+`std::enable_shared_from_this`用于需要使用`this`来创建`shared_ptr`的class，用法是被这个class所继承。
+
+`std::enable_shared_from_this`的有一个模板参数，参数就是需要继承的类。
+
+```cpp
+class Widget: public std::enable_shared_from_this<Widget> {
+public:
+	void process();
+    /* ... */
+};
+```
+
+这种子类所继承的父类是通过子类所实例化的设计，叫做**The Curiously Recurring Template Pattern (CRTP)**
 
 
 
 
 
+### 使用`enable_shared_from_this`以及前提条件
+
+#### 使用
+
+`std::enable_shared_from_this`定义了一个成员函数：`shared_from_this()`。
+
+当继承了`std::enable_shared_from_this`的子类里面的成员函数，想要获得一个指向当前`*this`的`shared_ptr`时， 这个成员函数`shared_from_this()`，就可以派上用场。
+
+```cpp
+void Widget::process() {
+	// as before, process the Widget
+	// add std::shared_ptr to current object to processedWidgets
+	processedWidgets.emplace_back(shared_from_this());
+}
+```
+
+`shared_from_this()`会搜索当前对象（`*this`）的control block，然后创建一个新的`shared_ptr`指向它，并且”引用“这个已经存在的control block（即，没有创建新的control block）
+
+#### 前提条件
+
+所以，能够在子类的成员函数里面使用`shared_from_this()`有个**前提条件**：必须已经有一个存在的`shared_ptr`指向当前的`*this`（比如，在成员函数外面调用`shared_from_this()`），否则会发生未定义的行为（通常`shared_from_this()`会抛异常）
+
+#### 避免异常的通常做法
+
+通常的做法是，使用一个`public`的static factory function来创建一个`std::shared_ptr`，并且，把构造函数声明为`private`。
+
+```cpp
+class Widget: public std::enable_shared_from_this<Widget> {
+	public:
+	// factory function that perfect-forwards args to a private ctor
+	template<typename... Ts>
+	static std::shared_ptr<Widget> create(Ts&&... params);
+	void process(); // as before
+private:
+	// ctors
+    /* ... */
+};
+```
+
+
+
+### 何时使用`std::shared_ptr` ？
+
+Scott Meyers还提到，control block的实现比通常想的要更复杂。它用到了继承，甚至有virtual function机制（保证指向的对象最后会被合理销毁）。他列举了以下可能的cost
+
+- dynamically allocated control blocks
+- arbitrarily large deleters
+- allocators
+- virtual function machinery
+- atomic reference count manipulations
+
+这些都会导致`shared_ptr`的性能受到影响，但瑕不掩瑜，通常情况下这些cost是合理的，
+
+- 通常使用`std::make_shared`，control block只有3个word的大小
+
+- 解引用`shared_ptr`的开销基本就是解引用一个原生指针
+
+  > Dereferencing a `std::shared_ptr` is no more expensive than dereferencing a raw pointer.
+
+- reference count的自增和自减操作，通常是一到两个原子操作（通常映射为一条机器指令）
+
+- 虚函数机制通常只有在一个object被销毁时才用到
+
+所以，付出这些代价是划算的。
+
+
+
+所以，通常在怀疑是否应该使用shared ownership的生命周期跟踪时，应当考虑一下是否该使用`std::unique_ptr`，而不是`std::shared_ptr`。而且通常`std::unique_ptr`可以很容易地转换成一个`std::shared_ptr`。
+
+
+
+`std::shared_ptr` 和`std::unique_ptr`不同，它**不能**指向一个数组，即**没有**`std::shared_ptr<T[]>`这样的东西，它只能指向一个single object。
 
 
 
 
+
+## Things to Remember
+
+> - `std::shared_ptr`s offer convenience approaching that of garbage collection for the shared lifetime management of arbitrary resources.
+> - Compared to `std::unique_ptr`, `std::shared_ptr` objects are typically twice as big, incur overhead for control blocks, and require atomic reference count manipulations.
+> - Default resource destruction is via delete, but custom deleters are supported. The type of the deleter has no effect on the type of the `std::shared_ptr`.
+> - Avoid creating`std::shared_ptr`s from variables of raw pointer type.
 
 
 
@@ -3540,3 +3673,4 @@ std::shared_ptr<Widget> spw2(spw1);  // spw2 uses same control block as spw1
 
 [C++ most vexing parse（C++最令人烦恼的解析）](https://zhuanlan.zhihu.com/p/391558669)
 
+[CRTP介绍、使用和原理](https://zhuanlan.zhihu.com/p/476001202)
