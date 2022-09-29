@@ -286,6 +286,14 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **dispensation** */ˌdɪspenˈseɪʃn/* *n.* 分配；免除；豁免；天命
 
+**contend** *v.* 声称，主张；竞争，争夺；处理，对付
+
+**augmentation** */ˌɔːɡmenˈteɪʃ(ə)n/* *n.* 增大，增多；增加物；（主旋律的）延长；（作为殊荣而对纹章进行的）扩充
+
+**clog** */klɑːɡ/* *v.* 阻塞，堵塞；*n.* 木底鞋，木屐；累赘，障碍；管道堵塞物
+
+
+
 
 
 ## Usages & Sentences
@@ -3660,6 +3668,73 @@ Scott Meyers还提到，control block的实现比通常想的要更复杂。它�
 > - Compared to `std::unique_ptr`, `std::shared_ptr` objects are typically twice as big, incur overhead for control blocks, and require atomic reference count manipulations.
 > - Default resource destruction is via delete, but custom deleters are supported. The type of the deleter has no effect on the type of the `std::shared_ptr`.
 > - Avoid creating`std::shared_ptr`s from variables of raw pointer type.
+
+
+
+
+
+## Item 20: Use `std::weak_ptr` for `std::shared_ptr`-like pointers that can dangle
+
+
+
+### 为何有`std::weak_ptr` 
+
+对于`std::shared_ptr`，有可能它指向一个对象的时候，这个对象已经被销毁了，但`std::shared_ptr`并不会知道。这时候就产生一个所谓的 ***dangle*** 的指针。
+
+`std::weak_ptr`就是用来处理这样的问题，它使用起来像`std::shared_ptr`，但它不参与管理它所指向对象的ownership，即，不改变reference count。
+
+
+
+`std::weak_ptr`既不能解引用，也不能用来测试是否为空（**null**），这是由于它并不是一个独立的智能指针，它实际上是`std::shared_ptr`的一个扩展（augmentation）
+
+
+
+### 如何创建`std::weak_ptr` 
+
+通常，一个`std::weak_ptr`是以一个`std::shared_ptr`为初始化参数构造的。
+
+```cpp
+// after spw is constructed, the pointed-to Widget's ref count (RC) is 1
+auto spw = std::make_shared<Widget>();
+
+// wpw points to same Widget as spw. RC remains 1
+std::weak_ptr<Widget> wpw(spw);
+
+// RC goes to 0, and the Widget is destroyed. wpw now dangles
+spw = nullptr;
+
+// if wpw doesn't point, to an object
+if (wpw.expired()) { /* ... */ }
+```
+
+正如上面所示，`std::weak_ptr`可以用来测试它指向的对象是否以及失效（销毁）。
+
+
+
+### 从`std::weak_ptr` 得到`std::shared_ptr`
+
+为什么`std::weak_ptr` 没有解引用（dereference）？
+
+原因是可能产生数据竞争（data race）。比如，在检查是否expire之后，然后使用解引用，这样的两个分开独立的操作，在多线程的环境下就可能出问题。
+
+这个问题是，一个线程在检查了expire之后发现可以继续使用，然后就打算解引用，但就在此时，另一个线程销毁了这个对象，问题就产生了。
+
+所以，必须要有一个原子操作来把这两个步骤结合起来。
+
+`std::weak_ptr` 提供了两个操作来得到对应的`std::shared_ptr`
+
+- 使用`lock()`成员函数
+- 使用`std::weak_ptr` 去初始化一个新的`std::shared_ptr`
+
+```cpp
+// if wpw's expired,  spw1 is null
+std::shared_ptr<Widget> spw1 = wpw.lock();
+// same as above, but uses auto
+auto spw2 = wpw.lock();
+
+// if wpw's expired, throw std::bad_weak_ptr
+std::shared_ptr<Widget> spw3(wpw);
+```
 
 
 
