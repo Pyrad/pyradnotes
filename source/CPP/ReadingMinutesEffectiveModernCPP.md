@@ -3738,6 +3738,101 @@ std::shared_ptr<Widget> spw3(wpw);
 
 
 
+### `std::weak_ptr` 到底有什么用的例子
+
+#### factory method cache
+
+设想有个factory函数`loadWidget`，它的作用是通过一个ID，返回一个对象（`std::unique_ptr`），这个操作很耗时（比如文件操作或I/O操作）。
+
+```cpp
+std::unique_ptr<const Widget> loadWidget(WidgetID id);
+```
+
+那么优化的一个办法是，把返回的`Widget`的这些对象（`std::unique_ptr`）都缓存起来。
+
+但这样潜在的问题是，把所有的对象缓存起来的话，数量太多可能引起性能问题。
+
+所以，更好的办法是，如果缓存的对象如果不再使用，那么就可以销毁它。
+
+这样的话，调用者就得接收一个指向这个cache object的智能指针，并且调用者也得知道这些cache object的生命周期，而且，这些cache object也需要一个（智能）指针。
+
+此时，`std::weak_ptr`就派上用场。
+
+因为`std::weak_ptr`当做指向这些cache object的指针，就可以知道这些object什么时候被销毁了（生命周期），而且，此时factory函数要返回的就应该是一个`std::shared_ptr`，因为这样它才会被调用者拿去使用，并且在合适的时机销毁，之后那些cache object的指针就可以通过`expired`来检查对应的object是否已经释放。
+
+下面是一个简单粗暴的cache实现
+
+```cpp
+std::shared_ptr<const Widget> fastLoadWidget(WidgetID id) {
+	static std::unordered_map<WidgetID, std::weak_ptr<const Widget>> cache;
+     // objPtr is std::shared_ptr  to cached object (or null if object's not in cache)
+	auto objPtr = cache[id].lock(); 
+	if (!objPtr) {					// if not in cache,
+		objPtr = loadWidget(id);	// load it
+		cache[id] = objPtr;			// cache it
+	}
+	return objPtr;
+}
+```
+
+
+
+#### the Observer design pattern
+
+观察者模式中，有subject和observer
+
+- subject，objects whose state may change，即状态会改变的对象
+- observer，objects to be notified when state changes occur，即当subjects发生状态改变时，被通知的对象
+
+在这种模式下，每个subject通常都包含有一个或多个指向observer的指针，以便自身状态发生变化的时候，调用observer（的函数）来通知观察者。
+
+那么，这时候就可以使用`std::weak_ptr`，以便在调用observer的函数之前，查看observer是否还有效。
+
+
+
+#### Resolve circular dependency
+
+另外一个应用，是可以解决`std::shared_ptr`的循环引用导致的内存泄漏问题。
+
+假如有两个对象**A**和**C**各自有一个`std::shared_ptr` 指向同一个object **B**，现在假如B也需要一个指针指向**A**，那么这个指针应该是raw pointer，`std::shared_ptr`还是`std::weak_ptr`？
+
+![weakptr resolve cycle](../_static/EffectiveModernCpp/wkptr_resolve_cycle.png)
+
+
+
+- 如果是原生指针
+
+  这个的问题在于，如果**A**被销毁之后，**B**指向**A**的指针就变成了一个dangling pointer，并且**B**没有办法知道这时候它已经变成了一个dangling pointer
+
+- 如果是`std::shared_ptr`
+
+  这个的问题在于，产生循环引用之后，无法释放资源导致内存泄漏。哪怕再没有其他指针指向**B**，但**A**和**B**各自的指针会使得reference count始终不能减少，最终导致无法释放。
+
+- 如果是`std::weak_ptr`
+
+  此时，`std::weak_ptr`是最佳选择，而且可以避免上面两种问题。
+
+  如果**A**已经被释放，那么**B**可以通过`std::weak_ptr`的`expired`函数得知**A**已经被销毁。
+
+  而且，虽然**A**和**B**都有一个指针相互引用，但**B**指向**A**的`std::weak_ptr`并不会增加指向**A**的reference count（即如果没有其他指针指向**A**的话，**A**的reference count，实际上是0），所以就不会阻止**A**被释放。
+
+
+
+### `std::weak_ptr`的使用注意
+
+通常，一个hierarchical的结构，比如tree，它的child node通常只被它的parent node所有，即当parent被destroyed的时候，child同样也应该被destroy。
+
+那么，通常从parent到child的指针可以是`std::unique_ptr`，而从child到parent的指针可以是raw pointer。
+
+虽然`std::weak_ptr`不影响reference count，但它和`std::shared_ptr`类似，也有一个对应的control block，而且实际上它有一个second reference count。更多内容在item 21。
+
+
+
+### Things to Remember
+
+> - Use`std::weak_ptr`  for `std::shared_ptr`-like pointers that can dangle.
+> - Potential use cases for `std::weak_ptr` include caching, observer lists, and the prevention of `std::shared_ptr` cycles.
+
 
 
 
