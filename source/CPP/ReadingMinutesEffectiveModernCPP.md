@@ -292,7 +292,29 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **clog** */klɑːɡ/* *v.* 阻塞，堵塞；*n.* 木底鞋，木屐；累赘，障碍；管道堵塞物
 
+**afoul** */əˈfaʊl/* *adv.* （与法律等）相抵触，有冲突，卷入纠缠地；*adj.* 冲突的，纠缠的
 
+**tenet** */ˈtenɪt/* *n.* 原则，信条
+
+**bloat** */bloʊt/* *adj.* 肿胀的，鼓起的；饮食过度的，胃胀的；*v.* 使膨胀，肿胀；腌制；溢出
+
+**conjure** */ˈkɑːndʒər/* *v.* 变魔术，使……变戏法般地出现（或消失）；想象出，设想出；使浮现于脑海，使想起；念咒召唤出（鬼魂等）；<古>恳求，祈求
+
+**suffices** */səˈfaɪs/* *v.* 足够，足以；满足……的需求；有能力
+
+**obviate** */ˈɑːbvieɪt/* *vt.* 排除；避免；消除
+
+**syntactic** */sɪnˈtæktɪk/* *adj.* 句法的；语法的；依据造句法的
+
+**vis-à-vis** */ˌviːz ɑː ˈviː/* *prep.* 关于；与……比较；与……相对；*adv.* 面对面地；共同地；*n.* 相应地位的人（或群体）；对手；面对面的会见
+
+**bookkeeping** *n.* 记帐，簿记
+
+**tally** */ˈtæli/* *n.* 记录，得分；账单；<史>符木；（对树或植物进行说明的）标志牌，标签；*v.* 相符，吻合；计算，合计；（在游戏或体育运动中）得分，进球
+
+**preclude** *v.* <正式>阻止，妨碍（preclude *sb.* from）
+
+**hitch** */hɪtʃ/* *v.* 搭便车（旅行），搭顺风车；拴住，套住，钩住；将（动物）套上车；提起，拉起（衣服）；攀上，爬上；<非正式>结婚（get hitched）；*n.* 临时故障，小问题；（某种）结；<美，非正式>一段服役，一段任职期；<美>（尤指机动车的拖杆）牵引装置；<非正式>免费搭便车；蹒跚
 
 
 
@@ -334,6 +356,14 @@ Usage of **’til-death-do-us-part** （至死不渝）
 
 
 
+Usage of **afoul of**（碰撞，同某物撞在一起；和某人发生冲突）
+
+> Repeating types runs  **afoul** of a key tenet of software engineering
+
+
+
+
+
 本末倒置的短语（习语）
 
 - **put the cart before the horse** 前后颠倒
@@ -344,19 +374,25 @@ Usage of **’til-death-do-us-part** （至死不渝）
 
 
 
-in and of itself 就其本身而言（**without considering anything else**）
+**in and of itself** 就其本身而言（**without considering anything else**）
 
 
 
-if at all possible 如果可能的话
+**if at all possible** 如果可能的话
 
 
 
-get away 离开；逃脱；出发
+**get away** 离开；逃脱；出发
 
-cut through 穿过；刺穿；抄近路走过
+**cut through** 穿过；刺穿；抄近路走过
 
-a的b次方：a to the b；b-th power of a
+**a的b次方**：a to the b；b-th power of a
+
+
+
+**in accord with ** 同……相符合；与……一致
+
+**conjure up** 想起，使在脑海中显现；用魔法召唤
 
 
 
@@ -3832,6 +3868,219 @@ std::shared_ptr<const Widget> fastLoadWidget(WidgetID id) {
 
 > - Use`std::weak_ptr`  for `std::shared_ptr`-like pointers that can dangle.
 > - Potential use cases for `std::weak_ptr` include caching, observer lists, and the prevention of `std::shared_ptr` cycles.
+
+
+
+
+
+
+
+## Item 21: Prefer `std::make_unique` and `std::make_shared` to direct use of new.
+
+### 三种`make_*`函数
+
+目前有三种`make`函数来创建smart pointer
+
+- `std::make_shared`：C++11有，C++14有
+- `std::make_unique`：C++11无，C++14有
+- `std::allocate_shared`：C++11有，C++14有
+
+其中`std::allocate_shared`的功能和`std::make_shared`一样，只不过它的第一个参数是custom deleter。
+
+如果想在C++11中使用`std::make_unique`，可以写一个自己的版本
+
+```cpp
+template<typename T, typename... Ts>
+std::unique_ptr<T> make_unique(Ts&&... params) {
+	return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
+}
+```
+
+
+
+### 使用`make_*`函数的好处
+
+#### 减少代码重复
+
+好处之一，就是可以减少**代码重复**。
+
+比如，下面的的`Widget`就可以少写一次。
+
+```cpp
+auto upw1(std::make_unique<Widget>()); // with make func
+std::unique_ptr<Widget> upw2(new Widget); // without make func
+
+auto spw1(std::make_shared<Widget>()); // with make func
+std::shared_ptr<Widget> spw2(new Widget); // without make func
+```
+
+
+
+#### 避免内存泄漏的风险
+
+这个潜在的风险比较隐蔽，不太容易发现，Scott Meyers做了解释。
+
+假如有个函数的参数是一个`std::shared_ptr`和一个`int`，并且这个`int`值是从一个函数计算得出的。
+
+```cpp
+int computePriority();
+void processWidget(std::shared_ptr<Widget> spw, int priority);
+```
+
+那么假如有如下调用，就有可能产生内存泄漏的风险。
+
+```cpp
+// potential resource leak!
+processWidget(std::shared_ptr<Widget>(new Widget), computePriority()); 
+```
+
+上面的调用看起来一切都没问题，但产生内存泄漏的风险和编译器的行为有关系。在函数调用之前，函数的参数的具体值，必须已经已知（被计算或求值），所以，在上面的调用中，在求解`processWidget`两个参数的值时，发生的顺序可能如下
+
+- （a）`new Widget`必须被求解，即一个`Widget`必须在堆上创建
+- （b）用来管理堆上已创建对象的`std::shared_ptr<Widget>`的构造函数，必须被执行
+- （c）函数`computePriority()`必须执行
+
+其中（a）必须在（b）之前执行，但（c）却不一定，它可以在（a）之前执行，也可以在（b）之后执行，甚至可以在（a）和（b）之间执行。
+
+风险就发生在，当（c）在（a）和（b）之间执行的时候，如果函数`computePriority()`抛出了异常，但是这个异常又被外层代码所catch，那么泄露就产生了：因为（a）中的`new`已经执行，但（b）中的`std::shared_ptr`还没有被构造出来！
+
+所以，如果使用`std::make_shared`，就可以避免这个风险
+
+```cpp
+ // no potential resource leak
+processWidget(std::make_shared<Widget>(), computePriority());
+```
+
+
+
+#### 提升效率
+
+使用`std::make_shared`可以使编译器生成更小更快的“瘦”代码
+
+> Using `std::make_shared` allows compilers to generate **smaller**, **faster** code that employs **leaner** data structures.
+
+```cpp
+// A
+std::shared_ptr<Widget> spw(new Widget);
+// B
+auto spw = std::make_shared<Widget>();
+```
+
+在代码A中，内存分配（memory allocation）发生了两次，第一次是`new Widget`的时候，第二次是`std::shared_ptr`的构造函数创建control block的时候。
+
+在代码B中，内存分配实际上经过编译器的优化，只发生了一次，`std::shared_ptr`的构造函数只在堆上申请了同一块内存，分别用来创建`Widget`对象，以及`std::shared_ptr`需要的reference count和control block。
+
+
+
+### 不能或不该使用`make_*`函数的情况
+
+#### 如果需要custom deleter的时候
+
+```cpp
+auto widgetDeleter = [](Widget* pw) { /* ... */ };
+
+std::unique_ptr<Widget, decltype(widgetDeleter)> upw(new Widget, widgetDeleter);
+std::shared_ptr<Widget> spw(new Widget, widgetDeleter);
+```
+
+可以看到，`std::make_shared`以及`std::make_unique`没有办法传入自定义的deleter。
+
+（但如果想使用`std::shared_ptr`，可以使用`std::allocate_share`来传入自定义的deleter）
+
+
+
+#### 构造函数同时运行圆括号和花括号的时候
+
+例如`std::vector`，它同时运行圆括号和花括号的构造，如下
+
+```cpp
+auto upv = std::make_unique<std::vector<int>>(10, 20);
+auto spv = std::make_shared<std::vector<int>>(10, 20);
+```
+
+如果按照句法分析，这两句是有歧义的，但C++11在这里做了处理，它只会创建10个元素的vector，并且每个元素的值是20，而不是一个只有两个元素的vector。
+
+实际上，Scott Meyers提到了，花括号的初始化列表（braced initializers）不能被完美转发（perfect forwarding）。（前面提到了，`make_share`和`make_unique`实际上用到了完美转发）。
+
+Item 30中会提到，有实现花括号的初始化列表完美转发的变通办法，即首先使用`auto`和花括号创建一个`std::initializer_list`，然后把它传给`make_*`函数
+
+```cpp
+// create std::initializer_list
+auto initList = { 10, 20 };
+// create std::vector using std::initializer_list ctor
+auto spv = std::make_shared<std::vector<int>>(initList);
+```
+
+
+
+#### 如果有class-specific的`operator new`和`operator delete`
+
+如果有class定义了自己的`operator new`和`operator delete`，那么它通常是为了在分配内存的时候，只分配自己类大小的内存（`sizeof Widget`)，但这对于有custom deleter的`std::allocate_shared`不适用，原因就是因为`std::allocate_shared`还要给control block分配额外的内存。
+
+
+
+#### 如果有`std::weak_ptr`还引用的情况
+
+这种情况下可能会导致，直到**最后一个`std::shared_ptr`和最后一个`std::weak_ptr`**都被销毁了之后，所引用的内存才会被释放。
+
+原因是，在`std::share_ptr`指向的control block里面，还有一个**second reference count**，它用来记录有多少个`std::weak_ptr`引用了当前的object（这个second reference count叫**weak count**）。
+
+如果一个`std::shared_ptr`是通过`std::make_shared`所创建，那么前面提到过，经过编译器的优化，内存分配只发生一次，并且这同一块内存既包含了object对象它本身，还包含了`std::shared_ptr`所需要的control block。
+
+这种情况下，因为有second reference count的缘故，直到**最后一个`std::shared_ptr`和最后一个`std::weak_ptr`**都被销毁了之后，所引用的内存才会被释放。如果object本身所占据的内存比较大，那么它被释放的时机也会被退后（因为不仅仅要等到最后一个`std::shared_ptr`被销毁，还要等到最后一个`std::weak_ptr`被销毁）
+
+例如一下使用`std::make_shared`的内存释放时机
+
+```cpp
+class ReallyBigType { /* ... */ };
+// create very large object via std::make_shared
+auto pBigObj = std::make_shared<ReallyBigType>();
+
+// create std::shared_ptrs and std::weak_ptrs to large object, use them to work with it
+// ...
+// final std::shared_ptr to object destroyed here, but std::weak_ptrs to it remain
+// ...
+// during this period, memory formerly occupied by large object remains allocated
+// ...
+// final std::weak_ptr to object destroyed here; 
+// memory for control block and object is released
+// ...
+```
+
+以及使用`new`的时候的内存释放时机。
+
+```cpp
+class ReallyBigType { /* ... */ };
+// create very large object via new
+std::shared_ptr<ReallyBigType> pBigObj(new ReallyBigType);
+
+// as before, create std::shared_ptrs and std::weak_ptrs to object, use them with it
+// ...
+// final std::shared_ptr to object destroyed here, but std::weak_ptrs to it remain;
+// ...
+// memory for object is deallocated
+// ...
+// during this period, only memory for the control block remains allocated
+// ...
+// final std::weak_ptr to object destroyed here; memory for control block is released
+// ...
+```
+
+
+
+### Things to Remember
+
+> - Compared to direct use of new, make functions eliminate source code duplication, improve exception safety, and, for `std::make_shared` and `std::allocate_shared`, generate code that’s smaller and faster.
+> - Situations where use of make functions is inappropriate include the need to specify custom deleters and a desire to pass braced initializers.
+> - For `std::shared_ptrs`, additional situations where make functions may be ill-advised include (1) classes with custom memory management and (2) systems with memory concerns, very large objects, and `std::weak_ptr`s that outlive the corresponding `std::shared_ptr`s.
+
+
+
+
+
+
+
+
 
 
 
