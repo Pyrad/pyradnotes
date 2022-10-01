@@ -21,3 +21,7 @@ This file shows some advanced usages of C/C++
   - （类型）范围缩减转换
 - What is **CRTP**?
   - CRTP = the Curiously Recurring Template Pattern
+- What is **PImpl** ?
+  - **PImpl** = Pointer to implementation
+  - Refer to page in [***cppreference***](https://en.cppreference.com/w/cpp/language/pimpl)
+
