@@ -316,6 +316,24 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **hitch** */hɪtʃ/* *v.* 搭便车（旅行），搭顺风车；拴住，套住，钩住；将（动物）套上车；提起，拉起（衣服）；攀上，爬上；<非正式>结婚（get hitched）；*n.* 临时故障，小问题；（某种）结；<美，非正式>一段服役，一段任职期；<美>（尤指机动车的拖杆）牵引装置；<非正式>免费搭便车；蹒跚
 
+**whereby** *adv.* 凭此，借以
+
+**reek** */riːk/* *v.* 散发臭味；带有令人不快（或不满）的内容；散发蒸汽（或浓烟）；*n.* 臭味；烟；蒸汽；
+
+**bygone** */ˈbaɪɡɔːn/* *adj.* 过去的；*n.* 过去的事
+
+**millennium** */mɪˈleniəm/* *n.* 一千年；千周年纪念日，千禧年（the millennium）；世界末日前基督治理世界的一千年（the millennium）；（作为乌托邦的）美满时期，太平盛世（the millennium）；（复数形式millennia或millenniums）
+
+**sully** */ˈsʌli/* *vt.* 玷污；使丢脸；*n.* 污点，损伤
+
+
+
+
+
+
+
+
+
 
 
 ## Usages & Sentences
@@ -411,6 +429,16 @@ Usage of **afoul of**（碰撞，同某物撞在一起；和某人发生冲突�
 **polynomial** */ˌpɒliˈn**əʊ**miəl/*
 
 **atomic** */əˈt**ɒ**mɪk/*
+
+
+
+
+
+# Things to Remember
+
+- 编译器生成的special member function都是`inline`
+
+
 
 
 
@@ -4073,6 +4101,284 @@ std::shared_ptr<ReallyBigType> pBigObj(new ReallyBigType);
 > - Compared to direct use of new, make functions eliminate source code duplication, improve exception safety, and, for `std::make_shared` and `std::allocate_shared`, generate code that’s smaller and faster.
 > - Situations where use of make functions is inappropriate include the need to specify custom deleters and a desire to pass braced initializers.
 > - For `std::shared_ptrs`, additional situations where make functions may be ill-advised include (1) classes with custom memory management and (2) systems with memory concerns, very large objects, and `std::weak_ptr`s that outlive the corresponding `std::shared_ptr`s.
+
+
+
+
+
+
+
+## Item 22: When using the Pimpl Idiom, define special member functions in the implementation file.
+
+
+
+### 什么是*PImpl Idiom*？
+
+PImpl Idiom = ***P***ointer ***IMPL***ementation Idiom
+
+简而言之，就是把class里面的data members，从原先的主类（在头文件中）里面，转移到一个辅助类（在对应的源文件中）里面，然后再在原先的主类里面添加一个指向这个辅助类的指针。
+
+这样做的**好处**是什么？
+
+因为这些data member可能是各种不同类型的对象，所以要include它们对应的头文件。如果它们的头文件被修改了，那么在编译的时候，那么引用了这些头文件的，以及间接引用了这些头文件的头文件，都需要重新编译，从而导致编译时间增加（excessive compilation time）。
+
+如果把这些data member发到源文件中去，那么主类的头文件就可以不再引用这些data member对应的头文件了（因为使用了指向辅助类的一个指针），而由源文件去引用这些头文件。这样避免了主类所在的头文件被其他文件引用时，那些data member头文件变化而引起的编译时间增加。
+
+下面是Scott Meyers给出的一个例子。
+
+在没有使用PImpl Idiom之前的`Widget`类
+
+```cpp
+/* in header "widget.h" */
+class Widget {
+public:
+	Widget();
+    
+private:
+	std::string name;
+	std::vector<double> data;
+	Gadget g1, g2, g3; // Gadget is some user-defined type
+};
+```
+
+使用了PImpl Idiom之后的`Widget`类（注意，在头文件中声明了一个private的类中类，并且有一个析构函数来释放指针所指向的object）
+
+```cpp
+/* in header "widget.h" */
+class Widget {
+public:
+	Widget();
+	~Widget(); // dtor is needed—see below
+private:
+	struct Impl; // declare implementation struct and pointer to it
+	Impl *pImpl;
+};
+```
+
+```cpp
+/* in impl. file "widget.cpp" */
+#include "widget.h"
+#include "gadget.h"
+#include <string>
+#include <vector>
+// definition of Widget::Impl with data members formerly in Widget
+struct Widget::Impl {
+	std::string name;
+	std::vector<double> data;
+	Gadget g1, g2, g3;
+};
+// allocate data members for this Widget object
+Widget::Widget() : pImpl(new Impl) {}
+// destroy data members for this object
+Widget::~Widget() { delete pImpl; }
+```
+
+
+
+### 在*PImpl Idiom*中使用`std::unqiue_ptr`
+
+根据前面的内容，显而易见，当使用*PImpl Idiom*时需要一个raw pointer，而这个raw pointer正好是可以使用`std::unqiue_ptr`来代替的地方。
+
+下面是使用`std::unqiue_ptr`来代替原先raw pointer的代码。
+
+```cpp
+/* in header "widget.h" */
+class Widget {
+public:
+	Widget();
+private:
+	struct Impl; // declare implementation struct and pointer to it
+	Impl *pImpl; // use smart pointer instead of raw pointer
+};
+```
+
+```cpp
+/* in impl. file "widget.cpp" */
+#include "widget.h"
+#include "gadget.h"
+#include <string>
+#include <vector>
+struct Widget::Impl { // as before
+	std::string name;
+	std::vector<double> data;
+	Gadget g1, g2, g3;
+};
+// per Item 21, create std::unique_ptr via std::make_unique
+Widget::Widget() : pImpl(std::make_unique<Impl>()) {}
+```
+
+可以看到，使用了`std::unqiue_ptr`之后，原先`Widget`的析构函数就不需要了，因为`std::unqiue_ptr`会自己管理并释放所指的对象。
+
+**但是**，虽然它可以编译通过，可使用它（`Widget`）的代码却会编译失败。
+
+下面是一种最简单的使用方式，但编译会失败
+
+```cpp
+#include "widget.h"
+Widget w; // error!!
+```
+
+失败的原因是什么？
+
+因为此时没有显示地给`Wdiget`写出析构函数，所以编译器会帮忙生成default destructor，并且在其中调用`std::unqiue_ptr`的析构函数，而`std::unqiue_ptr`的default deleter会使用`delete`来释放内存（即`delete` `std::unqiue_ptr`中所包含的raw pointer）。
+
+但在通常的default deleter实现中，在`delete`之前，通常会使用`static_assert`来确保这个raw pointer不是指向 **incomplete type**。因为编译器生成的special member function通常都是`inline`（在头文件中），所以这个指针所指向辅助类的实现，因为在源文件而不在头文件中，所以是 **incomplete type**，从而导致编译失败。
+
+为了使编译通过，就需要在析构的时候，使得这个辅助类的实现对编译器可见。
+
+所以，就在头文件中声明析构函数，并在源文件中实现这个析构函数，修改如下。
+
+```cpp
+/* in header "widget.h" */
+class Widget {
+public:
+	Widget();
+    ~Widget(); // Define it in CPP file!
+private:
+	struct Impl; // declare implementation struct and pointer to it
+	Impl *pImpl; // use smart pointer instead of raw pointer
+};
+```
+
+```cpp
+/* in impl. file "widget.cpp" */
+#include "widget.h"
+#include "gadget.h"
+#include <string>
+#include <vector>
+struct Widget::Impl { // as before
+	std::string name;
+	std::vector<double> data;
+	Gadget g1, g2, g3;
+};
+// per Item 21, create std::unique_ptr via std::make_unique
+Widget::Widget() : pImpl(std::make_unique<Impl>()) {}
+// ~Widget definition
+Widget::~Widget() {}
+```
+
+或者，在源文件中直接使用`Widget::~Widget() = default`，也可以使得编译器将实现放在源文件中。
+
+
+
+### *PImpl Idiom*中的copy和move constructor以及assignment
+
+
+
+#### Move constructor和move assignment
+
+因为*PImpl Idiom*中的主类含有一个指针（`std::unqiue_ptr`），所以它很适合用来实现移动语义。
+
+和之前讨论同样的原因，`std::unique_ptr`的赋值操作，会调用default deleter，而它需要在使用`delete`之前，使用`static_assert`来确保所指向的类型不是一个incomplete type，而因为编译器生成的special function都是`inline`，所以client code使用时，会产生编译错误。
+
+解决的办法和之前一样，在头文件中声明，然后在源文件中实现定义即可。
+
+
+
+#### Copy constructor和copy assignment
+
+同样是因为*PImpl Idiom*中的主类含有一个指针，所以它的拷贝构造和拷贝赋值就是值得注意的地方。
+
+如果主类中的是raw pointer，那么编译器生成的拷贝构造和拷贝赋值实际上是浅拷贝（***shallow copy***）
+
+如果主类中的是`std::unique_ptr`，那么编译器生成的拷贝构造和拷贝赋值，按照`std::unique_ptr`的特性，在赋值时就会发生资源管理权的转移，变成事实上的移动构造和移动拷贝。
+
+所以，如果需要深拷贝（***deep copy***），就需要自己手动实现。
+
+和前面的析构函数、移动构造和移动赋值类似，也需要将拷贝构造和拷贝赋值在头文件中声明，并在源文件中实现其定义。
+
+
+
+综上，在***PImpl Idiom***中实现了析构函数，移动构造，移动赋值，拷贝构造，拷贝赋值的代码如下。（需要注意的是，copy assignment用到了编译器给`Impl`生成的copy operator重载函数。
+
+```cpp
+/* in header "widget.h" */
+class Widget {
+public:
+	Widget();
+    
+    // Declare dtro in header, but definition should be in cpp file
+    ~Widget();
+    // Declare move-ctor & move-assignment in header, but define them in cpp file
+    Widget(const Widget& rhs);
+	Widget& operator=(const Widget& rhs);
+    // Delcare copy-ctor ^ copy assignment in header, but define them in cpp file
+    Widget(const Widget& rhs);
+	Widget& operator=(const Widget& rhs);
+    
+private:
+	struct Impl; // declare implementation struct and pointer to it
+	Impl *pImpl; // use smart pointer instead of raw pointer
+};
+```
+
+```cpp
+/* in impl. file "widget.cpp" */
+#include "widget.h"
+#include "gadget.h"
+#include <string>
+#include <vector>
+struct Widget::Impl { // as before
+	std::string name;
+	std::vector<double> data;
+	Gadget g1, g2, g3;
+};
+// per Item 21, create std::unique_ptr via std::make_unique
+Widget::Widget() : pImpl(std::make_unique<Impl>()) {}
+// ~Widget definition
+Widget::~Widget() = default;
+// Move-ctor & move assignment definitions
+Widget::Widget(Widget&& rhs) = default;
+Widget& Widget::operator=(Widget&& rhs) = default;
+// Copy ctor & copy operator=
+Widget::Widget(const Widget& rhs) : pImpl(std::make_unique<Impl>(*rhs.pImpl)) {}
+Widget& Widget::operator=(const Widget& rhs) { *pImpl = *rhs.pImpl; return *this; }
+```
+
+
+
+### 在*PImpl Idiom*中使用`std::shared_ptr`
+
+实际上，在***PImpl Idiom***中，也可以使用`std::shared_ptr`，而且当使用`std::shared_ptr`时，就不再需要手动定义析构函数。
+
+因为不再需要显示定义析构函数，那么编译器也会相应地帮助生成拷贝构造（赋值）和移动构造（赋值）。
+
+在***PImpl Idiom***中使用`std::unique_ptr`和`std::shared_ptr`导致上面差异的原因是，
+
+- 在`std::unique_ptr`中，custom deleter是`std::unique_ptr`这个类型的一部分，这使得编译器能够生成可以运行的更快的数据结构和代码，但同时要付出的代价就是，当使用到了class special member function的时候，指针所指向的类型必须是**complete type**。
+- 而如果是`std::shared_ptr`，custom deleter并不想`std::shared_ptr`这个类型的一部分，虽然它生成的数据结构和代码运行起来相对较慢，但当使用到了class special member function的时候，指针所指向的类型可以被允许是**incomplete type**。
+
+在***PImpl Idiom***中使用`std::shared_ptr`的代码示意如下。
+
+```cpp
+/* in "widget.h" */
+class Widget {
+public:
+	Widget();
+	// no declarations for dtor or move operations
+private:
+	struct Impl;
+	std::shared_ptr<Impl> pImpl; // std::shared_ptr instead of std::unique_ptr
+};
+```
+
+```cpp
+Widget w1;
+auto w2(std::move(w1)); // move-construct w2
+w1 = std::move(w2); // move-assign w1
+```
+
+
+
+### Things to Remember
+
+> - The Pimpl Idiom decreases build times by reducing compilation dependencies between class clients and class implementations.
+> - For `std::unique_ptr` pImpl pointers, declare special member functions in the class header, but implement them in the implementation file. Do this even if the default function implementations are acceptable.
+> - The above advice applies to `std::unique_ptr`, but not to `std::shared_ptr`.
+
+
+
+
 
 
 
