@@ -218,7 +218,7 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **saddle** *n.* 鞍，马鞍；*v.* 使承担（责任、任务），使负重担
 
-**nuanced** */ˈnuːˌɑːnst/* *adj.*微妙的；具有细微差别的
+**nuanced** */ˈnuːˌɑːnst/* *adj.* 微妙的；具有细微差别的
 
 **intriguing** *adj.* 非常有趣的，引人入胜的
 
@@ -326,7 +326,19 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **sully** */ˈsʌli/* *vt.* 玷污；使丢脸；*n.* 污点，损伤
 
+**metaphorical** */ˌmetəˈfɔːrɪkl/* *adj.* 隐喻的，象征的
 
+**disparate** */ˈdɪspərət/* *adj.* 迥然不同的，无法比较的；多元的；*n.* 全异的东西，无法相比较的东西
+
+**proverbial** */prəˈvɜːrbiəl/* *adj.* 谚语的，俗话所说的；众所周知的；*n.* （常用于委婉替代谚语或成语中未出现的词）那东西，那玩意儿
+
+**conform** */kənˈfɔːrm/* *v.* 遵守，符合；顺从，随潮流；一致，相吻合
+
+**din** */dɪn/* *n.* 喧嚣声，嘈杂声；宗教法律，犹太法律；（尤指伊斯兰教）宗教信仰；*v.* 再三叮嘱，反复教导；发出喧闹声
+
+**dispense** */dɪˈspens/* *v.* 发放，分配；提供，施予；配（药），发（药）
+
+**yucky** */ˈjʌki/* *adj.* 恶心的；讨人厌的；不愉快的
 
 
 
@@ -4382,13 +4394,189 @@ w1 = std::move(w2); // move-assign w1
 
 
 
+# Chapter 5 Rvalue References, Move Semantics, and Perfect Forwarding
 
 
 
+Move semantics，perfect forwarding和rvalue references
+
+- **Move semantics**（移动语义）
+
+  使得编译器能够以更廉价的办法用**移动**代替**复制**
+
+  移动语义可以生成只能移动的类型：`std::unique_ptr`, `std::future`, `std::thread`
+
+- **Perfect forwarding**（完美转发）
+
+  在function template中，可以完美转发参数
+
+- **Rvalue references**（右值引用）
+
+  **右值引用**是连接**移动语义**和**完美转发**的纽带，正是右值引用使得它们成为可能。
+
+这三者实际上比它表面上看起来更微妙
+
+- `std::move`实际上不是什么都能移动
+- 完美转发实际上也不完美
+- 移动操作有时候并不比复制更快（当确实更快时，实际上没有你想象的那么快）
+- 移动操作有时候用在移动不合法（valid）的地方
+- `type&&`并不总是代表右值引用
 
 
 
+本章中，需要注意的是，一个参数永远是左值，哪怕它的类型是右值引用。
 
+比如下面的`w`参数，它是一个左值，但它的类型的确是一个右值引用。
+
+```cpp
+void f(Widget&& w);
+```
+
+
+
+## Item 23: Understand `std::move` and `std::forward`
+
+### 移动其实是转换
+
+`std::move`不是什么都能移动，`std::forward`也不是什么都能转发，它们在运行时（runtime）不做任何事情，因为它们不产生任何可执行的代码，一个字节也不产生。
+
+`std::move`和`std::forward`都是函数（通常是function template），实现的是转换功能（cast）
+
+- `std::move`**无条件地**把参数转换为rvalue
+- `std::forward`**只有当条件满足的时候**才执行转换
+
+
+
+C++11中`std::move`的一种实现
+
+```cpp
+template<typename T> // in namespace std
+typename remove_reference<T>::type&&
+move(T&& param) {
+	using ReturnType = typename remove_reference<T>::type&&; // alias declaration;
+	return static_cast<ReturnType>(param);
+}
+```
+
+C++14中`std::move`的一种实现
+
+```cpp
+template<typename T> // C++14; still in namespace std
+decltype(auto) move(T&& param) {
+	using ReturnType = remove_reference_t<T>&&;
+	return static_cast<ReturnType>(param);
+}
+```
+
+所以，从实现可以看到，`std::move`其实更应该叫做`rvalue_cast`，它只做转换（cast），不做真正的移动（move）。
+
+
+
+### 一个没有移动的例子
+
+假如有下面的`class Annotation`，它有一个构造函数接收一个`const std::string`参数，然后使用了`std::move`，但实际上，`text`并没有被“移动”到data member中去。
+
+```cpp
+class Annotation {
+public:
+	explicit Annotation(const std::string text)
+	: value(std::move(text))	// "move" text into value; this code
+	{ /* ...*/ }				// doesn't do what it seems to!
+
+private:
+	std::string value;
+};
+```
+
+这是由于参数`text`是`const std::string`，而当它被传入`std::move`之前，它是一个lvalue的`const std::string`，当它从`std::move`返回之后，它是一个rvalue的`const std::string`。（不影响const-ness）。
+
+而`std::string`如下，它有一个接收常量左值引用和一个接收右值引用的构造函数。实际上，前面的rvalue的`const std::string`会被下面的拷贝构造函数所接收（因为右值或常量右值可以绑定到常量左值引用上去，而常量右值不能绑定到右值引用上去）
+
+```cpp
+// std::string is actually a typedef for std::basic_string<char>
+class string {
+public:
+	string(const string& rhs);	// copy ctor
+	string(string&& rhs);		// move ctor
+};
+```
+
+从这个例子可以看到
+
+- 如果想使用移动语义，就不能把一个对象声明为常量（`const`），否则会默认转换为拷贝
+- `std::move`除了不能有些对象外，也不能保证转换之后的对象能够被移动
+
+
+
+### 一个满足条件才转发的例子
+
+下面的一个例子中，`process`函数有对lvalue和rvalue的重载。在`logAndProcess`函数中，我们期望传入的参数`param`如果是lvalue，就调用`process`的lvalue重载，如果`param`如果是rvalue，就调用`process`的rvalue重载。
+
+但是，像所有的函数参数一样，`param`是左值，所以我们希望，只有当`param`是被右值初始化的时候，能把它的右值属性保留并转发给`process`函数，这就是`std::forward`所做的事情。
+
+所以对于`std::forward`，只有当参数被右值初始化时，才把它转换为一个右值
+
+> it casts to an rvalue only if its argument was initialized with an rvalue.
+
+```cpp
+void process(const Widget& lvalArg);	// process lvalues
+void process(Widget&& rvalArg);		// process rvalues
+
+template<typename T> // template that passes param to process
+void logAndProcess(T&& param) {
+	auto now = std::chrono::system_clock::now(); // get current time	
+	makeLogEntry("Calling 'process'", now);
+	process(std::forward<T>(param));
+}
+
+Widget w;
+logAndProcess(w);			 // call with lvalue
+logAndProcess(std::move(w)); // call with rvalue
+```
+
+
+
+### 都是转换为lvalue，为什么需要这两个函数？
+
+从前面的分析可以看到，实际上`std::move`和`std::forward`都完成了转换为右值的功能，只是`std::move`是无条件的转换，而`std::forward`是满足了条件之后才转换。
+
+所以理论上可以只用`std::forward`而不用`std::move`（还没太想明白）。
+
+但`std::move`的好处是，它更方便，能减少出错的机会，并且说明更加清楚。
+
+> `std::move`’s attractions are convenience, reduced likelihood of error, and greater clarity.
+
+下面是分别使用`std::move`和`std::forward`的一个例子（统计移动构造的次数）。
+
+显然可以看到`std::move`只需要一个函数参数，而`std::forward`除了函数参数外，还需要一个模板参数，并且这个参数得正确，否则可能最后得到就不是拷贝构造了。
+
+```cpp
+class Widget {
+public:
+	Widget(Widget&& rhs) : s(std::move(rhs.s)) { ++moveCtorCalls; }
+private:
+	static std::size_t moveCtorCalls;
+	std::string s;
+};
+```
+
+```cpp
+class Widget {
+public:
+	Widget(Widget&& rhs) : s(std::forward<std::string>(rhs.s)) { ++moveCtorCalls; }
+private:
+	static std::size_t moveCtorCalls;
+	std::string s;
+};
+```
+
+
+
+### Things to Remember
+
+> - `std::move` performs an unconditional cast to an rvalue. In and of itself, it doesn’t move anything.
+> - `std::forward` casts its argument to an rvalue only if that argument is bound to an rvalue.
+> - Neither `std::move` nor `std::forward` do anything at runtime.
 
 
 
