@@ -346,7 +346,31 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **volatile** */ˈvɑːlət(ə)l/* *adj.* 易变的，动荡不定的，反复无常的；
 
+**idiomaticity** */ˌɪdɪəʊməˈtɪsətɪ/* *n.* 习语性；表达习惯（某种语言的）
 
+**necessitates** */nəˈsesɪteɪt/* *v.* 使成为必需，需要；迫使
+
+**poster child** *n.* （公益广告中的）海报儿童；（幽默用法）榜样，典型人物
+
+**ergo** */ˈerɡoʊ/* *adv.* 因此，所以；*conj.* 因此
+
+**allot** */əˈlɑːt/* *v.* 分配，分派，划拨
+
+**finicky** */ˈfɪnɪki/* *adj.* 过分讲究的；过分注意的；过分繁琐的
+
+**paraphrase** */ˈpærəfreɪz/* *n.* 释义，改述；*v.* 释义，改述
+
+**legalistic** */ˌliːɡəˈlɪstɪk/* *adj.* 尊重法律的
+
+**arguably** */ˈɑːrɡjuəbli/* *adv.* 可论证地，按理
+
+**prose** */proʊz/* *n.* 散文，白话文；（尤指待翻译的）一段散文；平淡乏味的文章（或话语，表达法）；
+
+*v.* 冗长乏味地说；<旧> 把……写成散文，把……改写成散文；写散文
+
+**hinder** */ˈhɪndər/* *v.* 阻碍，妨碍；*adj.* （尤指身体部位）后面的
+
+**preclude** */prɪˈkluːd/* *v.* <正式>阻止，妨碍（preclude *sb.* from）
 
 
 
@@ -386,23 +410,25 @@ Usage of **remark**（提到，说起过）
 
 > I remarked earlier that auto variables can also be universal references. 
 
-
-
 Usage of **’til-death-do-us-part** （至死不渝）
 
 > The ownership contract between a resource and the `std::shared_ptr`s that point to it is of the **’til-death-do-us-part** variety. 
-
-
 
 Usage of **afoul of**（碰撞，同某物撞在一起；和某人发生冲突）
 
 > Repeating types runs  **afoul** of a key tenet of software engineering
 
-
-
 Usage of **crop up**（突然出现）
 
 > But they do **crop up** from time to time 
+
+Usage of **rest easy**（高枕无忧；大放宽心）
+
+> You’d rest easy knowing you’d never pay for a copy.
+
+
+
+
 
 
 
@@ -4731,6 +4757,280 @@ auto timeFuncInvocation = [](auto&& func, auto&&... params) {
 > - If a function template parameter has type `T&&` for a deduced type T, or if an object is declared using `auto&&`, the parameter or object is a universal reference.
 > - If the form of the type declaration isn’t precisely `type&&`, or if type deduction does not occur, `type&&` denotes an rvalue reference.
 > - Universal references correspond to rvalue references if they’re initialized with rvalues. They correspond to lvalue references if they’re initialized with lvalues.
+
+
+
+
+
+## Item 25: Use `std::move` on rvalue references, `std::forward` on universal references.
+
+### 使用`std::move`和`std::forward`的场景
+
+如果一个parameter是右值引用，那么我们就知道它所绑定的对象可以被移动，从而我们可以使用`std::move`来无条件地把它（或它的成员）转换为右值引用，以便移动给其他对象。
+
+```cpp
+class Widget {
+public:
+     // rhs is rvalue reference
+	Widget(Widget&& rhs) : name(std::move(rhs.name)), p(std::move(rhs.p)) { /* ... */ }
+
+private:
+	std::string name;
+	std::shared_ptr<SomeDataStructure> p;
+};
+```
+
+上面的`rhs`被设定为右值引用，所以我们知道我们可以把它移动给其他的对象。
+
+`rhs.name`是一个具名变量，它是一个左值，所以如果我们要用它来移动初始化`this->name`的话，我们就需要使用`std::move`。`rhs.p`也是同理。
+
+如果一个parameter是万能引用，那么我们知道，它既可能是右值引用，也可能是左值引用。所以，如果我们如果想利用它的右值性的话，就需要只有在它是右值的时候，才能使用。这就是`std::forward`发挥作用的地方。
+
+```cpp
+class Widget {
+public:
+	template<typename T>
+    // newName is universal reference
+	void setName(T&& newName) { name = std::forward<T>(newName); }
+};
+```
+
+声明的`T&&`显然是一个万能引用，而`newName`它本身是一个具名变量，所以他是一个左值。
+
+所以，如果想保留它的左值属性（lvalueness）或右值属性（rvalueness）的话，就需要使用`std::forward`，这样它是左值的时候，就不会转换成右值，仍然保留左值属性；如果是右值的时候，就将`newName`转换为右值，一样保留其右值属性。
+
+
+
+这里是再次强调了`std::move`和`std::forward`的使用场景：如果本身就是右值引用，就应该用`std::move`无条件地将参数转换为右值；而如果是万能引用，就需要用`std::forward`有条件地（是右值引用的时候）将参数才将其转换为右值。
+
+
+
+### 避免给右值引用使用`std::forward` 
+
+此外，给本身就是右值引用的参数使用`std::forward`并不是不行，但是这样做就是冗余，易错并且不符合习惯，所以应该避免。
+
+
+
+### 避免给万能引用使用`std::move`
+
+类似地，给对万能引用使用`std::move`，可能会造成意想不到的后果（比如修改了左值）。
+
+下面的例子说明了给万能引用使用`std::move`的危害。
+
+```cpp
+class Widget {
+public:
+    // universal reference compiles, but is bad, bad, bad!
+	template<typename T>
+	void setName(T&& newName) { name = std::move(newName); }
+    /* ... */
+
+private:
+	std::string name;
+	std::shared_ptr<SomeDataStructure> p;
+};
+
+std::string getWidgetName(); // factory function declarition
+
+Widget w;
+auto n = getWidgetName(); // n is local variable
+w.setName(n);	// moves n into w!
+/* ... */		// n's value now unknown
+```
+
+
+
+### 避免使用多个重载函数来代替万能引用
+
+原因有二
+
+- 代码变多，没有这样用的习惯
+- 有潜在的性能下降问题
+- 最重要的是，设计的扩展性变差（模板的变长参数）
+
+Scott Meyers举例说明了，使用两个重载函数来代替上面的万能引用版的`setName`，并不是一个好主意。
+
+```cpp
+class Widget {
+public:
+    // set from const lvalue
+	void setName(const std::string& newName) { name = newName; }
+    // set from rvalue
+	void setName(std::string&& newName) { name = std::move(newName); }
+    /* ... */
+};
+```
+
+第一个原因是，现在就变成了需要同时维护两个函数（代码变多）
+
+第二个原因是，性能也许变差了。
+
+变差的原因是，如果有一个调用`w.setName("Adela Novak")`
+
+- 如果是万能引用版的函数，那么就会保留`Adela Novak`的左值属性，并直接通过`std::string`的重载函数`operator=(const char *)`进行赋值
+- 如果是使用两个重载函数的版本，首先`Adela Novak`是`const char *`而不是`std::string`，所以它首先会通过这个`Adela Novak`构造一个临时的`std::string`，然后调用`setName(std::string &&newName)`的重载函数（因为临时变量是右值），然后通过`std::string`的move assignment进行移动赋值，最后销毁这个临时生成的变量`std::string`。
+
+由此可见，有潜在的性能下降问题。
+
+
+
+关于没有办法使用多个重载函数给lvalue和rvalue的参数的情况，函数模板的变长参数就是典型的例子。
+
+Scott Meyers以`std::make_shared`和`std::make_unique`为例说明了，在这个问题上，万能引用是唯一的办法。
+
+```cpp
+template<class T, class... Args> // from C++11 Standard
+shared_ptr<T> make_shared(Args&&... args);
+template<class T, class... Args> // from C++14 Standard
+unique_ptr<T> make_unique(Args&&... args);
+```
+
+
+
+如果在一个函数里面，想要多次使用传入的右值引用或万能引用（但又只想在最后一次使用的时候发生移动操作），怎么办？
+
+答案就是，只在最后一次使用的时候，使用`std::move`（给右值引用）或`std::forward`（给左值引用）。
+
+Scott Meyers举了个多次使用万能引用的例子。
+
+```cpp
+template<typename T>
+void setSignText(T&& text) { // text is univ. reference
+	sign.setText(text); // use text, but don't modify it
+	auto now = std::chrono::system_clock::now(); // get current time
+	signHistory.add(now, std::forward<T>(text)); // conditionally cast text to rvalue
+}
+```
+
+
+
+### 何时在函数返回的时候，使用`std::move`或`std::forward`
+
+简单而言，
+
+- 是**值传递**的方式返回（**return-by-value**）
+- 返回的是一个右值引用或万能引用的**传入参数**
+
+```cpp
+// Version 1, use std::move
+Matrix operator+(Matrix&& lhs, const Matrix& rhs) { // by-value return
+	lhs += rhs;
+    return std::move(lhs); // move lhs into return value
+}
+// Version 2, just return itself
+Matrix operator+(Matrix&& lhs, const Matrix& rhs) { // as above
+	lhs += rhs;
+	return lhs; // copy lhs into return value
+}
+```
+
+在上面的第一个版本中，`lhs`是传入参数并且是一个右值引用，它本身是个左值，所以可以使用`std::move`把`lhs`的值移动到函数的返回值的地址上去。
+
+第二个版本中，因为返回的是`lhs`本身，而它本身是个左值，所以它会迫使编译器把它拷贝到函数返回值的地址上去。
+
+所以，如果`Matrix`支持移动操作的话，第一个版本是更高效的。哪怕`Matrix`不支持移动操作，它也会使用拷贝构造来进行拷贝，所以并不会出问题，况且如果之后支持了移动操作，也不需要进行任何修改就可以得到移动操作的加成。
+
+```cpp
+template<typename T>
+Fraction reduceAndCopy(T&& frac) { // by-value return universal reference param
+	frac.reduce();
+	return std::forward<T>(frac); // move rvalue into return value, copy lvalue
+}
+```
+
+
+
+### 何时在函数返回的时候，*不* 使用`std::move`或`std::forward`：RVO（Return Value Optimization）
+
+RVO = Return Value Optimization（sometimes refer to *unnamed* RVO）
+
+NRVO = Named Return Value Optimization
+
+copy elision
+
+在函数里面返回局部变量（local object）的时候，不要对返回值使用`std::move`或`std::forward`，这是由于C++标准委员会（C++ Standardization Committee）很早的时候就考虑到了这一点，并且支持编译器进行优化，使得能够不需要拷贝（或移动）这个局部变量到返回值的地址上，而是**直接在返回值的地址上构造它**。
+
+如果编译器选择不做这项优化（copy elision），那么C++标准要求它**必须**给返回值使用`std::move`（即这时候返回值**必须**被当做rvalue来对待）。
+
+这个优化就是**RVO**。有时候为了区别返回的是一个临时变量还是具名的局部变量，用**NRVO**表示返回的是具名的局部变量，而**RVO**就直接表示临时变量的返回值优化。
+
+这样的优化操作，也叫做**copy elision**（省略拷贝）。这样在返回地址上直接进行构造，要比拷贝或移动更有效。
+
+但RVO也有条件，只有以下两个条件满足的时候，编译器才可以省略拷贝或者移动操作。
+
+- 局部变量的类型和返回值的类型相同
+- 返回的就是这个局部变量
+
+> this particular blessing says that compilers may elide the copying (or moving) of a local object in a
+> function that returns by value if
+>
+> - (1) the type of the local object is the same as that returned by the function and
+>
+> - (2) the local object is what’s being returned.
+
+下面的例子就是RVO的一个例子
+
+```cpp
+Widget makeWidget() { // "Copying" version of makeWidget
+	Widget w;
+	/* ... */
+	return w; // "copy" w into return value
+}
+```
+
+而下面的例子实际上阻止了RVO。原因是上面的第二个条件没有满足，因为返回的是一个rvalue reference，而不是局部变量本身了。
+
+```cpp
+Widget makeWidget() { // "Move" version of makeWidget
+	Widget w;
+	/* ... */
+	return std::move(w); ; // move w into return value (don't do this!!!)
+}
+```
+
+
+
+
+
+RVO是一项编译器优化，这意味着编译器可以选择不优化。但如果编译器不做这项优化，那么我们手动加上`std::move`也是应该避免的。
+
+前面也提到了，这是因为C++标准要求，要么有copy elision的优化，要么隐式地在返回值上使用`std::move`。
+
+所以，这时候，我们也应该**避免**自己加上`std::move`。
+
+
+
+甚至，如果函数参数和返回值相同的时候，尽管不适用copy elision（因为不是局部变量？），但编译器也必须把返回值按照rvalue来处理（隐式使用`std::move`）
+
+```cpp
+Widget makeWidget(Widget w) { // by-value parameter of same type as function's return
+	/* ... */
+	return w;
+}
+```
+
+这时候，编译器就会处理成好像写成下面这样的形式（右值引用）。
+
+```cpp
+Widget makeWidget(Widget w) { // by-value parameter of same type as function's return
+	/* ... */
+	return std::move(w); // treat w as rvalue
+}
+```
+
+
+
+
+
+### Things to Remember
+
+> - Apply `std::move` to rvalue references and `std::forward` to universal references the last time each is used.
+> - Do the same thing for rvalue references and universal references being returned from functions that return by value.
+> - Never apply `std::move` or `std::forward` to local objects if they would otherwise be eligible for the return value optimization.
+
+
+
+
 
 
 
