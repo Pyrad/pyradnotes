@@ -372,6 +372,18 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **preclude** */prɪˈkluːd/* *v.* <正式>阻止，妨碍（preclude *sb.* from）
 
+**topple** */ˈtɑːpl/* *v.* （使）不稳而倒下，（使）倒塌；推翻（首领），颠覆（政权）；<美>战胜，打败
+
+**banish** */ˈbænɪʃ/* *v.* 驱逐，赶走；将……驱逐出境，流放；清除，消除；打消……的念头，驱除（想法）
+
+**exasperation** */ɪɡˌzæspəˈreɪʃ(ə)n/* *n.* 恼怒；恶化；惹人恼怒的事
+
+**uphold** *v.* 支持，维护（法规、制度或原则）；认可，维持（法院原判）；鼓励；举起
+
+**trump** */trʌmp/*  *n.* （牌戏中的一张）王牌，将牌；*v.* 出王牌赢（牌）；赢，胜过，打败；
+
+**wrinkle** */ˈrɪŋk(ə)l/* *n.* （皮肤上的）皱纹；（布或纸上的）皱褶； <非正式>小困难，小难题；<非正式>令人吃惊的情节，出人意料的事情；<非正式>妙计，好主意；*v.* （使脸上）起皱纹，皱起；（布料等）起皱，起褶
+
 
 
 
@@ -426,7 +438,19 @@ Usage of **rest easy**（高枕无忧；大放宽心）
 
 > You’d rest easy knowing you’d never pay for a copy.
 
+Usage of **topple into a pit**（掉入陷阱）
 
+> An easy way to topple into this pit is to write a perfect forwarding constructor. 
+
+Usage of **meet the eye**（呈现在眼前；显而易见）
+
+> The problem here is much worse, however, because there’s more overloading present in `Person` than meets the eye.
+
+Usage of **unscramble an egg**（Some things can’t be undone. Broken egg shells can’t be put back together.）
+
+> It's a common saying that you can't **unscramble** an egg. You break an egg into a bowl, break the yolk membrane with your fork, mix the yolk thoroughly with the white, and stir it around in a hot skillet. The cooking uncurls the egg proteins, breaking some chemical bonds and causing new ones to form.
+>
+> Now we've got a scrambled egg. The egg proteins won't go back to their raw configuration when they cool, and even if they did it's impossible to wield the fork in such a way as to separate the yolk from the white. Roomfuls of the latest and greatest laboratory equipment, the best Google algorithms, or even all the king's horses and all the king's men would not unscramble our egg. The mixing and cooking are irreversible processes.
 
 
 
@@ -5029,6 +5053,10 @@ Widget makeWidget(Widget w) { // by-value parameter of same type as function's r
 > - Never apply `std::move` or `std::forward` to local objects if they would otherwise be eligible for the return value optimization.
 
 
+
+
+
+# Item 26: Avoid overloading on universal references.
 
 
 
