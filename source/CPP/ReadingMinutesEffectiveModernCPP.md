@@ -340,7 +340,11 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **yucky** */ˈjʌki/* *adj.* 恶心的；讨人厌的；不愉快的
 
+**eschew** */ɪsˈtʃuː/* *vt.* 避免；避开；远避
 
+**raison d’être** */ˌrāzôn ˈdetrə/* *n.* the most important reason or purpose for someone or something's existence.
+
+**volatile** */ˈvɑːlət(ə)l/* *adj.* 易变的，动荡不定的，反复无常的；
 
 
 
@@ -378,6 +382,10 @@ Usage of **take for granted**
 
 > for now I’ll just say that you can’t assume that the results of `constexpr` functions are `const`, nor can you take for granted that their values are known during compilation.
 
+Usage of **remark**（提到，说起过）
+
+> I remarked earlier that auto variables can also be universal references. 
+
 
 
 Usage of **’til-death-do-us-part** （至死不渝）
@@ -391,6 +399,10 @@ Usage of **afoul of**（碰撞，同某物撞在一起；和某人发生冲突�
 > Repeating types runs  **afoul** of a key tenet of software engineering
 
 
+
+Usage of **crop up**（突然出现）
+
+> But they do **crop up** from time to time 
 
 
 
@@ -4577,6 +4589,148 @@ private:
 > - `std::move` performs an unconditional cast to an rvalue. In and of itself, it doesn’t move anything.
 > - `std::forward` casts its argument to an rvalue only if that argument is bound to an rvalue.
 > - Neither `std::move` nor `std::forward` do anything at runtime.
+
+
+
+
+
+## Item 24: Distinguish universal references from rvalue references.
+
+
+
+### `T&&`不只是右值引用
+
+正如所述，`T&&`不仅指代**右值引用**，它还是**万能引用**（universal reference）
+
+下面几个例子既有`T&&`表示右值引用，又有`T&&`表示可能是右值引用又可能表示左值引用（万能引用）
+
+```cpp
+void f(Widget&& param);		// rvalue reference
+Widget&& var1 = Widget();	// rvalue reference
+auto&& var2 = var1;			// not rvalue reference
+template<typename T>
+void f(std::vector<T>&& param);	// rvalue reference
+template<typename T>
+void f(T&& param);			// not rvalue reference
+```
+
+当`T&&`表示**万能引用（universal reference）**的时候
+
+- 它既可以绑定到左值（lvalue），也可以绑定到右值（rvalue）
+- 它可以绑定到常量（`const`），也可以绑定到非常量（non-`const`）
+- 它可以绑定到易变量（`volatile`），也可以绑定到非易变量（non-`volatile`）
+
+
+
+### 万能引用`T&&`出现的地方
+
+当`T&&`表示万能引用的时候，一般出现在如下的上下文中
+
+- 函数模板参数（function template parameters），这种最常见
+- `auto`关键字声明
+
+这两种上下文的共同点时，出现了***类型推导（type deduction）***。下面是这两种情况的例子。
+
+```cpp
+template<typename T>
+void f(T&& param); // param is a universal reference
+
+auto&& var2 = var1; // var2 is a universal reference
+```
+
+
+
+万能引用仍然是引用，所以它必须被初始化。而由左值或右值来初始化，就决定了万能引用是左值引用还是右值引用。
+
+- 左值初始化万能引用，万能引用绑定到左值，即万能引用就是左值引用
+- 右值初始化万能引用，万能引用绑定到右值，即万能引用就是右值引用
+
+函数模板中的万能引用是由传入的参数的左值或右值性所决定的。
+
+```cpp
+template<typename T>
+void f(T&& param);	// param is a universal reference
+
+Widget w;
+f(w);	// lvalue passed to f; param's type is Widget& (i.e., an lvalue reference)
+f(std::move(w)); // rvalue passed to f; 
+				 //param's type is Widget&& (i.e., an rvalue reference)
+```
+
+
+
+### `T&&`是万能引用的条件
+
+万能引用的必须有两个条件
+
+- 发生类型推导
+- 形式必须是`T&&`
+
+所以发生了类型推导，只是万能引用的必要条件，两者必须同时满足才是万能引用。
+
+需要注意的是，`T`可以是其他名字表示类型。
+
+下面的例子说明了发生了类型推导，但形式不是`T&&`，所以就不是万能引用。
+
+```cpp
+template<typename T>			// not form of "T&&", so it isn't uninversal ref
+void f(std::vector<T>&& param); // param is an rvalue reference
+
+template<typename T>	 // not form of "T&&", so it isn't uninversal ref
+void f(const T&& param); // param is an rvalue reference
+```
+
+下面的例子说明了看似发生了类型推导，但是实际上不是类型推导的例子
+
+```cpp
+template<class T, class Allocator = allocator<T>> // from C++ Standards
+class vector {
+public:
+	void push_back(T&& x);
+    
+    template <class... Args>
+	void emplace_back(Args&&... args);
+	
+    /* ... */
+};
+```
+
+**对于`push_back`**，这个看似有类型推导，但实际不是的原因是：`push_back`是某种类型`T`的实例化之后的`vector`的member function，它不能脱离这个实例化的`vector`而单独存在。一旦实例化之后，`push_back`的参数就是一个确定的右值引用，而不是万能引用了。
+
+比如`std::vector<Widget> w;`，那么成员函数就变成了`void push_back(Widget &&x)`了。
+
+**对于`emplace_back`**，它就是万能引用。原因是，它的类型参数不受某个特定实例化之后的`vector`的影响，而且参数形式就是`T&&`（只是用了不同的名字`Args`）。
+
+比如`std::vector<Widget> w;`，成员函数仍然是`template <class... Args> void emplace_back(Args&&... args)`，显然这里仍然会发生类型推导。
+
+当然，其实对于`emplace_back`，它的参数实际上是parameter pack，不是一个type parameter。这里为了讨论方便，仍然把它当做a type parameter。
+
+
+
+### `auto&&`是万能引用
+
+Scott Meyers举例说明了`auto&&`作为万能引用在lambda中是使用。
+
+```cpp
+// C++14
+auto timeFuncInvocation = [](auto&& func, auto&&... params) {
+	// start timer;
+	std::forward<decltype(func)>(func)( // invoke func
+		std::forward<decltype(params)>(params)... // on params
+	);
+	// stop timer and record elapsed time;
+};
+```
+
+上面的是一个记录函数运行时间的lambda，它的参数有两个，第一个是`auto&& func`，正如前面所述，这是一个万能引用（绑定到一个lvalue，rvalue或着一个可调用的对象）；第二个是`auto&&... params`，它是指代一个或者多个万能引用（universal reference parameter pack），即它能绑定到任意数量的类型对象上。
+
+
+
+### Things to Remember
+
+> - If a function template parameter has type `T&&` for a deduced type T, or if an object is declared using `auto&&`, the parameter or object is a universal reference.
+> - If the form of the type declaration isn’t precisely `type&&`, or if type deduction does not occur, `type&&` denotes an rvalue reference.
+> - Universal references correspond to rvalue references if they’re initialized with rvalues. They correspond to lvalue references if they’re initialized with lvalues.
 
 
 
