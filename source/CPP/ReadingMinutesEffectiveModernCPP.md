@@ -444,7 +444,7 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **baffling** */ˈbæflɪŋ/* *adj.* 令人困惑的；阻碍的；令人丧气的；变幻的
 
-
+**reprimand** */ˈreprɪmænd/* *n.* 谴责，训斥；*v.* 谴责
 
 
 
@@ -5686,13 +5686,247 @@ private:
 
 
 
+## Item 28: Understand reference collapsing.
+
+本节主要讲述了发生了引用折叠（reference collapsing）的四种情况，以及万能引用中的类型`T`到底被推导成了什么类型。
 
 
 
+### 万能引用被推导成了什么类型？
+
+```cpp
+template<typename T>
+void func(T&& param);
+```
+
+上面的函数模板是典型的万能引用的使用场景，而模板参数`T`被推导出来的类型关系到函数参数`param`的左值还是右值类型。
+
+> The deduced template parameter `T` will encode whether the argument passed to `param` was an lvalue or an rvalue.
 
 
 
+**encode mechanism**（编码规则，即`T`被推导称为的类型的规则）
 
+- 如果传入的是 **lvalue（左值）**，那么`T`被推导成 **lvalue reference（左值引用）**
+- 如果传入的是 **rvalue（右值）**，那么`T`被推导成 **non-reference（非引用）**
+
+注意这里的规则是不对称的。
+
+> The encoding mechanism is simple.
+>
+> When an lvalue is passed as an argument, `T` is deduced to be an lvalue reference. When an rvalue is passed, `T` is deduced to be a non-reference.
+>
+> Note the asymmetry: lvalues are encoded as lvalue references, but rvalues are encoded as non-references.
+
+下面是几个例子
+
+```cpp
+Widget widgetFactory(); // function returning rvalue
+
+Widget w;				// a variable (an lvalue)
+func(w);				// call func with lvalue; T deduced to be Widget&
+func(widgetFactory());	// call func with rvalue; T deduced to be Widget
+```
+
+
+
+### 引用折叠（reference collapsing）
+
+发生引用折叠的情况有四种
+
+- **实例化模板的时候**
+- **`auto`变量类型推导的时候**
+- **`typedef`的时候**
+- **`decltype`的时候**
+
+C++编译器禁止我们写引用的引用，但是编译器却可以产生引用的引用。而引用折叠产生的原因是需要进行类型推导。
+
+比如前面的例子，根据万能引用推导的类型，会导致编译器产生引用的引用。
+
+```cpp
+template<typename T>
+void func(T&& param);
+func(w); // invoke func with lvalue; T deduced as Widget&
+```
+
+上面经过类型推导之后的等效的代码如下，这里编译器就产生了引用的引用。
+
+```cpp
+void func(Widget& && param);
+```
+
+为了解决这种问题，编译器采用了引用折叠办法。因为有两种引用（lvalue reference和rvalue reference），所以引用的引用就有四种组合。
+
+**引用折叠的规则是：只要有一个是左值引用（lvalue reference），最后的结果就是左值引用；否则就是右值引用。**
+
+> **If either reference is an lvalue reference, the result is an lvalue reference. Otherwise (i.e., if both are rvalue references) the result is an rvalue reference.**
+
+
+
+### `std::forward`的原理
+
+完美转发，`std::forward`，就是只有在参数是右值的时候，才将参数本身转换为右值。
+
+`std::forward`概念上的实现如下
+
+```cpp
+template<typename T> // in namespace std
+T&& forward(typename remove_reference<T>::type& param) {
+	return static_cast<T&&>(param);
+}
+```
+
+假如有个函数带有万能引用参数，使用了完美转发
+
+```cpp
+template<typename T>
+void f(T&& fParam) {
+	/* ... */ // do some work
+	someFunc(std::forward<T>(fParam)); // forward fParam to someFunc
+}
+```
+
+
+
+#### 当绑定到左值的时候
+
+当传入`f`的参数是左值（`Widget`）的时候，根据万能引用的类型推导规则，`T`被推导为`Widget&`，就会有如下（逻辑上的）代码
+
+```cpp
+Widget& && forward(typename remove_reference<Widget&>::type& param) {
+    return static_cast<Widget& &&>(param);
+}
+```
+
+进一步根据`std::remove_reference`的结果有
+
+```cpp
+Widget& && forward(Widget& param) {
+    return static_cast<Widget& &&>(param);
+}
+```
+
+再根据引用折叠个规则，有
+
+```cpp
+Widget& forward(Widget& param) {
+    return static_cast<Widget&>(param);
+}
+```
+
+所以，最后返回的就是一个**左值引用**。
+
+
+
+#### 当绑定到右值的时候
+
+当传入`f`的参数是右值（`Widget`）的时候，根据万能引用的类型推导规则，`T`被推导为`Widget`（非引用），就会有如下（逻辑上的）代码
+
+```cpp
+Widget&& forward(typename remove_reference<Widget>::type& param) {
+    return static_cast<Widget&&>(param);
+}
+```
+
+进一步根据`std::remove_reference`的结果有
+
+```cpp
+Widget&& forward(Widget& param) {
+    return static_cast<Widget&&>(param);
+}
+```
+
+此时已经没有引用的引用了，就是最终结果。
+
+所以，最终返回了传入参数的**右值引用**。
+
+这里因为`std::forward`函数返回右值引用是右值，所以`std::forward`把传入的参数`fParam`（本身是左值）转换成了右值，并传入了`sameFunc`。再联系到传入`f`函数的也右值，所以最终实现了完美转发。
+
+> Rvalue references returned from functions are defined to be rvalues, so in this case, `std::forward` will turn `f`’s parameter `fParam` (an lvalue) into an rvalue. The end result is that an rvalue argument passed to `f` will be forwarded to someFunc as an rvalue, which is precisely what is supposed to happen.
+
+
+
+### `auto`类型推导
+
+和万能引用的类型推导类似，如果是`auto&&`，那么规则是
+
+- 如果是绑定到了**左值**（lvalue），那么`auto`被推导为**左值引用`T&`**
+- 如果是绑定到了**右值**（rvalue），那么`auto`被推导为**非引用**类型
+
+例子如下
+
+```cpp
+Widget widgetFactory(); // function returning rvalue
+
+Widget w;				// a variable (an lvalue)
+auto &&w1 = w;			// (1)
+auto &&w1 = widgetFactory();	// (2)
+```
+
+中第（1）个，因为`w`是左值，所以`auto`被推导为`Widget&`，那么就有
+
+```cpp
+Widget& &&w1 = w;
+```
+
+根据引用折叠规则，`w1`最终就是**左值引用**。
+
+第（2）个，，因为`widgetFactory`返回的是右值，所以`auto`被推导为`Widget`（非引用类型），那么就有
+
+```cpp
+Widget &&w2 = w;
+```
+
+这里已经没有引用折叠了，所以`w2`最终就是**右值引用**。
+
+
+
+### 万能引用的本质
+
+万能引用**不是新的引用**，而是在满足了两个条件的上下文环境中的一个右值引用
+
+- 类型推导把左值和右值做了区分
+- 当引用折叠发生的时候
+
+> A universal reference isn’t a new kind of reference, it’s actually an rvalue reference in a context where two conditions are satisfied:
+>
+> - Type deduction distinguishes lvalues from rvalues. Lvalues of type `T` are deduced to have type `T&`, while rvalues of type `T` yield `T` as their deduced type.
+> - Reference collapsing occurs.
+
+
+
+### 引用折叠发生在`typedef`时
+
+```cpp
+template<typename T>
+class Widget {
+public:
+	typedef T&& RvalueRefToT;
+	/* ... */
+};
+```
+
+当我们使用`Widget&`来实例化这个类模板的时候，就会得到
+
+```cpp
+typedef Widget& && RvalueRefToT;
+```
+
+根据引用折叠的规则，它就是
+
+```cpp
+typedef Widget& RvalueRefToT;
+```
+
+所以，最终`RvalueRefToT`实际上是个**左值引用**，而不是它表面上看起来（或者是像它的名字一样）的好像是个右值引用。
+
+
+
+### Things to Remember
+
+> - Reference collapsing occurs in four contexts: template instantiation, `auto` type generation, creation and use of `typedef`s and alias declarations, and `decltype`.
+> - When compilers generate a reference to a reference in a reference collapsing context, the result becomes a single reference. If either of the original references is an lvalue reference, the result is an lvalue reference. Otherwise it’s an rvalue reference.
+> - Universal references are rvalue references in contexts where type deduction distinguishes lvalues from rvalues and where reference collapsing occurs.
 
 
 
