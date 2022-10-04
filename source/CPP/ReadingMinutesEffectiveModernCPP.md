@@ -5058,6 +5058,205 @@ Widget makeWidget(Widget w) { // by-value parameter of same type as function's r
 
 # Item 26: Avoid overloading on universal references.
 
+本节Scott Meyers主要通过举例，说明了重载带有万能引用参数的函数非常容易出错，因此应该避免这样做。
+
+
+
+### 使用万能引用对一个函数的优化
+
+假如有个最初版本的函数`logAndAdd`，已经三种调用。
+
+```cpp
+std::multiset<std::string> names; // global data structure
+void logAndAdd(const std::string& name) {
+	auto now = std::chrono::system_clock::now(); // get current time
+	log(now, "logAndAdd"); // make log entry
+	names.emplace(name); // add name to global data structure
+}
+// Calls in different ways
+std::string petName("Darla");
+logAndAdd(petName);						// (1) pass lvalue std::string
+logAndAdd(std::string("Persephone"));	// (2) pass rvalue std::string
+logAndAdd("Patty Dog");					// (3) pass string literal
+```
+
+第一种调用，`petName`是一个左值（lvalue），因为函数参数是常量左值引用，所以它最后会被直接传递到`names.emplace(name)`，而因为`petName`是一个左值，所以无法避免拷贝，因此最终`petName`会被拷贝到`names`中去。
+
+第二种调用，函数实参是一个临时构造的临时变量，因为函数参数是常量左值引用，所以同样地，它最后会被直接传递到`names.emplace(name)`，而同样的形式参数`name`它本身是一个左值，所以它仍然会被拷贝到最终的`names`中去，但由于实参实际上是一个右值，所以这样的拷贝可以通过移动来避免，这是可以优化的地方。
+
+第三种调用，因为函数的实参是`const char *`，所以函数调用时，会通过`const char *`隐式地创建一个临时变量`std::string`，显然这个临时变量是个右值。剩下的步骤和第二种调用类似。但实际上，`std::string::emplace`可以通过常量字符串（string literal，即`const char *`直接在`std::multiset`上构造新的`std::string`，所以这是这种调用方式可以优化的地方。
+
+综上所述，那么可以使用一个万能引用来实现对后面两种调用的优化。
+
+```cpp
+std::multiset<std::string> names; // global data structure
+template<typename T>
+void logAndAdd(T&& name) {
+	auto now = std::chrono::system_clock::now(); // get current time
+	log(now, "logAndAdd"); // make log entry
+	names.emplace(std::forward<T>(name)); // add name to global data structure
+}
+// Calls in different ways
+std::string petName("Darla");			// as before
+logAndAdd(petName);						// (1) as before, copy lvalue into multiset
+logAndAdd(std::string("Persephone"));	// (2) move rvalue instead of copying it
+logAndAdd("Patty Dog");					// (3) create std::string in multiset instead
+										//     of copying a temporary std::string
+```
+
+
+
+### 重载了万能引用函数去解决面临的另一个问题
+
+但实际上中，也许使用者可能只能通过一个index来调用`logAndAdd`，而没有直接访问一个名字的可能。
+
+为了支持这种用法，重载了之前的函数`logAndAdd`如下（后面会说明这不是一个好主意）
+
+```cpp
+// A function declarition returning name corresponding to idx
+std::string nameFromIdx(int idx);
+
+void logAndAdd(int idx) { // new overload
+	auto now = std::chrono::system_clock::now();
+	log(now, "logAndAdd");
+	names.emplace(nameFromIdx(idx));
+}
+
+// Usages
+std::string petName("Darla");			// as before
+logAndAdd(petName);						// as before, these
+logAndAdd(std::string("Persephone"));	// calls all invoke
+logAndAdd("Patty Dog");					// the T&& overload
+logAndAdd(22);							// calls int overload
+```
+
+这里需要注意的是，在调用`logAndAdd(22);`的时候，为什么最终调用的是`logAndAdd(int idx)`的重载函数，而不是`logAndAdd(T&& name)`，似乎看起来`logAndAdd(T&& name)`经过实例化之后，也可以得到`logAndAdd(int &&)`，好像也可以调用？
+
+原因就是，C++标准指出，当一个模板函数经过实例化之后得到的函数，和一个非模板的函数，对于同一个函数调用是同样好的匹配的时候，这个普通的非模板的函数胜出。
+
+> In situations where a template instantiation and a non-template function (i.e., a “normal” function) ***are equally good matches*** for a function call, the ***normal function is preferred***.
+
+
+
+### 重载了万能引用函数引起的问题
+
+但重载了上面的万能引用函数之后，如果有下面的使用，就可能产生问题。
+
+```cpp
+short nameIdx;
+/* ... */ // give nameIdx a value
+logAndAdd(nameIdx); // error!
+```
+
+产生问题的原因是，带有万能引用参数的重载函数经过类型推导之后，会得到`logAndAdd(short&)`，而如果要调用带有`int`参数的重载函数，需要进行一次类型提升转换（promotion），即从`short`转换到`int`。
+
+显然带有万能引用参数的重载函数是最佳匹配，从而导致编译器最终会使用它。
+
+那么当函数执行到`names.emplace(std::forward<T>(name));`的时候，显然错误就发生了，因为`std::string`没有从一个`short`进行构造的构造函数！
+
+由此可以看出，带有万能引用参数的重载函数是非常“贪婪”的，它经过实例化可以生成匹配几乎任何类型参数的实例。（只有少数例外）
+
+> Functions taking universal references are the greediest functions in C++. They instantiate to create exact matches for almost any type of argument.
+
+所以**结论是**，不要重载带有万能引用的函数。
+
+
+
+### 另一个类似的陷阱
+
+Scott Meyers还举了另外一个例子，perfect forwarding constructor，说明这个类似的陷阱。
+
+```cpp
+class Person {
+public:
+    // Perfect forwarding ctor; initializes data member by initialization list int ctor
+	template<typename T>
+	explicit Person(T&& n) : name(std::forward<T>(n)) {} 
+    // A normal ctor
+    explicit Person(int idx) : name(nameFromIdx(idx)) {}
+	/* ... */
+private:
+	std::string name;
+};
+```
+
+这里可能发生的错误，和前面提到的一样，如果传入的是**integral type**（e.g., `std::size_t`, `short`, `long`, etc.），就会发生错误。
+
+而这里更严重的问题是，尽管这里的带有模板的构造函数在经过实例化之后可能产生对应的**拷贝构造函数**和**移动构造函数**，但这不会影响编译器在满足条件的时候，依然会帮着生成**拷贝构造函数**和**移动构造函数**。这时候`Person`这个class看起来就像是下面这样。
+
+```cpp
+class Person {
+public:
+    // Perfect forwarding ctor; initializes data member by initialization list int ctor
+	template<typename T>
+	explicit Person(T&& n) : name(std::forward<T>(n)) {} 
+    // A normal ctor
+    explicit Person(int idx) : name(nameFromIdx(idx)) {}
+    
+    Person(const Person& rhs);	// copy ctor (compiler-generated)
+    Person(Person&& rhs);		// move ctor (compiler-generated)
+    
+	/* ... */
+private:
+	std::string name;
+};
+```
+
+如果此时有如下的代码，问题就产生了。
+
+```cpp
+Person p("Nancy");
+auto cloneOfP(p); // create new Person from p; this won't compile!!!
+```
+
+这里实际上编译器会最终决定调用经过实例化之后的带有万能引用的构造函数，而不是编译器帮忙生成的拷贝构造或移动构造。
+
+不调用移动构造函数（` Person(Person&& rhs)`）的原因是显然的，因为`p`是左值。
+
+而不调用拷贝构造（`Person(const Person& rhs)`）的原因是，带有万能引用的构造函数经过实例化之后，会得到`Person(Person& rhs)`，（没有`const`），那么根据C++标准，这就是比`const Person &rhs`更好的匹配，所以就调用了它。那么最后得到的结果就是，在初始化列表中，用一个`Person &`去初始化`std::string`，这显然是错误的。
+
+
+
+如果我们的调用代码变成了如下的形式，结果就正常了。
+
+```cpp
+const Person p("Nancy");	// object is now const
+auto cloneOfP(p);			// calls copy constructor!
+```
+
+为什么？和前面分析的一样，这时候编译器（在满足条件的情况下）同样帮助生成拷贝构造（`Person(const Person& rhs)`）和移动构造（` Person(Person&& rhs)`）。而此时如果带有万能引用的构造函数经过实例化，同样可以得到构造函数`Person(const Person& rhs)`，这也同样是拷贝构造，但根据C++标准，如果一个模板函数和非模板重载函数是同样好的匹配，非模板函数胜出，所以最终调用了编译器帮助生成的拷贝构造，所以编译通过了。
+
+
+
+同样的问题，在有类继承的情况下同样会发生。
+
+```cpp
+class SpecialPerson: public Person {
+public:
+    // copy ctor; calls base class forwarding ctor!
+	SpecialPerson(const SpecialPerson& rhs) : Person(rhs) { /* ... */ }
+	// move ctor; calls base class forwarding ctor!
+    SpecialPerson(SpecialPerson&& rhs) : Person(std::move(rhs)) { /* ... */ }
+};
+```
+
+这里，子类`SpecialPerson`的拷贝构造和移动构造的初始化列表中，使用`rhs`来初始化父类，仍然会导致调用经过实例化之后的带有万能引用的构造函数（而不是`Person`中由编译器帮助生成的拷贝和移动构造函数），显然`std::string`也没有通过`SpecialPerson`来初始化的构造函数，因此编译失败了。
+
+
+
+
+
+### Things to Remember
+
+> - Overloading on universal references almost always leads to the universal reference overload being called more frequently than expected.
+> - Perfect-forwarding constructors are especially problematic, because they’re typically better matches than copy constructors for non-`const` lvalues, and they can hijack derived class calls to base class copy and move constructors.
+
+
+
+
+
+
+
 
 
 
