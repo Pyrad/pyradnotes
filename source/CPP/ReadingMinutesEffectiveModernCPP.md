@@ -384,6 +384,72 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **wrinkle** */ˈrɪŋk(ə)l/* *n.* （皮肤上的）皱纹；（布或纸上的）皱褶； <非正式>小困难，小难题；<非正式>令人吃惊的情节，出人意料的事情；<非正式>妙计，好主意；*v.* （使脸上）起皱纹，皱起；（布料等）起皱，起褶
 
+**freestanding** *adj.* 独立式的；非附属的；不需依靠支撑物的
+
+**funnel** */ˈfʌn(ə)l/* *n.* 漏斗；漏斗状物；（船、蒸汽机车上的）烟囱；*v.* 通过漏斗，穿过狭窄通道；输送，传送（金钱、货物或信息）；（一端逐渐扩大或收缩）形成漏斗状
+
+**recoil** *vi.* 畏缩；弹回；报应；*n.* 畏缩；弹回；反作用
+
+**lest** */lest/* *conj.* 以免，避免；唯恐，担心
+
+**sidetrack** *vt.* 将（火车）[建] 转到侧线；转变（话题）
+
+**tumble** */ˈtʌmb(ə)l/* *v.* 翻滚，滚落；摔倒，跌倒；
+
+**tumble into** 跌入
+
+**morass** */məˈræs/* *n.* 沼泽；困境；乱糟糟的一堆
+
+**tantamount** */ˈtæntəmaʊnt/* *adj.* 同等的；相当于……的
+
+**immaterial** */ˌɪməˈtɪriəl/* *adj.* 非物质的；无形的；不重要的；非实质的
+
+**droid** */drɔɪd/* *n.* 机器人
+
+**ratchet** */ˈrætʃɪt/* *n.* 棘轮，棘齿；救护车；*vt.* 安装棘齿于……
+
+**ratchet down** 稳步降低; 使...稳步降低
+
+**off-putting**  *adj.* 令人不愉快的；老是推托的
+
+**boilerplate** */ˈbɔɪlərpleɪt/* *n.* 样板文件；引用
+
+**fudge** */fʌdʒ/* *v.* 含糊其辞，回避；篡改，捏造（事实，数字）；*n.* 敷衍，装模作样（a fudge）
+
+**proliferation** */prəˌlɪfəˈreɪʃn/* *n.* （数量的）激增，剧增；（细胞、组织、有机体的）繁殖，增生；大量
+
+**belay** */bɪˈleɪ/* *v.* 把缆绳拴在系索栓上；拴住，系牢；停止
+
+**déjà** 已经
+
+**déjà vu**  */ˌdā-ˌzhä-ˈvü/* 
+
+**pesky** */ˈpeski/* *adj.* 讨厌的，麻烦的
+
+**palatable** */ˈpælətəb(ə)l/* *adj.* 美味的，可口的；愉快的
+
+**tantalizingly** */ˈtæntəlaɪzɪŋli/* *adv.* 逗人地；……得令人着急
+
+**savor** */ˈseɪvər/* *vt.* 尽情享受；使有风味；加调味品于；品尝，欣赏
+
+**aroma** */əˈroʊmə/* *n.* 芳香，浓香；（喻）气氛
+
+**voilà** 那就是（源自法语）
+
+**fetish** *n.* 恋物（等于 fetich）；迷信；偶像
+
+**aplomb** */əˈplɑːm/* *n.* 沉着；垂直；泰然自若
+
+**baffle** */ˈbæf(ə)l/* *v.* 使困惑，难住；抑制，控制；*n.* 挡板，隔板，反射板
+
+**baffling** */ˈbæflɪŋ/* *adj.* 令人困惑的；阻碍的；令人丧气的；变幻的
+
+
+
+
+
+
+
 
 
 
@@ -451,6 +517,22 @@ Usage of **unscramble an egg**（Some things can’t be undone. Broken egg shell
 > It's a common saying that you can't **unscramble** an egg. You break an egg into a bowl, break the yolk membrane with your fork, mix the yolk thoroughly with the white, and stir it around in a hot skillet. The cooking uncurls the egg proteins, breaking some chemical bonds and causing new ones to form.
 >
 > Now we've got a scrambled egg. The egg proteins won't go back to their raw configuration when they cool, and even if they did it's impossible to wield the fork in such a way as to separate the yolk from the white. Roomfuls of the latest and greatest laboratory equipment, the best Google algorithms, or even all the king's horses and all the king's men would not unscramble our egg. The mixing and cooking are irreversible processes.
+
+Usage of **ease into**, **off-putting**
+
+> The way to express that idea isn’t particularly difficult, but the syntax is **off-putting**, especially if you’ve never seen it before, so I’ll **ease** you **into** it.
+
+Usage of **count your blessings**（知足吧；多往好处想；知足常乐）
+
+> If you’ve never seen anything like this before, **count your blessings**.
+
+Usage of **flap about**（摆动，拍翅飞行）
+
+> There’s still one loose end from Item 26 that continues to **flap about**.
+
+
+
+
 
 
 
@@ -5056,7 +5138,7 @@ Widget makeWidget(Widget w) { // by-value parameter of same type as function's r
 
 
 
-# Item 26: Avoid overloading on universal references.
+## Item 26: Avoid overloading on universal references.
 
 本节Scott Meyers主要通过举例，说明了重载带有万能引用参数的函数非常容易出错，因此应该避免这样做。
 
@@ -5250,6 +5332,359 @@ public:
 
 > - Overloading on universal references almost always leads to the universal reference overload being called more frequently than expected.
 > - Perfect-forwarding constructors are especially problematic, because they’re typically better matches than copy constructors for non-`const` lvalues, and they can hijack derived class calls to base class copy and move constructors.
+
+
+
+## Item 27: Familiarize yourself with alternatives to overloading on universal references.
+
+
+
+前面一本节讲述了重载带有万能引用参数的函数可能造成的一些问题，不管是独立函数还是成员函数（尤其是构造函数）。但同样地，从侧面说明只要按照我们所预期的方式，重载这样的函数可能是有用的。
+
+本节讲述了，如何通过设计来避免重载带有万能引用参数的函数，或者通过限制参数类型的方式，达到这样的目的。
+
+
+
+本节用到的标准库的编译期函数
+
+**`std::enable_if`**
+
+**`std::is_same`**
+
+**`std::decay`**
+
+**`std::remove_reference`**
+
+**`std::is_base_of`**
+
+**`static_assert`**
+
+
+
+### 5种办法
+
+本节总共提到了5种方式来避免重载带有万能引用参数的函数
+
+- **Abandon overloading**
+- **Pass by `const T&`**
+- **Pass by value**
+- **Use Tag dispatch**
+- **constraining template eligibility**
+
+例子仍然是上一节（item 26）中所提到的例子：有一个`logAndAdd`的函数，接受一个`std::string`的参数，但有时候又想通过一个integral的index（通过一个函数获得`std::string`）来调用这个函数
+
+```cpp
+std::multiset<std::string> names; // global data structure
+
+// A function declarition returning name corresponding to idx
+std::string nameFromIdx(int idx);
+
+void logAndAdd(const std::string& name) {
+	auto now = std::chrono::system_clock::now(); // get current time
+	log(now, "logAndAdd"); // make log entry
+	names.emplace(name); // add name to global data structure
+}
+```
+
+
+
+### Abandon overloading
+
+不做重载函数，而使用两个不同名字的函数，显然是最直接的办法之一。比如单独写两个函数`logAndAddName`给`std::string`参数，而`logAndAddNameIdx`给`int`使用。
+
+但这个不能接近构造函数带有万能引用参数的问题。
+
+
+
+### Pass by `const T&`
+
+可以使用`const T&`来代替万能引用`T&&`，这是C++98的方式，但这就会导致总是发生拷贝，从而不能达到我们提高性能的目的（避免不必要的拷贝）
+
+
+
+### Pass by value
+
+不再使用万能引用，而直接使用值传递代替，这是另一种看起来反直觉的办法。Scott Meyers在item 41中会再讨论它。
+
+显然，没有了万能引用，自然不存在万能引用会生成最佳匹配但不是正确匹配重载函数的问题了。
+
+```cpp
+class Person {
+public:
+    // replaces T&& ctor; see Item 41 for use of std::move
+	explicit Person(std::string n) : name(std::move(n)) {}
+    explicit Person(int idx) : name(nameFromIdx(idx)) {} // as before
+
+private:
+	std::string name;
+};
+```
+
+
+
+### Use Tag dispatch
+
+因为pass by lvalue-reference-to-`const` 和 pass by value都不支持万能引用，但我们使用万能引用的目的就是为了完美转发，所以如果我们不得不使用万能引用来实现完美转发时，***tag dispatch*** 是一种既能实现万能引用，又能实现重载的办法。
+
+这种办法的核心是，使用了两个函数（实际上是一个入口函数和两个具体实现的重载函数）
+
+- 第一个函数带有一个万能引用参数，但只是一个入口函数，它不实现具体的功能，它只根据万能引用的类型得出需要传递给第二个函数的参数
+- 第二个函数实际上是**两个重载函数**，带有一个万能引用参数和一个tag参数，它根据tag参数的不同，调用不同的逻辑实现
+
+```cpp
+template<typename T>
+void logAndAdd(T&& name) {
+	logAndAddImpl(std::forward<T>(name),
+                  std::is_integral<typename std::remove_reference<T>::type>());
+}
+
+template<typename T>							// non-integral argument: add 
+void logAndAddImpl(T&& name, std::false_type) { // it to global data
+	auto now = std::chrono::system_clock::now();
+	log(now, "logAndAdd");
+	names.emplace(std::forward<T>(name));
+}
+
+std::string nameFromIdx(int idx); // returning name corresponding to idx
+
+void logAndAddImpl(int idx, std::true_type) {	// integral argument: look up name 
+	logAndAdd(nameFromIdx(idx));				// and call logAndAdd  with it
+}
+```
+
+由上面的代码可以看到，第一个函数`logAndAdd`只是一个入口函数，它的万能引用参数接受任何类型的参数。此外它还根据万能引用参数的类型，在编译期间其他计算得到`T`是否为integral类型（`std::size_t`，`int`，`short`等），并把它当做一个tag，从而调用真正实现了逻辑的重载函数`logAndAddImpl`。
+
+`logAndAddImpl`是两个重载函数，一个给non-integral使用，另一个给integral使用。它们是通过**`std::false_type`**和**`std::true_type`**这两个tag来区分并调用不同的重载函数。
+
+**`std::false_type`**和**`std::true_type`**实际上是用来表示`bool`的`true`和`false`的**`std::integral_constant`**的实例（instantitation）。
+
+之所以使用**`std::false_type`**和**`std::true_type`**，而不是使用`true`和`false`，这是因为`true`和`false`它们是runtime的变量，我们想要的是在编译期间（compile-time）就能由编译器决定使用哪个重载函数的编译器变量。
+
+这两个参数的在编译期间，可以由**`std::is_integral`**得出，正如代码中所述。
+
+而加上**`std::remvoe_reference`**的原因是，`int`和`int&`是不同的类型，`int`是整型，而`int&`是引用，但如果传递给万能引用参数的是`int`，那么得到的显然会是`int&`而不是`int`，而我们依然希望把这个`int&`传递给函数`nameFromIdx`，所以需要把它等价于`int`，那么就需要函数**`std::remvoe_reference`**除去它的引用属性。
+
+给non-integral使用的重载函数就是之前的逻辑，记录时间，并把`name`这个`std::string`加入到`names`中。
+
+而给integral使用的重载函数，需要把传入的`idx`通过函数`nameFromIdx`转换为`std::string`，从而再次调用入口函数`logAndAdd(T&& name)`，然后再回到调用non-integral的函数，从而完成真正的添加功能。
+
+**需要注意的是**，两个带有tag参数的重载函数的第二个参数，甚至都没有给它们命名，这是因为我们想让编译器在编译期间就识别它们没有用而把它们优化掉（因为它们在runtime时没有任何作用），所以这第二个参数的目的仅仅是在编译期间使得编译器能够正确识别并调用对应的重载函数。
+
+通过创建正确的tag来把真正的工作分配给正确的重载函数，这就是所谓的**`tag dispath`**技术。C++的模板元编程（template metaprogramming）中经常用到这种技术。
+
+
+
+### Constraining templates that take universal references
+
+**关键字**（用到的标准库的编译期函数）
+
+**`std::enable_if`**
+
+**`std::is_same`**
+
+**`std::decay`**
+
+**`std::remove_reference`**
+
+**`std::is_base_of`**
+
+**`static_assert`**
+
+
+
+最后一种，也是比较复杂的一种技术，就是通过限制模板参数的类型来使用万能引用。
+
+在item 26中提到过，就算是有使用万能引用的构造函数，在满足条件的情况下，编译器依然会忠实地生成对应的拷贝（或移动）构造函数，哪怕那个带有万能引用参数的构造函数经过实例化之后，得到的就是拷贝（或移动）构造函数。
+
+在这种情况下，通过tag dispatch是没有办法做到的，因为我们没有办法限制编译器来生成这些重载函数（构造函数）。
+
+或者说，发生问题的根源并不是因为有这些重载函数，而是因为带有万能引用参数的函数太“贪婪“了，它匹配了太多我们不希望它进行匹配的函数重载，从而导致预期之外的问题。
+
+那么关键就是，我们如何限制带有万能引用参数的函数，使得它只在某些条件下去匹配到我们希望它匹配的类型，而不要那么地“贪婪”？
+
+这就要用到`std::enable_if`，它强迫编译器装作对某些类型的模板不存在（disabled），而`std::enable_if`就告诉编译器满足了哪些指定条件的类型的模板，才可以当做可用的。
+
+> `std::enable_if` gives you a way to force compilers to behave as if a particular template didn’t exist. 
+>
+> Such templates are said to be disabled. By default, all templates are enabled, but a template using `std::enable_if` is enabled only if the condition specified by `std::enable_if` is satisfied.
+
+`std::enable_if`在这里的使用的样板如下
+
+```cpp
+class Person {
+public:
+	template<typename T, typename = typename std::enable_if<CONDITION>::type>
+	explicit Person(T&& n);
+private:
+	std::string name;
+};
+```
+
+这里的`CONDITION`是指某个条件（编译期间）。
+
+根据item 26的例子，我们是希望用不是`Person`类型的变量传入万能引用的构造函数，而是`Person`类型的变量传入编译器生成的拷贝（或移动）构造函数。所以就有以下的代码
+
+```cpp
+class Person {
+public:
+	template<typename T,
+			 typename = typename std::enable_if<
+							!std::is_same<Person, typename std::decay<T>::type>::value
+                        >::type
+    >
+	explicit Person(T&& n);
+    
+    Person(const Person&); // compiler might generate
+    Person(const Person&&); // compiler might generate
+
+private:
+	std::string name;
+};
+```
+
+这里的`CONDITION`实际上就是`!std::is_same<Person, typename std::decay<T>::type>::value`。
+
+`std::is_same<T1, T2>::value`表示`T2`是不是`T1`的类型（是为true，不是为false）。
+
+`std::decay`表示要去掉`T`的引用属性（reference）和常量或易变属性（cv-qualifier）。
+
+使用`!std::is_same<T1, T2>::value`是我们想要的，因为我们想要限制不是`Person`类的才使用有万能引用的构造函数。
+
+而使用`std::decay<T>::type`的原因是，`Person`和`Person&`（或`const Person`、`const Person&`等）是不同的类型，这就可能导致比如`!std::is_same<Person, Person&>::value`为`true`，从而把`Person&`传入到了万能引用的构造函数，而这恰恰是我们要避免的。所以就需要把其上的引用属性（reference）和常量或易变属性（cv-qualifier）都去除掉之后在进行比较类型本身才行。
+
+这样，我们限制了在编译期间传入带有万能引用参数的构造函数的类型，从而实现了限制非预期的参数调用它的目的。
+
+
+
+可是，这样的情况遇到继承关系的时候，还是会出问题。正如item 26所述，如果`SpecialPerson`继承自`Person`，那么如果把一个`SpecialPerson`的object传入上面`Person`的构造函数，最后依然造成了我们本想避免的问题（因为最后会拿一个`SpecialPerson`的对象去初始化`std::string`）。
+
+这时候就要用到`std::is_base_of`来代替`std::is_same`。
+
+这是由于对于任何一个类型`T`，`std::is_same<T, T>::value`显然是`true`，但实际上`std::is_base_of<T, T>::value`也是`true`，因为我们认为`T`就是继承自它自己本身（嗯...），而使用`std::is_base_of`又可以用来判断是否是继承的关系，所以使用`std::is_base_of`来代替`std::is_same`，得到下面的代码。
+
+```cpp
+class Person {
+public:
+	template<typename T,
+			 typename = typename std::enable_if<
+							!std::is_base_of<Person, typename std::decay<T>::type>::value
+                        >::type
+    >
+	explicit Person(T&& n);
+    
+    Person(const Person&); // compiler might generate
+    Person(const Person&&); // compiler might generate
+
+private:
+	std::string name;
+};
+```
+
+
+
+最后Scott Meyers提到，这个构造函数引起的函数重载问题，实际上是我们为了区分使用`int`还是`std::string`来调用`logAndAdd`函数时带来的问题，而在这个例子中，我们实际上还要区分是否是`int`，那么就需要再加入对integral type的编译期判断，如下（C++11和C++14不同的写法）。
+
+```cpp
+// In C++11 style
+class Person {
+public:
+	template<typename T,
+			 typename = typename std::enable_if<
+							!std::is_base_of<Person, typename std::decay<T>::type>::value
+                             &&
+                             !std::is_integral<typename std::remove_reference<T>>::value
+                        >::type
+    >
+	explicit Person(T&& n);
+    
+    Person(const Person&); // compiler might generate
+    Person(const Person&&); // compiler might generate
+
+private:
+	std::string name;
+};
+
+// In C++14 style
+class Person {
+public:
+	template<typename T,
+			 typename = std::enable_if_t<
+							!std::is_base_of<Person, std::decay<T>::type>::value
+                             &&
+                             !std::is_integral<std::remove_reference_t<T>>::value
+                        >::type
+    >
+	explicit Person(T&& n);
+    
+    Person(const Person&); // compiler might generate
+    Person(const Person&&); // compiler might generate
+
+private:
+	std::string name;
+};
+```
+
+
+
+
+
+### 代价
+
+使用perfect forwarding的好处是，可以在合适情况下避免不必要的拷贝。
+
+但使用perfect forwarding也有两个可能的影响
+
+- 第一个是，有时候的确不能使用perfect forwarding
+- 第二个是，因为完美转发的层层传递的原因，也许只有传递到最后一层的时候，编译器才发现问题，然后报错，但这时候报告的错误信息十分冗长而且难懂，从而很难定位问题。
+
+Scott Meyers举例说明了第二个影响。
+
+```cpp
+Person p(u"Konrad Zuse"); // "Konrad Zuse" consists of characters of type const char16_t
+```
+
+上面的代码是试图使用`const char16_t[12]`来初始化`std::string`，按照前面的代码实现，它的确会进入到带有万能引用参数的构造函数，然后被层层传递，直到最后初始化`std::string name`的时候才出错。
+
+因为`std::string`是用`char`实现的，不是`char16_t`，所以报错是正常的，但这时候根据Scott的说法，编译器报告了一个长达160行的错误信息，这就十分难懂且令人困惑了。
+
+所以，Scott提到的一个用来缓解第二个影响的办法是，加入`static_assert`并写明信息，从而使得我们能够看懂问题出现在什么地方。
+
+```cpp
+// In C++11 style
+class Person {
+public:
+	template<typename T,
+			 typename = typename std::enable_if<
+							!std::is_base_of<Person, typename std::decay<T>::type>::value
+                             &&
+                             !std::is_integral<typename std::remove_reference<T>>::value
+                        >::type
+    >
+	explicit Person(T&& n) {
+    	// assert that a std::string can be created from a T object
+		static_assert(std::is_constructible<std::string, T>::value,
+					  "Parameter n can't be used to construct a std::string");
+    }
+    
+    Person(const Person&); // compiler might generate
+    Person(const Person&&); // compiler might generate
+
+private:
+	std::string name;
+};
+```
+
+
+
+### Things to Remember
+
+> - Alternatives to the combination of universal references and overloading include the use of **distinct function names**, **passing parameters by lvalue-reference-to-const**, **passing parameters by value**, and using **tag dispatch**.
+> - **Constraining templates** via `std::enable_if` permits the use of universal references and overloading together, but it controls the conditions under which compilers may use the universal reference overloads.
+> - Universal reference parameters often have efficiency advantages, but they typically have usability disadvantages.
+
+
+
+
 
 
 
