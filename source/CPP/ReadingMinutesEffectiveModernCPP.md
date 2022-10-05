@@ -460,6 +460,22 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **sure-fire** *adj.* （非正式）一定能成功的
 
+**emblazon** */ɪmˈbleɪzn/* *vt.* 颂扬；用纹章装饰
+
+**salient** */ˈseɪliənt/* *adj.* 突出的，显著的；（角）凸出的；（纹章，动物）后腿站立前爪举起的；*n.* （防御工事的）凸出部分
+
+**decree** */dɪˈkriː/* *n.* 法令，政令；裁定，判决；*v.* 裁定，判决，颁布
+
+**awry** */əˈraɪ/* *adj.* 脱离既定路线的；歪的；*adv.* 迷途地；歪（比如，go awry）
+
+**plop** */plɑːp/*  *v.* 扑通落下；扑通一声把……放入（尤指液体）；重重地坐下，躺下（比如，plop into）
+
+**adage** */ˈædɪdʒ/* *n.* 格言，谚语；箴言
+
+**weasel** */ˈwiːzl/* *n.* 鼬，黄鼠狼；（非正式）狡猾的人；*v.* 逃避，逃脱；欺骗
+
+
+
 
 
 
@@ -564,7 +580,9 @@ Usage of **do you good**（To have a positive effect on someone）
 
 > The existence move support in your compilers is likely to **do you** little **good**.
 
+Usage of **tear sth. open**
 
+> tear the box open
 
 
 
@@ -626,7 +644,7 @@ Usage of **do you good**（To have a positive effect on someone）
 
 **atomic** */əˈt**ɒ**mɪk/*
 
-
+**epsilon** */ˈ**e**psɪlɑːn/*
 
 
 
@@ -634,7 +652,15 @@ Usage of **do you good**（To have a positive effect on someone）
 
 - 编译器生成的special member function都是`inline`
 
+- 对于`static const`的integral类型的类的静态成员变量，可以只声明不定义，编译器会帮忙处理（是把所有用到的地方做替换，而不是帮忙补上定义）。
 
+  但如果要使用到指向它的指针的时候（需要取得存储地址），那么就会在链接的阶段失败，因为没有定义！
+
+  当然有些编译器对这种情况做了支持，即在没有定义的情况下也可以取得其地址（编译器帮了忙）
+
+  > As a general rule, there’s no need to define integral `static` `const` data members in classes; declarations alone suffice. That’s because compilers perform `const` propagation on such members’ values, thus eliminating the need to set aside memory for them. 
+  >
+  > If that value's address were to be taken (e.g., if somebody created a pointer to it), then that variable would require storage (so that the pointer had something to point to), and the code above, though it would compile, would fail at link-time until a definition for that variable was provided.
 
 
 
@@ -6035,11 +6061,156 @@ STL中为了保证C++98的代码中依赖不抛异常的拷贝操作的特性不
 
 
 
+## Item 30: Familiarize yourself with perfect forwarding failure cases.
+
+本节主要讨论几种完美转发失败的情况
+
+- Braced initializers
+
+
+
+### 什么是 *perfect forwarding*？
+
+完美转发，顾名思义，就是一个函数把它的参数转发给另外一个函数。
+
+目的是，使得第二个函数接收到的参数，和第一个函数接收到的参数，是相同的。
+
+完美转发**不包括值传递**，原因是值传递是拷贝了原先传给第一个函数的参数，而我们想要的是，第二个函数操作的是传入第一个函数的原始参数。
+
+完美转发也**不包括指针传递**。
+
+所以，完美转发**只是引用传递**。
+
+而且完美转发**只能是万能引用**，原因是，我们要转发参数的类型、左右值属性已经它们是否是`const`或`volatile`，而只有万能引用才能满足这个条件。
+
+
+
+### 基本的转发样板
+
+本文所讨论的转发样板如下
+
+```cpp
+template<typename T>
+void fwd(T&& param) { // accept any argument
+	f(std::forward<T>(param)); // forward it to f
+}
+```
+
+如果是基于可变参数的转发，样板如下
+
+```cpp
+template<typename... Ts>
+void fwd(Ts&&... params) { // accept any arguments
+	f(std::forward<Ts>(params)...); // forward them to f
+}
+```
+
+
+
+### 完美转发失败的两个原因
+
+后面讨论的完美转发失败的两个原因，从概念上来讲分别是
+
+- **Compilers are unable to deduce a type**
+- **Compilers deduce the “wrong” type **
 
 
 
 
 
+### Braced initializersr
+
+如果`f`的声明是
+
+```cpp
+void f(const std::vector<int>& v);
+```
+
+那么给`f`传入使用花括号列表的参数，`f`是可以正常调用的（隐式转换为`std::vector`）
+
+```cpp
+f({ 1, 2, 3 }); // fine, "{1, 2, 3}" implicitly converted to std::vector<int>
+```
+
+但如果给`fwd`传入使用花括号列表的参数，编译就失败
+
+```cpp
+fwd({ 1, 2, 3 }); // error! doesn't compile
+```
+
+这是完美转发失败的一个例子。
+
+前面`f({1,2,3})`编译成功的原因是，编译器看到了在调用处的实参，并且也知道函数`f`声明的形参，然后把形参和实参做了比较，并查看是否兼容，而且，如果需要的话，会做隐式的转换。
+
+而`fwd({1,2,3})`编译失败的原因是，编译器中编译`f(std::forward<T>(param))`这句调用的时候，它查看的并不是传给`fwd`的（实际）参数，而是经过类型推导的参数，然后才和函数`f`声明的形参进行比较。
+
+根据C++标准指出，把一个braced initializer传给一个形参声明不是`std::initializer_list`的函数模板，会得到一个"non-deduced context"（不可推导的内容）。这里`fwd`的形参声明不是`std::initializer_list`，所以把一个braced initializer（`{1, 2, 3}`）传递给它，导致编译器被禁止推导类型，从而导致编译失败。
+
+解决的办法是，使用`auto`。原因是使用braced initializer初始化一个`auto`声明的变量时，编译器被允许将其推导为一个`std::initializer_list`，然后再将这个变量传入`fwd`即可。
+
+```cpp
+auto il = { 1, 2, 3 }; // il's type deduced to be std::initializer_list<int>
+fwd(il); // fine, perfect-forwards il to f
+```
+
+
+
+### 0 or NULL as null pointers
+
+Item 8中曾经提到，编译器实际上是把`0`和`NULL`当做`int`（或`int`-like）类型的，只有当不得已的时候才被迫转换成指针。
+
+而当把`0`和`NULL`当做参数传递时，前面的类型推导就会把它们推导成`int`（或`int`-like）类型，而不是我们想要的指针类型。
+
+解决的办法也很简单，就是使用`nullptr`。
+
+
+
+
+
+### Declaration-only integral `static` `const` data members
+
+对于`static const`的integral类型的类的静态成员变量，可以只声明不定义，编译器会帮忙处理（是把所有用到的地方做替换，而不是帮忙补上定义）。
+
+但如果要使用到指向它的指针的时候（需要取得存储地址），那么就会在链接的阶段失败，因为没有定义！
+
+当然有些编译器对这种情况做了支持，即在没有定义的情况下也可以取得其地址（编译器帮了忙）
+
+> As a general rule, there’s no need to define integral `static` `const` data members in classes; declarations alone suffice. That’s because compilers perform `const` propagation on such members’ values, thus eliminating the need to set aside memory for them. 
+>
+> If that value's address were to be taken (e.g., if somebody created a pointer to it), then that variable would require storage (so that the pointer had something to point to), and the code above, though it would compile, would fail at link-time until a definition for that variable was provided.
+
+
+
+如果有一个`static` `const`静态成员变量（只声明未定义），以及函数`f`的声明如下
+
+```cpp
+class Widget {
+public:
+	static const std::size_t MinVals = 28; // MinVals' declaration
+};
+
+void f(std::size_t val);
+```
+
+那么直接使用`Widget::MinVals`来调用`f`是可以的（因为编译器做了替换）
+
+```cpp
+f(Widget::MinVals); // fine, treated as "f(28)"
+```
+
+但如果把它传入`fwd`，在链接的时候就会失败
+
+```cpp
+fwd(Widget::MinVals); // error! shouldn't link
+```
+
+原因是，`fwd`的形参是万能引用，它是引用，所以它本质上和指针是同一回事，那么指针所指向的内容就得有内存的地址，否则就链接失败了。
+
+但因为有的编译器对这种情况做了特殊处理，所以可能链接也会成功。如果编译器没有处理，就简单地给这个成员变量加上定义即可。
+
+```cpp
+const std::size_t Widget::MinVals; // in Widget's .cpp file
+```
 
 
 
