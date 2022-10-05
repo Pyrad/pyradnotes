@@ -474,13 +474,9 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **weasel** */ˈwiːzl/* *n.* 鼬，黄鼠狼；（非正式）狡猾的人；*v.* 逃避，逃脱；欺骗
 
+**perennial** */pəˈreniəl/* *adj.* 多年生的；常年的；四季不断的；常在的；反复的；*n.* 多年生植物
 
-
-
-
-
-
-
+**fuss** */fʌs/* *n.* 大惊小怪，紧张不安；（为小事）大发牢骚；反对，抗议；繁琐的手续，麻烦；*v.* 大惊小怪，瞎忙活；过分体贴（fuss over）；使烦恼，烦扰
 
 
 
@@ -649,6 +645,10 @@ Usage of **tear sth. open**
 
 
 # Things to Remember
+
+- non-`const`引用不能绑定到bit field上
+
+  > A non-`const` reference shall not be bound to a bit-field.
 
 - 编译器生成的special member function都是`inline`
 
@@ -6214,7 +6214,147 @@ const std::size_t Widget::MinVals; // in Widget's .cpp file
 
 
 
+### Overloaded function names and template names
 
+如果一个函数***f***的参数是一个函数指针，那么其实可以将合适的函数的名字传入函数***f***，由编译器来帮助处理。
+
+因为编译器可以根据函数的名字找到对应的函数的地址，从而得到对应的函数指针，哪怕是重载函数也可以。
+
+假如前面提到的函数`f`接收一个函数指针作为参数，那么函数`f`的声明可以如下
+
+```cpp
+void f(int (*pf)(int)); // pf = "processing function"
+```
+
+而且更简单地，可以写成没有指针的语法形式如下
+
+```cpp
+void f(int pf(int)); // declares same f as above
+```
+
+现在，假如有两个重载函数，其中第一个接收一个`int`参数，并返回一个`int`；第二个有两个`int`参数，并且返回一个`int`。
+
+```cpp
+int processVal(int value);
+int processVal(int value, int priority);
+```
+
+那么实际上，我们可以直接把函数名称`processVal`当做参数传递给函数`f`实现函数调用。
+
+尽管函数`f`的参数是一个函数指针，但编译器知道`f`的参数类型是什么，因此可以通过函数名字得出对应的函数地址并得到函数指针，哪怕是多个重载函数，编译器也可以找到。
+
+但如果我们把这个`processVal`函数名字传递给前面的`fwd`函数，并期望能够实现完美转发，就发现会失败了。
+
+```cpp
+fwd(processVal); // error! which processVal?
+```
+
+原因是，`fw`是一个函数模板，它本身没有关于参数类型的任何信息，它得需要从一个具体的传入它的参数身上进行类型推导，而恰恰`processVal`这个函数名字没有关于类型的任何信息（因为有多个重载），所以编译器没有知道应该选择哪一个。
+
+类似的，如果我们要给`fwd`函数传入一个函数模板，这正如前面所述，是不正确的。因为传入的函数模板不代表某一个单独的具体的函数，而是好多不同（参数类型/返回类型）的函数。
+
+```cpp
+template<typename T>
+T workOnVal(T param) { /* ... */ } // template for processing values
+
+fwd(workOnVal); // error!!! which workOnVal instantiation?
+```
+
+
+
+所以，如果要把一个重载函数或是函数模板当做参数传递给完美转发的函数，需要手动的具体指明是哪一个重载函数，或是哪一个函数模板的实例化。
+
+下面分别是指明了一个具体的重载函数，以及一个具体的实例化了的函数模板，把它们当做参数传入再完美转发。
+
+```cpp
+// make typedef;  see Item 9
+using ProcessFuncType = int (*)(int);
+ProcessFuncType processValPtr = processVal; // specify needed signature for processVal
+
+fwd(processValPtr); // fine
+fwd(static_cast<ProcessFuncType>(workOnVal)); // also fine, see above for workOnVal
+```
+
+对应第一个重载函数，首先使用了alias的`using`语法，得到了一个对应的具体的重载函数signature，然后就可以传入带有万能引用的函数`fwd`进行转发了。
+
+第二个传入的是一个实例化了的模板函数`workOnVal`，它是使用了`static_cast<int(*)(int)>`对其进行了实例化。
+
+
+
+### Bitfields
+
+一个bitfield的例子如下，它把一个`uint32_t`的不同部分做了区分。
+
+```cpp
+struct IPv4Header {
+	std::uint32_t version:4,
+    				IHL:4,
+    				DSCP:6,
+    				ECN:2,
+    				totalLength:16;
+    /* ... */
+};
+```
+
+
+
+而C++标准明确指出：非`const`引用不能绑定到bit field上。
+
+> A non-`const` reference shall not be bound to a bit-field.
+
+原因是因为bitfield可以是机器字的任意部分（比如，bits 3-5 of a 32-bit `int`），所以没有办法直接取得它们对应的地址。
+
+而且C++指出最短的可以使用指针指向的是`char`类型。
+
+> C++ dictates that the smallest thing you can point to is a `char`
+
+而由于引用和指针的底层实现是一回事，所以指针没有办法指向一个bit field，同样地，一个引用也没有办法绑定到一个bit field。
+
+
+
+因此，如果前面的函数`f`的声明如下
+
+```cpp
+void f(std::size_t sz); // function to call
+```
+
+那它实际上可以使用如下字段调用函数`f`
+
+```cpp
+IPv4Header h;
+f(h.totalLength); // fine
+```
+
+但是，却不能使用这样的字段调用函数`fwd`（因为它带有万能引用），因为引用的底层实现和指针是一回事，而指针不可能指向某一个bit field（就如前面所述）
+
+```cpp
+fwd(h.totalLength); // error!!!
+```
+
+
+
+
+
+解决的办法也很简单，可以接收bit field的参数的有两种，一种是通过值传递（pass-by-value）的参数，另一种是`const`引用。
+
+所以，要么是通过值传递的办法，使得参数拷贝传入的bit field；要么是通过`const`引用的办法，把这个`const`引用绑定到一个标准的integral type（比如`int`）对象上，并且保证传入bit field和那个被绑定的integral type对象的bit field相同。
+
+这里使用了第一种办法，如下。
+
+```cpp
+// copy bitfield value; see Item 6 for info on init. form
+auto length = static_cast<std::uint16_t>(h.totalLength);
+fwd(length); // forward the copy
+```
+
+
+
+
+
+### Things to Remember
+
+> - Perfect forwarding fails when template type deduction fails or when it deduces the wrong type.
+> - The kinds of arguments that lead to perfect forwarding failure are braced initializers, null pointers expressed as `0` or `NULL`, declaration-only integral `const` static data members, template and overloaded function names, and bitfields.
 
 
 
