@@ -446,6 +446,24 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **reprimand** */ˈreprɪmænd/* *n.* 谴责，训斥；*v.* 谴责
 
+**conformant** */kənˈfôrmənt/* 顺应，一致。(especially of technology) compatible or conforming with appropriate standards
+
+**shazam** */ʃəˈzæm/* *int.* 快变（用于引入惊人的行为、故事或变化）
+
+**aura** */ˈɔːrə/* *n.* 气氛，氛围；（据说由生物体散发出的）光影；（任何看不到的）发散物（尤指气味）；（癫痫或偏头痛发作前的）先兆，预感
+
+**overhaul** */ˌoʊvərˈhɔːl/* *v.* 彻底检修，全面改造；全面改革（制度或方法）；（尤指在体育竞赛中）赶上，超过；*n.*大修，彻底检修；
+
+**caveat** */ˈkæviæt/* *n.* <正式>警告，限制性条款；<法律>预告登记（尤指遗嘱检验中，非告知本人而不得进行某行为的通知）
+
+**glass-half-full** 乐观的（非正式）
+
+**sure-fire** *adj.* （非正式）一定能成功的
+
+
+
+
+
 
 
 
@@ -529,6 +547,28 @@ Usage of **count your blessings**（知足吧；多往好处想；知足常乐�
 Usage of **flap about**（摆动，拍翅飞行）
 
 > There’s still one loose end from Item 26 that continues to **flap about**.
+
+
+
+Usage of **pull off**（赢得；脱下；努力实现）
+
+> Move semantics can really **pull** that **off**
+
+Usage of **keep expectations grounded**（符合实际）
+
+> The purpose of this Item is to keep your expectations grounded.
+
+
+
+Usage of **do you good**（To have a positive effect on someone）
+
+> The existence move support in your compilers is likely to **do you** little **good**.
+
+
+
+
+
+
 
 
 
@@ -5927,6 +5967,89 @@ typedef Widget& RvalueRefToT;
 > - Reference collapsing occurs in four contexts: template instantiation, `auto` type generation, creation and use of `typedef`s and alias declarations, and `decltype`.
 > - When compilers generate a reference to a reference in a reference collapsing context, the result becomes a single reference. If either of the original references is an lvalue reference, the result is an lvalue reference. Otherwise it’s an rvalue reference.
 > - Universal references are rvalue references in contexts where type deduction distinguishes lvalues from rvalues and where reference collapsing occurs.
+
+
+
+
+
+## Item 29: Assume that move operations are not present, not cheap, and not used.
+
+本节的主要目的是，强调移动操作并不是总是可以使用的，或者并不是总比拷贝快。
+
+使用移动操作其实有条件的，而且有时候因为条件限制，不一定比拷贝更快。
+
+C++11确实对C++98的STL做了彻底的改进，以便支持移动语义（操作），但确实有的地方是不适合或者没有办法使用移动语义（操作），所以并不是所有地方都支持了移动语义（操作）。
+
+Scott Meyers举例说明了这几点。
+
+
+
+### `std::array`的移动操作
+
+像`std::vector`这样的容器，可以简单地认为它有一个指向堆上内存的指针，所以当需要移动操作的时候，就能直接把指针所指向的地址赋值给target `std::vector`，并把source的指针置空。
+
+```cpp
+std::vector<Widget> vw1;
+/* ... */ // put data into vw1
+// move vw1 into vw2. Runs in constant time. Only ptrs in vw1 and vw2 are modified
+auto vw2 = std::move(vw1);
+```
+
+但`std::array`没有这样的指针，因为它把数据存储在了对象本身里（即栈上），所以，`std::array`的移动操作本质上是拷贝操作。但有一点区别是，如果它里面的元素支持移动操作，那么`std::array`的移动操作就还是要比它的拷贝操作快一些，但这比我们预期的像`std::vector`那样的快是差一些的。
+
+```cpp
+std::array<Widget, 10000> aw1;
+/* ... */ // put data into vw1
+// move aw1 into aw2. Runs in linear time. All elements in aw1 are moved into aw2
+auto aw2 = std::move(aw1);
+```
+
+
+
+### `std::string`的移动操作
+
+很多字符串的实现采用了所谓的**SSO**（small string optimization ），它的目的就是为了提高性能，这样可以在操作比较操作短字符串时，就直接使用其对象本身带有的栈上的一个buffer存储，而避免去堆上分配内存。
+
+很显然，对于这样的`std::string`，移动本质上就是拷贝，所以移动并不比拷贝更快。
+
+
+
+### 有异常的move操作
+
+STL中为了保证C++98的代码中依赖不抛异常的拷贝操作的特性不被破坏，即使有对应的移动操作比拷贝操作更快（而且实现同样功能），编译器也会被迫使用拷贝操作而不是移动操作，这是因为移动操作没有被声明为`noexcept`。
+
+
+
+### 总结
+
+总的来说，有以下几个原因导致移动操作不可用或没有更快
+
+- No move operations
+- Move not faster
+- Move not usable
+- Source object is lvalue
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
