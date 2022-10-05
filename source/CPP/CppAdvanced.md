@@ -9,7 +9,6 @@ This file shows some advanced usages of C/C++
 - What is a **literal type**?
 - What is **cv-qualified** ?
   - **cv** means `const` or `volatile`
-
 - What is trival default constructor
 - What is an aggregate (class) ?
 - What is **NRVO** ?
@@ -29,6 +28,9 @@ This file shows some advanced usages of C/C++
 - What is **SFINAE** ?
   - **SFINAE** = **S**ubstitution **F**ailure **I**s **N**ot **A**n **E**rror
   - Refer to page in [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae)
+- What is **SSO** ?
+  - **SSO** = **S**mall **S**tring **O**ptimization
+  - A technique to improve performance for string implementations.
 
 
 
