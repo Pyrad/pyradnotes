@@ -478,7 +478,7 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **fuss** */fʌs/* *n.* 大惊小怪，紧张不安；（为小事）大发牢骚；反对，抗议；繁琐的手续，麻烦；*v.* 大惊小怪，瞎忙活；过分体贴（fuss over）；使烦恼，烦扰
 
-
+**enormous** */ɪˈnɔːrməs/* *adj.* 巨大的，极大的；<古>凶暴的，极恶的
 
 
 
@@ -6355,6 +6355,54 @@ fwd(length); // forward the copy
 
 > - Perfect forwarding fails when template type deduction fails or when it deduces the wrong type.
 > - The kinds of arguments that lead to perfect forwarding failure are braced initializers, null pointers expressed as `0` or `NULL`, declaration-only integral `const` static data members, template and overloaded function names, and bitfields.
+
+
+
+
+
+
+
+# Chapter 6 Lambda Expressions
+
+什么是 ***lambda***？
+
+- ***lambda*** 是一个表达式，是源代码的一部分。
+- ***闭包（closure）*** 是lambda创建的一个运行时的对象，根据不同的模式，它赋值或者引用了捕获的数据
+- ***闭包类（closure class）*** 是***闭包（closure）*** 实例化之后的一个类。编译器会给每个lambda表达式生成唯一的**闭包类**。Lambda内部的语句就变成了这个类的成员函数的可执行指令。
+
+> - A lambda expression is just that: ***an expression***. It’s part of the source code.
+> - A ***closure*** is the runtime object created by a lambda. Depending on the capture mode, closures hold copies of or references to the captured data.
+> - A ***closure class*** is a class from which a closure is instantiated. Each lambda causes compilers to generate a unique closure class. The statements inside a lambda become executable instructions in the member functions of its closure class.
+
+
+
+lambda生成的的闭包，除了可以当做诸如`std::find_if`等函数的参数外，还可以被复制，所以可以有多个闭包是同一个lambda生成的同一个闭包类型。
+
+> However, closures may generally be copied, so it’s usually possible to have multiple closures of a closure type corresponding to a single lambda.
+
+```cpp
+{
+	int x; // x is local variable
+     // c1 is copy of the closure produced by the lambda
+	auto c1 = [x](int y) { return x * y > 55; };
+	auto c2 = c1; // c2 is copy of c1
+	auto c3 = c2; // c3 is copy of c2
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
