@@ -480,6 +480,22 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **enormous** */ɪˈnɔːrməs/* *adj.* 巨大的，极大的；<古>凶暴的，极恶的
 
+**lull** */lʌl/* *v.* 使安静，使昏昏欲睡；使（人）放松警惕，哄骗；（使）减弱，平息，停止；*n.* 间歇，暂时平静；低谷期
+
+**admonition** */ˌædməˈnɪʃ(ə)n/* *n.* 警告
+
+**elixir** */ɪˈlɪksər/* *n.* 灵丹妙药；炼金药；长生不老药；酏剂
+
+**precarious** */prɪˈkeriəs/* *adj.* 摇摇欲坠的，不稳固的；（局势）不确定的，危险的
+
+**uninitiated** */ˌʌnɪˈnɪʃieɪtɪd/* *adj.* 不知情的；缺少经验的
+
+**blissfully** */ˈblɪsfəli/* *adv.* 幸福地；充满喜悦地
+
+**hinge** */ˈhɪndʒ/* *n.* 铰链，合叶；枢纽，关键；铰合部；*v.* 给（某物）装铰链
+
+**insulate** */ˈɪnsəleɪt/* *v.* 使隔热，使隔音，使绝缘；使隔离，使免受（不良影响等）；<古>使（陆地）成岛屿
+
 
 
 
@@ -6394,7 +6410,188 @@ lambda生成的的闭包，除了可以当做诸如`std::find_if`等函数的参
 
 
 
+## Item 31: Avoid default capture modes.
 
+
+
+C++11的lambda有两种默认的捕获模式
+
+- 引用捕获（default by-reference）
+- 值捕获（default by-value）
+
+默认引用捕获可能造成悬空的引用，默认的值捕获实际上也会导致悬空的引用（而且也不像它看上去那样是自洽的。）
+
+
+
+**C++11中lambda捕获的引用或者变量，都是在lambda被定义处范围（scope）的局部变量或者参数。**也就是说，lambda生成的closure中会包含这些局部变量或参数的引用或变量拷贝。
+
+**这也同时说明，lambda是不会捕获`static`变量的（无论是`class`的还是全局的）**
+
+> Captures apply only to non-`static` local variables (including parameters) visible in the scope where the lambda is created. 
+
+
+
+### 捕获引用可能造成引用“悬空”
+
+**C++11中lambda捕获的引用或者变量，都是在lambda被定义处范围（scope）的局部变量或者参数。**也就是说，lambda生成的closure中会包含这些局部变量或参数的引用或变量拷贝。
+
+这意味着，如果一个lambda生成的closure的生命周期，如果比捕获的引用（或变量）生命周期更长，或者超出了它们的定义范围，那么这个引用就可能“悬空”。（后面会看到，如果是值捕获，且是指针的话，同样可能悬空）
+
+
+
+Scott Meyers举了个例子，定义了一个全局的存储`std::function`的`std::vector`，它用来存储lambda生成的那些closure。
+
+```cpp
+using FilterContainer = std::vector<std::function<bool(int)>>;
+FilterContainer filters; // filtering funcs
+```
+
+如果按照下面的方式，使用默认捕获引用，就会导致，离开这个函数之后，所引用的`divisor`就不存在了（因为引用了一个局部变量，而离开这个函数之后那个局部变量就不存在了），这时候再使用所存储的closure，就会发生未定义的行为（undefined behavior）
+
+```cpp
+void addDivisorFilter() {
+	auto calc1 = computeSomeValue1();
+	auto calc2 = computeSomeValue2();
+	auto divisor = computeDivisor(calc1, calc2);
+	// danger! ref to divisor will dangle!
+    filters.emplace_back( [&](int value) { return value % divisor == 0; } );
+} 
+```
+
+哪怕使用显示地具名引用捕获，也会产生同样的问题
+
+```cpp
+// Still in funtion addDivisorFilter
+// danger! ref to divisor will still dangle!
+filters.emplace_back( [&divisor](int value) { return value % divisor == 0; } );
+```
+
+
+
+Scott Meyers还提到，哪怕创建的lambda马上就会使用，也不准备复制它，那么有人觉得隐式的引用捕获就不会有提到的引用悬空的问题。
+
+Scott Meyers的建议是，因为这样的lambda也许会在之后认为是有用的，而且可以被用到其他的地方，所以可能会被单独复制出来放到别的地方（比如容器里面）去使用，这时候就又回到了之前所提到的引用悬空的问题上了。
+
+所以Scott Meyers说，像这样的情况，最好显示地把lambda要捕获的变量或参数列出来，防止意外发生。
+
+而针对上面的引用悬空的问题，就使用**值捕获**的办法，而且不是**隐式的值捕获**。
+
+
+
+### 隐式的值捕获也可能造成“悬空”
+
+Scott Meyers也提到了，（隐式的）值捕获也不是消除“悬空”问题的灵丹妙药。
+
+他以下面的例子做了说明。
+
+```cpp
+class Widget {
+public:
+	/* ... */ // ctors, etc.
+	void addFilter() const; // add an entry to filters
+private:
+	int divisor; // used in Widget's filter
+};
+
+void Widget::addFilter() const {
+	filters.emplace_back( [=](int value) { return value % divisor == 0; });
+}
+```
+
+这个`Widget::addFilter`乍一看好像没问题，使用了隐式的值捕获，好像是要捕获成员变量`divisor`，但实际上问题就在这里：lambda只捕获局部变量和参数，不捕获`static`和成员变量。而这里`divisor`就是成员变量，它是不能捕获的。
+
+一旦写成下面的两种形式，编译就会失败
+
+```cpp
+// Failure example 1: no local divisor available
+void Widget::addFilter() const {
+	filters.emplace_back( [](int value) { return value % divisor == 0; });
+}
+// Failure example 2: no local divisor available
+void Widget::addFilter() const {
+	filters.emplace_back( [divisor](int value) { return value % divisor == 0; });
+}
+```
+
+上面的第一种写法，没有捕获变量或引用，所以找不到`divisor`。
+
+上面的第二种写法，目的是为了捕获`divisor`，但`divisor`不是局部变量，而是成员变量。根据lambda不捕获成员变量的规则，所以找不到`divisor`。
+
+
+
+可上面`[=]`这样写的这段代码又确实可以编译，为什么？因为（隐式）捕获的值实际上是`this`指针。
+
+实际上`Widget::addFilter`里面的lambda等价于下面的代码
+
+```cpp
+void Widget::addFilter() const {
+	auto cptr = this;
+	filters.emplace_back( [cptr](int value) { return value % cptr->divisor == 0; } );
+}
+```
+
+所以，捕获的实际上是`this`指针。而且正因为这样做捕获了`this`指针（值捕获），就带来了**潜在的风险**。
+
+比如有下面调用函数`Widget::addFilter`的代码
+
+```cpp
+using FilterContainer = std::vector<std::function<bool(int)>>; // as before
+FilterContainer filters; // as before
+
+void doSomeWork() {
+	auto pw = std::make_unique<Widget>(); // create Widget
+	pw->addFilter(); // add filter that uses Widget::divisor
+    /* ... */ // other operations
+} // destroy Widget; filters now holds dangling pointer!
+```
+
+就像注释里面提到的，因为lambda捕获的是`this`指针（值捕获），所以这个`std::vector`里面存储的closure里面包含的实际上是一个`this`指针，而当那个`this`指针所指向的对象（由`std::unique_ptr`管理）被销毁了之后，再去访问和调用容器里面存储的closure时，问题就出现了：存储的`this`指针实际上已经“悬空”了。
+
+
+
+要解决这个问很简单，把要使用的成员变量拷贝到一个局部变量上，然后让lambda值捕获即可。
+
+```cpp
+void Widget::addFilter() const {
+	auto dvs = divisor; // copy data member
+	filters.emplace_back( [dvs](int value) { return value % dvs == 0; } );
+}
+```
+
+
+
+### 值捕获的lambda也不是自成一统
+
+原因就是，lambda不会不会`static`变量，不论是`class`的`static`还是文件的`static`变量。
+
+Scott Meyers再次强调了，**lambda只捕获non-`static`的局部变量和参数。**
+
+还是前面同样的例子：向一个全局的容器里添加closure。
+
+```cpp
+using FilterContainer = std::vector<std::function<bool(int)>>; // as before
+FilterContainer filters; // as before
+
+void addDivisorFilter() {
+	static auto calc1 = computeSomeValue1(); // now static
+	static auto calc2 = computeSomeValue2(); // now static
+	static auto divisor = computeDivisor(calc1, calc2);// now static
+    // captures nothing! refers to above static
+	filters.emplace_back( [=](int value) { return value % divisor == 0; } );
+	++divisor; // modify divisor
+}
+```
+
+上面的代码中，因为`divisor`已经变成了函数的`static`变量，所以实际上`[=]`什么也没有捕获，所以lambda生成的closure里面使用的`divisor`是一个`static`的变量，等到这个closure实际被调用的时候，`divisor`的值也许早都变了！
+
+这个例子也同时说明了，哪怕是用值捕获，有时候，lambda也不是自成一体，独立于其他变量之外的。
+
+
+
+### Things to Remember
+
+> - Default by-reference capture can lead to dangling references.
+> - Default by-value capture is susceptible to dangling pointers (especially this), and it misleadingly suggests that lambdas are self-contained.
 
 
 
