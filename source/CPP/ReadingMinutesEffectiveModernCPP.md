@@ -496,6 +496,14 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **insulate** */ˈɪnsəleɪt/* *v.* 使隔热，使隔音，使绝缘；使隔离，使免受（不良影响等）；<古>使（陆地）成岛屿
 
+**wordy** */ˈwɜːrdi/* *adj.* 冗长的；口头的；唠叨的；文字的
+
+**crux** */krʌks/* *n.* 关键，症结；难题；十字架形，坩埚
+
+
+
+
+
 
 
 
@@ -596,7 +604,9 @@ Usage of **tear sth. open**
 
 > tear the box open
 
+Usage of **fall into place**（依序排列；逐渐被理解）
 
+> You may need to consult your favorite C++11 reference before all the details of the foregoing discussion fall into place.
 
 
 
@@ -677,6 +687,12 @@ Usage of **tear sth. open**
   > As a general rule, there’s no need to define integral `static` `const` data members in classes; declarations alone suffice. That’s because compilers perform `const` propagation on such members’ values, thus eliminating the need to set aside memory for them. 
   >
   > If that value's address were to be taken (e.g., if somebody created a pointer to it), then that variable would require storage (so that the pointer had something to point to), and the code above, though it would compile, would fail at link-time until a definition for that variable was provided.
+
+- lambda expression的**本质**实际上是：**用一种简便的办法，让编译器创建一个类，并创建一个类的对象。**
+
+
+
+
 
 
 
@@ -6597,7 +6613,209 @@ void addDivisorFilter() {
 
 
 
+## Item 32: Use init capture to move objects into closures.
 
+### C++11的lambda不支持移动捕获
+
+C++14**支持**、但C++11**不支持**以下两种情况
+
+- 把只能move的对象放入closure中，比如`std::unique_ptr`，`std::future`等。
+- 把move比copy更高效的对象放入closure中，比如STL中的容器。
+
+这两种情况都是所谓的**移动捕获（move capture）**。
+
+
+
+有一些workaround能使得C++11把一个对象“移动”入一个closure中。
+
+C++11中缺少**移动捕获（move capture）**被认为是一个缺点，C++14做了弥补。但移动捕获只是C++14中捕获机制的一项。
+
+C++14中引入的机制叫做 ***init capture***（又叫做 ***generalized lambda capture***），C++11能做的它都能做，而且能做的更多。但***init capture***不支持default capture mode（尽管前面一节讲了应该避免这种捕获模式）
+
+
+
+使用 ***init capture*** 可以使我们明确指明
+
+- lambda生成的closure中的数据成员的名字
+- 用来初始化那个数据成员的表达式
+
+> - the name of a data member in the closure class generated from the lambda and
+>
+> - an expression initializing that data member.
+
+
+
+### C++14移动捕获示例
+
+假如有一个`class`，打算创建一个它的`std::unique_ptr`，并把它移入一个lambda中。
+
+```cpp
+class Widget { // some useful type
+public:
+	bool isValidated() const;
+	bool isProcessed() const;
+	bool isArchived() const;
+private:
+	/* ... */
+};
+```
+
+下面是创建一个`std::unique_ptr`，并把它移入一个lambda中（C++14的移动捕获）。
+
+```cpp
+auto pw = std::make_unique<Widget>(); // create Widget
+/* ... */ // configure *pw
+// Create a lambda
+auto func = [pw = std::move(pw)] // init data mbr in closure w/ std::move(pw)
+			{ return pw->isValidated() && pw->isArchived(); };
+```
+
+在C++14的移动捕获中，等号`=`左边的`pw`是closure里面的数据成员，而等号`=`右边的是用来初始化它的表达式。
+
+其中，等号`=`左边的`pw`，它的作用域是在closure中，而等号`=`右边的`pw`（`std::move`中）的作用域是和lambda所定义的作用域一致。这两个是不同的变量。
+
+换句话说，是在closure中创建一个数据成员`pw`，并用移动了一个当前局部变量`pw`的结果去初始化它。
+
+> So `pw = std::move(pw)` means “create a data member `pw` in the closure, and initialize that data member with the result of applying `std::move` to the local variable `pw`.”
+
+
+
+如果不需要修改创建的局部变量`pw`的话，那么lambda表达式就可以直接写成如下的形式
+
+```cpp
+// In C++14 style
+// init data mbr (pw) in closure w/ result of call to make_unique
+auto func = [pw = std::make_unique<Widget>()]
+			{ return pw->isValidated() && pw->isArchived(); };
+```
+
+因为C++11中lambda没有办法捕获一个表达式，而C++14可以，所以这种捕获更一般化，所以 ***init capture*** 也叫做 ***generalized lambda capture***。
+
+
+
+### C++11实现“移动捕获”的办法（用类）
+
+lambda expression的**本质**实际上是：**用一种简便的办法，让编译器创建一个类，并创建一个类的对象。**
+
+所以，lambda能做的，你都能做。
+
+> There is nothing you can do with a lambda that you can’t do by hand.
+
+下面是以C++11的方式，通过**创建类的办法**，把上面的C++14的lambda代码做了实现（实际就是创建了类和类的对象）
+
+```cpp
+class IsValAndArch { // "is validated and archived"
+public:
+	using DataType = std::unique_ptr<Widget>;
+	// Use of std::move
+    explicit IsValAndArch(DataType&& ptr) : pw(std::move(ptr)) {}
+    // Define a callable operator
+	bool operator()() const { return pw->isValidated() && pw->isArchived(); }
+
+private:
+    // A data member for capture
+	DataType pw;
+};
+
+// Create an object of that class, using move ctor
+auto func = IsValAndArch(std::make_unique<Widget>());
+```
+
+注意，创建的`operator()()`是`const`的specifier。
+
+
+
+### C++11实现“移动捕获”的办法（用`std::bind`）
+
+在C++11中如果想实现移动捕获，除了创建类和类的对象，如果想仍然使用lambda的形式，就要用到`std::bind`。这个办法分两步
+
+- （1）使用`std::bind`创建一个function object，并且把需要移动捕获的对象移动到这个function object中
+- （2）需要给lambda表达式一个引用来指向被捕获的对象
+
+
+
+例如，有一个局部的`std::vecotor`，放入了一些数据，然后把它移动到一个closure中，**C++14**的lambda是
+
+```cpp
+std::vector<double> data; // object to be moved into closure
+/* .. */ // populate data
+
+auto func = [data = std::move(data)] { /* uses of data */ }; // C++14 init capture
+```
+
+而**C++11**使用`std::bind`，代码实现变为
+
+```cpp
+std::vector<double> data; // object to be moved into closure
+/* .. */ // populate data
+
+// C++11 emulation of init capture
+auto func = std::bind( [](const std::vector<double>& data) { /* uses of data */ },
+						std::move(data));
+```
+
+和lambda类似，`std::bind`也会生成一个function object（可调用的函数对象），Scott Meyers把这个function object叫做 ***bind object***。
+
+`std::bind`第一个参数是一个**可调用的对象**（实际上就是重载了`operator()()`），后面的参数是传递给那个可调用对象的参数。
+
+传递给`std::bind`的参数都是被拷贝到所谓的**bind object**（Scott语）中去的。如果是左值参数，**bind object**中的对象就是拷贝构造出来的；如果是右值参数，**bind object**中的对象就是移动构造出来的。
+
+上面`std::bind`的第二个参数是一个右值，所以`std::bind`生成的**bind object**中的对象就是移动构造出来的。
+
+当这个`std::bind`生成的**bind object**被调用的时候（即调用它的function call operator的时候），存储的在**bind object**中的参数就依次传递给那个callable object（这个callable object是原先传递给`std::bind`的第一个参数）。
+
+所以在上面的例子中就是，那个原先的局部变量`data`被move-constructed存储到了`std::bind`生成的**bind object**中，然后调用这个**bind object**的时候，这个已经存储到**bind object**中的move-constructed copy of `data`就被当做参数，传递给了那个保存的callable object，即那个lambda（会生成的closure，把那个参数存到closure里面，也就是说`std::bind`生成了一个函数对象，它所存储的lambda有再次会生成这个lambda对应的closure，然后把对应的参数存在lambda对应的closure里面）。
+
+因为lambda默认生成的成员函数`operator()()`是`const`，即`operator()() const`，这也意味着这个lambda生成的closure所存储的成员数据就都是`const`。
+
+而`std::bind`生成的**bind object**中存储的move-constructed copy of `data`不是`const`，所以为了防止lambda的closure里面的`data`被修改，就需要把lambda的参数改成reference-to-`const`。
+
+如果把lambda声明成`mutable`，那么lambda生成的成员函数`operator()()`就**不再是**`const`了，这样就可以把lambda参数中的`const`限定去掉
+
+```cpp
+std::vector<double> data; // object to be moved into closure
+/* .. */ // populate data
+
+// C++11 emulation of init capture for mutable lambda
+auto func = std::bind( [](std::vector<double>& data) mutable { /* uses of data */ },
+						std::move(data));
+```
+
+
+
+因为`std::bind`生成的**bind object**，它存储的都是传递给`std::bind`的参数的拷贝，所以这个**bind object**也存储了一份lambda生成的closure的copy，所以这个closure就和这个**bind object**的生命周期一样长。
+
+
+
+关于`std::bind`需要注意的几点
+
+- C++11中，不能再closure中移动构造一个对象，但是可以在**bind object**（`std::bind`生成）中移动构造一个对象。
+- 在C++11（的lambda）中要模拟实现“移动捕获”的话，需要在一个**bind object**中移动构造一个对象，然后以引用的方式把那个移动构造的对象当做参数传递给lambda表达式。
+- 因为**bind object**的声明周期和它所包含的closure的生命周期一样长，所以可以认为那个在**bind object**中的（移动构造的）对象，就好像在closure中。
+
+
+
+最后，如果是C++14捕获表达式，C++11同样可以借用`std::bind`来实现
+
+```cpp
+// C++14 style capture expression
+// as before, create pw in closure
+auto func = [pw = std::make_unique<Widget>()] {
+    return pw->isValidated() && pw->isArchived();
+};
+
+// C++11 style to emulate capture expression
+auto func = std::bind([](const std::unique_ptr<Widget>& pw)
+                        { return pw->isValidated() && pw->isArchived(); },
+                      std::make_unique<Widget>() );
+```
+
+
+
+### Things to Remember
+
+> - Use C++14’s init capture to move objects into closures.
+> - In C++11, emulate ***init capture*** via hand-written classes or `std::bind`.
 
 
 

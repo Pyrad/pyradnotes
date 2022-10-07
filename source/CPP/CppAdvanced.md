@@ -21,6 +21,9 @@ This file shows some advanced usages of C/C++
   - What is ***closure*** ?
   - What is ***closure type*** ?
 
+- What is **init capture**？
+  - What is **generalized lambda capture** ?
+
 - What is **most vexing parse** ?
 - What is **narrowing conversions** ?
   - （类型）范围缩减转换
