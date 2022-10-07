@@ -915,6 +915,29 @@ pip uninstall -r packagelist.txt -y
 
 
 
+#### How to install some/all Python packages?
+
+可以直接把以下module名称写入到一个文件中，然后使用上面提到的命令中的`-r <package_list_file>`来一次性完成安装，`pip`会根据依赖关系寻找并下载其他需要的module，并且如果有版本要求，可能会卸载当前低版本的module，然后重新安装高版本的package。(2022-10-07)
+
+目前所用到的package（`pip`会一起安装别的依赖package），保存为文件`pypkglist.txt`
+
+```shell
+pandas
+sphinx_rtd_theme
+recommonmark
+pandoc
+sphinx_markdown_tables
+esbonio
+```
+
+然后执行（因为墙的缘故，使用阿里云的镜像来代替默认的镜像地址）
+
+```shell
+pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com esbonio -r pypkglist.txt -y
+```
+
+
+
 
 
 ## Clangd
