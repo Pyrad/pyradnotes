@@ -18,3 +18,4 @@ Notes
    bash
    Tcl
    geometry
+   ReadTheDoc
