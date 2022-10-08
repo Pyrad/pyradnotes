@@ -690,6 +690,12 @@ Usage of **fall into place**（依序排列；逐渐被理解）
 
 - lambda expression的**本质**实际上是：**用一种简便的办法，让编译器创建一个类，并创建一个类的对象。**
 
+- 当`std::forward<T>`的模板参数`T`
+
+  - 当`T`是非引用类型或右值引用的时候，返回的都是右值引用。
+  - 当`T`是左值引用时，返回的是左值引用
+
+
 
 
 
@@ -6822,6 +6828,130 @@ auto func = std::bind([](const std::unique_ptr<Widget>& pw)
 
 
 
+
+## Item 33: Use `decltype` on `auto&&` parameters to `std::forward` them.
+
+
+
+### C++14 Generic lambda
+
+C++14引入了 ***generic lambda***，它可以在参数前面使用**`auto`关键字**。
+
+```cpp
+auto f = [](auto x){ return func(normalize(x)); };
+```
+
+它等价于，由lambda生成的closure class的`operator()`是一个template函数
+
+```cpp
+class SomeCompilerGeneratedClassName {
+public:
+	template<typename T> // see Item 3 for auto return type (C++14)
+	auto operator()(T x) const { return func(normalize(x)); }
+	/* ... */ // other closure class functionality
+};
+```
+
+
+
+### 使用`auto&&`和`decltype`
+
+前面是个简单的例子，参数`x`是以值传递的方式传给函数`normalize`的。但如果函数`normalize`会按照参数的左值或右值属性分别做处理的话，那么参数`x`就必须以万能引用的方式进行传递。
+
+下面是一个直观的修改，但不完整。
+
+```cpp
+auto f = [](auto&& x) { return func(normalize(std::forward<???>(x))); };
+```
+
+此时就有问题了，因为`x`它虽然是万能引用，但它本身是一个具名变量，所以它也是一个左值，所以如果要保留它的左值和右值属性传递给函数`normalize`的话，就要使用`std::forward`。
+
+但使用`std::forward`，就需要指出它的类型`T`，即写作`std::forward<T>`。而此时`x`是以`auto&&`万能引用的形式给出的，并没有类型`T`。虽然这个lambda生成的closure class里面的`operator()`函数的模板参数是`T`，但那个只有编译器可以看到，写代码时并不能使用。
+
+这种情况下，就可以使用 **`decltype`**。
+
+根据item 28中的类型推导的规则，以及引用折叠规则
+
+- 如果万能引用绑定到一个左值（lvalue），那么`T`就被推导为左值引用（如`Widget&`），同时参数`x`就是左值引用（即例如`Widget& &&` == `Widget&`），即`decltype(x)`就是左值引用（如`Widget&`）
+- 如果万能引用绑定到一个右值（rvalue），那么`T`就被推导为非引用类型（如`Widget`），同时参数`x`就是右值引用（即`Widget &&` == `Widget&&`），即`decltype(x)`就是右值引用（如`Widget&&`）
+
+
+
+但是，同样根据item 28中，`std::forward`的使用惯例，当`T`是一个左值引用的时候（比如`Widget&`），那么转发的是一个左值，当`T`是一个非引用的时候（比如`Widget`），那么转发的是一个右值。
+
+即，`std::forward<Widget&>`转发的是左值，而`std::forward<Widget>`转发的是右值。
+
+
+
+那么前面的两种情况分别是`decltype(x)`为左值引用（如`Widget&`）和右值引用（如`Widget&&`），它们分别当做`std::forward`的模板参数，是否可以？
+
+答案是可以。
+
+原因是可以从`std::forward`的实现上得出答案。
+
+```cpp
+template<typename T> // in namespace std
+T&& forward(remove_reference_t<T>& param) {
+	return static_cast<T&&>(param);
+}
+```
+
+
+
+当`T`是左值引用，比如`Widget&`时，做简单的直接替换之后，可以发现返回的是左值引用（代码略）
+
+当`T`是非引用类型时，比如`Widget`时，做简单的直接替换之后，发现返回的是右值引用，代码如下。
+
+```cpp
+template<typename T> // in namespace std
+Widget&& forward(Widget& param) {
+	return static_cast<Widget&&>(param);
+}
+```
+
+当`T`是右值引用时，比如`Widget&&`时，做简单的直接替换之后，发现返回的是右值引用，代码如下。
+
+```cpp
+template<typename T> // in namespace std
+Widget&& && forward(Widget& param) {
+	return static_cast<Widget&& &&>(param);
+}
+```
+
+上面的代码经过引用折叠得到
+
+```cpp
+template<typename T> // in namespace std
+Widget&& forward(Widget& param) {
+	return static_cast<Widget&&>(param);
+}
+```
+
+
+
+所以，其实当`std::forward`的模板参数`T`是非引用类型或右值引用的时候，返回的都是右值引用。（当`T`是左值引用时，返回的是左值引用）
+
+因此，根据这个结论，`decltype(x)`是可以当做C++14 lambda里面的完美转发的模板参数的，即上面的例子可以写作
+
+```cpp
+auto f = [](auto&& x) { return func(normalize(std::forward<decltype(x)>(x))); };
+```
+
+
+
+由于C++14的lambda也支持 variadic lambda，所以它也可以支持多个参数的万能引用和完美转发
+
+```cpp
+auto f = [](auto&&... params) {
+	return func(normalize(std::forward<decltype(params)>(params)...));
+};
+```
+
+
+
+### Things to Remember
+
+> - Use `decltype` on `auto&&` parameters to `std::forward` them.
 
 
 
