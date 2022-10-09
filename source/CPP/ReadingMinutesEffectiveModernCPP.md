@@ -500,9 +500,9 @@ This is the ***[Errata Page](http://www.aristeia.com/BookErrata/emc++-errata.htm
 
 **crux** */krʌks/* *n.* 关键，症结；难题；十字架形，坩埚
 
+**ironclad** */ˈaɪənklæd/* *adj.* 装甲的；打不破的；坚固的；*n.* 装甲舰
 
-
-
+**audible** */ˈɔːdəb(ə)l/* *adj.* 听得见的
 
 
 
@@ -596,6 +596,12 @@ Usage of **keep expectations grounded**（符合实际）
 
 
 
+Usage of **go off**（*v.*爆炸；（警报器）响；（电器设备）停止运转；失去兴趣；（食物或饮料）变质；进展；入睡）
+
+> We’ve determined we’ll want an alarm that will **go off** an hour after it’s set and that will stay on for 30 seconds.
+
+
+
 Usage of **do you good**（To have a positive effect on someone）
 
 > The existence move support in your compilers is likely to **do you** little **good**.
@@ -608,7 +614,9 @@ Usage of **fall into place**（依序排列；逐渐被理解）
 
 > You may need to consult your favorite C++11 reference before all the details of the foregoing discussion fall into place.
 
+Usage of **in the know**（知情的；消息灵通的）
 
+> But even readers **in the know** have to mentally map from the number in that placeholder to its position
 
 
 
@@ -6952,6 +6960,322 @@ auto f = [](auto&&... params) {
 ### Things to Remember
 
 > - Use `decltype` on `auto&&` parameters to `std::forward` them.
+
+
+
+
+
+
+
+## Item 34: Prefer lambdas to `std::bind`.
+
+本节的主要目的是说明
+
+- 在C++14中，lambda可以做到`std::bind`能做到的一切，而且会做的更好，所以在C++14中应该使用lambda
+- 在C++11中，只有两种情况lambda做不到（move capture和templatized function call object），需要使用`std::bind`来代替，其他情况下，都应该使用lambda
+
+
+
+### C++11/14的lambda比`std::bind`更有可读性
+
+C++11和C++14中，lambda比 `std::bind`更好的原因之一就是，可读性强。
+
+> The most important reason to prefer lambdas over `std::bind` is that lambdas are more readable.
+
+
+
+举例，有个函数`setAlarm`来设定一个可发声的警报。
+
+```cpp
+// typedef for a point in time (see Item 9 for syntax)
+using Time = std::chrono::steady_clock::time_point;
+// see Item 10 for "enum class"
+enum class Sound { Beep, Siren, Whistle };
+// typedef for a length of time
+using Duration = std::chrono::steady_clock::duration;
+
+// at time t, make sound s for duration d
+void setAlarm(Time t, Sound s, Duration d);
+```
+
+
+
+我们需要设置它，并于设置1小时之后，发出警报，持续30秒，但是发出的声效是待定的（作为参数）。
+
+如果改用lambda的形式（C++11），就可以只用输入一个参数，即指明发出的声效。
+
+```cpp
+// setSoundL ("L" for "lambda") is a function object allowing a sound to be specified
+// for a 30-sec alarm to go off an hour after it's set
+auto setSoundL = [](Sound s) {
+	// make std::chrono components available w/o qualification
+	using namespace std::chrono;
+	setAlarm(steady_clock::now() + hours(1),	// alarm to go off
+			 s,									// in an hour for
+			 seconds(30));						// 30 seconds
+};
+```
+
+如果使用C++14的lambda形式会更简单
+
+```cpp
+// setSoundL ("L" for "lambda") is a function object allowing a sound to be specified
+// for a 30-sec alarm to go off an hour after it's set
+auto setSoundL = [](Sound s) {
+	// make std::chrono components available w/o qualification
+	using namespace std::chrono;
+    using namespace std::literals; // for C++14 suffixes
+	setAlarm(steady_clock::now() + 1h,	// alarm to go off
+			 s,							// in an hour for
+			 30s);						// 30 seconds
+};
+```
+
+
+
+如果使用`std::bind`来实现上面的lambda，一个简单（但存在问题）的转换如下
+
+```cpp
+using namespace std::chrono; // as above
+using namespace std::literals;
+using namespace std::placeholders; // needed for use of "_1"
+
+auto setSoundB = std::bind(setAlarm, // "B" for "bind"
+						   steady_clock::now() + 1h, // incorrect! see below
+                           _1,
+                           30s);
+```
+
+首先，这个实现的可读性显然没有lambda的好。`_1`代表我们在调用`setSoundB`这个bind object时传给它的参数，而这个参数实际上是作为`setAlarm`的第二个参数传入的。
+
+其次，这个实现存在问题。在`std::bind`的实现中，`steady_clock::now() + 1h`是作为`std::bind`的参数传给它的，这就意味着当执行了`std::bind(...)`之后，这个时间就已经做了计算，而此时`setSoundB`还没调用！换句话说，我们希望这个警报是在我们设置1小时之后发声，而不是在`std::bind`起1小时之后发声。
+
+
+
+为了解决第二个问题，需要用到C++14中的`std::plus`，以及一个嵌套的`std::bind`。
+
+```cpp
+auto setSoundB = std::bind(setAlarm,
+							std::bind(std::plus<>(), steady_clock::now(), 1h),
+                           _1,
+                           30s);
+```
+
+如果使用C++11中的`std::plus`，上面代码的等价形式是
+
+```cpp
+auto setSoundB = std::bind(setAlarm,
+						   std::bind(std::plus<steady_clock::time_point>(),
+                                     steady_clock::now(),
+                                     hours(1)),
+                           _1,
+                           30s);
+```
+
+
+
+显然，不论是C++11还是C++14中的lambda，都比`std::bind`更具有可读性。
+
+
+
+### 当需要绑定重载函数时，lambda比`std::bind`更有可读性
+
+假设除了前面提到的，接收3个参数的函数`setAlarm`，如果还有一个重载函数`setAlarm`，它有第4个参数用来指明音量。
+
+```cpp
+enum class Volume { Normal, Loud, LoudPlusPlus };
+void setAlarm(Time t, Sound s, Duration d, Volume v);
+```
+
+
+
+如果使用lambda，显然很容易，因为编译器可以找到对应的重载函数
+
+```cpp
+auto setSoundL = [](Sound s) { // same as before
+	using namespace std::chrono;
+	setAlarm(steady_clock::now() + 1h,	// fine, calls
+			 s,							// 3-arg version
+			 30s);						// of setAlarm
+};
+```
+
+但是如果还是使用之前的`std::bind`的形式，编译就会失败，因为编译器知道的只有一个函数名字，无法知道选择哪一个重载函数。
+
+```cpp
+// error! which setAlarm?
+auto setSoundB = std::bind(setAlarm,
+						   std::bind(std::plus<steady_clock::time_point>(),
+                                     steady_clock::now(),
+                                     hours(1)),
+                           _1,
+                           30s);
+```
+
+所以如果还是使用`std:bind`的话，需要进一步做如下的修改
+
+```cpp
+// setAlarm must be cast to the proper function pointer type
+using SetAlarm3ParamType = void(*)(Time t, Sound s, Duration d);
+
+// Cast to correct func ptr to let compiler know which overload to choose
+auto setSoundB = std::bind(static_cast<SetAlarm3ParamType>(setAlarm),
+						   std::bind(std::plus<steady_clock::time_point>(),
+                                     steady_clock::now(),
+                                     hours(1)),
+                           _1,
+                           30s);
+```
+
+
+
+上面的lambda和`std::bind`的实现，会导致最后调用的时候产生一个可能的潜在差异。
+
+使用lambda的话，因为lambda直接调用了`setAlarm`，所以编译器通常会inline。
+
+而使用`std::bind`的话，使用的是一个函数指针，编译器通常对函数指针调用的函数不做inline。
+
+所以使用lambda更有效率。
+
+
+
+### `std::bind`比lambda更难写的另一个例子
+
+假如有一个lambda用来检查一个整数是否在指定的范围之内
+
+```cpp
+// C++14
+auto betweenL = [lowVal, highVal] (const auto& val)
+				{ return lowVal <= val && val <= highVal; };
+// C++11, because auto cannot be specified, so specify the type explicitly
+auto betweenL = [lowVal, highVal] (int val)
+				{ return lowVal <= val && val <= highVal; };
+```
+
+但如果使用`std::bind`，写起来就复杂不少
+
+```cpp
+using namespace std::placeholders; // as above
+
+// C++14
+auto betweenB = std::bind(std::logical_and<>(),
+						  std::bind(std::less_equal<>(), lowVal, _1),
+                          std::bind(std::less_equal<>(), _1, highVal));
+// C++11, we’d have to specify the types we wanted to compare
+auto betweenB = std::bind(std::logical_and<bool>(),
+						  std::bind(std::less_equal<int>(), lowVal, _1),
+                          std::bind(std::less_equal<int>(), _1, highVal));
+```
+
+
+
+### `std::bind`保存了参数的值还是引用？
+
+假如有个用来压缩一个`Widget`对象的函数`compress`，可以指定压缩程度
+
+```cpp
+enum class CompLevel { Low, Normal, High }; // compression level
+
+Widget compress(const Widget& w, CompLevel lev); // make compressed copy of w
+```
+
+如果对于一个固定的`Widget`，写一个`std::bind`来指明需要压缩的程度
+
+```cpp
+Widget w;
+using namespace std::placeholders;
+auto compressRateB = std::bind(compress, w, _1); // "B" is short for Bind
+
+compressRateB(CompLevel::Noraml); // Call compressRateB
+```
+
+这时候的问题是，`w`是被当做参数传递给了`std::bind`生成的bind object，但它保存的是参数的引用，还是值？
+
+保存方式的不同会导致潜在的差异，原因是，如果保存是引用，那么调用了`compressRateB`之后，原先的`w`就会被修改；而如果保存的是值，那么调用了`compressRateB`之后，原先的`w`并不会发生改变。
+
+答案是：**`std::bind`保存的是值（stored by value）。**
+
+> All arguments passed to bind objects are passed by reference.
+
+可以看出，除非指定`std::bind`的工作机制，否则就不知道其参数的变化。
+
+除此之外，传给`std::bind`生成的bind object的参数，是**值传递还是引用传递**？
+
+如果使用lambda，情况就一眼可以看清楚，而使用`std::bind`的bind object调用，还是得清楚`std::bind`的机制
+
+```cpp
+// w is captured by value; lev is passed by value
+auto compressRateL = [w](CompLevel lev) { return compress(w, lev); };
+
+compressRateL(CompLevel::High); // arg is passed by value
+
+compressRateB(CompLevel::High); // how is arg passed? Answer is by reference
+```
+
+**`std::bind`的参数都是按引用传递的（passed by reference）**
+
+
+
+### C++11中有两种情况不得不用`std::bind`代替lambda
+
+从上面的讨论可以得知
+
+- C++14，能用lambda就用lambda，不要使用`std::bind`，因为lambda可以做`std::bind`能做的全部，而且做的更好。
+- C++11，只有两种情况需要使用`std::bind`，其他情况使用lambda更好。这两种情况是
+  - **Move capture**（需要**移动捕获**的时候，item 32讲述了原因）
+  - **Polymorphic function objects**（多态函数对象？）
+
+C++11中需要使用`std::bind`的第一点，在item 32中已经讲述了。
+
+关于第二点，因为bind object的function call operator（`operator`）使用的参数是万能引用（完美转发），使用它可以接收几乎任何参数类型。所以如果需要绑定的是a templatized function call operator，这时候C++11中的lambda就不能使用了，但可以使用`std::bind`来解决这个问题。
+
+
+
+下面这个例子，是一个class有`operator()`，但它同时是一个模板函数。
+
+```cpp
+class PolyWidget {
+public:
+	template<typename T>
+	void operator()(const T& param);
+};
+```
+
+使用`std::bind`来绑定一个`PolyWidget`对象，然后调用如下
+
+```cpp
+PolyWidget pw;
+auto boundPW = std::bind(pw, _1);
+boundPW(1930);		// pass int to PolyWidget::operator()
+boundPW(nullptr);	// pass nullptr to PolyWidget::operator()
+boundPW("Rosebud");	// pass string literal to PolyWidget::operator()
+```
+
+如果使用C++11的lambda，是办不到这件事情的。
+
+但如果使用C++14的lambda，是可以做到的。（使用`auto`）
+
+```cpp
+// C++14
+auto boundPW = [pw](const auto& param) { pw(param); };
+```
+
+
+
+### Things to Remember
+
+> - Lambdas are more readable, more expressive, and may be more efficient than using `std::bind`.
+> - In C++11 only, `std::bind` may be useful for implementing move capture or for binding objects with templatized function call operators.
+
+
+
+
+
+
+
+
+
+
 
 
 
