@@ -104,3 +104,8 @@ fc-list :lang=zh
 fc-match -v "FontName"
 ```
 
+
+
+## What is tty?
+
+tty = **t**ele**ty**pewriter，中文翻译一般叫**电传打字机**。
