@@ -2595,11 +2595,11 @@ void processPointer<const char>(const char*) = delete;
 
 如上，在处理指针类型的template的时候，有两种指针是特殊的角色，需要特殊处理。即`void*`已经`char*`。
 
-**`void*`指针不能解引用，也不能自增或自减。而`char*`通常代表C风格的字符串。**这两种通常需要特殊处理。
+`void*`**指针不能解引用，也不能自增或自减**。**而**`char*`**通常代表C风格的字符串**。这两种通常需要特殊处理。
 
 所以可以如上声明`delete`函数。
 
-- 还有一个有点：一个在class内的template function，如果需要把它的某个特化禁用，只能用C++11的`delete`。
+- 还有一个优点：一个在class内的template function，如果需要把它的某个特化禁用，只能用C++11的`delete`。
 
   这是由于，C++98风格的禁用函数，其声明需要是`private`，但模板的特化又必须在`namespace` scope，因此会编译失败。而C++11风格的禁用函数，就可以将其声明在class scope之外（同时也声明是`delete`）
 
