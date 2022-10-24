@@ -3638,8 +3638,7 @@ makeInvestment(Ts&&... params) {
 
 ```cpp
 template<typename... Ts>
-std::unique_ptr<Investment, decltype(delInvmt)>
-makeInvestment(Ts&&... params) {
+auto makeInvestment(Ts&&... params) {
     auto delInvmt = [](Investment* pInvestment) {
 		makeLogEntry(pInvestment);
 		delete pInvestment;
