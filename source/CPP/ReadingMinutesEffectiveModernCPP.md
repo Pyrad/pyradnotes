@@ -4282,9 +4282,9 @@ std::shared_ptr<Widget> spw(new Widget, widgetDeleter);
 
 
 
-#### 构造函数同时运行圆括号和花括号的时候
+#### 构造函数同时有圆括号和花括号的时候
 
-例如`std::vector`，它同时运行圆括号和花括号的构造，如下
+例如`std::vector`，它同时有圆括号和花括号的构造，如下
 
 ```cpp
 auto upv = std::make_unique<std::vector<int>>(10, 20);
@@ -4308,13 +4308,13 @@ auto spv = std::make_shared<std::vector<int>>(initList);
 
 #### 如果有class-specific的`operator new`和`operator delete`
 
-如果有class定义了自己的`operator new`和`operator delete`，那么它通常是为了在分配内存的时候，只分配自己类大小的内存（`sizeof Widget`)，但这对于有custom deleter的`std::allocate_shared`不适用，原因就是因为`std::allocate_shared`还要给control block分配额外的内存。
+如果有class定义了自己的`operator new`和`operator delete`，那么它通常是为了在分配内存的时候，只分配自己类大小的内存（`sizeof Widget`)，但这对于有custom allocator的`std::allocate_shared`不适用，原因就是因为`std::allocate_shared`还要给control block分配额外的内存。
 
 
 
 #### 如果有`std::weak_ptr`还引用的情况
 
-这种情况下可能会导致，直到**最后一个`std::shared_ptr`和最后一个`std::weak_ptr`**都被销毁了之后，所引用的内存才会被释放。
+这种情况下可能会导致，直到**最后一个**`std::shared_ptr`和**最后一个**`std::weak_ptr`都被销毁了之后，所引用的内存才会被释放。
 
 原因是，在`std::share_ptr`指向的control block里面，还有一个**second reference count**，它用来记录有多少个`std::weak_ptr`引用了当前的object（这个second reference count叫**weak count**）。
 
