@@ -4180,7 +4180,7 @@ std::shared_ptr<const Widget> fastLoadWidget(WidgetID id) {
 - `std::make_unique`：C++11无，C++14有
 - `std::allocate_shared`：C++11有，C++14有
 
-其中`std::allocate_shared`的功能和`std::make_shared`一样，只不过它的第一个参数是custom deleter。
+其中`std::allocate_shared`的功能和`std::make_shared`一样，只不过它的第一个参数是custom **allocator**（注意，不是deleter）。
 
 如果想在C++11中使用`std::make_unique`，可以写一个自己的版本
 
@@ -4278,9 +4278,7 @@ std::unique_ptr<Widget, decltype(widgetDeleter)> upw(new Widget, widgetDeleter);
 std::shared_ptr<Widget> spw(new Widget, widgetDeleter);
 ```
 
-可以看到，`std::make_shared`以及`std::make_unique`没有办法传入自定义的deleter。
-
-（但如果想使用`std::shared_ptr`，可以使用`std::allocate_share`来传入自定义的deleter）
+可以看到，`std::make_shared`、`std::make_unique`以及`std::allocate_shared`没有办法传入自定义的deleter。（`std::allocate_shared`第一个参数是custom allocator，不是custom deleter）
 
 
 
