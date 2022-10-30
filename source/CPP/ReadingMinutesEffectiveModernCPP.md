@@ -4611,7 +4611,7 @@ Widget& Widget::operator=(const Widget& rhs) { *pImpl = *rhs.pImpl; return *this
 在***PImpl Idiom***中使用`std::unique_ptr`和`std::shared_ptr`导致上面差异的原因是，
 
 - 在`std::unique_ptr`中，custom deleter是`std::unique_ptr`这个类型的一部分，这使得编译器能够生成可以运行的更快的数据结构和代码，但同时要付出的代价就是，当使用到了class special member function的时候，指针所指向的类型必须是**complete type**。
-- 而如果是`std::shared_ptr`，custom deleter并不想`std::shared_ptr`这个类型的一部分，虽然它生成的数据结构和代码运行起来相对较慢，但当使用到了class special member function的时候，指针所指向的类型可以被允许是**incomplete type**。
+- 而如果是`std::shared_ptr`，custom deleter并不是`std::shared_ptr`这个类型的一部分，虽然它生成的数据结构和代码运行起来相对较慢，但当使用到了class special member function的时候，指针所指向的类型可以被允许是**incomplete type**。
 
 在***PImpl Idiom***中使用`std::shared_ptr`的代码示意如下。
 
