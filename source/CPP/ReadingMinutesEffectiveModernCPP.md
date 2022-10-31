@@ -4857,7 +4857,7 @@ template<typename T>
 void f(T&& param);			// not rvalue reference
 ```
 
-当`T&&`表示**万能引用（universal reference）**的时候
+当`T&&`表示**万能引用**（**universal reference**）的时候
 
 - 它既可以绑定到左值（lvalue），也可以绑定到右值（rvalue）
 - 它可以绑定到常量（`const`），也可以绑定到非常量（non-`const`）
