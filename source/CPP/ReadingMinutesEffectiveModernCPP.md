@@ -4795,6 +4795,8 @@ logAndProcess(std::move(w)); // call with rvalue
 
 所以理论上可以只用`std::forward`而不用`std::move`（还没太想明白）。
 
+（2022-10-31，想明白了...他的意思是，因为需要一个右值，所以才使用`std::move`，否则不用，那这就是`std::forward`所做的事情，所以理论上可以只用`std::forward`而不用`std::move`）
+
 但`std::move`的好处是，它更方便，能减少出错的机会，并且说明更加清楚。
 
 > `std::move`’s attractions are convenience, reduced likelihood of error, and greater clarity.
