@@ -5257,7 +5257,7 @@ Widget makeWidget(Widget w) { // by-value parameter of same type as function's r
 
 ### 使用万能引用对一个函数的优化
 
-假如有个最初版本的函数`logAndAdd`，已经三种调用。
+假如有个最初版本的函数`logAndAdd`，有三种调用。
 
 ```cpp
 std::multiset<std::string> names; // global data structure
