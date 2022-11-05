@@ -5565,11 +5565,11 @@ void logAndAddImpl(int idx, std::true_type) {	// integral argument: look up name
 
 由上面的代码可以看到，第一个函数`logAndAdd`只是一个入口函数，它的万能引用参数接受任何类型的参数。此外它还根据万能引用参数的类型，在编译期间其他计算得到`T`是否为integral类型（`std::size_t`，`int`，`short`等），并把它当做一个tag，从而调用真正实现了逻辑的重载函数`logAndAddImpl`。
 
-`logAndAddImpl`是两个重载函数，一个给non-integral使用，另一个给integral使用。它们是通过**`std::false_type`**和**`std::true_type`**这两个tag来区分并调用不同的重载函数。
+`logAndAddImpl`是两个重载函数，一个给non-integral使用，另一个给integral使用。它们是通过**`std::false_type`和`std::true_type`**这两个tag来区分并调用不同的重载函数。
 
-**`std::false_type`**和**`std::true_type`**实际上是用来表示`bool`的`true`和`false`的**`std::integral_constant`**的实例（instantitation）。
+**`std::false_type`和`std::true_type`**实际上是用来表示`bool`的`true`和`false`的**`std::integral_constant`**的实例（instantiation）。
 
-之所以使用**`std::false_type`**和**`std::true_type`**，而不是使用`true`和`false`，这是因为`true`和`false`它们是runtime的变量，我们想要的是在编译期间（compile-time）就能由编译器决定使用哪个重载函数的编译器变量。
+之所以使用**`std::false_type`和`std::true_type`**，而不是使用`true`和`false`，这是因为`true`和`false`它们是runtime的变量，我们想要的是在编译期间（compile-time）就能由编译器决定使用哪个重载函数的编译器变量。
 
 这两个参数的在编译期间，可以由**`std::is_integral`**得出，正如代码中所述。
 
