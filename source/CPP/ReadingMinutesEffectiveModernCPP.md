@@ -5503,7 +5503,7 @@ void logAndAdd(const std::string& name) {
 
 不做重载函数，而使用两个不同名字的函数，显然是最直接的办法之一。比如单独写两个函数`logAndAddName`给`std::string`参数，而`logAndAddNameIdx`给`int`使用。
 
-但这个不能接近构造函数带有万能引用参数的问题。
+但这个不能解决构造函数带有万能引用参数的问题。
 
 
 
