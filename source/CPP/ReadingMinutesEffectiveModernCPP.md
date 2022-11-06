@@ -6126,7 +6126,7 @@ STL中为了保证C++98的代码中依赖不抛异常的拷贝操作的特性不
 
 所以，完美转发**只是引用传递**。
 
-而且完美转发**只能是万能引用**，原因是，我们要转发参数的类型、左右值属性已经它们是否是`const`或`volatile`，而只有万能引用才能满足这个条件。
+而且完美转发**只能是万能引用**，原因是，我们要转发参数的类型、左右值属性以及它们是否是`const`或`volatile`，而只有万能引用才能满足这个条件。
 
 
 
@@ -6157,7 +6157,7 @@ void fwd(Ts&&... params) { // accept any arguments
 后面讨论的完美转发失败的两个原因，从概念上来讲分别是
 
 - **Compilers are unable to deduce a type**
-- **Compilers deduce the “wrong” type **
+- **Compilers deduce the** “**wrong**” **type**
 
 
 
