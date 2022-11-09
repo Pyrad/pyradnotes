@@ -6413,7 +6413,7 @@ fwd(length); // forward the copy
 
 - ***lambda*** 是一个表达式，是源代码的一部分。
 - ***闭包（closure）*** 是lambda创建的一个运行时的对象，根据不同的模式，它赋值或者引用了捕获的数据
-- ***闭包类（closure class）*** 是***闭包（closure）*** 实例化之后的一个类。编译器会给每个lambda表达式生成唯一的**闭包类**。Lambda内部的语句就变成了这个类的成员函数的可执行指令。
+- ***闭包类（closure class或closure type）*** 是一个**类**（class），***闭包（closure）***是这个类的一个实例化。编译器会给每个lambda表达式生成唯一的**闭包类**。Lambda内部的语句就变成了这个类的成员函数的可执行指令。
 
 > - A lambda expression is just that: ***an expression***. It’s part of the source code.
 > - A ***closure*** is the runtime object created by a lambda. Depending on the capture mode, closures hold copies of or references to the captured data.
