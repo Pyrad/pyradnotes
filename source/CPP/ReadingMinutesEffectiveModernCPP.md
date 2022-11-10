@@ -6462,7 +6462,7 @@ C++11的lambda有两种默认的捕获模式
 
 ### 捕获引用可能造成引用“悬空”
 
-**C++11中lambda捕获的引用或者变量，都是在lambda被定义处范围（scope）的局部变量或者参数。**也就是说，lambda生成的closure中会包含这些局部变量或参数的引用或变量拷贝。
+**C++11中lambda捕获的引用或者变量**，**都是在lambda被定义处范围（scope）的局部变量或者参数。**也就是说，lambda生成的closure中会包含这些局部变量或参数的引用或变量拷贝。
 
 这意味着，如果一个lambda生成的closure的生命周期，如果比捕获的引用（或变量）生命周期更长，或者超出了它们的定义范围，那么这个引用就可能“悬空”。（后面会看到，如果是值捕获，且是指针的话，同样可能悬空）
 
@@ -6591,7 +6591,7 @@ void Widget::addFilter() const {
 
 ### 值捕获的lambda也不是自成一统
 
-原因就是，lambda不会不会`static`变量，不论是`class`的`static`还是文件的`static`变量。
+原因就是，lambda不会捕获`static`变量，不论是`class`的`static`还是文件的`static`变量。
 
 Scott Meyers再次强调了，**lambda只捕获non-`static`的局部变量和参数。**
 
