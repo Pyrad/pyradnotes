@@ -6641,7 +6641,7 @@ C++14**支持**、但C++11**不支持**以下两种情况
 
 有一些workaround能使得C++11把一个对象“移动”入一个closure中。
 
-C++11中缺少**移动捕获（move capture）**被认为是一个缺点，C++14做了弥补。但移动捕获只是C++14中捕获机制的一项。
+C++11中缺少**移动捕获**（**move capture**）被认为是一个缺点，C++14做了弥补。但移动捕获只是C++14中捕获机制的一项。
 
 C++14中引入的机制叫做 ***init capture***（又叫做 ***generalized lambda capture***），C++11能做的它都能做，而且能做的更多。但***init capture***不支持default capture mode（尽管前面一节讲了应该避免这种捕获模式）
 
@@ -6802,7 +6802,7 @@ auto func = std::bind( [](std::vector<double>& data) mutable { /* uses of data *
 
 关于`std::bind`需要注意的几点
 
-- C++11中，不能再closure中移动构造一个对象，但是可以在**bind object**（`std::bind`生成）中移动构造一个对象。
+- C++11中，不能在closure中移动构造一个对象，但是可以在**bind object**（`std::bind`生成）中移动构造一个对象。
 - 在C++11（的lambda）中要模拟实现“移动捕获”的话，需要在一个**bind object**中移动构造一个对象，然后以引用的方式把那个移动构造的对象当做参数传递给lambda表达式。
 - 因为**bind object**的声明周期和它所包含的closure的生命周期一样长，所以可以认为那个在**bind object**中的（移动构造的）对象，就好像在closure中。
 
