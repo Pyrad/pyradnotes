@@ -6842,7 +6842,7 @@ auto func = std::bind([](const std::unique_ptr<Widget>& pw)
 
 ### C++14 Generic lambda
 
-C++14引入了 ***generic lambda***，它可以在参数前面使用**`auto`关键字**。
+C++14引入了 ***generic lambda***，它可以在参数前面使用`auto`**关键字**。
 
 ```cpp
 auto f = [](auto x){ return func(normalize(x)); };
