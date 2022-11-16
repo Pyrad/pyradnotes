@@ -7009,9 +7009,9 @@ void setAlarm(Time t, Sound s, Duration d);
 auto setSoundL = [](Sound s) {
 	// make std::chrono components available w/o qualification
 	using namespace std::chrono;
-	setAlarm(steady_clock::now() + hours(1),	// alarm to go off
-			 s,									// in an hour for
-			 seconds(30));						// 30 seconds
+	setAlarm(steady_clock::now() + hours(1),    // alarm to go off
+                s,                              // in an hour for
+                seconds(30));                   // 30 seconds
 };
 ```
 
@@ -7022,11 +7022,11 @@ auto setSoundL = [](Sound s) {
 // for a 30-sec alarm to go off an hour after it's set
 auto setSoundL = [](Sound s) {
 	// make std::chrono components available w/o qualification
-	using namespace std::chrono;
+    using namespace std::chrono;
     using namespace std::literals; // for C++14 suffixes
-	setAlarm(steady_clock::now() + 1h,	// alarm to go off
-			 s,							// in an hour for
-			 30s);						// 30 seconds
+	setAlarm(steady_clock::now() + 1h,  // alarm to go off
+                s,                      // in an hour for
+                30s);                   // 30 seconds
 };
 ```
 
@@ -7040,9 +7040,9 @@ using namespace std::literals;
 using namespace std::placeholders; // needed for use of "_1"
 
 auto setSoundB = std::bind(setAlarm, // "B" for "bind"
-						   steady_clock::now() + 1h, // incorrect! see below
-                           _1,
-                           30s);
+                            steady_clock::now() + 1h, // incorrect! see below
+                            _1,
+                            30s);
 ```
 
 首先，这个实现的可读性显然没有lambda的好。`_1`代表我们在调用`setSoundB`这个bind object时传给它的参数，而这个参数实际上是作为`setAlarm`的第二个参数传入的。
@@ -7055,20 +7055,20 @@ auto setSoundB = std::bind(setAlarm, // "B" for "bind"
 
 ```cpp
 auto setSoundB = std::bind(setAlarm,
-							std::bind(std::plus<>(), steady_clock::now(), 1h),
-                           _1,
-                           30s);
+                            std::bind(std::plus<>(), steady_clock::now(), 1h),
+                            _1,
+                            30s);
 ```
 
 如果使用C++11中的`std::plus`，上面代码的等价形式是
 
 ```cpp
 auto setSoundB = std::bind(setAlarm,
-						   std::bind(std::plus<steady_clock::time_point>(),
-                                     steady_clock::now(),
-                                     hours(1)),
-                           _1,
-                           30s);
+                            std::bind(std::plus<steady_clock::time_point>(),
+                                steady_clock::now(),
+                                hours(1)),
+                            _1,
+                            30s);
 ```
 
 
