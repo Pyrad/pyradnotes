@@ -19,3 +19,4 @@ Notes
    Tcl
    geometry
    ReadTheDoc
+   ResourcesLink
