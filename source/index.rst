@@ -17,15 +17,15 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`C/C++ </CPP/index>`
       - :doc:`Linux </Linux/index>`
       - :doc:`Python </Python/index>`
-      - :doc:`Golang </Go/index>`
+      - :doc:`Geometry </Geometry/index>`
     * - :doc:`Java </Java/index>`
       - :doc:`VIM </Vim/index>`
       - :doc:`TODO </TODO/index>`
       - :doc:`English </English/index>`
       - :doc:`Chinese </ChinesePoetry/index>`
-    * - :doc:`FAL </FightAgainstLeviathan/index>`
-      -
-      -
+    * - :doc:`Golang </Go/index>`
+      - :doc:`FAL </FightAgainstLeviathan/index>`
+      - 
       -
       -
 
@@ -45,6 +45,12 @@ A Tour of Life (Pyrad's Notes!)
    :caption: C++:
 
    CPP/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Geometry:
+
+   Geometry/index
 
 .. toctree::
    :maxdepth: 1
