@@ -7092,10 +7092,10 @@ void setAlarm(Time t, Sound s, Duration d, Volume v);
 
 ```cpp
 auto setSoundL = [](Sound s) { // same as before
-	using namespace std::chrono;
-	setAlarm(steady_clock::now() + 1h,	// fine, calls
-			 s,							// 3-arg version
-			 30s);						// of setAlarm
+    using namespace std::chrono;
+    setAlarm(steady_clock::now() + 1h,  // fine, calls
+                s,                      // 3-arg version
+                30s);                   // of setAlarm
 };
 ```
 
@@ -7104,11 +7104,11 @@ auto setSoundL = [](Sound s) { // same as before
 ```cpp
 // error! which setAlarm?
 auto setSoundB = std::bind(setAlarm,
-						   std::bind(std::plus<steady_clock::time_point>(),
-                                     steady_clock::now(),
-                                     hours(1)),
-                           _1,
-                           30s);
+                            std::bind(std::plus<steady_clock::time_point>(),
+                                        steady_clock::now(),
+                                        hours(1)),
+                            _1,
+                            30s);
 ```
 
 所以如果还是使用`std:bind`的话，需要进一步做如下的修改
