@@ -998,3 +998,49 @@ chmod -R go-w "$(brew --prefix)/share/zsh"
 brew install gcc
 ```
 
+
+
+
+
+## Fxxking GFW
+
+### 修改host文件
+
+此办法效果不怎么好，因为它们使用的是域名污染的伎俩，仅此志之。
+
+- 首先查询DNS地址
+  - 打开域名查找网站，比如`https://tool.chinaz.com/dns/`
+  - 在A类型的查询中输入`github.com`
+  - 找到TTL值最小（响应时间最短）的DNS，比如`20.205.243.166`
+
+- 修改hosts文件
+
+  - 文件是 `C:\Windows\System32\Drivers\etc\hosts`
+
+  - 修改此文件需要管理员权限（以管理员打开编辑）
+
+  - 在文件原有内容末尾，添加如下
+
+    ```sh
+    ### github fast visit
+    20.205.243.166  github.com
+    20.205.243.166  gist.github.com
+    20.205.243.166  assets-cdn.github.com
+    20.205.243.166  raw.githubusercontent.com
+    20.205.243.166  gist.githubusercontent.com
+    20.205.243.166  cloud.githubusercontent.com
+    20.205.243.166  camo.githubusercontent.com
+    20.205.243.166  avatars0.githubusercontent.com
+    20.205.243.166 avatars1.githubusercontent.com
+    20.205.243.166 avatars2.githubusercontent.com
+    20.205.243.166 avatars3.githubusercontent.com
+    20.205.243.166 avatars4.githubusercontent.com
+    20.205.243.166 avatars5.githubusercontent.com
+    20.205.243.166 avatars6.githubusercontent.com
+    20.205.243.166 avatars7.githubusercontent.com
+    20.205.243.166 avatars8.githubusercontent.com
+    ```
+
+- 打开`cmd`控制台
+
+  - 输入`ipconfig /flushdns`来刷新
