@@ -7,15 +7,22 @@ This file shows some advanced usages of C/C++
 ## C++ Related Topics
 
 - What is a **literal type**?
+
 - What is **cv-qualified** ?
   - **cv** means `const` or `volatile`
+
 - What is **trival default constructor**
+
 - What is **an aggregate (class) **?
+
 - What is **NRVO** ?
   - **N**amed **R**eturn **V**alue **O**ptimization（返回值优化）
+
 - What is **copy elision** ?
+
 - What is **RTTI**?
   - **RTTI = Run-Time Type Information**
+
 - What is **closure type**？
   - What is ***lambda*** indeed ?
   - What is ***closure*** ?
@@ -25,19 +32,28 @@ This file shows some advanced usages of C/C++
   - What is **generalized lambda capture** ?
 
 - What is **most vexing parse** ?
+
 - What is **narrowing conversions** ?
   - （类型）范围缩减转换
+
 - What is **CRTP**?
   - CRTP = the Curiously Recurring Template Pattern
+
 - What is **PImpl** ?
   - **PImpl** = Pointer to implementation
   - Refer to page in [***cppreference***](https://en.cppreference.com/w/cpp/language/pimpl)
+
 - What is **SFINAE** ?
   - **SFINAE** = **S**ubstitution **F**ailure **I**s **N**ot **A**n **E**rror
   - Refer to page in [SFINAE](https://en.cppreference.com/w/cpp/language/sfinae)
+
 - What is **SSO** ?
   - **SSO** = **S**mall **S**tring **O**ptimization
   - A technique to improve performance for string implementations.
+
+- What is **zero-overhead principle**?
+
+  - What you don't use, you don't pay for (in time or space) and further: What you do use, you couldn't hand code any better.
 
 - `inline`关键字到底有没有用？
 
