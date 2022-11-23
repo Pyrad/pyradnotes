@@ -39,7 +39,19 @@ This file shows some advanced usages of C/C++
   - **SSO** = **S**mall **S**tring **O**ptimization
   - A technique to improve performance for string implementations.
 
+- `inline`关键字到底有没有用？
 
+  - 其实就这么简单的原则：
+
+    `cpp`里的函数实现通通都无须要加`inline`。
+
+    `h`里的独立函数实现必须加`inline`。
+
+    编译器可以对不加`inline`关键字的函数内联，也可以对加了`inline`的函数拒绝内联。简单说：是否内联与`inline`关键字几乎没有关系。
+
+    目前`inline`关键字的主要用途，就是为了将一个函数写到头文件中，从而无须专门进行链接。
+
+    [参考回答](https://www.zhihu.com/question/53082910/answer/2771636200)
 
 
 
