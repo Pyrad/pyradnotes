@@ -410,6 +410,17 @@ fc-match -v "FontName"
 
 
 
+## User's RSS total memory on this Linux
+
+```sh
+ps --no-headers -eo user,rss | grep longc | \
+	awk '{arr[$1]+=$2}; END {for (i in arr) {print i,arr[i]}}' | sort -nk2
+```
+
+
+
+
+
 
 
 ```shell
