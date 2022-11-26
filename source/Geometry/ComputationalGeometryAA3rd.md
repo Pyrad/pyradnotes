@@ -24,6 +24,60 @@ Published by Springer
 
 
 
+## Resources
+
+[*Handbook of Discrete and Computational Geometry, 3rd Edition, Online Page*](https://www.csun.edu/~ctoth/Handbook/HDCG3.html)
+
+
+
+
+
+## Words
+
+**asymptote** */ˈæsɪmˌtoʊt/* *n.* [数] 渐近线
+
+**asymptotically**  */,æsimp'tɔtikli,-kəli/* *adj.* 渐近线的
+
+**planar** */ˈpleɪnər/* *adj.* 平面的；二维的；平坦的
+
+**polygonal** */pəˈlɪɡənl/* *adj.* [数] 多边形的；[数] 多角形的
+
+**lexicographic** */ˌleksɪkəˈɡræfɪk/* *adj.* 词典编辑的；字典式的
+
+**dent** */dent/* *v.* 使产生凹痕；损害，削弱；*n.* 凹痕；削减
+
+**clutter** */ˈklʌtər/* *v.* 乱堆，塞满；使（脑子里）塞满（乱七八糟的事）；*n.* 杂乱的东西；杂乱
+
+**radiosity** */ˌreɪdɪˈəʊsɪtɪ/* *n.* 光能传递；热辐射
+
+**kinematic** */ˌkɪnəˈmætɪk/* *adj.* [力] 运动学上的，[力] 运动学的
+
+**vegetation** */ˌvedʒəˈteɪʃn/* *n.* （总称）植物，植被；（植物的）生长；呆板单调的生活
+
+**excavation** */ˌekskəˈveɪʃ(ə)n/* *n.* （对古物的）发掘，挖掘；发掘现场； 挖洞，开凿
+
+**interpolate** */ɪnˈtɜːrpəleɪt/* *vt.* 篡改；插入新语句；*vi.* 插入；篡改
+
+**interpolating** */ɪnˈtɜːrpəleɪtɪŋ/* *n.* 插值；内插；*v.* 窜改；加入（额外的事）
+
+
+
+
+
+
+
+## Usage
+
+thought experiment
+
+an elastic rubber band 橡皮筋
+
+direct the line through *p* and *q*
+
+
+
+
+
 ## Contents
 
 - Preface
@@ -58,3 +112,50 @@ Published by Springer
 - 带星号（`*`）的章节作为扩展阅读，以及叫做 *Notes and Comments*的小节，可以通过其了解更多。
 - 不需要应用领域的知识，只需要基本的数据结构和算法知识储备。
 - 有网页可以找到[Errata Page](http://www.cs.uu.nl/geobook/)以及其他可用资源。
+
+
+
+## 1 Computational Geometry - Introduction
+
+校园中寻找最近电话亭（*Voronoi diagram*，第7章）
+
+避障最短路径（*motion planning*，第13,15章）
+
+多张地图定位问题（*overlay map*，第2章）
+
+实际的问题
+
+- Robotics
+- Computer graphics
+- CAD/CAM
+- Geographic Information System
+
+
+
+### 1.1 An Example: Convex Hulls
+
+好的几何算法问题解决方案，本质上有两方面
+
+- 理解几何问题的特性
+- 对算法和数据结构的合理使用
+
+一个例子，二维平面凸体（planar convex hulls）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
