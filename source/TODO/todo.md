@@ -21,3 +21,6 @@
   - Record time: 2022-07-27 22:15
 - **Effective Modern C++**
   - Record time: 2022-08-15 22:11
+
+- **Building shared & static library with CMake**
+  - Record time: 2022-11-27 18:28
