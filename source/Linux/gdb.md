@@ -119,3 +119,21 @@ call (void)puts(your_string)
 (gdb) call (int)strlen(charArr)
 $6 = 5156
 ```
+
+
+
+## Create std::string in GDB
+
+[link](https://stackoverflow.com/questions/7429462/creating-c-string-in-gdb)
+
+可以在GDB里面生成一个堆上的变量，然后赋值
+
+```shell
+(gdb) call malloc(sizeof(std::string))
+$1 = (void*) 0x91a6a0
+(gdb) call((std::string*)0x91a6a0)->basic_string()
+(gdb) call((std::string*)0x91a6a0)->assign("Hello, World")
+$2= (..., _M_p = 0x91a6f8"Hello, World"}}
+(gdb) call SomeFunctionThatTakesAConstStringRef(*(const std::string*)0x91a6a0)
+```
+
