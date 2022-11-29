@@ -31,3 +31,4 @@
   - [Ref link5](https://www.kitware.com/create-dlls-on-windows-without-declspec-using-new-cmake-export-all-feature/)
   - [Ref link6](https://github.com/BrightXiaoHan/CMakeTutorial)
   - [Ref link7](https://github.com/slomkowski/cmake-mingw-example)
+  - [Ref link8](https://zhuanlan.zhihu.com/p/102955723)
