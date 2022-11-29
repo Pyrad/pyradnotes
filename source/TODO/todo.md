@@ -27,4 +27,6 @@
   - [Ref link](https://blog.csdn.net/weixin_43651879/article/details/118931486)
   - [Ref link2](http://mp.ofweek.com/ai/a756714255277)
   - [Ref link3](https://zhuanlan.zhihu.com/p/392750572)
+  - [Ref link4](https://programming.vip/docs/cmake-i-compiles-static-dynamic-and-object-libraries.html)
+  - [Ref link5](https://www.kitware.com/create-dlls-on-windows-without-declspec-using-new-cmake-export-all-feature/)
   - 
