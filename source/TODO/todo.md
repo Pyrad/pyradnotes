@@ -29,4 +29,5 @@
   - [Ref link3](https://zhuanlan.zhihu.com/p/392750572)
   - [Ref link4](https://programming.vip/docs/cmake-i-compiles-static-dynamic-and-object-libraries.html)
   - [Ref link5](https://www.kitware.com/create-dlls-on-windows-without-declspec-using-new-cmake-export-all-feature/)
-  - 
+  - [Ref link6](https://github.com/BrightXiaoHan/CMakeTutorial)
+  - [Ref link7](https://github.com/slomkowski/cmake-mingw-example)
