@@ -32,3 +32,4 @@
   - [Ref link6](https://github.com/BrightXiaoHan/CMakeTutorial)
   - [Ref link7](https://github.com/slomkowski/cmake-mingw-example)
   - [Ref link8](https://zhuanlan.zhihu.com/p/102955723)
+  - [Ref link9](https://www.pragmaticlinux.com/2022/02/create-a-shared-library-in-c-with-cmake/#:~:text=Build%20the%20shared%20library%20with%20CMake%201%20CMake,in%20place%2C%20let%E2%80%99s%20give%20it%20a%20try.%20)
