@@ -25,3 +25,6 @@
 - **Building shared & static library with CMake**
   - Record time: 2022-11-27 18:28
   - [Ref link](https://blog.csdn.net/weixin_43651879/article/details/118931486)
+  - [Ref link2](http://mp.ofweek.com/ai/a756714255277)
+  - [Ref link3](https://zhuanlan.zhihu.com/p/392750572)
+  - 
