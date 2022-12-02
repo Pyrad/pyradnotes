@@ -219,6 +219,8 @@ direct the line through *p* and *q*
 
 第二种算法简述
 
+**（这个算法实际上是Andrew对Graham’s scan的一种改进算法）**
+
 **输入**：平面上点的集合 ***P***。
 
 **输出**：一个点的序列 ***L***，表示点集合 ***P*** 的Convex Hull，点序是**顺时针**方向。
@@ -282,19 +284,45 @@ for循环是线性的，关键在于其里面用于检查右转折线段和删�
 
 
 
+### 1.2 Degeneracies and Robustness
+
+提出算法的三个步骤（阶段）
+
+- 首先，排除次要因素的干扰，因为这些因素是细节问题，不影响算法的整体思路。
+- 其次，再考虑前面可能出现的退化情况（边界条件，特殊和极端情况等问题），调整算法细节以便处理。
+- 最后，实现细节。比如原子操作，如何遍历等等。
 
 
 
+比如，在convex hull的算法中，我们可以先假设没有三个共线的点，没有两个点的 *x* 坐标是相同的。
+
+symbolic perturbation schemes指在设计和实现阶段忽略了special case，但在实际应用过程当中算法仍然正确的方法。
 
 
 
+在实现细节的阶段，使用实数（浮点数）计算可能导致假设在某种情况下失效的问题，这是算法健壮性的体现。就像前面第二种算法中提到的，最终的output也许不是真正意义上的真实结果，但也是十分接近真实的结果，在这种情况下，需要预期这种情况可能的后果，并避免有次可能产生的crash问题等等。
+
+使用现有的arithmetic library是其中一种办法，如果不能达到我们所需要的要求，就需要自己实现一些特定情况下的处理。
 
 
 
+### 1.3 Application Domains
+
+这一节主要介绍了Computational Geometry的几种应用领域，已经每个领域要解决的问题。
+
+- Computer graphics
+- Robotics
+- Geographic information systems
+- CAD/CAM
+- Other applications domains （比如 molecular modeling，pattern recognition等）
 
 
 
+### 1.4 Notes and Comments
 
+本节主要是对本章内容的一些延伸以及参考书籍资料等出处说明，提到了本章算法的来源，其发展的简要历史，以及相似算法的研究情况。
 
+比如，本章所讨论的convex hull问题是Computational Geometry的经典问题，而本章第二种算法，其实是Graham’s scan算法，是Andrew基于最早的Graham提出的算法的改进。
 
+还有其他的一些算法，时间复杂度也是O(nlogn)。
 
