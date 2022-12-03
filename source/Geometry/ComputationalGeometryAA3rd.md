@@ -60,7 +60,15 @@ Published by Springer
 
 **interpolating** */ɪnˈtɜːrpəleɪtɪŋ/* *n.* 插值；内插；*v.* 窜改；加入（额外的事）
 
+**thematic** */θɪˈmætɪk/* *adj.* 主题的，主旋律的；题目的；语干的
 
+**precipitation** */prɪˌsɪpɪˈteɪʃ(ə)n/* *n.* 降水（如雨，雪，冰雹）；沉淀，淀析；仓促，鲁莽，轻率；坠落
+
+**grizzly** */ˈɡrɪzli/* *adj.* 灰色的；*n.* 灰熊
+
+**lemma** */ˈlemə/* *n.* 引理；辅助定理；论点；膜
+
+**recap** */ˈriːkæp/* *v.* 扼要重述，摘要说明；翻新胎面；*n.* 扼要的重述，概述；翻新的轮胎
 
 
 
@@ -73,6 +81,46 @@ thought experiment
 an elastic rubber band 橡皮筋
 
 direct the line through *p* and *q*
+
+to this end 为了这个目的（**formal** **:** as a way of dealing with or doing something）
+
+rule out 排除，除去
+
+windy river 弯曲的河流（不是多风的河流）
+
+coinciding point 共点
+
+in a sense 某种意义上
+
+
+
+> Define the *y*-interval of a segment to be its orthogonal projection onto the *y*-axis.
+>
+> 把一条线段在 *y* 轴上的正交投影，叫做它的 *y*-interval
+
+
+
+> they are far apart in the y-direction
+>
+> 它们在y方向上相距足够远
+
+
+
+> We denote the *event queue* by Q
+>
+> 我们把event queue记作**Q**
+
+
+
+> This horizontal sweeping line is sloping just a tiny bit upward
+>
+> 这条横向的扫描线翘起来一点点
+
+
+
+## Names
+
+- output-sensitive algorithm
 
 
 
@@ -325,4 +373,98 @@ symbolic perturbation schemes指在设计和实现阶段忽略了special case，
 比如，本章所讨论的convex hull问题是Computational Geometry的经典问题，而本章第二种算法，其实是Graham’s scan算法，是Andrew基于最早的Graham提出的算法的改进。
 
 还有其他的一些算法，时间复杂度也是O(nlogn)。
+
+
+
+
+
+
+
+## 2 Line Segment Intersection - Thematic Map Overlay
+
+引言部分，以旅游为例，讲述了在实际当中，可能需要查看包含不同信息类型的地图，从而找到所需的信息。
+
+在GIS领域中，***layer*** 是指包含某一种信息的地图（map），而需要将多种类型的地图进行交叉引用的合并结果，叫做 ***overlay***。
+
+比如，一个layer（map）只包含城市名的信息，另一个layer（map）只包含河流的信息，还有一个layer（map）只包含了铁路轨道的信息，诸如此类等等。
+
+当查看了城市信息的layer（map）之后，想要得知如何前往，就需要和另一个包含道路信息的layer（map）重叠查看，就是overlay。
+
+GIS中，在overlay上，不同信息有交叉的地方（比如查看河流和道路的重叠情况），有时是一个交叉点，有时是一个交叉的区域。
+
+
+
+### 2.1 Line Segment Intersection
+
+本节要解决的问题是，给定二维平面上一个有 *n* 个线段的集合，找出所有的交点。
+
+> given a set S of n closed segments in the plane, report all intersection points among the segments in S.
+
+其中线段的端点碰到其他的线段，也算作交点。
+
+Brute-forced algorithm的时间复杂度是O(nlogn)，但实际情况，有可能只有很少的一些线段相交，并不必计算每个线段和其他线段的交点。
+
+即，我们希望算法的复杂度依赖的不仅是输入点的个数，而且也是输出的交点的个数，这样的算法叫做***output-sensitive algorithm***。
+
+
+
+可以利用的观察几何结果是：靠的比较近的线段是可能有交点的候选计算对象，而相离较远的线段是不需要计算交点的。
+
+所以思路是，把所有线段向y轴做投影，得到投影线段有重叠的那些线段，就是需要计算交点的候选线段。
+
+为什么没有投影重叠的线段就一定没有交点？这可以通过反证法得出，如果没有投影重叠的线段有交点，那么这个交点的y坐标值一定是介于两个线段的4个端点的y值之间，而这又说明这两条线段是有投影重叠的，因此矛盾，从而的证。
+
+
+
+使用到的技术叫做：***plane sweep algorithm***。
+
+***sweep line***：一条水平无限长的假想虚线
+
+***status***：***sweep line***的“状态”指的是和它当前相交的**线段的集合**（**segments**）
+
+***event point***：***sweep line***沿着垂直方向从上向下移动，但不是连续移动的，而是离散的，移动到的这些位置的点，叫做***event point***。这些***event point***，一部分是每条线段的upper end point（y值较大的点）和lower end point（y值较小的点），另一部分是线段的交点。
+
+只有当***sweep line***移动到这些***event point***上的时候，算法才做相应的计算或调整，即更新***sweep line***的***status***，并计算（或测试）交点。
+
+如果***event point***是一条线段的upper point，那么这条线段就是和***sweep line***相交，并且应该加入到***status***里面，同时要计算这条segment和***status***里面其他segments的交点（*后面会提到，只计算当前线段相邻的左右两条segments的交点，而不是计算和status里面所有线段的交点*），而且这个交点要放入到event point集合的适当位置，以便sweep line依次向下扫描时可以遍历到它。
+
+如果***event point***是一条线段的lower point，那么这条线段就和***sweep line***不再相交（相离），就应该从status里面删除。
+
+如果***event point***是两条线段的intersection point（这个intersection point是前面计算得到加入进来的），那么在该点之后，相邻的adjacent neighbor就会发生改变，所以就要测试（计算）这两条segments和它们各自左右相邻的segment的交点。
+
+
+
+> Lemma 2.1 Let *si* and *sj* be two non-horizontal segments whose interiors intersect in a single point *p*, and assume there is no third segment passing through *p*. Then there is an event point above *p* where *si* and *sj* become adjacent and are tested for intersection.
+
+因为根据前面遇到的event point是一条线段的upper point时的操作（计算adjacent segment之间的intersection point），这个引理主要想说明，如果两条都不是水平（也不共线）的线段，如果有交点，那么在这个交点的上方，一定有一个event point，在那个event point的时候，这两条线段变成adjacent，并且会被检查（计算）是否有交点。
+
+这里暂时忽略了三种特殊情况：两条线段可能共线（重合），可能有水平的情况，以及有第三天线段穿过交点。
+
+
+
+所以，简要叙述，***line sweeping algorithm***的答题思路如下
+
+> Let’s briefly recap the overall approach. We imagine moving a horizontal sweep line ℓ downwards over the plane. The sweep line halts at certain event points; in our case these are the endpoints of the segments, which we know beforehand, and the intersection points, which are computed on the fly.
+>
+> While the sweep line moves we maintain the ordered sequence of segments intersected by it. When the sweep line halts at an event point the sequence of segments changes and, depending on the type of event point, we have to take several actions to update the status and detect intersections.
+
+假设有一条水平扫描线，从上而下移动，每次移动到一个特殊的点（event point）。这样的event point有两种，一种是每条线段的upper point（end point），另一种是某两条线段的交点（intersection point）。前一种在计算之前就已知，而后一种是在扫描线移动过程中计算得出。
+
+当扫描线移动时，维护一个有序的线段列表，列表中的每个线段是和扫描线相交的。当扫描线移动到下一个event point的时候，更新线段列表使其保持有序，同时根据event point的类型，更新状态（它是和扫描线相交的线段集合，每次操作有可能添加或删除一条线段）并检查某两条线段是否有交点。
+
+
+
+sweep line遇到三种不同event point时对应的操作
+
+- 如果event point是一条线段的upper point（end point），就要检查这个upper point所在的线段，和它左右两个相邻的线段是否有交点，如果有交点，那么这个交点就是一个新的event point。
+
+  因为sweep line上方的event point都是已知的或已经计算过的，所以关注的是sweep line下方的交点。
+
+- 如果event point是某两条线段的交点（intersection point），那么这两条线段在所维护的有序线段列表里面的位置就要交换，同时因为位置变化，它们各自相邻的线段也发生了变化（但只变化了一个，因为另一个仍然是它们自己中的一个），所以也要检查它们和各自新邻近的线段之间是否有交点，如果有并且是之前没有的event point，那么就有发现了一个或两个新的event point。
+
+- 如果event point是一条线段的lower point（end point），那么这条线段原先左右两条线段就变成了直接相邻的线段，就要检查（计算）这两条线段是否有交点，同样的，如果有，就是新的event point。
+
+
+
+
 
