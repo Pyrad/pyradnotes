@@ -526,9 +526,11 @@ sweep line遇到三种不同event point时对应的操作
 
 **算法简述**：
 
-首先初始化一个空的event queue，记作 ***Q***。然后把集合 ***S*** 里线段的end points都插入到 ***Q*** 中，当一个end point是线段的upper point时，要同时带上其所在的线段的信息（属于那条线段）。
+首先，初始化一个空的event queue，记作 ***Q***。然后把集合 ***S*** 里线段的end points都插入到 ***Q*** 中，当一个end point是线段的upper point时，要同时带上其所在的线段的信息（属于那条线段）。
 
+然后，初始化一个空的status 数据结构，记作 ***J***。
 
+之后，依次遍历 ***Q***，每次从 ***Q*** 中返回下一个event point *p*（同时 *p* 从 ***Q*** 中被移除），然后根据event point *p*，调用对 *p* 的处理函数。这个遍历的终止条件是 ***Q*** 为空。（即这是一个while循环，而在遍历过程中可能有新event point加入 ***Q*** ）
 
 **算法复杂度**：O()
 
