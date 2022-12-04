@@ -70,7 +70,7 @@ Published by Springer
 
 **recap** */ˈriːkæp/* *v.* 扼要重述，摘要说明；翻新胎面；*n.* 扼要的重述，概述；翻新的轮胎
 
-
+**treat** */triːt/* *v.* 处理，探讨，论述；
 
 
 
@@ -115,6 +115,14 @@ in a sense 某种意义上
 > This horizontal sweeping line is sloping just a tiny bit upward
 >
 > 这条横向的扫描线翘起来一点点
+
+
+
+> We need an operation that removes the next event that will occur from Q, and returns it so that **it can be treated**.
+>
+> 需要一个从队列Q里面删除下个event（point）的操作，并且返回它，以便（对它进行）处理。
+
+
 
 
 
@@ -426,11 +434,11 @@ Brute-forced algorithm的时间复杂度是O(nlogn)，但实际情况，有可�
 
 只有当***sweep line***移动到这些***event point***上的时候，算法才做相应的计算或调整，即更新***sweep line***的***status***，并计算（或测试）交点。
 
-如果***event point***是一条线段的upper point，那么这条线段就是和***sweep line***相交，并且应该加入到***status***里面，同时要计算这条segment和***status***里面其他segments的交点（*后面会提到，只计算当前线段相邻的左右两条segments的交点，而不是计算和status里面所有线段的交点*），而且这个交点要放入到event point集合的适当位置，以便sweep line依次向下扫描时可以遍历到它。
+- 如果***event point***是一条线段的**upper point**，那么这条线段就是和***sweep line***相交，并且应该加入到***status***里面，同时要计算这条segment和***status***里面其他segments的交点（*后面会提到，只计算当前线段相邻的左右两条segments的交点，而不是计算和status里面所有线段的交点*），而且这个交点要放入到event point集合的适当位置，以便sweep line依次向下扫描时可以遍历到它。
 
-如果***event point***是一条线段的lower point，那么这条线段就和***sweep line***不再相交（相离），就应该从status里面删除。
+- 如果***event point***是一条线段的**lower point**，那么这条线段就和***sweep line***不再相交（相离），就应该从status里面删除。
 
-如果***event point***是两条线段的intersection point（这个intersection point是前面计算得到加入进来的），那么在该点之后，相邻的adjacent neighbor就会发生改变，所以就要测试（计算）这两条segments和它们各自左右相邻的segment的交点。
+- 如果***event point***是两条线段的**intersection point**（这个intersection point是前面计算得到加入进来的），那么在该点之后，相邻的adjacent neighbor就会发生改变，所以就要测试（计算）这两条segments和它们各自左右相邻的segment的交点。
 
 
 
@@ -438,7 +446,7 @@ Brute-forced algorithm的时间复杂度是O(nlogn)，但实际情况，有可�
 
 因为根据前面遇到的event point是一条线段的upper point时的操作（计算adjacent segment之间的intersection point），这个引理主要想说明，如果两条都不是水平（也不共线）的线段，如果有交点，那么在这个交点的上方，一定有一个event point，在那个event point的时候，这两条线段变成adjacent，并且会被检查（计算）是否有交点。
 
-这里暂时忽略了三种特殊情况：两条线段可能共线（重合），可能有水平的情况，以及有第三天线段穿过交点。
+这里**暂时忽略**了三种特殊情况：两条线段可能共线（重合），可能有水平的情况，以及有第三天线段穿过交点。
 
 
 
@@ -456,15 +464,50 @@ Brute-forced algorithm的时间复杂度是O(nlogn)，但实际情况，有可�
 
 sweep line遇到三种不同event point时对应的操作
 
-- 如果event point是一条线段的upper point（end point），就要检查这个upper point所在的线段，和它左右两个相邻的线段是否有交点，如果有交点，那么这个交点就是一个新的event point。
+- 如果**event point**是一条线段的**upper point**（end point），就要检查这个upper point所在的线段，和它左右两个相邻的线段是否有交点，如果有交点，那么这个交点就是一个新的event point。
 
   因为sweep line上方的event point都是已知的或已经计算过的，所以关注的是sweep line下方的交点。
 
-- 如果event point是某两条线段的交点（intersection point），那么这两条线段在所维护的有序线段列表里面的位置就要交换，同时因为位置变化，它们各自相邻的线段也发生了变化（但只变化了一个，因为另一个仍然是它们自己中的一个），所以也要检查它们和各自新邻近的线段之间是否有交点，如果有并且是之前没有的event point，那么就有发现了一个或两个新的event point。
+- 如果**event point**是某两条线段的**交点**（intersection point），那么这两条线段在所维护的有序线段列表里面的位置就要交换，同时因为位置变化，它们各自相邻的线段也发生了变化（但只变化了一个，因为另一个仍然是它们自己中的一个），所以也要检查它们和各自新邻近的线段之间是否有交点，如果有并且是之前没有的event point，那么就有发现了一个或两个新的event point。
 
-- 如果event point是一条线段的lower point（end point），那么这条线段原先左右两条线段就变成了直接相邻的线段，就要检查（计算）这两条线段是否有交点，同样的，如果有，就是新的event point。
-
-
+- 如果**event point**是一条线段的**lower point**（end point），那么这条线段原先左右两条线段就变成了直接相邻的线段，就要检查（计算）这两条线段是否有交点，同样的，如果有，就是新的event point。
 
 
 
+
+
+算法当中需要的两个数据结构
+
+- **event queue**（记作 ***Q***）
+
+  需要支持删除一个点（event point）的操作，并返回这个点以便对其处理。
+
+  （如果两个点有相通的y坐标，返回x坐标较小的一个。这个实际上说明，如果一个线段是水平时，当水平的sweep line扫描到这条线段时，upper point是其左边的点，lower point右边的点，即sweep line先遇到的event point是左边的点。）
+
+  需要支持插入一个点（event point）的操作，因为新的intersection point是在sweep line移动过程中计算得出。
+
+  同时，允许两个event point是共点的（coincide，比如两条线段的upper point可能是同一个点），但把它们当做是同一个点，所以需要支持查看一个event point是否在***Q***中已经存在。
+
+  根据上述特点，采用平衡二叉搜索树（**Balanced Binary Search Tree**，BST），并定义点（event point） *p* < *q* 的“小于”操作符（`<`）为
+
+  （1）如果 *p* 和 *q* 的y坐标相同，那么 *p* 的x坐标小于*q* 的x坐标
+
+  （2）如果 *p* 和 *q* 的y坐标不相同，那么 *p* 的y坐标小于*q* 的y坐标
+
+- **status**（记作 ***J***）
+
+  这个所谓的状态，是指当前和水平的sweep line相交的**线段**的**有序**集合。
+
+  对于给定的一条线段，为了计算它和相邻线段的相交情况，它必须是可以动态调整的，即：
+
+  （1）当sweep line遇到一条线段的upper end point的时候，该线段需要放入status，并且需要查看此时它和它左右相邻的两条线段的相交情况，如果有交点就需要计算出来，并放入**event queue**里
+
+  （2）当sweep line遇到一条线段的lower end point的时候，该线段需要从status中移除，同时它原先左右相邻的两条线段现在变为直接相邻，那么也要再次查看并计算这两条线段是否有交点，如果有，同样放入**event queue**里
+
+  （3）当sweep line遇到的event point是intersection point的时候，那么就需要交换这两条相交的线段在status中的位置，同时在status中，它们各自分别有一条相邻的线段发生了变化，同样需要再查看并计算交点，如果有交点，同样放入**event queue**里
+
+  同样根据上面的特点，也采用平衡二叉搜索树（**Balanced Binary Search Tree**，BST），但这里的BST里面，只有叶子节点是存储了线段的信息，而树中间的每个节点（interior nodes），存储的都是其左子树里面最右边（叶）节点的线段信息。
+
+  虽然中间的节点也可以存储线段信息，但为了方便陈述算法，所以中间节点的都是用来引导寻找最终叶节点的导引信息（values to guide the search），而不是最终的线段数据信息（data item）。
+
+  
