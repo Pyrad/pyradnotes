@@ -410,7 +410,7 @@ GIS中，在overlay上，不同信息有交叉的地方（比如查看河流和�
 
 其中线段的端点碰到其他的线段，也算作交点。
 
-Brute-forced algorithm的时间复杂度是O(nlogn)，但实际情况，有可能只有很少的一些线段相交，并不必计算每个线段和其他线段的交点。
+Brute-forced algorithm的时间复杂度是O(n^2)，但实际情况，有可能只有很少的一些线段相交，并不必计算每个线段和其他线段的交点。
 
 即，我们希望算法的复杂度依赖的不仅是输入点的个数，而且也是输出的交点的个数，这样的算法叫做***output-sensitive algorithm***。
 
@@ -430,13 +430,13 @@ Brute-forced algorithm的时间复杂度是O(nlogn)，但实际情况，有可�
 
 ***status***：***sweep line***的“状态”指的是和它当前相交的**线段的集合**（**segments**）
 
-***event point***：***sweep line***沿着垂直方向从上向下移动，但不是连续移动的，而是离散的，移动到的这些位置的点，叫做***event point***。这些***event point***，一部分是每条线段的upper end point（y值较大的点）和lower end point（y值较小的点），另一部分是线段的交点。
+***event point***：***sweep line***沿着垂直方向从上向下移动，但不是连续移动的，而是离散的，移动到的这些位置的点，叫做***event point***。这些***event point***，一部分是每条线段的upper end point（y值较大的点）和lower end point（y值较小的点），另一部分是线段之间的交点。
 
-只有当***sweep line***移动到这些***event point***上的时候，算法才做相应的计算或调整，即更新***sweep line***的***status***，并计算（或测试）交点。
+只有当***sweep line***移动到这些***event point***上的时候，算法才做相应的计算或调整，即更新***sweep line***的***status***，并测试线段之间有无交点（如有，就计算交点）。
 
-- 如果***event point***是一条线段的**upper point**，那么这条线段就是和***sweep line***相交，并且应该加入到***status***里面，同时要计算这条segment和***status***里面其他segments的交点（*后面会提到，只计算当前线段相邻的左右两条segments的交点，而不是计算和status里面所有线段的交点*），而且这个交点要放入到event point集合的适当位置，以便sweep line依次向下扫描时可以遍历到它。
+- 如果***event point***是一条线段的**upper point**，那么这条线段就是和***sweep line***相交，并且应该加入到***status***里面，同时要计算这条segment和***status***里面其他segments的交点（*后面会提到，只计算当前线段相邻的左右两条segments的交点，而不是计算和status里面所有线段的交点*），而且这个交点（如果有）要放入到event point集合的适当位置，以便sweep line依次向下扫描时可以遍历到它。
 
-- 如果***event point***是一条线段的**lower point**，那么这条线段就和***sweep line***不再相交（相离），就应该从status里面删除。
+- 如果***event point***是一条线段的**lower point**，那么这条线段就和***sweep line***不再相交（即变为相离），就应该从status里面删除。而且这也会导致**status**里面原先不直接相邻的两条线段，现在变成了直接相邻了，那就要计算这两条相邻线段之间有无交点（如果有，依然要放入event point集合里面去）
 
 - 如果***event point***是两条线段的**intersection point**（这个intersection point是前面计算得到加入进来的），那么在该点之后，相邻的adjacent neighbor就会发生改变，所以就要测试（计算）这两条segments和它们各自左右相邻的segment的交点。
 
@@ -450,7 +450,7 @@ Brute-forced algorithm的时间复杂度是O(nlogn)，但实际情况，有可�
 
 
 
-所以，简要叙述，***line sweeping algorithm***的答题思路如下
+所以，简要叙述，***line sweeping algorithm***的大体思路如下
 
 > Let’s briefly recap the overall approach. We imagine moving a horizontal sweep line ℓ downwards over the plane. The sweep line halts at certain event points; in our case these are the endpoints of the segments, which we know beforehand, and the intersection points, which are computed on the fly.
 >
@@ -464,13 +464,13 @@ Brute-forced algorithm的时间复杂度是O(nlogn)，但实际情况，有可�
 
 sweep line遇到三种不同event point时对应的操作
 
-- 如果**event point**是一条线段的**upper point**（end point），就要检查这个upper point所在的线段，和它左右两个相邻的线段是否有交点，如果有交点，那么这个交点就是一个新的event point。
+- 如果**event point**是一条线段的**upper point**（end point），就要检查这个upper point所在的线段，和它左右两个相邻的线段是否有交点，如果有交点，那么这个交点就是一个新的event point。当然，upper point所在的线段要放入status中去。
 
   因为sweep line上方的event point都是已知的或已经计算过的，所以关注的是sweep line下方的交点。
 
-- 如果**event point**是某两条线段的**交点**（intersection point），那么这两条线段在所维护的有序线段列表里面的位置就要交换，同时因为位置变化，它们各自相邻的线段也发生了变化（但只变化了一个，因为另一个仍然是它们自己中的一个），所以也要检查它们和各自新邻近的线段之间是否有交点，如果有并且是之前没有的event point，那么就有发现了一个或两个新的event point。
+- 如果**event point**是某两条线段的**交点**（intersection point），那么这两条线段在所维护的有序线段列表（status）里面的位置就要交换，同时因为位置变化，它们各自相邻的线段也发生了变化（但只变化了一个，因为另一个仍然是它们自己中的一个），所以也要检查它们和各自新邻近的线段之间是否有交点，如果有并且是之前没有的event point，那么就有发现了一个或两个新的event point。
 
-- 如果**event point**是一条线段的**lower point**（end point），那么这条线段原先左右两条线段就变成了直接相邻的线段，就要检查（计算）这两条线段是否有交点，同样的，如果有，就是新的event point。
+- 如果**event point**是一条线段的**lower point**（end point），那么这条线段原先左右两条线段就变成了直接相邻的线段，就要检查（计算）这两条线段是否有交点，同样的，如果有，就是新的event point。当然，这个lower point所在的线段要从status里面移除出去。
 
 
 
@@ -480,11 +480,11 @@ sweep line遇到三种不同event point时对应的操作
 
 - **event queue**（记作 ***Q***）
 
-  需要支持删除一个点（event point）的操作，并返回这个点以便对其处理。
+  **需要支持删除一个点（event point）的操作**，并返回这个点以便对其处理。
 
   （如果两个点有相通的y坐标，返回x坐标较小的一个。这个实际上说明，如果一个线段是水平时，当水平的sweep line扫描到这条线段时，upper point是其左边的点，lower point右边的点，即sweep line先遇到的event point是左边的点。）
 
-  需要支持插入一个点（event point）的操作，因为新的intersection point是在sweep line移动过程中计算得出。
+  **需要支持插入一个点（event point）的操作**，因为新的intersection point是在sweep line移动过程中计算得出。
 
   同时，允许两个event point是共点的（coincide，比如两条线段的upper point可能是同一个点），但把它们当做是同一个点，所以需要支持查看一个event point是否在***Q***中已经存在。
 
@@ -494,13 +494,17 @@ sweep line遇到三种不同event point时对应的操作
 
   （2）如果 *p* 和 *q* 的y坐标不相同，那么 *p* 的y坐标小于*q* 的y坐标
 
+  需要删除一个点的操作的原因是，sweep line向下移动时，需要event point的顺序，移动到下一个event point上，而这是二叉树删除一个节点并返回的操作（同时二叉搜索树会重新平衡并排序）
+
+  需要插入一个点的操作的原因是，当sweep line移动到不是intersection point的event point的时候，要计算相邻两条线段之间的intersection point，如果有就要插入BST，所以这是BST的插入节点的操作。
+
 - **status**（记作 ***J***）
 
   这个所谓的状态，是指当前和水平的sweep line相交的**线段**的**有序**集合。
 
   对于给定的一条线段，为了计算它和相邻线段的相交情况，它必须是可以动态调整的，即：
 
-  （1）当sweep line遇到一条线段的upper end point的时候，该线段需要放入status，并且需要查看此时它和它左右相邻的两条线段的相交情况，如果有交点就需要计算出来，并放入**event queue**里
+  （1）当sweep line遇到一条线段的upper end point的时候，该线段需要放入status，并且需要查看此时它和左右相邻的两条线段的相交情况，如果有交点就需要计算出来，并放入**event queue**里
 
   （2）当sweep line遇到一条线段的lower end point的时候，该线段需要从status中移除，同时它原先左右相邻的两条线段现在变为直接相邻，那么也要再次查看并计算这两条线段是否有交点，如果有，同样放入**event queue**里
 
@@ -508,6 +512,6 @@ sweep line遇到三种不同event point时对应的操作
 
   同样根据上面的特点，也采用平衡二叉搜索树（**Balanced Binary Search Tree**，BST），但这里的BST里面，只有叶子节点是存储了线段的信息，而树中间的每个节点（interior nodes），存储的都是其左子树里面最右边（叶）节点的线段信息。
 
-  虽然中间的节点也可以存储线段信息，但为了方便陈述算法，所以中间节点的都是用来引导寻找最终叶节点的导引信息（values to guide the search），而不是最终的线段数据信息（data item）。
+  虽然中间的节点也可以存储线段信息，但为了方便陈述算法，所以中间节点都是用来引导寻找最终叶节点的导引信息（values to guide the search），而不是最终的线段数据信息（data item）。
 
   
