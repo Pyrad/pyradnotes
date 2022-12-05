@@ -72,6 +72,8 @@ Published by Springer
 
 **treat** */triːt/* *v.* 处理，探讨，论述；
 
+**deciduous** */dɪˈsɪdʒuəs/* *adj.* 落叶性的，脱落性的；非永久性的
+
 
 
 ## Usage
@@ -128,9 +130,11 @@ in a sense 某种意义上
 
 ## Names
 
+- Graham’s scan
 - output-sensitive algorithm
 
-
+- planar graph
+- planar subdivisions
 
 
 
