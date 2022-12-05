@@ -57,3 +57,15 @@ Vocabulary  (reStructuredtext)
     * - **vetting**
       - /ˈvetɪŋ/
       - *n.* 审查，审核
+    * - **blatant**
+      - /ˈbleɪt(ə)nt/
+      - *adj.* 喧嚣的；公然的；炫耀的；俗丽的
+    * - **fiddle**
+      - /ˈfɪdl/
+      - *v.* （尤指厌烦或紧张地）不停摆弄；
+    * - **demise**
+      - /dɪˈmaɪz/
+      - *n.* 倒闭，败落；死亡，逝世；（律）（财产或所有权的）转让，遗赠
+    * - **preamble**
+      - /ˈpriːæmb(ə)l/
+      - *n.* （法规、契约的）序言，绪论；前言，开场白
