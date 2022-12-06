@@ -540,7 +540,7 @@ O()
 
 
 
-***HandleEventPoint(p)*** 算法步骤简述
+***HandleEventPoint(p)*** 步骤简述
 
 - 输入是点 *p*
 
@@ -576,7 +576,10 @@ O()
 
 
 
+***FindNewEvent(sl, sr, p)*** 步骤简述
 
+- 如果线段 *sl* 和 *sr* 在sweep line的下方相交，或者就在sweep line上相交并且在当前event point *p* 的右边，那么这个新的交点就是在 ***Q*** 中还没出现的新的event point
+  - 把这个新的交点加入到 ***Q*** 中
 
 
 
