@@ -536,7 +536,9 @@ sweep line遇到三种不同event point时对应的操作
 
 **算法复杂度**：
 
-O()
+O((n+k)logn)，其中，n是输入线段个数，k是输出个数
+
+或者更具体地，O((n+I)logn)，其中，n是输入线段个数，I是交点个数
 
 
 
@@ -583,15 +585,71 @@ O()
 
 
 
+Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间复杂度的证明。
+
+根据这两个引理，得出Theorem 2.4。
+
+>  Lemma 2.2 Algorithm FINDINTERSECTIONS computes all intersection points and the segments that contain it correctly.
+>
+> Lemma 2.3 The running time of Algorithm FINDINTERSECTIONS for a set S of n line segments in the plane is O(nlogn+I logn), where I is the number of intersection points of segments in S.
+>
+> Theorem 2.4 Let S be a set of n line segments in the plane. All intersection points in S, with for each intersection point the segments involved in it, can be reported in O(nlogn+I logn) time and O(n) space, where I is the number of intersection points.
 
 
 
+### 2.2 The Doubly-Connected Edge List
 
+引出了**可平面图**（planar graph, or planar embedding graph）的概念，引出可平面图的点（vertex）、线（edge）、面（face）。
 
+同时引出了我们需要的应用，即确定哪个面（face）是包含所给定的一个点（given point）的。
 
+引出了数据结构 ***doubly-connected edge list***，即 ***doubly-connected edge list*** 包含了一个平面细分（subdivision）上的face，edge，vertex的记录（record），并且除了几何和拓扑信息外，可能还有一些其他额外的信息，这个额外的信息叫做 ***information attribute*** （例如，一个face可能代表的是一种植被的覆盖，那么这个植被的种类就可以是这个额外的信息）。
 
+这个 ***doubly-connected edge list*** 数据结构上的几何与拓扑信息，需要允许我们支持以下的一些操作
 
+- 逆时针遍历这些face的edges，同时也能容易地反方向（顺时针）遍历。（这就要求edge直接有指向前一个和后一个的指针）
 
+- 因为一个edge是两个face的边界，所以edge上需要有两个指针来指向这两个face
+
+- 为了更方便表示当前描述的edge是哪个face的edge，可以把一条edge拆解为两条 ***half-edge***
+
+  - 这两条half-edge是不同face的，而且每个half-edge都有唯一的指向前一个half-edge和执行后一个half-edge的指针
+  - 而这同样意味着，一条half-edge只属于同一个face
+  - 对于同一条edge的两条half-edge，我们把它们叫做 ***twins***
+  - 我们把half-edge定义为有方向的，沿着half-edge走，face就在它的左边，所以这个方向是**逆时针**
+  - 把half-edge定义为一个向量，origin（起点）是v，终点（destination）是w。所以它的twin half-edge的起点就是w，而终点是v。
+  - 根据上面的定义，为了访问face的边界，可以只存储一个指向half-edge的指针，这样就可以沿着逆时针方向遍历这个face的所有half-edge了。
+
+- 为了在表示洞（hole）时，仍然有沿着half-edge走时，face还在它的左边，就把洞的half-edge的方向定义为顺时针。
+
+  而且，为了表示洞，需要需要有两个指向half-edge的指针，一个逆时针表示包含洞的face的边界，一个顺时针表示洞本身。
+
+- 还可以存储多个half-edge的指针，而且这些指针沿着这些edge遍历起来的时候，没有重复的edge，这就是isolated island的形式（为了简化期间，书中暂时不作讨论）
+
+**总结起来**，doubly-connected edge list数据结构有三种记录数据（record）
+
+- vertex record
+
+  它用来记录每个vertex（记作v）的坐标Coordinate(v)，并且它还有一个指针IncidentEdge(v)指向一条half-edge，而且这条half-edge的起点就是v
+
+- face record
+
+  一个face（记作f）
+
+  - 存储一个指针OuterComponent(f)，指向的是outer boundary的half-edge。（如果face是unbound，即open edges的话，这个指针就是空？）
+  - 还存储一个指针InnerComponent(f)，指向的是inner boundary的half-edge，这是用来表示洞的
+
+- half-edge record
+
+  一个half-edge（记作e）
+
+  - 存储一个指针Origin(e)指向它的起点（origin）
+  - 存储一个指针Twin(e)指向它的twin half-edge
+  - 存储一个指针IncidentFace(e)，表示它绑定（bound）的face
+  - 存储一个指向它前面half-edge的指针Prev(e)
+  - 存储一个指向它后面half-edge的指针Next(e)
+
+  没有必要存储它的终点（destination），因为可以通过Origin(Twin(e))得到。
 
 
 
