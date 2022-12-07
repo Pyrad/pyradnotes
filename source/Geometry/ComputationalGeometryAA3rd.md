@@ -597,6 +597,6 @@ O()
 
 ### 2.7 References
 
-- 库拉托夫斯基定理
+- [库拉托夫斯基定理](https://baike.baidu.com/item/%E5%BA%93%E6%8B%89%E6%89%98%E5%A4%AB%E6%96%AF%E5%9F%BA%E5%AE%9A%E7%90%86/2748841?fr=aladdin)
 - [可平面图（planar graph）](https://baike.baidu.com/item/%E5%8F%AF%E5%B9%B3%E9%9D%A2%E5%9B%BE/19138688?fr=aladdin)
 - 
