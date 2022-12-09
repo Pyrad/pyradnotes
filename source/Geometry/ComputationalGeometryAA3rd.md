@@ -94,6 +94,8 @@ coinciding point 共点
 
 in a sense 某种意义上
 
+incident to 由...产生（这里incident是 *adj.*）
+
 
 
 > Define the *y*-interval of a segment to be its orthogonal projection onto the *y*-axis.
@@ -656,6 +658,16 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
 （图暂时省略，图位于第32页，页码是41）
 
 这里也提到了，有时候有些record在一些应用中不是必须的（比如river和road构成的face，在某些应用中没有太多意义），所以在实现的时候可以适当忽略，以便在算法实现中更方便地调整其他数据。
+
+
+
+### 2.3 Computing the Overlay of Two Subdivisions
+
+简而言之，计算两个subdivision的overlay，就是根据两个subdivision的doubly-connected edge list（记作S1和S2），计算出一个新的doubly-connected edge list表示的subdivision（记作O(S1, S2)）。
+
+（此处的图为，Figure 2.4，Overlaying two subdivisions）
+
+这个overlay，可以看做是S1的edges被S2的edges所切割，而S1中的大部分edge其实可以在新生成的doubly-connected edge list中来复用，仅那些被S2的edges所真正切割到的S1的edges，才需要在新生成的O(S1, S2)被更新。
 
 
 
