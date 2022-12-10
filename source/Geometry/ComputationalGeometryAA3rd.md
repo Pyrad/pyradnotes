@@ -669,6 +669,12 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
 
 这个overlay，可以看做是S1的edges被S2的edges所切割，而S1中的大部分edge其实可以在新生成的doubly-connected edge list中来复用，仅那些被S2的edges所真正切割到的S1的edges，才需要在新生成的O(S1, S2)被更新。
 
+为了计算overlay结果，要把两个doubly-connected edge list（S1和S2），拷贝到一个新的doubly-connected edge list中去。拷贝的结果当然不是一个合法的doubly-connected edge list，因为它不能代表一个平面的细分（subdivision）。overlay算法的任务就是，把这个不合法的doubly-connected edge list，通过计算两个network edges之间的交点，并把两个doubly-connected edge list的部分区域连接起来，从而最终得到一个合法的doubly-connected edge list，即结果O(S1, S2)。
+
+
+
+
+
 
 
 
