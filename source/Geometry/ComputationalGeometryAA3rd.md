@@ -671,9 +671,19 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
 
 为了计算overlay结果，要把两个doubly-connected edge list（S1和S2），拷贝到一个新的doubly-connected edge list中去。拷贝的结果当然不是一个合法的doubly-connected edge list，因为它不能代表一个平面的细分（subdivision）。overlay算法的任务就是，把这个不合法的doubly-connected edge list，通过计算两个network edges之间的交点，并把两个doubly-connected edge list的部分区域连接起来，从而最终得到一个合法的doubly-connected edge list，即结果O(S1, S2)。
 
+下面首先讨论的是，最终的overlay结果O(S1, S2)中的vertex和half-edge records，是如何被计算出来的。（关于新生成的face record，因为比较复杂，稍后再讨论）
 
+计算O(S1, S2)的办法，利用了前面提到的计算line segments交点的plane sweep algorithm。算法操作的对象是，包含了S1和S2中所有line segment的线段集合（一个新的线段集合拷贝）。
 
+在plane sweep algorithm中，需要两个数据结构，分别是event point的集合Q，以及status structure J。
 
+Q是用来存储event point的（BST实现），而J是用来存储和sweep line相交的那些line segment的集合的（是有序的，在plane上是从左向右依次和sweep line相交的，也是BST实现的）。
+
+除了这个两个数据结构之外，还需要维护一个doubly-connected edge list的数据结构D，它的初始值是从S1和S2拷贝而来，也就是说它的初始值是包含了S1和S2的所有line segment的集合。而随着sweep line的向下移动，D会随之而更新，最终变成一个合理的doubly-connected edge list。
+
+如果一个D中的edge和sweep line相交而要被放入status J中时，我们需要用指针把放入J中的edge和它来自于D中的哪个half-edge record联系起来，这样当遇到一个intersection point时，我们就能够方便地找到D中的哪一个half-edge record（或哪一部分）需要被更新和调整。
+
+在sweep line向下扫描的过程中，sweep line上面是已经计算好的最终overlay结果的一部分，是不再变化的。
 
 
 
