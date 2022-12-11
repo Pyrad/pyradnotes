@@ -74,6 +74,8 @@ Published by Springer
 
 **deciduous** */dɪˈsɪdʒuəs/* *adj.* 落叶性的，脱落性的；非永久性的
 
+**cyclic** */ˈsaɪklɪk/* *adj.* 环的；循环的；周期的
+
 
 
 ## Usage
@@ -95,6 +97,8 @@ coinciding point 共点
 in a sense 某种意义上
 
 incident to 由...产生（这里incident是 *adj.*）
+
+hold for 适用
 
 
 
@@ -137,6 +141,14 @@ incident to 由...产生（这里incident是 *adj.*）
 
 - planar graph
 - planar subdivisions
+
+
+
+## Maths
+
+$e'$ ：$e$ prime（或 $e$ dash）
+
+$e''$ ：$e$ double prime（或 $e$ double dash）
 
 
 
@@ -663,27 +675,41 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
 
 ### 2.3 Computing the Overlay of Two Subdivisions
 
-简而言之，计算两个subdivision的overlay，就是根据两个subdivision的doubly-connected edge list（记作S1和S2），计算出一个新的doubly-connected edge list表示的subdivision（记作O(S1, S2)）。
+简而言之，计算两个subdivision的overlay，就是根据两个subdivision的doubly-connected edge list（记作S1和S2），计算出一个新的doubly-connected edge list表示的subdivision（记作$O(S_1, S_2)$ ）。
 
 （此处的图为，Figure 2.4，Overlaying two subdivisions）
 
-这个overlay，可以看做是S1的edges被S2的edges所切割，而S1中的大部分edge其实可以在新生成的doubly-connected edge list中来复用，仅那些被S2的edges所真正切割到的S1的edges，才需要在新生成的O(S1, S2)被更新。
+这个overlay，可以看做是S1的edges被S2的edges所切割，而S1中的大部分edge其实可以在新生成的doubly-connected edge list中来复用，仅那些被S2的edges所真正切割到的S1的edges，才需要在新生成的$O(S_1, S_2)$ 被更新。
 
-为了计算overlay结果，要把两个doubly-connected edge list（S1和S2），拷贝到一个新的doubly-connected edge list中去。拷贝的结果当然不是一个合法的doubly-connected edge list，因为它不能代表一个平面的细分（subdivision）。overlay算法的任务就是，把这个不合法的doubly-connected edge list，通过计算两个network edges之间的交点，并把两个doubly-connected edge list的部分区域连接起来，从而最终得到一个合法的doubly-connected edge list，即结果O(S1, S2)。
+为了计算overlay结果，要把两个doubly-connected edge list（S1和S2），拷贝到一个新的doubly-connected edge list中去。拷贝的结果当然不是一个合法的doubly-connected edge list，因为它不能代表一个平面的细分（subdivision）。overlay算法的任务就是，把这个不合法的doubly-connected edge list，通过计算两个network edges之间的交点，并把两个doubly-connected edge list的部分区域连接起来，从而最终得到一个合法的doubly-connected edge list，即结果$O(S_1, S_2)$ 。
 
-下面首先讨论的是，最终的overlay结果O(S1, S2)中的vertex和half-edge records，是如何被计算出来的。（关于新生成的face record，因为比较复杂，稍后再讨论）
+下面首先讨论的是，最终的overlay结果$O(S_1, S_2)$ 中的vertex和half-edge records，是如何被计算出来的。（关于新生成的face record，因为比较复杂，稍后再讨论）
 
-计算O(S1, S2)的办法，利用了前面提到的计算line segments交点的plane sweep algorithm。算法操作的对象是，包含了S1和S2中所有line segment的线段集合（一个新的线段集合拷贝）。
+计算$O(S_1, S_2)$ 的办法，利用了前面提到的计算line segments交点的plane sweep algorithm。算法操作的对象是，包含了S1和S2中所有line segment的线段集合（一个新的线段集合拷贝）。
 
 在plane sweep algorithm中，需要两个数据结构，分别是event point的集合Q，以及status structure J。
 
 Q是用来存储event point的（BST实现），而J是用来存储和sweep line相交的那些line segment的集合的（是有序的，在plane上是从左向右依次和sweep line相交的，也是BST实现的）。
 
-除了这个两个数据结构之外，还需要维护一个doubly-connected edge list的数据结构D，它的初始值是从S1和S2拷贝而来，也就是说它的初始值是包含了S1和S2的所有line segment的集合。而随着sweep line的向下移动，D会随之而更新，最终变成一个合理的doubly-connected edge list。
+除了这个两个数据结构之外，还需要维护一个doubly-connected edge list的数据结构$D$，它的初始值是从S1和S2拷贝而来，也就是说它的初始值是包含了S1和S2的所有line segment的集合。而随着sweep line的向下移动，$D$会随之而更新，最终变成一个合理的doubly-connected edge list。
 
-如果一个D中的edge和sweep line相交而要被放入status J中时，我们需要用指针把放入J中的edge和它来自于D中的哪个half-edge record联系起来，这样当遇到一个intersection point时，我们就能够方便地找到D中的哪一个half-edge record（或哪一部分）需要被更新和调整。
+如果一个$D$中的edge和sweep line相交而要被放入status J中时，我们需要用指针把放入J中的edge和它来自于$D$中的哪个half-edge record联系起来，这样当遇到一个intersection point时，我们就能够方便地找到$D$中的哪一个half-edge record（或哪一部分）需要被更新和调整。
 
 在sweep line向下扫描的过程中，sweep line上面是已经计算好的最终overlay结果的一部分，是不再变化的。
+
+
+
+当遇到一个event point时候的处理：当event point是来自原先同一个subdivision的edges时，那么这个event point是可以被复用的；但如果event point是来自原先两个subdivision的不同edges时，那么我们就需要更新数据结构$D$，更新（加入或删除）某些edges，以便把两个subdivision通过新的intersection point而连接起来。
+
+
+
+这里通过举例，说明了一个subdivision中的一条edge，是如何和另一个subdivision中的其他几个edge相交，然后做处理的。这个过程比较tedious，但是不难（difficult）
+
+（图为Figure 2.5，图位于第35页，页码是44）
+
+这里主要结合图形，说明了在新生成了两条edge（对应的是两队half-edge pair）之后，如何调整它们以及周围的edge的Next()和Prev()指针。
+
+值得说明的是，这个例子中，一条edge恰好经过的是另一个subdivision的一个vertex，因此，在调整新产生的edge的prev和next的时候，是按照clockwise的转向，找到第一个相邻的edge作为Next()指针所指向的edge，而按照anti-clockwise的转向，找到其第一个相邻的edge作为Prev()指针所指向的edge。这个可以结合图的说明清晰容易地看到。
 
 
 
@@ -695,4 +721,6 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 - [库拉托夫斯基定理](https://baike.baidu.com/item/%E5%BA%93%E6%8B%89%E6%89%98%E5%A4%AB%E6%96%AF%E5%9F%BA%E5%AE%9A%E7%90%86/2748841?fr=aladdin)
 - [可平面图（planar graph）](https://baike.baidu.com/item/%E5%8F%AF%E5%B9%B3%E9%9D%A2%E5%9B%BE/19138688?fr=aladdin)
+- [Geometry Symbol Names](https://www.rapidtables.com/math/symbols/Geometry_Symbols.html)
 - 
+
