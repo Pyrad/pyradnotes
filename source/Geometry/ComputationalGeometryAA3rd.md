@@ -644,26 +644,26 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
 
 - vertex record
 
-  它用来记录每个vertex（记作v）的坐标Coordinate(v)，并且它还有一个指针IncidentEdge(v)指向一条half-edge，而且这条half-edge的起点就是v
+  它用来记录每个vertex（记作v）的坐标Coordinate(v)，并且它还有一个指针$IncidentEdge(v)$指向一条half-edge，而且这条half-edge的起点就是v
 
 - face record
 
-  一个face（记作f）
+  一个face（记作$f$）
 
-  - 存储一个指针OuterComponent(f)，指向的是outer boundary的half-edge。（如果face是unbound，即open edges的话，这个指针就是空？）
-  - 还存储一个指针InnerComponent(f)，指向的是inner boundary的half-edge，这是用来表示洞的
+  - 存储一个指针$OuterComponent(f)$，指向的是outer boundary的half-edge。（如果face是unbound，即open edges的话，这个指针就是空？）
+  - 还存储一个指针$InnerComponent(f)$，指向的是inner boundary的half-edge，这是用来表示洞的
 
 - half-edge record
 
-  一个half-edge（记作e）
+  一个half-edge（记作$e$）
 
-  - 存储一个指针Origin(e)指向它的起点（origin）
-  - 存储一个指针Twin(e)指向它的twin half-edge
-  - 存储一个指针IncidentFace(e)，表示它绑定（bound）的face
-  - 存储一个指向它前面half-edge的指针Prev(e)
-  - 存储一个指向它后面half-edge的指针Next(e)
+  - 存储一个指针$Origin(e)$指向它的起点（origin）
+  - 存储一个指针$Twin(e)$指向它的twin half-edge
+  - 存储一个指针$IncidentFace(e)$，表示它绑定（bound）的face
+  - 存储一个指向它前面half-edge的指针$Prev(e)$
+  - 存储一个指向它后面half-edge的指针$Next(e)$
 
-  没有必要存储它的终点（destination），因为可以通过Origin(Twin(e))得到。
+  没有必要存储它的终点（destination），因为可以通过$Origin(Twin(e))$得到。
 
 本节还画了vertex，edge，half-edge，face以及上面提到的各种record的示意图，如下。
 
@@ -710,6 +710,28 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 这里主要结合图形，说明了在新生成了两条edge（对应的是两队half-edge pair）之后，如何调整它们以及周围的edge的Next()和Prev()指针。
 
 值得说明的是，这个例子中，一条edge恰好经过的是另一个subdivision的一个vertex，因此，在调整新产生的edge的prev和next的时候，是按照clockwise的转向，找到第一个相邻的edge作为Next()指针所指向的edge，而按照anti-clockwise的转向，找到其第一个相邻的edge作为Prev()指针所指向的edge。这个可以结合图的说明清晰容易地看到。
+
+
+
+除了更新生成的新half-edge pair，还要找到$O(S_1, S_2)$ 中每个face $f$ 的 $OuterComponent(f)$ （指向一个表示outer boundary的half-edge）和$InnerComponent(f)$ （指向一个或几个half-edge的指针，表示一个或多个洞）。还要给每个edge的$IncidentFace()$设定合理的指针指向face record。最后，每个$face$还要用原先两个subdivision中包含这个$face$的face name来给它做label。
+
+
+
+如何判断一个half-edges组成的boundary是outer boundary，还是表示hole的inner boundary？
+
+选定leftmost的vertex（in case of ties，choose lowest of leftmost），因为沿着half-edge的走向是clockwise的就是outer boundary，所以计算这个vertex前后两个相邻的（有序的）half-edge的夹角，如果是小于$90°$，那么就是outer vertex的half-edge，如果是大于$90°$，就是inner boundary的half-edge。这个特性仅适用于leftmost（或lowest of leftmost if ties）的vertex。
+
+（这里的图位于第36页，页码是45）
+
+
+
+通过一个图的例子，说明了如何确定一个face $f$是由一个或几个cycle组成的。如果是多个cycles组成，一般有几个洞的cycle（half-edges是顺时针的）和一个outer cycle（for outer boundary）组成，而且一个洞要通过对应的数据结构（比如class上的成员变量）连接到另一个洞或outer boundary上，这样才能表明这些cycles组成的是同一个face $f$。
+
+
+
+
+
+
 
 
 
