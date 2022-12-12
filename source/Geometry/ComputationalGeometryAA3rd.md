@@ -751,6 +751,14 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 
 
+最后一件事情是，在overlay结果 $O(S_1, S_2)$ 中，每个face $f$ 都要找到它原先分别在 $S_1$ 和 $S_2$ 中的label。
+
+假如一个vertex $v$ 是来自 $S_1$ 的一条edge $e_1$ 和 $S_2$ 的一条edge $e_2$ 的相交得到新的点，那么可以从edge $e_1$ 和 $e_2$ 的 $IncidentFace(f)$ 得到各自在原先 $S_1$ 和 $S_2$ 中的label name。
+
+但如果vertex $v$ 本身就是来自 $S_1$ 的一个点（或者$S_2$ 的一个点），那么我们首先能得知它来自 $S_1$ 的哪个face（因为能从 $v$ 对应的half-edge的 $IncidentFace(f)$ 上得到。其次，就需要找到在 $S_2$ 上的哪个face包含这个vertex $v$。
+
+书中在此处没有展开解释，只说明了仍然使用本章介绍共的plane sweep algorithm就可以找到，而且也不用再次调用这个plane sweep algorithm，而是在原先扫描的过程中，就可以找到。
+
 
 
 
