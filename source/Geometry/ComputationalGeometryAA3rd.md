@@ -729,9 +729,25 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 
 
+> Lemma 2.5 Each connected component of the graph $G$ corresponds exactly to the set of cycles incident to one face.
+
+关于这个lemma的证明，没看懂。
+
+总之，他想说明的是，一个face上的洞，是和这同一个face上的其他洞相连的，或者是和这个face对应的$OuterComponent(f)$ 相连接，而这些相连接的洞（实际上就是$InnerComponent(f)$ ？）和$OuterComponent(f)$ 就组成了这个face $f$。
 
 
 
+如果构建graph $G$？
+
+构建graph $G$，实际上是把这些$InnerComponent(f)$（即洞）和$OuterComponent(f)$ 直接合理地用书中所谓的“arc”连接起来。
+
+对于每个表示洞的cycle的leftmost的vertex $v$，如果有一条half-edge $e$，是这个vertex $v$ 左边第一个邻近的half-edge，那么就在这两个node直接就用一条arc连接起来。
+
+为了快速（有效）地找到这些node，每个half-edge的record上有指针指向这些node，表示这些node在这个graph $G$ 的哪个cycle上。
+
+而找到一条vertex左边的、相邻的第一个half-edge，是在plane sweep algorithm中sweep line向下扫描时得出的，而且这个相邻的左边第一个half-edge，是位于另外一个cycle上的。
+
+（这里用来说明的图，位于第37页，页码是46）
 
 
 
