@@ -761,6 +761,42 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 
 
+***MapOverlay***算法简述
+
+**输入**：二维平面上的两个平面细分（subdivision）$S_1$ 和 $S_2$，它们都是以doubly-connected edge list表示。
+
+**输出**：$S_1$ 和 $S_2$ 的overlay $D$，并且也是以doubly-connected edge list表示。
+
+**算法简述**：
+
+1. 新建一个doubly-connected edge list $D$，并把两个原始输入$S_1$ 和 $S_2$ 拷贝到 $D$ 中
+
+2. 通过第2.1节中提到的plane sweep algorithm，计算$S_1$ 和 $S_2$ 中每个edge的交点，除了在每个event point时更新 $J$ （status）和 $Q$ （event point），还需要处理
+   - 更新步骤1中建立的的doubly-connected edge list $D$（前面的叙述中有举例如果$S_1$的一条edge穿过了$S_2$的一个vertex时，如何生成新的half-edge pair，以及复用原先的half-edge pair并调整相应的record指针）
+   - 在处理$D$中的每个event point之后，记录每个event point左边第一个half-edge的信息
+
+3. 经过步骤2，$D$已经是$S_1$ 和 $S_2$ 的overlay结果$O(S_1, S_2)$，但是每个face $f$ 的信息还没有计算出来
+
+4. 遍历$D$，确定$O(S_1, S_2)$中的boundary cycles
+
+5. 构建graph $G$。这样的 $G$ 是一个或多个component组成。每个component由一个或几个表示boundary的cycle(s)组成，如果一个boundary cycle表示的是洞，那么它的leftmost的vertex就要通过一个所谓的"arc"连接到另外一个表示洞的boundary cycle（或者最终连接到一个表示非洞的boundary cycle上）
+
+6. 对于步骤5中建立的graph $G$ 的每个component：
+
+   假设 $C$ 是这个component中唯一的outer boundary cycle，并用 $f$ 表示由这个cycle所包含的face。
+
+   创建 $f$ 的face record，设定指针 $OuterComponent(f)$ 指向 $C$ 中的某一个half-edge即可；设定指针数组（或列表）$InnerComponent(f)$ ，它是这个component中每个洞上的某一个half-edge的指针集合；把这个component中每条half-edge所指向face的指针$IncidentFace(e)$ 设置为指向 $f$ 的face record。
+
+7. 结果$O(S_1, S_2)$中的每个face，都用$S_1$ 和 $S_2$ 中对应的face名字做标记（label）
+
+**算法时间复杂度**：$O(nlogn + klogn)$
+
+
+
+
+
+
+
 
 
 ### 2.7 References
