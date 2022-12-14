@@ -76,6 +76,10 @@ Published by Springer
 
 **cyclic** */ˈsaɪklɪk/* *adj.* 环的；循环的；周期的
 
+**corollary** */ˈkɔːrəleri/* *n.* 推论；必然的结果
+
+
+
 
 
 ## Usage
@@ -801,6 +805,26 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 - 步骤2中，plane sweep algorithm的时间复杂度是 $O(nlogn + klogn)$
 - 步骤4-6中，用来填写face record的时间复杂度是和 $O(S_1, S_2)$ 线性相关的
 - 步骤7中，把结果中的每个face用$S_1$ 和 $S_2$ 中对应的face名字做标记的时间复杂度是 $O(nlogn + klogn)$
+
+
+
+### 2.4 Boolean Operations
+
+Map overlay算法最为常见的应用之一，就是polygon的Boolean操作，即 **与**（$AND$， ∩），**或**（$OR$，∪），**非**（$NOT$，\）。
+
+（这里用来说明的图，位于第39页，页码是48）
+
+按照前面所述，把两个polygon看做是两个平面细分（subdivision），记作 $P_1$ 和 $P_2$，那么map overlay的结果$O(P_1, P_2)$ 是一个新的平面细分，并且也用一个doubly-connected edge list所表示。这里最重要的是，作为结果的平面细分的每个face record $f$，都是用原来两个平面细分 $P_1$ 和 $P_2$ 共同标识的。
+
+所以，Boolean操作的求解转换为：
+
+- 如果计算的是$P_1$ 和 $P_2$的交集（ $P_1 ∩ P_2$），我们就从overlay结果中找到那些同时带有$P_1$ 和 $P_2$ label的face。
+- 如果计算的是$P_1$ 和 $P_2$的并集（ $P_1 ∪ P_2$），我们就从overlay结果中找到那些带有$P_1$ 或 $P_2$ 或同时带有$P_1$ 和 $P_2$label 的face。
+- 如果计算的是$P_1$ 和 $P_2$的差集（ $P_1 \ P_2$），我们就从overlay结果中找到那些只带有$P_1$ 、不带有 $P_2$ label的face。
+
+
+
+
 
 
 
