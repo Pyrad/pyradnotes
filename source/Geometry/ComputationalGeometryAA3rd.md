@@ -793,9 +793,14 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 
 
+> Theorem 2.6 Let $S_1$ be a planar subdivision of complexity $n_1$, let $S_2$ be a subdivision of complexity $n_2$, and let $n := n_1 +n_2$. The overlay of $S_1$ and $S_2$ can be constructed in $O(nlogn + klogn)$ time, where k is the complexity of the overlay.
 
+算法复杂度的计算
 
-
+- 步骤1中，拷贝两个doubly-connected edge list 到 $D$ 中，算法复杂度是 $O(n)$
+- 步骤2中，plane sweep algorithm的时间复杂度是 $O(nlogn + klogn)$
+- 步骤4-6中，用来填写face record的时间复杂度是和 $O(S_1, S_2)$ 线性相关的
+- 步骤7中，把结果中的每个face用$S_1$ 和 $S_2$ 中对应的face名字做标记的时间复杂度是 $O(nlogn + klogn)$
 
 
 
