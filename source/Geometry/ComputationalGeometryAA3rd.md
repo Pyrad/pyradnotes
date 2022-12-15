@@ -78,6 +78,8 @@ Published by Springer
 
 **corollary** */ˈkɔːrəleri/* *n.* 推论；必然的结果
 
+**paradigm** */ˈpærədaɪm/* *n.* 典范，范例；样板，范式；词形变化表；纵聚合关系语言项
+
 
 
 
@@ -824,7 +826,24 @@ Map overlay算法最为常见的应用之一，就是polygon的Boolean操作，�
 
 
 
+### 2.5 Notes and Comments
 
+line segment intersection problem是计算几何中最为基础的问题之一。
+
+本章提到的 $O(nlogn + klogn)$ 时间复杂度的算法是1979年 **Bentley** 和 **Ottmann** 给出的。
+
+求得所有线段交点的时间复杂度的下限是 $\Omega(nlogn + k)$ ，当 $k$ 值较大时，这样的算法不是最优的。多位研究者研究后，Clarkson&Shor这两人，和Mulmuley分别给出了randomized incremental algorithms，时间复杂度是$O(nlogn + k)$，而空间复杂度分别是$O(n)$和$O(k)$，而且这两种种randomized algorithms也可以用来计算curve。Balaban后来给出了第一种 deterministic algorithm，时间和空间复杂度分别是$O(nlogn + k)$和$O(n)$。
+
+有一种叫做**red-blue line segment intersection problem**的问题，是line segment intersection problem的特殊情况。它是指两个line segment的集合（red segments和blue segments），每个segment集合内部两两segment之间没有交点，那么求解这两个集合之间的segment intersection，**Mairson** 和 **Stolfi**给出的算法时间和空间复杂度分别是$O(nlogn + k)$和$O(n)$。
+
+实际上，**red-blue line segment intersection problem**的问题就是network overlay problem。
+
+line segment intersection counting problem是计算线段交点个数的问题（而不是报告所有交点坐标），所以它的输出就是一个整型数，不依赖于交点个数算法的时间复杂度是$O(n^\frac{4}{3}log^cn)$，其中 $c$ 是某个小值常数。
+
+Plane sweep是设计几何算法中最为重要的范式之一。第3章plane sweep用它来处理polygon triangulation
+problem，第7章用它来计算Voronoi diagram（维诺图） of a set of points。本章提到的sweep line是一条水平的（虚拟）直线，在某些情况下，sweep line可能是其他的形式，比如第15章提到的可能是rotating line。plane sweep也可以用于更高维度的空间，这时叫做space sweep algorithms。
+
+本章提到的用来存储平面细分（subdivision）的数据结构是the doubly-connected edge list，Muller 和 Preparata描述了这种数据结构。此外，还有Baumgart的the winged edge structure，Guibas 和Stolfi的the quad edge structure等。这些数据结构的差异总体上不大。
 
 
 
