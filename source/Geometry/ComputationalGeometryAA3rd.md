@@ -847,10 +847,53 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-### 2.7 References
+### 2.6 References
 
 - [库拉托夫斯基定理](https://baike.baidu.com/item/%E5%BA%93%E6%8B%89%E6%89%98%E5%A4%AB%E6%96%AF%E5%9F%BA%E5%AE%9A%E7%90%86/2748841?fr=aladdin)
 - [可平面图（planar graph）](https://baike.baidu.com/item/%E5%8F%AF%E5%B9%B3%E9%9D%A2%E5%9B%BE/19138688?fr=aladdin)
 - [Geometry Symbol Names](https://www.rapidtables.com/math/symbols/Geometry_Symbols.html)
-- 
+
+
+
+## 3 Polygon Triangulation - Guarding an Art Gallery
+
+作者通过前言，引出了所谓的 ***Art Gallery Problem***，即我们需要多少台摄像机才能监控画廊？并且我们需要在什么位置摆放它们？
+
+> How many cameras do we need to guard a given gallery and how do we decide where to place them?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
