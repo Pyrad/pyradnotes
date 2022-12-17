@@ -138,15 +138,25 @@ hold for 适用
 
 
 
+> Therefore we model a gallery as a **polygonal region** in the plane.
+>
+> 我们把画廊当做一个二维平面上的多边形
+
 
 
 ## Names
 
 - Graham’s scan
 - output-sensitive algorithm
-
 - planar graph
 - planar subdivisions
+- Art Gallery Problem
+
+
+
+
+
+
 
 
 
@@ -862,6 +872,10 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 > How many cameras do we need to guard a given gallery and how do we decide where to place them?
 
 
+
+### 3.1 Guarding and Triangulations
+
+为了准确描述问题，把实际当中的画廊化简为二维平面上的多边形，而且是由线段连接成的没有自相交的多边形，因此就不包括洞，这样的多边形叫做simple polygon。摄像机是这个polygon当中的一个点，如果一个点到摄像机的连线位于这个polygon内部，那么这个点就是可以被这个摄像机看到的点。
 
 
 
