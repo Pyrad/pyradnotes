@@ -80,6 +80,8 @@ Published by Springer
 
 **paradigm** */ˈpærədaɪm/* *n.* 典范，范例；样板，范式；词形变化表；纵聚合关系语言项
 
+**triangulation** */traɪˌæŋɡjuˈleɪʃn/* *n.* [测] 三角测量；三角形划分
+
 
 
 
@@ -876,6 +878,22 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 ### 3.1 Guarding and Triangulations
 
 为了准确描述问题，把实际当中的画廊化简为二维平面上的多边形，而且是由线段连接成的没有自相交的多边形，因此就不包括洞，这样的多边形叫做simple polygon。摄像机是这个polygon当中的一个点，如果一个点到摄像机的连线位于这个polygon内部，那么这个点就是可以被这个摄像机看到的点。
+
+我们以一个多边形polygon的点的个数 $n$ 作为摄像机的数量的上限。对于convex hull（凸多边形），实际上只需要一个摄像机就可以。我们需要给出的是对于有着 $n$ 个点的任意polygon的摄像机个数的上限（bound），而不是对于任意polygon的最少摄像机的个数，因为这个是 $NP$ 难题。
+
+假设 $P$ 是一个有 $n$ 个顶点（vertices）的多边形，为了确定摄像机的个数，我们可以把这个多边形分解成多个容易监控的**三角形**。这种三角形划分是通过连接每一对顶点得到的**对角线**得到的。
+
+这样的对角线连接的是多边形的两个顶起，并且这条对角线必须位于多边形内部。以最多数量的、不相交的对角线把一个多边形进行三角形划分的办法，叫做 ***triangulation of the polygon***（多边形的三角形划分）。
+
+要求这样的对角线的数量最大的原因是避免有原先多边形上的顶点落在划分之后的三角形的边上。而这在有三个共线顶点的多边形中是可能发生的。
+
+三角形划分通常不是唯一的。但三角形是否总是存在？三角形划分之后有多少个三角形？
+
+**定理3.1，每一个简单多边形存在一个三角形划分，并且一个有 $n$ 个顶点的简单多边形可以划分为 $n-2$ 个三角形。**
+
+> Theorem 3.1 Every simple polygon admits a triangulation, and any triangulation of a simple polygon with n vertices consists of exactly n−2 triangles.
+
+
 
 
 
