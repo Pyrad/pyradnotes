@@ -86,6 +86,10 @@ Published by Springer
 
 **dual graph** 【数】对偶图
 
+**prong** */prɔːŋ/* *n.* 尖齿；方向；（俚语）阴茎；耙子；（多种工具的）尖头；（作战）分支；*v.* 刺，贯穿
+
+**combinatorial**  */*kɒmˌbaɪnəˈtɔːrɪəl*/* *adj.* 组合的
+
 
 
 
@@ -156,7 +160,8 @@ hold for 适用
 - output-sensitive algorithm
 - planar graph
 - planar subdivisions
-- Art Gallery Problem
+- Art Gallery Problem (combinatorial geometry)
+- dual graph
 
 
 
@@ -830,7 +835,7 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 Map overlay算法最为常见的应用之一，就是polygon的Boolean操作，即 **与**（$AND$， ∩），**或**（$OR$，∪），**非**（$NOT$，\）。
 
-（这里用来说明的图，位于第39页，页码是48）
+（这里用来说明的图，位于第39页，页码是30）
 
 按照前面所述，把两个polygon看做是两个平面细分（subdivision），记作 $P_1$ 和 $P_2$，那么map overlay的结果$O(P_1, P_2)$ 是一个新的平面细分，并且也用一个doubly-connected edge list所表示。这里最重要的是，作为结果的平面细分的每个face record $f$，都是用原来两个平面细分 $P_1$ 和 $P_2$ 共同标识的。
 
@@ -909,7 +914,39 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 但这样的3-coloring of a triangulated polygon总是存在吗？答案是肯定的。
 
-要证明这一点，首先要查看所谓的**对偶图**（dual graph）。在这个对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 中，
+要证明这一点，首先要查看所谓的**对偶图**（dual graph）。在这个对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 中，（已经三角形划分的多边形的）每个三角形都有一个点（node，比如中心），把这个点对应的三角形记作 $t(\nu)$。每两个node $\nu$ 和 $\mu$ 之间有连线（arc），这样的连线（arcs）对应的是 $\mathcal{T}_p$  的对角线。每条对角线把多边形 $\mathcal{P}$ 一分为二，类似地，删去对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 的任意一条edge，这个对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 也会被一分为二。所以对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 是一棵树（tree），但对带洞的多边形不成立。这就是说我们可以用简单图的遍历找到3-coloring（比如深度遍历）。
+
+（这里用来说明的图，位于第56页，页码是48）
+
+找到一种3-coloring的办法描述：因为实际上对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 是一棵树，我们进行深度遍历时做相同的事情，即，遍历的过程中依次遇到每个三角形，并将其顶点涂为黑（black），白（white）和灰（gray）三种颜色，并且确保相邻的两个顶点颜色不同。而这也意味着，已经遍历过的所有三角形的顶点都已经涂上了合理的三种颜色。我们从对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 的任意一个node出发开始深度遍历，假设当前遍历到了node $\nu$，它的前一个node是 $\mu$，因此 $t(\nu)$ 和 $t(\mu)$ 有一条共同的对角线，根据前面的假设，所有已经遍历过的三角形的顶点已经涂色，那么  $t(\mu)$ 的三个顶点已经有了颜色，这也就是说 $t(\nu)$ 的三个顶点中已经有两个有了颜色，那么 $t(\nu)$ 剩下的那个顶点的颜色也就确定了，而且这也是因为对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 是一棵树，邻近node $\nu$ 的节点都还没有被访问到，所以 $t(\nu)$ 剩下的那个顶点颜色就可以涂成剩余的那种颜色。
+
+总结一下就是，简单多边形的三角形划分，总是可以3-coloring，而且简单多边形（表示画廊）可以用至多 $\lfloor n/3 \rfloor$ 台摄像机来监控。
+
+也许对某些多边形用不了 $\lfloor n/3 \rfloor$ 台摄像机，但对任意的有 $n$ 个顶点的多边形，最差的情况下乐观结果就需要 $\lfloor n/3 \rfloor$ 台摄像机。这里文中以一个有很多尖刺、基于一个水平base edge的组合多边形（comb-shaped）进行了说明，在这种polygon里面，找不到一个位置放置摄像机去同时看到两个尖刺区域。
+
+（这里用来说明的图，位于第56页，页码是48，从上往下第2个图）
+
+
+
+**定理3.2，（画廊定理），对任意有 $n$ 个顶点的简单多边形， $\lfloor n/3 \rfloor$ 台摄像机只是偶尔是必须的（因为大多数情况下只要更少），而且总是可以满足从多边形内部的任意一点看到至少一台摄像机的要求。**
+
+> Theorem 3.2 (Art Gallery Theorem) For a simple polygon with n vertices, $\lfloor n/3 \rfloor$ cameras are occasionally necessary and always sufficient to have every point in the polygon visible from at least one of the cameras.
+
+
+
+**定理3.3，对任意有 $n$ 个顶点的简单多边形，从多边形内部的任意一点看到至少一台摄像机，计算这样的至多 $\lfloor n/3 \rfloor$ 台摄像机的时间复杂度是 $O(nlogn)$。**
+
+> Theorem 3.3 Let $\mathcal{P}$  be a simple polygon with n vertices. A set of $\lfloor n/3 \rfloor$ camera positions in $\mathcal{P}$ such that any point inside $\mathcal{P}$ is visible from at least one of the cameras can be computed in $O(nlogn)$ time.
+
+
+
+
+
+
+
+
+
+
 
 
 
