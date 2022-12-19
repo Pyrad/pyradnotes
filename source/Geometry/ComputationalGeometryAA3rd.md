@@ -885,7 +885,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 我们以一个多边形polygon的点的个数 $n$ 作为摄像机的数量的上限。对于convex hull（凸多边形），实际上只需要一个摄像机就可以。我们需要给出的是对于有着 $n$ 个点的任意polygon的摄像机个数的上限（bound），而不是对于任意polygon的最少摄像机的个数，因为这个是 $NP$ 难题。
 
-假设 $P$ 是一个有 $n$ 个顶点（vertices）的多边形，为了确定摄像机的个数，我们可以把这个多边形分解成多个容易监控的**三角形**。这种三角形划分是通过连接每一对顶点得到的**对角线**得到的。
+假设 $\mathcal{P}$ 是一个有 $n$ 个顶点（vertices）的多边形，为了确定摄像机的个数，我们可以把这个多边形分解成多个容易监控的**三角形**。这种三角形划分是通过连接每一对顶点得到的**对角线**得到的。
 
 这样的对角线连接的是多边形的两个顶起，并且这条对角线必须位于多边形内部。以最多数量的、不相交的对角线把一个多边形进行三角形划分的办法，叫做 ***triangulation of the polygon***（多边形的三角形划分）。
 
@@ -897,19 +897,19 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 > Theorem 3.1 Every simple polygon admits a triangulation, and any triangulation of a simple polygon with n vertices consists of exactly n−2 triangles.
 
-这个定义的简单证明见第55页（页码47）。其中没看懂的是证明diagonal open segment存在的时候，为什么 $v$ 和 $v'$ 构成的open segment $\overrightarrow{vv'}$ 不会和 $P$ 的其他edge相交？？？（需要以后再查看）。
+这个定义的简单证明见第55页（页码47）。其中没看懂的是证明diagonal open segment存在的时候，为什么 $v$ 和 $v'$ 构成的open segment $\overrightarrow{vv'}$ 不会和 $\mathcal{P}$ 的其他edge相交？？？（需要以后再查看）。
 
 
 
 有了上述的定理，那么用来监控画廊的摄像机个数就可以是 $n-2$，但这有点太多了。因为，比如把一台摄像机放在对角线上，那么它就可以监控两个三角形（区域）；如果放在某些顶点上，那么摄像机似乎可以监控更多的区域。
 
-假设 $T_p$ 是多边形 $P$ 的一个三角形划分（triangulation），给多边形的每个顶点（vertex）三种颜色中的其中一种：黑（black），白（white）和灰（gray），**并且使得**，每两个由多边形的edge，或对角线相连的两个vertex，其颜色不同。这叫作 ***3-coloring of a triangulated polygon***（三角形划分的一种三色赋值）。
+假设 $\mathcal{T}_p$ 是多边形 $\mathcal{P}$ 的一个三角形划分（triangulation），给多边形的每个顶点（vertex）三种颜色中的其中一种：黑（black），白（white）和灰（gray），**并且使得**，每两个由多边形的edge（或对角线）相连的两个vertex，其颜色不同。这叫作 ***3-coloring of a triangulated polygon***（三角形划分的一种三色赋值）。
 
 在这样的3-coloring of a triangulated polygon中，每个三角形都会有黑（black），白（white）和灰（gray）三种颜色的顶点。比如我们把摄像机放在那些灰色的顶点上，就可以实现监控整个画廊的目的。而通过选择放置在三种颜色的某种颜色上，我们就能实现使用至多 $\lfloor n/3 \rfloor$ 台摄像机来监控整个画廊。
 
 但这样的3-coloring of a triangulated polygon总是存在吗？答案是肯定的。
 
-要证明这一点，首先要查看所谓的**对偶图**（dual graph）。
+要证明这一点，首先要查看所谓的**对偶图**（dual graph）。在这个对偶图 $\mathcal{G}(\mathcal{T}_\mathcal{P})$ 中，
 
 
 
@@ -918,6 +918,8 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 ### 3.6 References
 
 [Latex公式编辑器](https://latexlive.com/##)
+
+[Latex数学字体](https://zhuanlan.zhihu.com/p/556258509)
 
 
 
