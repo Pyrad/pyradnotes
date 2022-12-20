@@ -90,6 +90,10 @@ Published by Springer
 
 **combinatorial**  */*kɒmˌbaɪnəˈtɔːrɪəl*/* *adj.* 组合的
 
+**monotone** */*ˈmɒnətəʊn*/* *n.* 单调；单音调；*adj.* 单调的
+
+
+
 
 
 
@@ -961,7 +965,13 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
+什么是简单的**单调多边形**（monotone simple polygon）？
 
+如果一个多边形是关于某一条直线 $\ell$ 是**单调**的，那么对于任意一条垂直于 $\ell$ 的直线 $\ell'$，它和这个多边形的相交部分是连接的。换句话说，这个相交的部分就是一条线段，或者一个点，或者没有相交。（就是说不会有多个相交的线段或点）
+
+> A simple polygon is called monotone with respect to a line $\ell$ if for any line $\ell'$ perpendicular to $\ell$ the intersection of the polygon with $\ell'$ is connected. In other words, the intersection should be a line segment, a point, or empty.
+
+如果一个多边形是关于*y*轴单调，那么从最上面的顶点开始，沿着多边形的轮廓线段（向左或向右），到达最下面的顶点，我们总是向下移动或者水平移动，而从不会向上移动。这是关于*y*轴单调的多边形的一个特性。
 
 
 
