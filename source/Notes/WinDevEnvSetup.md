@@ -1014,6 +1014,12 @@ brew install gcc
 
 安装完成秒传链接提取之后，打开网页版百度网盘，出现了秒传连接按钮，把需要转存的秒传连接拷贝进去，注意文件名之间要手动去掉空格，然后点击下载即可。
 
+### Reference
+
+[秒传连接提取脚本 - 文档 & 教程](https://xtsat.github.io/rapid-upload-userscript-doc/document/Info/%E8%84%9A%E6%9C%AC%E8%AF%B4%E6%98%8E.html)
+
+[秒传连接提取脚本 - Github页面](https://github.com/mengzonefire/rapid-upload-userscript)
+
 
 
 ## Fxxking GFW
