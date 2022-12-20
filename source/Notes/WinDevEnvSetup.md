@@ -1022,6 +1022,12 @@ brew install gcc
 
 
 
+## Looking for Books 查找书籍资源
+
+[Zlibrary ISBN检索](https://find.looks.wang/isbn.htm)
+
+
+
 ## Fxxking GFW
 
 ### 修改host文件
