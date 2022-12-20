@@ -904,6 +904,8 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 这个定义的简单证明见第55页（页码47）。其中没看懂的是证明diagonal open segment存在的时候，为什么 $v$ 和 $v'$ 构成的open segment $\overrightarrow{vv'}$ 不会和 $\mathcal{P}$ 的其他edge相交？？？（需要以后再查看）。
 
+应该想明白了：如果这样的segment $\overrightarrow{vv'}$ 和 $\mathcal{P}$ 的一条edge相交的话，那么点 $v'$ 肯定位于这条edge的另外一侧，这也就是说，那条edge上的两个点，肯定有一个比 $v'$ 离 $v$ 更近，这样就有产生矛盾，所以反证法得证$v'$ 就是离$\overrightarrow{uw}$ 最远的（并且在triangle里面的）点。
+
 
 
 有了上述的定理，那么用来监控画廊的摄像机个数就可以是 $n-2$，但这有点太多了。因为，比如把一台摄像机放在对角线上，那么它就可以监控两个三角形（区域）；如果放在某些顶点上，那么摄像机似乎可以监控更多的区域。
