@@ -902,9 +902,16 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 > Theorem 3.1 Every simple polygon admits a triangulation, and any triangulation of a simple polygon with n vertices consists of exactly n−2 triangles.
 
-这个定义的简单证明见第55页（页码47）。其中没看懂的是证明diagonal open segment存在的时候，为什么 $v$ 和 $v'$ 构成的open segment $\overrightarrow{vv'}$ 不会和 $\mathcal{P}$ 的其他edge相交？？？（需要以后再查看）。
+这个定理的简单证明见第55页（页码47）。其中没看懂的是证明diagonal open segment存在的时候，为什么 $v$ 和 $v'$ 构成的open segment $\overrightarrow{vv'}$ 不会和 $\mathcal{P}$ 的其他edge相交？？？（需要以后再查看）。
 
 应该想明白了：如果这样的segment $\overrightarrow{vv'}$ 和 $\mathcal{P}$ 的一条edge相交的话，那么点 $v'$ 肯定位于这条edge的另外一侧，这也就是说，那条edge上的两个点，肯定有一个比 $v'$ 离 $v$ 更近，这样就有产生矛盾，所以反证法得证$v'$ 就是离$\overrightarrow{uw}$ 最远的（并且在triangle里面的）点。
+
+这个定理同时也说明了**如何找到一条对角线的方法**：
+
+找到这个simple polygon最左下的顶点 $v$，首先尝试连接它的两个直接相邻的点 $u$ 和 $w$
+
+- 如果 $\overrightarrow{uw}$ 位于这个多边形的内部，那么$\overrightarrow{uw}$ 就是这个多边形的一条对角线。
+- 如果 $\overrightarrow{uw}$ 位于这个多边形的外部或横跨这个多边形的内外，那么就一定有一些顶点是位于由点 $v$， $u$ 和 $w$ 组成的三角形 $\bigtriangleup{vuw}$ 内部，找到这些点里面距离 $\overrightarrow{uw}$ 最远的点记作 $v'$，那么 $vv'$ 就一定是这个多边形的一条对角线。（至于原因，见上面的分析）
 
 
 
@@ -939,6 +946,18 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 **定理3.3，对任意有 $n$ 个顶点的简单多边形，从多边形内部的任意一点看到至少一台摄像机，计算这样的至多 $\lfloor n/3 \rfloor$ 台摄像机的时间复杂度是 $O(nlogn)$。**
 
 > Theorem 3.3 Let $\mathcal{P}$  be a simple polygon with n vertices. A set of $\lfloor n/3 \rfloor$ camera positions in $\mathcal{P}$ such that any point inside $\mathcal{P}$ is visible from at least one of the cameras can be computed in $O(nlogn)$ time.
+
+
+
+### 3.2 Partitioning a Polygon into Monotone Pieces
+
+前面提到的定理3.1，不仅说明了存在simple polygon的三角形划分，而且同时也阐述了一种寻找简单多边形对角线的办法。这种办法找每条对角线的时间复杂度是线性的，那么采用这种办法找到simple polygon的一种三角形划分的时间复杂度最差就是二次方的（quadratic）。
+
+但对于convex polygon，可以从其任意一点出发，连接它与其他顶点的连线（除了它直接相邻的两个顶点），得到的结果就是一种三角形划分，而且时间是线性的。
+
+所以，比较好的办法是，把一个多边形先分解为convex polygons，然后再做三角形划分。但实际上把多边形分解成凸多边形，这和三角形划分一样困难。
+
+退而求其次，就先把多边形分解成所谓的monotone pieces（**单调多边形**），这就容易很多。
 
 
 
