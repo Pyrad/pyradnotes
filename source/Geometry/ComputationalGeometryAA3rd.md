@@ -166,6 +166,7 @@ hold for 适用
 - planar subdivisions
 - Art Gallery Problem (combinatorial geometry)
 - dual graph
+- Monotone polygon
 
 
 
@@ -973,9 +974,67 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 如果一个多边形是关于*y*轴单调，那么从最上面的顶点开始，沿着多边形的轮廓线段（向左或向右），到达最下面的顶点，我们总是向下移动或者水平移动，而从不会向上移动。这是关于*y*轴单调的多边形的一个特性。
 
+（这里用来说明的图，位于第57页，页码是49，从上往下第1个图）
 
 
 
+所以，把一个多边形 $\mathcal{P}$ 做三角划分，首先是把它分解成沿 *y* 轴单调的多边形，然后再对这些单调多边形做三角划分。
+
+为了说明多边形的顶点的类型，定义一个点在另一个点上方和下方的概念。
+
+- 点 $p$ 在点 $q$ 下方（below）
+
+  $p_y < q_y$，或者当$p_y = q_y$时，$p_x < q_x$
+
+- 点 $p$ 在点 $q$ 上方（above）
+
+  $p_y > q_y$，或者当$p_y = q_y$时，$p_x > q_x$
+
+
+
+什么是多边形的**turn vertex**（**转向顶点**）？
+
+从最高的顶点（topmost），沿着多边形的轮廓边，向左或向右出发，走向最低的顶点（bottommost），当到达一个顶点（vertex）时，边的走向从向下变为向上，或者从向上变为向下，这个点就是**turn vertex**（**转向顶点**）。
+
+而把多边形划分成单调多边形，就是为了消除这些**turn vertex**（**转向顶点**），而通过添加对角线，就可以做到。
+
+假如一个vertex $v$ 相接的两条edge都是向下的，那么我们需要从 $v$ 出发找一条向上的对角线（记作$vv'$），这样把当前的多边形一分为二。$v$ 在两个划分出来的多边形里面，和它相接的原来的edge是向下的，而从它出发的对角线是向上的，所以 $v$ 就不再是一个**turn vertex**（**转向顶点**）了。
+
+同理，如果$v$ 相接的两条edge都是向上的，我们需要找的就是一条向下的对角线，以便划分多边形，消除这个**turn vertex**（**转向顶点**）。 
+
+（这里用来说明的图，位于第57页，页码是49，从上往下第2个图）
+
+
+
+定义一个多边形中5种类型的vertex
+
+- **start vertex**
+
+  如果顶点 $v$ 是start vertex，那么它相邻的两个vertex都在它的**下方**（below，定义见前述），并且顶点 $v$ 所在的多边形的内角比 $\pi$ **小**。
+
+- **end vertex**
+
+  如果顶点 $v$ 是end vertex，那么它相邻的两个vertex都在它的**上方**（above），并且顶点 $v$ 所在的多边形的内角比 $\pi$ **小**。
+
+- **regular vertex**
+
+  不是turn vertex的vertex都是regular vertex。所以，regular vertex相邻的两个vertex，一个在它**上方**，一个在它**下方**。
+
+- **split vertex**
+
+  如果顶点 $v$ 是split vertex，那么它相邻的两个vertex都在它的**下方**（below），并且顶点 $v$ 所在的多边形的内角比 $\pi$ **大**。（和start vertex类似）
+
+- **merge vertex**
+
+  如果顶点 $v$ 是merge vertex，那么它相邻的两个vertex都在它的**上方**（above），并且顶点 $v$ 所在的多边形的内角比 $\pi$ **大**。（和end vertex类似）
+
+
+
+
+
+引理3.4 如果一个多边形没有split vertex，也没有merge vertex，那么它就是一个关于y轴单调的多边形。
+
+> Lemma 3.4 A polygon is y-monotone if it has no split vertices or merge vertices.
 
 
 
