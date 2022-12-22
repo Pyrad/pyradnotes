@@ -1060,6 +1060,24 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
+如何给split vertices添加对角线？还是使用plane sweep method。
+
+将多边形  $\mathcal{P}$ 的顶点按照逆时针记作 $v_1, v_2, ..., v_n$，同时把将多边形  $\mathcal{P}$ 的边（edge）按照逆时针记作 $e_1, e_2, ..., e_n$，并且当 $i$ 满足 $1 \le i \lt n$ 时，$e_i = \overline{v_iv_{i+1}}$，当 $i = n$ 时，$e_n = \overline{v_nv_1}$。
+
+在plane sweep algorithm应用到当前场景中时，event point就是多边形的这些顶点，并且不会有新的event point加入。这些event point被存储在一个优先级队列 $\mathcal{Q} $ 中（priority queue），优先级就是y坐标值（如果两点有相同的y坐标，x坐标较小的优先级更高）。利用这样的优先级队列，下一个event point被找到的时间复杂度就是 $O(logn)$。
+
+当sweep line到达一个split vertex $v_i$ 时，需要添加一条从 $v_i$ 出发向上的对角线。记多边形的两条边 $e_j$ 和 $e_k$ 分别是 $v_i$ 在sweep line（水平）上左右相邻的第一条edge（即 $e_j$， $e_k$ 和sweep line相交），然后找到 $e_j$ 和 $e_k$ 之间的高于 $v_i$ 的**最低**点（记作$helper(e_j)$），然后和 $v_i$ 连接即得到所求对角线。如果没有这样的点，就连接 $v_i$ 和 $e_j$ 或 $e_k$ 两条线段中某一条的上方的点（也记作（$helper(e_j)$）。
+
+（这里用来说明的图，位于第60页，页码是52的第1个图）
+
+当sweep line到达一个merge vertex $v_i$ 时，需要添加一条从 $v_i$ 出发向上的对角线。同样地，记多边形的两条边 $e_j$ 和 $e_k$ 分别是 $v_i$ 在sweep line（水平）上左右相邻的第一条edge（即 $e_j$， $e_k$ 和sweep line相交）。然后找到 $e_j$ 和 $e_k$ 之间的低于于 $v_i$ 的**最高**点，然后和 $v_i$ 连接即得到所求对角线。但此时 $v_i$ 就在sweep line上，而它之下的点还没有扫描到，所以我们此时找不到这样的点，但这样的点却可以在之后找到。当sweep line继续向下扫描遇到点 $v_m$ 时，如果它左边的第一条和sweep line相交的线就是 $e_j$，并且找到它的$helper(e_j)$ 就是 $v_i$，那么 $v_m$ 就是我们前面要找的这样的点。
+
+所以，当我们替换一条edge $e_x$ 的$helper(e_x)$ 时，检查旧的helper点是不是一个merge vertex。如果是，就连接新的helper点和旧的helper点构成一条对角线。而当新的helper点是split vertex的时候，这样的对角线总是会被连接出来的，而此时如果旧的helper点还是一个merge vertex，那么这一条对角线就同时消除了split vertex和merge vertex。
+
+
+
+
+
 
 
 
