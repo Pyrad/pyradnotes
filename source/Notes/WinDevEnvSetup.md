@@ -938,6 +938,18 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 
 
+## MathJax
+
+### Official
+
+[mathjax.org](https://www.mathjax.org/)
+
+
+
+### References
+
+[MathJax的基本使用](https://www.cnblogs.com/mqingqing123/p/12711372.html)
+
 
 
 ## Clangd
