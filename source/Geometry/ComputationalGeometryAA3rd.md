@@ -1008,7 +1008,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 定义一个多边形中5种类型的vertex
 
-（这里用来说明的图，位于第58页，页码是50）
+==（这里用来说明的图，位于第58页，页码是50）==
 
 - **start vertex**
 
@@ -1038,7 +1038,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 > Lemma 3.4 A polygon is y-monotone if it has no split vertices or merge vertices.
 
-（这里用来说明的图，位于第59页，页码是51）
+==（这里用来说明的图，位于第59页，页码是51）==
 
 证明：办法是证明这个引理的充要条件，即，如果一个多边形不是y轴单调的，那么它就一定有一个split vertex或者merge vertex。
 
@@ -1068,7 +1068,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 当sweep line到达一个split vertex $v_i$ 时，需要添加一条从 $v_i$ 出发向上的对角线。记多边形的两条边 $e_j$ 和 $e_k$ 分别是 $v_i$ 在sweep line（水平）上左右相邻的第一条edge（即 $e_j$， $e_k$ 和sweep line相交），然后找到 $e_j$ 和 $e_k$ 之间的高于 $v_i$ 的**最低**点（记作$helper(e_j)$），然后和 $v_i$ 连接即得到所求对角线。如果没有这样的点，就连接 $v_i$ 和 $e_j$ 或 $e_k$ 两条线段中某一条的上方的点（也记作（$helper(e_j)$）。
 
-（这里用来说明的图，位于第60页，页码是52的第1个图）
+==（这里用来说明的图，位于第60页，页码是52的第1个图）==
 
 当sweep line到达一个merge vertex $v_i$ 时，需要添加一条从 $v_i$ 出发向上的对角线。同样地，记多边形的两条边 $e_j$ 和 $e_k$ 分别是 $v_i$ 在sweep line（水平）上左右相邻的第一条edge（即 $e_j$， $e_k$ 和sweep line相交）。然后找到 $e_j$ 和 $e_k$ 之间的低于于 $v_i$ 的**最高**点，然后和 $v_i$ 连接即得到所求对角线。但此时 $v_i$ 就在sweep line上，而它之下的点还没有扫描到，所以我们此时找不到这样的点，但这样的点却可以在之后找到。当sweep line继续向下扫描遇到点 $v_m$ 时，如果它左边的第一条和sweep line相交的线就是 $e_j$，并且找到它的$helper(e_j)$ 就是 $v_i$，那么 $v_m$ 就是我们前面要找的这样的点。
 
@@ -1082,7 +1082,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-假设多边形 $\mathcal{P}$ 是以doubly-connected edge list表示（如果是以逆时针的vertex list表示，就先转换为一个doubly-connected edge list），同样的，把多边形 $\mathcal{P}$ 划分之后的结果（单调多边形）和所添加的对角线，也用一个doubly-connected edge list $\mathcal{D}$ 来表示。在split vertex和merge vertex处计算出来的对角线，也加入到了这个doubly-connected edge list中。为了方便，存储在status中的每个edge，和它们在doubly-connected edge list 中对应的edge，互相有一个指针相互指向，这样的交叉指针就能使得这样的edge可以快速找到在另一个数据结构里面的对应edge。
+假设多边形 $\mathcal{P}$ 是以doubly-connected edge list表示（如果是以逆时针的vertex list表示，就先转换为一个doubly-connected edge list），同样的，把多边形 $\mathcal{P}$ 划分之后的结果（单调多边形）和所添加的对角线，也用一个doubly-connected edge list $\mathcal{D}$ 来表示。在split vertex和merge vertex处计算出来的对角线，也加入到了这个doubly-connected edge list中。为了方便，存储在status中的每个edge，和它们在doubly-connected edge list 中对应的edge，互相有一个指针相互指向，这样的**交叉指针**就能使得这样的edge可以快速找到在另一个数据结构里面的对应edge。
 
 
 
@@ -1099,6 +1099,57 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 1. 执行循环：只要优先级队列 $\mathcal{Q}$ 不空，每次从其队列中取出优先级最高的一个顶点 $v_i$，然后根据这个顶点的类型（split/merge/...），调用对应的处理程序。
 
 
+
+下面就是根据每个顶点的类型，对应的相应处理。当处理每个顶点vertex的时候，有两件必须做的事情
+
+- 检查是否应该给一个vertex添加对角线。当一个vertex是split vertex，或者，在替换一个edge的helper（$helper(e_j)$），并发现前一个（旧的）helper是一个merge vertex的时候，就需要添加对角线。
+- 更新status数据结构  $\mathcal{T}$ （即二叉搜索树）中的信息（通过前面提到的交叉指针）
+
+
+
+==（下面几个针对不同类型vertex的处理，对应的一个例子的图在62页，页码是54）==
+
+需要注意的是，本书中每个多边形vertex（下面的 $i$）的起始索引是`1`，而不是`0`。
+
+
+
+算法 $HandleStartVertex(v_i)$ （**vertex是start vertex**）
+
+1. 在二叉搜索树 $\mathcal{T}$ 中添加edge $e_i$，并且把$helper(e_i)$设定为 $v_i$。
+
+
+
+算法 $HandleEndVertex(v_i)$ （**vertex是end vertex**）
+
+1. 如果$helper(e_{i-1})$ 是merge vertex，就生成一条连接 $v_i$ 到 $helper(e_{i-1})$ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中。
+2. 从二叉搜索树 $\mathcal{T}$ 中删除vertex $e_{i-1}$。
+
+
+
+算法 $HandleSplitVertex(v_i)$ （**vertex是split vertex**）
+
+1. 在二叉搜索树 $\mathcal{T}$ 中找到这个顶点 $v_i$ 左边的第一个（直接）邻居edge $e_j$ 。
+2. 在doubly-connected edge list $\mathcal{D}$ 中，添加一条对角线，这条对角线用来连接 $v_i$ 和 $helper(e_j)$ 。
+3.  $helper(e_j)$ $\longleftarrow$  $v_i$ （连接 $v_i$ 和 $helper(e_j)$ 的意思）
+4. 在二叉搜索树 $\mathcal{T}$ 中插入edge $e_i$，并且把 $helper(e_i)$ 设定为vertex $v_i$。
+
+
+
+算法 $HandleMergeVertex(v_i)$ （**vertex是Merge vertex**）
+
+1. 如果$helper(e_{i-1})$ 是一个merge vertex，就生成一条连接 $v_i$ 到 $helper(e_{i-1})$​ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中。
+2. 从二叉搜索树 $\mathcal{T}$ 中删除 vertex $e_{i-1}$。
+3. 在二叉搜索树 $\mathcal{T}$ 中找到这个顶点 $v_i$ 左边的第一个（直接）邻居edge $e_j$ 。
+4. 如果$helper(e_j)$ 是一个merge vertex，就生成一条连接 $v_i$ 到 $helper(e_j)$ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中。
+5. $helper(e_j)$ $\longleftarrow$  $v_i$ （连接 $v_i$ 和 $helper(e_j)$ 的意思）
+
+
+
+算法 $HandleRegularVertex(v_i)$ （**vertex是regular vertex**）
+
+1. 处理这个regular vertex的前提是，多边形 $\mathcal{P}$ 的内部位于vertex $v_i$ 的右边。如果前提不成立，不用继续下面的处理。
+2. 如果$helper(e_{i-1})$ 是一个merge vertex，就生成一条连接 $v_i$ 到 $helper(e_{i-1})$ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中，然后从二叉搜索树 $\mathcal{T}$ 中删除 vertex $e_{i-1}$，再在二叉搜索树 $\mathcal{T}$ 中添加edge $e_i$，并且把$helper(e_i)$设定为 $v_i$。
+3. 如果$helper(e_{i-1})$ **不是**一个merge vertex，那就在二叉搜索树 $\mathcal{T}$ 中找到这个顶点 $v_i$ 左边的第一个（直接）邻居edge $e_j$ 。如果$helper(e_j)$ 是一个merge vertex，就生成一条连接 $v_i$ 到 $helper(e_j)$ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中（$helper(e_j)$ $\longleftarrow$  $v_i$ ）。
 
 
 
