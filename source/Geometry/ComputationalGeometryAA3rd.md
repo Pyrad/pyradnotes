@@ -1153,7 +1153,15 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
+引理3.5 通过添加一系列不相交的对角线，MakeMonotone算法可以把一个多边形 $\mathcal{P}$ 划分为一些单调的子多边形。
 
+> **Lemma 3.5** Algorithm MAKEMONOTONE adds a set of non-intersecting diagonals that partitions P into monotone subpolygons.
+
+
+
+定理3.6
+
+> Theorem 3.6 A simple polygon with n vertices can be partitioned into y-monotone polygons in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
 
 
 
@@ -1170,6 +1178,10 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 [Latex公式编辑器](https://latexlive.com/##)
 
 [Latex数学字体](https://zhuanlan.zhihu.com/p/556258509)
+
+[MathJax的基本使用](https://www.cnblogs.com/mqingqing123/p/12711372.html)
+
+
 
 
 
