@@ -1076,7 +1076,13 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
+在前面讨论添加对角线的算法中，对于每个vertex，我们需要找到它左边的edge。因此，我们把和sweep line相交的edge当做一棵二叉搜索树 $\mathcal{T}$ 的叶节点来存储，而且这些从左到右的叶节点依次对应从左到右和sweep line相间的的edge。
 
+因为我们只关心在split vertex或merge vertex左边的edge，所以在这棵二叉搜索树 $\mathcal{T}$ 中只存储一种类型的edge，即，相对于这些edge，多边形 $\mathcal{P}$ 的内部都在这些edge的右边。同时每个edge我们都会存储它对应的helper（即$helper(e_j)$），这棵二叉搜索树 $\mathcal{T}$ 和它存储的这样的edge就构成了sweep line algorithm的status。当sweep line和一条edge开始相交，或者分开时，这个status就会被更新，一条edge的helper（即$helper(e_j)$）就可能会被替换。
+
+
+
+假设多边形 $\mathcal{P}$ 是以doubly-connected edge list表示（如果是以逆时针的vertex list表示，就先转换为一个doubly-connected edge list），同样的，把多边形 $\mathcal{P}$ 划分之后的结果（单调多边形）和所添加的对角线，也用一个doubly-connected edge list $\mathcal{D}$ 来表示。在split vertex和merge vertex处计算出来的对角线，也加入到了这个doubly-connected edge list中。为了方便，存储在status中的每个edge，和它们在doubly-connected edge list 中对应的edge，互相有一个指针相互指向，这样的交叉指针就能使得这样的edge可以快速找到在另一个数据结构里面的对应edge。
 
 
 
