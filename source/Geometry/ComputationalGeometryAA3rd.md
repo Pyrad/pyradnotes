@@ -1086,6 +1086,28 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
+***MakeMonotone***算法简述
+
+**输入**：二维平面的一个简单多边形 $\mathcal{P}$， 它是以doubly-connected edge list $\mathcal{D}$ 表示。
+
+**输出**：简单多边形 $\mathcal{P}$ 分解成的单调多边形 ，并且是存储在同一个doubly-connected edge list $\mathcal{D}$ 中。
+
+**算法简述**：
+
+1. 构建多边形 $\mathcal{P}$ 的顶点的一个优先级队列 $\mathcal{Q}$，排序是按照每个顶点的y坐标。如果两个顶点的y坐标相同，有较小的x坐标的点有更高的优先级。
+1. 初始化一棵空的二叉搜索树 $\mathcal{T}$ 。
+1. 执行循环：只要优先级队列 $\mathcal{Q}$ 不空，每次从其队列中取出优先级最高的一个顶点 $v_i$，然后根据这个顶点的类型（split/merge/...），调用对应的处理程序。
+
+
+
+
+
+
+
+
+
+
+
 
 
 
