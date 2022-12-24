@@ -94,7 +94,11 @@ Published by Springer
 
 **quadrilateral** */*ˌkwɒdrɪˈlætərəl*/* *n.* 四边形；*adj.* 四边形的
 
+**funnel** */*ˈfʌn(ə)l*/* *n.* 漏斗；漏斗状物；（船、蒸汽机车上的）烟囱；*v.*通过漏斗，穿过狭窄通道；输送，传送（金钱、货物或信息）；
 
+**reflex** */*ˈriːfleks*/* *n.* （对刺激的）本能反应；反射（作用）；反映物；反映形式；反射光；*adj.* 本能反应的；（角）大于180度的；（光）被反射的；反折的；反省的
+
+**nevertheless** */*ˌnevəðəˈles*/* *adv.* 然而，不过
 
 
 
@@ -1180,6 +1184,14 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 构造优先级队列 $\mathcal{Q}$ 花费线性时间，初始化一棵二叉搜索树 $\mathcal{T}$ 花费常数时间。处理每个event时，对 $\mathcal{Q}$ 进行一次操作（取点，即event），对 $\mathcal{T}$ 进行一次操作（至多一次查询，一次插入和一次删除），至多给doubly-connected edge list $\mathcal{D}$ 中添加两条对角线。优先级队列和平衡二叉搜索树的查询和更新花费 $O(logn)$，给 $\mathcal{D}$ 中添加对角线花费 $O(1)$ 。因此，处理每一个event的时间复杂度就是 $O(logn)$，故整个算法的时间复杂度就是 $O(nlogn)$。
 
 每个vertex在 $\mathcal{Q}$ 中至多存储一次，每条edge在 $\mathcal{T}$ 中至多存储一次，因此整个算法的空间复杂度就是$O(n)$。
+
+
+
+### 3.3 Triangulating a Monotone Polygon
+
+本节说明了，一个单调多边形可以在线性时间里完成三角形划分，而且这些结果可以说明，任意一个简单多边形，可以以时间复杂度为 $O(nlogn)$ 的情况下完成三角形划分。
+
+假设多边形 $\mathcal{P}$ 有 $n$ 个顶点，我们暂时假设它是沿着y轴严格单调的多边形（即不包含水平的边）。所以沿着多边形（向左或向右）从最高点走向最低点，方向总是向下。在这个过程中，添加对角线，完成三角形划分。
 
 
 
