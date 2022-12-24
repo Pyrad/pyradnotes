@@ -1234,14 +1234,22 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 **算法简述**：
 
-1. 把多边形 $\mathcal{P}$ 的所有顶点按照`y`坐标按降序排序。对于有相同y坐标的顶点，有较小`x`坐标的顶点排在前面。记这样的排序序列为 $u_1, u_2, ..., u_n$。
+1. 从多边形 $\mathcal{P}$ 的最高点到最低点有左右两条vertex chain，把这两条vertex chain的每个vertex顶点按照`y`坐标按降序合并（相当于排序，但时间复杂度比直接排序低）。对于有相同y坐标的顶点，有较小`x`坐标的顶点排在前面。记这样的排序序列为 $u_1, u_2, ..., u_n$。
 2. 初始化一个空的栈 $\mathcal{S}$，把 $u_1$ 和 $u_2$ 压入栈。
 3. 从3开始，$j$ 遍历到 $n-1$（$3 \le j \le n-1$），对于每个 $u_j$ ，检查 $u_j$ 和此时栈 $\mathcal{S}$ 上的栈顶vertex，进行下面的处理。
 4. 如果 $u_j$ 和此时栈 $\mathcal{S}$ 上的栈顶vertex 位于**不同**的chain上（前述的漏斗型的两条边界），那么就弹出栈 $\mathcal{S}$ 中的所有vertex，并且连接 $u_j$ 和这些vertex（除了最后一个，即栈底的vertex），构成对角线。然后把 $u_{j-1}$ 和 $u_j$ 重新压入栈 $\mathcal{S}$ 。
 5. 如果 $u_j$ 和此时栈 $\mathcal{S}$ 上的栈顶vertex 位于**相同同**的chain上（前述的漏斗型的两条边界中的一条），那么首先弹出栈 $\mathcal{S}$ 的栈顶vertex，之后再每次弹出栈顶vertex，并且检查 $u_j$ 和此时弹出的vertex组成的对角线**是否**位于多边形 $\mathcal{P}$ 的内部。如果是就把对角线添加到doubly-connected edge list $\mathcal{D}$ 中，并且继续弹出下一个栈顶vertex；否则就停止，然后把最后一个弹出的vertex重新压入栈，然后把 $u_j$ 压入栈。
 6. 最后，除了栈 $\mathcal{S}$ 中的第一个和最后一个vertex，从 $u_n$ 出发引出对角线到栈 $\mathcal{S}$ 中每个vertex。
 
+**时间复杂度**为 $O(n)$。
 
+步骤1中合并排序的时间复杂度是线性的 $O(n)$，步骤2花费常数时间。步骤3开始的for循环，总共执行 $n-3$ 次，每次执行花费线性时间。在for循环的每次执行中，至多有两个vertex被压入栈，因此连同步骤2中的入栈，总共的入栈次数是 $2n-4$ 次。而又因为出栈的次数不可能比入栈的次数还多，所以for循环执行的总的时间复杂度就是 $O(n)$。最后步骤6也花费线性时间，因此，该算法的时间复杂度就是 $O(n)$。
+
+
+
+定理3.7 一个有$n$ 个顶点的、沿y轴严格单调的多边形，可以在线性时间里完成三角划分。
+
+> Theorem 3.7 A strictly y-monotone polygon with $n$ vertices can be triangulated in linear time.
 
 
 
