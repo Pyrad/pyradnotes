@@ -1177,7 +1177,9 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 > Theorem 3.6 A simple polygon with $n$ vertices can be partitioned into y-monotone polygons in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
 
+构造优先级队列 $\mathcal{Q}$ 花费线性时间，初始化一棵二叉搜索树 $\mathcal{T}$ 花费常数时间。处理每个event时，对 $\mathcal{Q}$ 进行一次操作（取点，即event），对 $\mathcal{T}$ 进行一次操作（至多一次查询，一次插入和一次删除），至多给doubly-connected edge list $\mathcal{D}$ 中添加两条对角线。优先级队列和平衡二叉搜索树的查询和更新花费 $O(logn)$，给 $\mathcal{D}$ 中添加对角线花费 $O(1)$ 。因此，处理每一个event的时间复杂度就是 $O(logn)$，故整个算法的时间复杂度就是 $O(nlogn)$。
 
+每个vertex在 $\mathcal{Q}$ 中至多存储一次，每条edge在 $\mathcal{T}$ 中至多存储一次，因此整个算法的空间复杂度就是$O(n)$。
 
 
 
