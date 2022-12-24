@@ -1259,9 +1259,11 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 第一个算法（分解为单调多边形）的时间和空间复杂度分别是 $O(nlogn)$ 和 $O(n)$，第二个算法（对单调多边形进行三角划分）的时间和空间复杂度分别是 $O(n)$ 和 $O(n)$，因此整个算法的时间和空间复杂度就分别是 $O(nlogn)$ 和 $O(n)$。
 
+==（带洞的多边形的三角划分的举例的图在66页，页码是58）==
 
 
-定理3.8 一个有$n$ 个顶点的简单多边形，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。
+
+**定理3.8** **一个有$n$ 个顶点的简单多边形，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。**
 
 > Theorem 3.8 A simple polygon with $n$ vertices can be triangulated in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
 
@@ -1269,9 +1271,17 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
+其实，前面提到的把一个多边形 $\mathcal{P}$ 分解成单调多边形的算法中，并没有限定这个多边形 $\mathcal{P}$ 是不带洞的。换句话说，这个三角形划分的算法也可以用到带洞的多边形上。
 
+更一般地，这个算法也可以用到任意一个平面细分上（subdivision）。
 
+假如要对一个平面细分 $\mathcal{S}$ 做三角划分。具体地，假设 $B$ 是这个平面细分的bounding box，平面细分上的所有edge都在这个bounding box内部，我们需要找出最多数量的对角线（连接平面细分 $\mathcal{S}$ 的vertex或bounding box $B$ 的vertex），把这个bounding box $B$ 划分成三角形，而且这些对角线既不自相交，也不和 平面细分 $\mathcal{S}$ 的edge或bounding box $B$ 的edge相交。而解决这个问题，同样可以使用本章的算法，即，先把平面细分分解为多个单调多边形，然后对每个单调多边形做三角划分。因此有如下定理。
 
+==（平面细分的三角划分的举例的图在67页，页码是59）==
+
+**定理3.9** **一个有$n$ 个顶点的平面细分，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。**
+
+> Theorem 3.9 A planar subdivision with $n$ vertices in total can be triangulated in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
 
 
 
