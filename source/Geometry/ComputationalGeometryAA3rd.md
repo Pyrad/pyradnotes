@@ -92,7 +92,7 @@ Published by Springer
 
 **monotone** */*ˈmɒnətəʊn*/* *n.* 单调；单音调；*adj.* 单调的
 
-
+**quadrilateral** */*ˌkwɒdrɪˈlætərəl*/* *n.* 四边形；*adj.* 四边形的
 
 
 
@@ -1034,7 +1034,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-引理3.4 如果一个多边形没有split vertex，也没有merge vertex，那么它就是一个关于y轴单调的多边形。
+**引理3.4** 如果一个多边形没有split vertex，也没有merge vertex，那么它就是一个关于y轴单调的多边形。
 
 > Lemma 3.4 A polygon is y-monotone if it has no split vertices or merge vertices.
 
@@ -1060,17 +1060,17 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-如何给split vertices添加对角线？还是使用plane sweep method。
+如何给一个**split vertex**添加对角线？还是使用plane sweep method。
 
 将多边形  $\mathcal{P}$ 的顶点按照逆时针记作 $v_1, v_2, ..., v_n$，同时把将多边形  $\mathcal{P}$ 的边（edge）按照逆时针记作 $e_1, e_2, ..., e_n$，并且当 $i$ 满足 $1 \le i \lt n$ 时，$e_i = \overline{v_iv_{i+1}}$，当 $i = n$ 时，$e_n = \overline{v_nv_1}$。
 
 在plane sweep algorithm应用到当前场景中时，event point就是多边形的这些顶点，并且不会有新的event point加入。这些event point被存储在一个优先级队列 $\mathcal{Q} $ 中（priority queue），优先级就是y坐标值（如果两点有相同的y坐标，x坐标较小的优先级更高）。利用这样的优先级队列，下一个event point被找到的时间复杂度就是 $O(logn)$。
 
-当sweep line到达一个split vertex $v_i$ 时，需要添加一条从 $v_i$ 出发向上的对角线。记多边形的两条边 $e_j$ 和 $e_k$ 分别是 $v_i$ 在sweep line（水平）上左右相邻的第一条edge（即 $e_j$， $e_k$ 和sweep line相交），然后找到 $e_j$ 和 $e_k$ 之间的高于 $v_i$ 的**最低**点（记作$helper(e_j)$），然后和 $v_i$ 连接即得到所求对角线。如果没有这样的点，就连接 $v_i$ 和 $e_j$ 或 $e_k$ 两条线段中某一条的上方的点（也记作（$helper(e_j)$）。
+当sweep line到达一个**split vertex** $v_i$ 时，需要添加一条从 $v_i$ 出发向上的对角线。记多边形的两条边 $e_j$ 和 $e_k$ 分别是 $v_i$ 在sweep line（水平）上左右相邻的第一条edge（即 $e_j$， $e_k$ 和sweep line相交），然后找到 $e_j$ 和 $e_k$ 之间的高于 $v_i$ 的**最低**点（记作$helper(e_j)$），然后和 $v_i$ 连接即得到所求对角线。如果没有这样的点，就连接 $v_i$ 和 $e_j$ 或 $e_k$ 两条线段中某一条的上方的点（也记作（$helper(e_j)$）。
 
 ==（这里用来说明的图，位于第60页，页码是52的第1个图）==
 
-当sweep line到达一个merge vertex $v_i$ 时，需要添加一条从 $v_i$ 出发向上的对角线。同样地，记多边形的两条边 $e_j$ 和 $e_k$ 分别是 $v_i$ 在sweep line（水平）上左右相邻的第一条edge（即 $e_j$， $e_k$ 和sweep line相交）。然后找到 $e_j$ 和 $e_k$ 之间的低于于 $v_i$ 的**最高**点，然后和 $v_i$ 连接即得到所求对角线。但此时 $v_i$ 就在sweep line上，而它之下的点还没有扫描到，所以我们此时找不到这样的点，但这样的点却可以在之后找到。当sweep line继续向下扫描遇到点 $v_m$ 时，如果它左边的第一条和sweep line相交的线就是 $e_j$，并且找到它的$helper(e_j)$ 就是 $v_i$，那么 $v_m$ 就是我们前面要找的这样的点。
+当sweep line到达一个**merge vertex** $v_i$ 时，需要添加一条从 $v_i$ 出发向上的对角线。同样地，记多边形的两条边 $e_j$ 和 $e_k$ 分别是 $v_i$ 在sweep line（水平）上左右相邻的第一条edge（即 $e_j$， $e_k$ 和sweep line相交）。然后找到 $e_j$ 和 $e_k$ 之间的低于于 $v_i$ 的**最高**点，然后和 $v_i$ 连接即得到所求对角线。但此时 $v_i$ 就在sweep line上，而它之下的点还没有扫描到，所以我们此时找不到这样的点，但这样的点却可以在之后找到。当sweep line继续向下扫描遇到点 $v_m$ 时，如果它左边的第一条和sweep line相交的线就是 $e_j$，并且找到它的$helper(e_j)$ 就是 $v_i$，那么 $v_m$ 就是我们前面要找的这样的点。
 
 所以，当我们替换一条edge $e_x$ 的$helper(e_x)$ 时，检查旧的helper点是不是一个merge vertex。如果是，就连接新的helper点和旧的helper点构成一条对角线。而当新的helper点是split vertex的时候，这样的对角线总是会被连接出来的，而此时如果旧的helper点还是一个merge vertex，那么这一条对角线就同时消除了split vertex和merge vertex。
 
@@ -1153,15 +1153,29 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-引理3.5 通过添加一系列不相交的对角线，MakeMonotone算法可以把一个多边形 $\mathcal{P}$ 划分为一些单调的子多边形。
+**引理3.5** **通过添加一系列不相交的对角线，MakeMonotone算法可以把一个多边形 $\mathcal{P}$ 划分为一些单调的子多边形。**
 
 > **Lemma 3.5** Algorithm MAKEMONOTONE adds a set of non-intersecting diagonals that partitions P into monotone subpolygons.
 
+**证明**：
+
+（根据前面在split/merge vertex上添加对角线）易知，多边形 $\mathcal{P}$ 分解成的子多边形中，没有split/merge vertex，又根据引理3.4，那么这些子多边形就是沿着y轴单调的多边形。因此，剩下需要证明的就是这些对角线既不和多边形 $\mathcal{P}$ 的任意一条edge相交，也不互相相交。
+
+以算法`HandleSplitVertex`为例，我们证明当一条对角线被添加的时候，它既不和多边形 $\mathcal{P}$ 的任意一条edge相交，也不和之前已经加上的对角线相交。（为了方便讨论，假设两个顶点的y坐标不相同，而下面的讨论也可以推广到y坐标相同的普遍情况）
+
+当sweep line到底顶点 $v_i$ 时，假设添加了一条对角线 $\overline{v_iv_m}$。记顶点 $v_i$ 左边和水平sweep line相交的第一个多边形的edge是 $e_j$，右边的第一条edge是 $e_k$ 。这样，此时有 $helper(e_j) = v_m$ 。
+
+首先证明 $\overline{v_iv_m}$ 不和多边形 $\mathcal{P}$ 的任意一条edge相交。通过点 $v_i$ 和 $v_m$ 分别作两条水平线 $l_0$ 和 $l_1$，它们和 $e_j$ 和 $e_k$ 相交，构成了一个四边形 $Q$（quadrilateral）。显然，这个四边形 $Q$ 中不会有多边形 $\mathcal{P}$ 的其他顶点，因为如果有，那就说明那个顶点比 $v_m$ 还要低，但这就和 $v_m$ 已经是比 $v_i$ 高的最低顶点矛盾。
+
+假设现在有一条多边形 $\mathcal{P}$ 的edge $e_x$ 和对角线 $\overline{v_iv_m}$ 相交。因为没有顶点在四边形 $Q$ 中，所以 $e_x$ 就要同时穿过 $l_0$ （相交）和 $l_1$ （相交），而这就说明要么 $e_x$ 是 $v_i$ 左边的第一条edge，要么 $e_x$ 是 $v_i$ 右边的第一条edge，但这和 $v_i$ 左右两边的第一条edge分别是 $e_j$ 和 $e_k$ 相矛盾，因此前面的假设不成立，因此不会有多边形 $\mathcal{P}$ 的edge $e_x$ 和对角线 $\overline{v_iv_m}$ 相交。
+
+又因为没有多边形 $\mathcal{P}$ 的顶点在四边形 $Q$ 中，因此前面已经加过的每条对角线的两个端点，就一定是在 $v_i$ 上方（或者说是四边形 $Q$ 的上方），因此当前添加的对角线，就不会和之前已经添加的对角线相交。因此命题的证。
 
 
-定理3.6
 
-> Theorem 3.6 A simple polygon with n vertices can be partitioned into y-monotone polygons in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
+**定理3.6** **存在一个时间复杂度为 $O(nlogn)$ 和空间复杂度为 $O(n)$ 的算法，可以把一个有 $n$ 个顶点的简单多边形分解为关于y轴单调的多边形。**
+
+> Theorem 3.6 A simple polygon with $n$ vertices can be partitioned into y-monotone polygons in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
 
 
 
