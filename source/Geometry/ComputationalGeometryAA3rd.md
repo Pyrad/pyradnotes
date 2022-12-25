@@ -100,6 +100,16 @@ Published by Springer
 
 **nevertheless** */*ˌnevəðəˈles*/* *adv.* 然而，不过
 
+**colorability**  */*ˌkʌlərəˈbɪlɪti*/* 可着色性
+
+**quadrilaterals** */*ˌkwɒdrɪˈlætərəl*/* *n.* 四边形；*adj.* 四边形的
+
+**trapezoid** */*ˈtræpəzɔɪd*/* *n.* <英>不规则四边形；<美>梯形；（腕部近食指根底处的）小多角骨；*adj.* 梯形的，不规则四边形的
+
+**polytope** */*'pɔlitəup*/* *n.* [数] 多胞形，多面体；可剖分空间
+
+**tetrahedra** */*ˌtetrəˈhiːdrə*/* *n.* 四面体（tetrahedron 的变形）
+
 
 
 ## Usage
@@ -1285,7 +1295,46 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
+### 3.4 Notes and Comments
 
+1973年，Victor Klee在和Vasek Chvatal的一场谈话中提出了“画廊问题”（**Art Gallery Problem**）。
+
+1975年，Vasek Chvatal第一次给出了证明，说明了 $\lfloor n/3 \rfloor$ 台摄像机总是满足需要，并且有时候才是必须的。这个结果就是后来众所周知的**Art Gallery Theorem**（画廊问题）或者**the Watchman Theorem**（守卫问题）。
+
+Chvatal给出的证明相当复杂，本章给出的大为简单的证明来自Fisk。他的证明基于Meisters的**Two Ears Theorem**，说的是对图的三色可着色性问题就是对一个简单多边形的三角划分问题。
+
+Aggarwal，Lee和Lin说明了对一个给定的简单多边形，找到守卫最小数量的问题是NP难题。O'Rourke的书和Shermer的综述包含了对Art Gallery Problem的详细讨论和处理，并且有画廊问题的许多变种。
+
+本章讨论的是把多边形做三角划分，但有时候也需要将其划分成其他形状，比如四边形（quadrilateral）或梯形（trapezoid），本书第6,9和14章做了讨论。
+
+本章提到的把一个单调多边形三角划分的线性算法，是由Garey和其他人给出的，而使用plane sweep algorithm把多边形分解为单调多边形是Lee和Preparata提出的。Avis， Toussaint 和 Chazelle提出了其他的一些算法，也可以在 $O(nlogn)$ 的时间复杂度完成简单多边形的三角划分。
+
+长时间以来，计算几何中未解决的主要问题之一就是，一个简单多边形能否在 $o(nlogn)$ 时间里完成三角划分（对带洞的平面细分则是 $\Omega(nlogn)$ 的时间复杂度下限）。一些年以来，对于一些特殊情况的多边形，找到了**线性时间**的算法，但对普遍意义上的简单多边形却不适用。
+
+1988年，Tarjan 和Van Wyk 打破了 $O(nlog)$ 的屏障，展示了一种 $O(nloglogn)$ 的算法。Kirkpatrick和其他人对这种算法做了简化。
+
+本书第4,6,9和11章提到的随机化（randomization）的方法，被证明是找到更快算法的一种有力工具。Clarkson等人，Devillers，Seidel展示了多种 $O(nlog^*n)$ 时间复杂度的**iterated logarithm**算法（迭代对数算法）。
+
+> Iterated logarithm or $log^*(n)$, is the number of times the logarithm function must be iteratively applied before the result is less than or equal to 1.
+> $$
+> log^*(n) := \left\{\begin{matrix} 
+>   0, n \le 1 \\  
+>   1 + log^*(log(n)) , n \gt 1
+> \end{matrix}\right.
+> $$
+> 
+
+这些算法不仅比 $O(nloglogn)$ 的算法稍快，而且更简单。其中Seidel的算法更和本书第6章提到的构建平面细分的梯形划分紧密相关。但这些算法仍然不是对简单多边形三角划分的线性算法。
+
+直到1990年，才由Chazelle给出了（想当复杂的）确定的线性算法。后来Amato等人提出了随机化的线性算法。
+
+在三维空间里，和多边形三角划分等价的表述是，把一个多面体（polytope）划分为不重叠的四面体（tetrahedra），并且四面体的顶点必须是原先多面体上的顶点。这种分解叫做多面体的四面体化（**tetrahedralization of the polytope**）。这种问题比平面上的三角划分困难许多。实际上，并不是总能不使用原先多面体上的顶点，而找到这样的四面体划分。
+
+Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Theta(n^2)$ 个额外的顶点，并且这样才能总是满足把一个多面体划分为多个四面体的要求。后来，Chazelle和Palios把这个边界优（bound）化到了 $\Theta(n+ r^2)$ ，这里 $r$ 是多面体上反射边（reflex edges）的个数。这个算法的时间复杂度是 $O(nr + r^2logr)$。不使用额外的顶点，而要把一个多面体划分为多个四面体的问题是NP完全难题（NP-hard）。
+
+
+
+### 3.5 Exercises
 
 
 
