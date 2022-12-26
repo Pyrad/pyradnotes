@@ -110,6 +110,20 @@ Published by Springer
 
 **tetrahedra** */*ˌtetrəˈhiːdrə*/* *n.* 四面体（tetrahedron 的变形）
 
+**cutlery** */*ˈkʌtləri*/* *n.* 餐具（刀、叉和匙）；刀具
+
+**casting** */*ˈkɑːstɪŋ*/* *n.* 角色分配，演员挑选；铸件，铸造物
+
+**solidify** */*səˈlɪdɪfaɪ*/* *v.* （使）凝固，变硬；（使）变可靠，（使）变稳固
+
+**polyhedral** */*ˌpɒliˈhiːdrəl; ˌpɒliˈhedrəl*/* *adj.* [数] 多面的；[数] 多面体的
+
+**facet** */*ˈfæsɪt*/* *n.* 部分，方面；（宝石的）琢面，刻面；（构成昆虫或甲壳动物复眼的）小眼面；*v.* 在……上琢面
+
+
+
+
+
 
 
 ## Usage
@@ -133,6 +147,8 @@ in a sense 某种意义上
 incident to 由...产生（这里incident是 *adj.*）
 
 hold for 适用
+
+mass produce 批量生产
 
 
 
@@ -1351,6 +1367,16 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 
 
 
+
+## 4 Linear Programming - Manufacturing with Molds
+
+本章引言部分通过塑料或铁器（合金）的铸造，引出了本章需要探讨的话题：对一个给定的铸件（casting），是否存在这样的模具（mold）使得铸件能够从中移出？
+
+为了方便本章的讨论， 我们把要讨论的情况做了以下的几项限定。
+
+- 我们假定物件（铸件）是多面体（polyhedral）
+- 我们只考虑模具只有一个整体部件组成，不是由多个部件组成。
+- 我们只允许通过一次单独的变换，把铸件从模具中移出（不是旋转出来？）
 
 
 
