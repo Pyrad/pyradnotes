@@ -120,7 +120,7 @@ Published by Springer
 
 **facet** */*ˈfæsɪt*/* *n.* 部分，方面；（宝石的）琢面，刻面；（构成昆虫或甲壳动物复眼的）小眼面；*v.* 在……上琢面
 
-
+**cavity** */*ˈkævəti*/* *n.* 洞，腔；(牙齿的) 龋洞
 
 
 
@@ -149,6 +149,8 @@ incident to 由...产生（这里incident是 *adj.*）
 hold for 适用
 
 mass produce 批量生产
+
+give rise to 使发生，引起
 
 
 
@@ -185,6 +187,12 @@ mass produce 批量生产
 > Therefore we model a gallery as a **polygonal region** in the plane.
 >
 > 我们把画廊当做一个二维平面上的多边形
+
+
+
+> different orientations of the object **give rise to** different molds.
+
+
 
 
 
@@ -1380,7 +1388,11 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 
 
 
+### 4.1 The Geometry of Casting
 
+在本章讨论的情况中，铸造的物体有一个水平的顶部平面（top facet），而且它是唯一一面不和模具接触的。
+
+如果一个铸件至少能从模具的一个方向上移除，就把这个铸件称作可铸造的（castable）。
 
 
 
