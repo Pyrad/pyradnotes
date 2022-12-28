@@ -137,3 +137,19 @@ $2= (..., _M_p = 0x91a6f8"Hello, World"}}
 (gdb) call SomeFunctionThatTakesAConstStringRef(*(const std::string*)0x91a6a0)
 ```
 
+
+
+## Watch array element changes
+
+[GDB watch point](https://undo.io/resources/gdb-watchpoint/watchpoints-more-than-watch-and-continue/)
+
+使用 `watch` 命令来观察一个数组当中某个元素值的变化，并在变化的时候添加断点。
+
+```shell
+watch -l array_name[array_index]
+```
+
+这里`array_name`就是数组的名字，`array_index`是某个元素的索引，可以是变量名。
+
+选项`-l`告诉编译器对变量名（或表达式）去求值（evaluate）。
+
