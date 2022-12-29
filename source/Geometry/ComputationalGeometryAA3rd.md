@@ -124,6 +124,10 @@ Published by Springer
 
 **latex** /‘la:tek/ 一种电子排版系统
 
+**coplanar** */*kəʊˈpleɪnə(r)*/* *adj.* [数] 共面的（be coplanar with）
+
+**circumflex** */*ˈsɜːkəmfleks*/* *n.* 音调符号；*adj.* 弯曲的；有声调符号的；*v.* 标有抑扬音符；弯曲
+
 
 
 ## Usage
@@ -219,6 +223,8 @@ give rise to 使发生，引起
 $e'$ ：$e$ prime（或 $e$ dash）
 
 $e''$ ：$e$ double prime（或 $e$ double dash）
+
+$\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符号（circumflex）
 
 
 
@@ -1395,6 +1401,8 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 如果一个铸件至少能从模具的一个方向上移除，就把这个铸件称作可铸造的（castable）。
 
 
+
+记 $\mathcal{P}$ 是一个多面体，并假设模具是一个中间有空间可以和 $\mathcal{P}$ 紧紧贴合的方块。它的顶部平面是和多面体 $\mathcal{P}$ 共面。我们把多面体 $\mathcal{P}$ 中不是顶部平面的其他面叫做**普通平面**（*ordinary facet*），每一个普通平面 $f$ 在模具中都有和它对应的一面，记作 $\hat{f}$。
 
 
 
