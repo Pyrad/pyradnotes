@@ -128,6 +128,10 @@ Published by Springer
 
 **circumflex** */*ˈsɜːkəmfleks*/* *n.* 音调符号；*adj.* 弯曲的；有声调符号的；*v.* 标有抑扬音符；弯曲
 
+**inequality** */*ˌɪnɪˈkwɒləti*/* *n.* （大小、程度、情况等的）不同，不平等；（数学）（两式间的）不等；（数学）不等式
+
+**inequation** */*ˌɪnɪˈkweɪʒən*/* *n.* 不等式
+
 
 
 ## Usage
@@ -155,6 +159,12 @@ hold for 适用
 mass produce 批量生产
 
 give rise to 使发生，引起
+
+necessary and sufficient conditions 充要条件
+
+dot product 点积（注意，不是production）
+
+inequality 不相等
 
 
 
@@ -195,6 +205,12 @@ give rise to 使发生，引起
 
 
 > different orientations of the object **give rise to** different molds.
+
+
+
+> Take the plane spanned by the vectors (we assume both vectors are rooted at the origin)
+>
+> 由两个向量展开的平面，假设这两个向量从原点出发。
 
 
 
@@ -1400,13 +1416,75 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 
 如果一个铸件至少能从模具的一个方向上移除，就把这个铸件称作可铸造的（castable）。
 
-记 $\mathcal{P}$ 是一个多面体，并假设模具是一个中间有空间可以和 $\mathcal{P}$ 紧紧贴合的方块。它的顶部平面是和多面体 $\mathcal{P}$ 共面。我们把多面体 $\mathcal{P}$ 中不是顶部平面的其他面叫做**普通平面**（*ordinary facet*），每一个普通平面 $f$ 在模具中都有和它对应的一面，记作 $\hat{f}$。
+记 $\mathcal{P}$ 是一个多面体，并假设模具是一个中间有空间可以和 $\mathcal{P}$ 紧紧贴合的方块。它的顶部平面是和多面体 $\mathcal{P}$ 共面。我们把多面体 $\mathcal{P}$ 中不是顶部平面的其他面叫做**普通平面**（*ordinary facet*），每一个普通平面 $f$ 在模具中都有和它对应的一面，记作 $\hat{f}$ 。
 
 我们需要做的是，决定多面体  $\mathcal{P}$ 是否可以通过一次转换（translation）就可以从模具中移出。换句话说，我们要找出来是否存在一个向量 $\overrightarrow{d}$ ，使得多面体  $\mathcal{P}$ 沿着它可以移动到无限远而不碰到（intersecting）模具。
 
 
 
+因为 $f$ 是铸件的平面，同时它也是和模具平面 $\hat{f}$ 贴合的平面。如果 $\overrightarrow{d}$ 和平面 $f$ 向外的法向量（记作 $\eta(f)$）的夹角小于90°，那么在移除是铸件就会被阻挡。所以必要的条件就是 $\overrightarrow{d}$ 要和铸件 $\mathcal{P}$ 所有平面的向外的法向量夹角小于90°。下面的定理4.1也说明了这个必要条件也是充分条件（即充要条件）。
 
+
+
+**定理4.1** 如果一个向量 $\overrightarrow{d}$ 和多面体 $\mathcal{P}$ 所有面向外的法向量的夹角小于90°，那么这个多面体 $\mathcal{P}$ 就能沿着方向 $\overrightarrow{d}$ 从模具中移出。
+
+> Lemma 4.1 The polyhedron $\mathcal{P}$ can be removed from its mold by a translation in direction $\overrightarrow{d}$  if and only if $\overrightarrow{d}$  makes an angle of at least 90° with the outward normal of all ordinary facets of $\mathcal{P}$ .
+
+证明见第72页，页码为64页。
+
+此外，从**定理4.1**还可以得出一个有意思的结论：如果多面体 $\mathcal{P}$ 可以通过一系列短的向量移出模具，那么它也能一次通过一个向量移出模具。
+
+
+
+为了方便叙述，显然可以把所有讨论的向量的起始点移动到三维空间的原点。因为模具的顶部平面是向上开口的，所以我们要寻找的向量 $\overrightarrow{d}$ 其实是正 $z$ 轴的方向（想象一下要把铸件从开口处移除），那么可以取 $z = 1$ 这个三维空间的平面，这个平面上面的任意一个点 $(x, y, 1)$ 就能表示一个起点是原点的向量。
+
+假设铸件的每个面向外的法向量是 $\overrightarrow\eta = ( \overrightarrow\eta_x + \overrightarrow\eta_y + \overrightarrow\eta_z )$，那么一个向量 $\overrightarrow{d}$ 和这个法向量夹角小于90°的充要条件是，它们的点积小于等于0（非正）。因此有下面的不等式（inequality）：
+$$
+\overrightarrow\eta_xd_x + \overrightarrow\eta_yd_y + \overrightarrow\eta_z \le 0
+$$
+这个不等式实际上表示了 $z = 1$ 这个平面上的半个平面，即一条直线的左边平面，或者右边平面。（当然这个叙述不严谨，因为对于铸件面是水平的面时，有 $\overrightarrow\eta_x = \overrightarrow\eta_y = 0$ 。但在本章讨论的例子中，这个条件不可能满足或者一开始就永远满足，所以可以不做讨论）。
+
+换句话说，铸件的每个面代表了 $z = 1$ 这个平面上的半个平面（half-plane），而这些平面相交的共同部分的任意一个点，代表了一个向量 $\overrightarrow{d}$ ，沿着这个向量，铸件就可以从模具中移出。这就是说，我们把这个铸造问题转化为了求解一个平面上多个半平面交集部分的几何问题。如果一个铸件有 $n$ 个面，那么就需要求解 $n-1$ 个半平面交集部分（因为顶部平面不需要参与求解）。
+
+> Given a set of half-planes, find a point in their common intersection or decide that the common intersection is empty.
+
+如果对于当前的模具，我们转化为的几何求解问题无解，那么可以尝试选择其他面作为顶部平面（top facet），从而再测试铸件（多面体 $\mathcal{P}$ ）是否可以从模具中移出。
+
+**定理4.2**  记 $\mathcal{P}$ 是有 $n$ 个面的多面体（铸件），以时间复杂度$O(n^2)$和空间复杂度$O(n)$，可以确定该多面体 $\mathcal{P}$ 是否可铸造。此外，如果 $\mathcal{P}$ 是可铸造的，那么可以以相同的时间复杂度和空间复杂度计算出一个模具和一个可以把 $\mathcal{P}$ 从模具中移出的合法向量（方向）。
+
+> Theorem 4.2 Let $\mathcal{P}$ be a polyhedron with $n$ facets. In $O(n^2)$ expected time and using $O(n)$ storage it can be decided whether $\mathcal{P}$ is castable. Moreover, if $\mathcal{P}$ is castable, a mold and a valid direction for removing $\mathcal{P}$ from it can be computed in the same amount of time.
+
+
+
+
+
+
+
+
+
+### 4.10 References
+
+- Latex 数学字体示例
+
+$\mathnormal{ABCDEabcde1234}$
+
+$\mathrm{ABCDEabcde1234}$
+
+$\mathit{ABCDEabcde1234}$
+
+$\mathbf{ABCDEabcde1234}$
+
+$\mathsf{ABCDEabcde1234}$
+
+$\mathtt{ABCDEabcde1234}$
+
+$\mathcal{ABCDEabcde1234}$
+
+$\mathscr{ABCDEabcde1234}$
+
+$\mathfrak{ABCDEabcde1234}$
+
+$\mathbb{ABCDEabcde1234}$
 
 
 
