@@ -946,9 +946,25 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 
 
+
+
 ### References
 
 [MathJax的基本使用](https://www.cnblogs.com/mqingqing123/p/12711372.html)
+
+[Sphinx 基础教程](https://blog.csdn.net/enjoyyl/article/details/97820201)
+
+[Latex reStructuredText 入门 math 数学公式写法](https://blog.csdn.net/neuldp/article/details/52192915)
+
+[如何让Sphinx_doc支持MathJax公式](https://blog.csdn.net/weixin_43590796/article/details/123103215)
+
+[MathJax Github Repo](https://github.com/MathJax/MathJax)
+
+[A Sample Web showing Formulas Using MathJax](https://sphinx-hoverxref.readthedocs.io/en/latest/mathjax.html)
+
+
+
+
 
 
 
