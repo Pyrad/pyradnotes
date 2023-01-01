@@ -964,6 +964,8 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 [Sphinx and Markdown](https://coderefinery.github.io/documentation/sphinx/)
 
+[MathJax in Markdown](https://hiltmon.com/blog/2017/01/28/mathjax-in-markdown/)
+
 
 
 
