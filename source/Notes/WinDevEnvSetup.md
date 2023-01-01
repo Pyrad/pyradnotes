@@ -962,6 +962,8 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 [A Sample Web showing Formulas Using MathJax](https://sphinx-hoverxref.readthedocs.io/en/latest/mathjax.html)
 
+[Sphinx and Markdown](https://coderefinery.github.io/documentation/sphinx/)
+
 
 
 
