@@ -4,4 +4,4 @@ Geometry
 .. toctree::
     :maxdepth: 1
 
-    ComputationalGeometryAA3rd
+    ComputationalGeometryAA3rd.rst
