@@ -43,9 +43,14 @@ release = '0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 #extensions = []
-extensions = ['recommonmark','sphinx_markdown_tables']
+#extensions = ['recommonmark','sphinx_markdown_tables','myst_parser','sphinx.ext.mathjax']
 #extensions = ['recommonmark']
 #extensions = ['myst_parser']
+extensions = ['sphinx_markdown_tables']
+extensions.append('myst_parser')
+# Use MathJax to render LaTeX equations for html files
+extensions.append('sphinx.ext.mathjax')
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -89,12 +94,25 @@ latex_elements={ # The paper size ('letterpaper' or 'a4paper').
 \XeTeXlinebreakskip = 0pt plus 1pt
 """}
 
+################################################################################
+# Added by Pyrad, 2023-01-02
+# - Use MathJax to support rendering formulas/equations written in latex syntax.
+# - Folder 'es5' comes from source code of MathJax-3.2.2, and it is directly
+#   copied into '_static' folder of this sphinx doc.
+# - Download MathJax-3.2.2 from Github
+#   https://github.com/mathjax/MathJax/archive/refs/tags/3.2.2.zip,
+# - A relative path to '_static' should be set for 'mathjax_path'
+# - Don't forget to add 'sphinx.ext.mathjax' to variable 'extensions' above.
+################################################################################
+mathjax_path = 'es5/tex-chtml.js'
 
-source_parsers = {
-    '.md': 'recommonmark.parser.CommonMarkParser',
-}
 
-source_suffix = ['.rst', '.md']
+# source_parsers = {
+#     #'.md': 'recommonmark.parser.CommonMarkParser',
+#     '.md': 'myst_parser',
+# }
+
+# source_suffix = ['.rst', '.md']
 
 #  # At the bottom of conf.py
 #  def setup(app):
