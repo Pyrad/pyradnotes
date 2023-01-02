@@ -132,6 +132,12 @@ Published by Springer
 
 **inequation** */*ˌɪnɪˈkweɪʒən*/* *n.* 不等式
 
+**wedge** */*wedʒ*/* *n.* 楔子，三角木；楔形物，三角形物（尤指食物）；*v.* （将……）楔入，插入，挤入；
+
+**parameterize** */*pəˈræmɪt(ə)raɪz*/* *vt.* 用参数表示；确定……的参数
+
+
+
 
 
 ## Usage
@@ -222,9 +228,16 @@ inequality 不相等
 - output-sensitive algorithm
 - planar graph
 - planar subdivisions
-- Art Gallery Problem (combinatorial geometry)
-- dual graph
-- Monotone polygon
+- Chapter 3
+  - Art Gallery Problem (combinatorial geometry)
+  - dual graph
+  - Monotone polygon
+
+- Chapter 4
+  - Linear optimization (linear programming，就是线性规划)
+  - Simplex Algorithm (单纯型算法，in operations research area)
+  - Low-dimensional linear programming problems
+
 
 
 
