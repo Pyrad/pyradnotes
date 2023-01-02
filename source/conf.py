@@ -25,6 +25,7 @@ if os.environ.get('READTHEDOCS', None) == 'True':
     sys.path.insert(0, os.path.abspath(os.path.join('.', 'pyextensions')))
     sys.path.insert(0, os.path.abspath('.'))
     import sphinx_markdown_tables
+    import myst_parser
 
 
 # -- Project information -----------------------------------------------------
@@ -48,6 +49,7 @@ release = '0.1'
 #extensions = ['myst_parser']
 extensions = ['sphinx_markdown_tables']
 extensions.append('myst_parser')
+# extensions.append('recommonmark')
 # Use MathJax to render LaTeX equations for html files
 extensions.append('sphinx.ext.mathjax')
 
