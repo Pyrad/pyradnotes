@@ -976,7 +976,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 三角形划分通常不是唯一的。但三角形是否总是存在？三角形划分之后有多少个三角形？
 
-**定理3.1，每一个简单多边形存在一个三角形划分，并且一个有 $n$ 个顶点的简单多边形可以划分为 $n-2$ 个三角形。**
+**定理3.1**，每一个简单多边形存在一个三角形划分，并且一个有 $n$ 个顶点的简单多边形可以划分为 $n-2$ 个三角形。
 
 > Theorem 3.1 Every simple polygon admits a triangulation, and any triangulation of a simple polygon with n vertices consists of exactly n−2 triangles.
 
@@ -1015,13 +1015,13 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-**定理3.2，（画廊定理），对任意有 $n$ 个顶点的简单多边形， $\lfloor n/3 \rfloor$ 台摄像机只是偶尔是必须的（因为大多数情况下只要更少），而且总是可以满足从多边形内部的任意一点看到至少一台摄像机的要求。**
+**定理3.2**，（画廊定理），对任意有 $n$ 个顶点的简单多边形， $\lfloor n/3 \rfloor$ 台摄像机只是偶尔是必须的（因为大多数情况下只要更少），而且总是可以满足从多边形内部的任意一点看到至少一台摄像机的要求。
 
 > Theorem 3.2 (Art Gallery Theorem) For a simple polygon with n vertices, $\lfloor n/3 \rfloor$ cameras are occasionally necessary and always sufficient to have every point in the polygon visible from at least one of the cameras.
 
 
 
-**定理3.3，对任意有 $n$ 个顶点的简单多边形，从多边形内部的任意一点看到至少一台摄像机，计算这样的至多 $\lfloor n/3 \rfloor$ 台摄像机的时间复杂度是 $O(nlogn)$。**
+**定理3.3**，对任意有 $n$ 个顶点的简单多边形，从多边形内部的任意一点看到至少一台摄像机，计算这样的至多 $\lfloor n/3 \rfloor$ 台摄像机的时间复杂度是 $O(nlogn)$。
 
 > Theorem 3.3 Let $\mathcal{P}$  be a simple polygon with n vertices. A set of $\lfloor n/3 \rfloor$ camera positions in $\mathcal{P}$ such that any point inside $\mathcal{P}$ is visible from at least one of the cameras can be computed in $O(nlogn)$ time.
 
