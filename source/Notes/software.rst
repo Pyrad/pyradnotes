@@ -29,6 +29,9 @@ This is to keep down some software programs of daily use or which might be very 
     * - **SumatraPDF** 
       - PDF (and others) reader. Small, fast, customizable, free.
       - `SumatraPDF <https://www.sumatrapdfreader.org/free-pdf-reader>`_
-    * - **Koodo Reader** 
+    * - **Koodo Reader**
       - An all-in-one ebook reader. It's free and open-source.
       - `Koodo Reader <https://koodo.960960.xyz/en>`_
+    * - **FreeMind**
+      - FreeMind is a premier free mind-mapping software written in Java. 
+      - `FreeMind <https://freemind.sourceforge.net/wiki/index.php/Main_Page>`_
