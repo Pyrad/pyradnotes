@@ -938,6 +938,20 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 
 
+## Sphinx
+
+### Official
+
+[Welcome - Sphinx]((https://www.sphinx-doc.org/en/master/index.html))
+
+
+
+### References
+
+[Sphinx 基础教程](https://blog.csdn.net/enjoyyl/article/details/97820201)
+
+
+
 ## MathJax
 
 ### Official
@@ -948,11 +962,11 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 
 
+
+
 ### References
 
 [MathJax的基本使用](https://www.cnblogs.com/mqingqing123/p/12711372.html)
-
-[Sphinx 基础教程](https://blog.csdn.net/enjoyyl/article/details/97820201)
 
 [Latex reStructuredText 入门 math 数学公式写法](https://blog.csdn.net/neuldp/article/details/52192915)
 
