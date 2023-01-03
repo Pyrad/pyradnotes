@@ -942,7 +942,7 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 ### Official
 
-[Welcome - Sphinx]((https://www.sphinx-doc.org/en/master/index.html))
+[Welcome - Sphinx](https://www.sphinx-doc.org/en/master/index.html)
 
 [MyST-Parser - Use Markdown in Sphinx](https://www.sphinx-doc.org/en/master/usage/markdown.html)
 
