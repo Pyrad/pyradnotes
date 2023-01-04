@@ -1481,6 +1481,51 @@ $$
 
 
 
+### 4.3 Incremental Linear Programming
+
+
+
+$\mathbb{R}^d$ （$d$ 维实数空间）上，
+
+Maximize：
+$$
+c_1x_1 + c_2x_2 + \cdots + c_dx_d
+$$
+Subject to：
+$$
+\left\{\begin{matrix} 
+a_{1,1}x_1 + c_{1,2}x_2 + \cdots + c_{1,d}x_d \le b_1 \\
+a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
+\vdots \\
+a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
+\end{matrix}\right.
+$$
+Point $p$ = $(x_1, x_2, \dots, x_d)$
+
+direction $\vec{c} = (c_1, c_2, \dots, c_d)$ 是 $\mathbb{R}^d$ （$d$ 维实数空间）上的向量。
+
+用$f_\vec{c}$ 来表示 $c_1x_1 + c_2x_2 + \cdots + c_dx_d$ 这个目标函数。（let $f_\vec{c}$ denote the objective function）
+
+
+
+
+
+射线（ray） $\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.$
+
+一个半平面 $h \in H$ 的法向量 $\overrightarrow{\eta}(h)$ 。
+
+
+
+$2\small{D}\normalsize{R}\small{ANDOMIZED}\normalsize{B}\small{OUNDED}\normalsize{L}\small{P}$
+
+
+
+
+
+
+
+
+
 ### 4.10 References
 
 - Latex 数学字体示例
