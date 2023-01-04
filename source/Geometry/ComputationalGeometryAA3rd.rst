@@ -182,7 +182,7 @@ thought experiment
 
 an elastic rubber band 橡皮筋
 
-direct the line through *p* and *q*
+direct the line through :math:`p` and :math:`q`
 
 to this end 为了这个目的（\ **formal** **:** as a way of dealing with or
 doing something）
@@ -220,7 +220,7 @@ inequality 不相等
 
    We denote the *event queue* by Q
 
-   我们把event queue记作\ **Q**
+   我们把event queue记作\ :math:`\mathcal{Q}`
 
    This horizontal sweeping line is sloping just a tiny bit upward
 
@@ -389,49 +389,54 @@ convex hulls）
 
 **算法简述**\ ：
 
-从集合 :math:`\mathcal{P}` 中取任意不同两点 *p* 和 *q*\ ，组成一有向线段
-:math:`\overrightarrow{pq}` ，检查集合 :math:`\mathcal{P}`
-中剩余的任意一点 *r*\ ，如果任意一点 *r* 都位于有向线段 *p* -> *q*
-的右侧，说明有向线段 *p* -> *q*
-就是最终轮廓上的其中一条线段，将其加入集合 :math:`\mathcal{E}` 中。
+从集合 :math:`\mathcal{P}` 中取任意不同两点 :math:`p` 和
+:math:`q`\ ，组成一有向线段 :math:`\overrightarrow{pq}` ，检查集合
+:math:`\mathcal{P}` 中剩余的任意一点 :math:`r`\ ，如果任意一点 :math:`r`
+都位于有向线段 :math:`p \rightarrow q` 的右侧，说明有向线段
+:math:`p \rightarrow q` 就是最终轮廓上的其中一条线段，将其加入集合
+:math:`\mathcal{E}` 中。
 
-穷举集合 :math:`\mathcal{P}` 中这样两个点 *p* 和 *q*
+穷举集合 :math:`\mathcal{P}` 中这样两个点 :math:`p` 和 :math:`q`
 的组合，重复上述检查，直至最终遍历完成，得到一个线段集合
 :math:`\mathcal{E}`\ 。
 
 最后，从集合 :math:`\mathcal{E}`
 中找出依次连接的线段，并组成一个点列表，按照\ **顺时针**\ 方向排序。
 
-**算法复杂度**\ ：O(n^3)
+**算法复杂度**\ ：\ :math:`O(n^3)`
 
 对于伪代码中的几个的说明
 
 -  诸如判断一个点在一条直线（线段）的左边或右边的操作，默认已经有现成的实现可以使用
 
 -  从集合 :math:`\mathcal{E}` 中找出依次连接的有向线段的步骤是，首先从
-   :math:`\mathcal{E}` 中取任一有向线段 *e1*\ ，以其头点（即 *p* -> *q*
-   线段的 *q* 点）为目标，从集合 :math:`\mathcal{E}`
-   中找出第二条有向线段 *e2*\ ，其尾点（即 *p* -> *q* 线段的 *p* 点）为
-   *e1* 的头点，然后再以 *e2*
-   的头点搜索下一条有向线段，直到搜索到的这些线段 *e1*, *e2*, *e3*, ...,
-   *eN* 构成一条闭合的折线段。
+   :math:`\mathcal{E}` 中取任一有向线段 :math:`e_1`\ ，以其头点（即
+   :math:`p \rightarrow q` 线段的 :math:`q` 点）为目标，从集合
+   :math:`\mathcal{E}` 中找出第二条有向线段 :math:`e_2`\ ，其尾点（即
+   :math:`p \rightarrow q` 线段的 :math:`p` 点）为 :math:`e_1`
+   的头点，然后再以 :math:`e_2`
+   的头点搜索下一条有向线段，直到搜索到的这些线段 :math:`e_1`,
+   :math:`e_2`, :math:`e_3`, ..., :math:`e_N` 构成一条闭合的折线段。
 
--  关于算法复杂度是O(n^3)。从 *n* 个点中取两个点的组合是 *n!/ 2! (n-2)!
-   = n(n-1)*\ ，所以是O(n^2)，对每一条有向线段，查看剩余 *n-2*
-   个点是否在其右侧，这样时间复杂度就达到了O(n\ :sup:`3)。最后一步依次找出有向线段并按顺序连接，时间复杂度是O(n`\ 2)，所以最终时间复杂度就是O(n^3)。
+-  关于算法复杂度是\ :math:`O(n^3)`\ 。从 :math:`n`
+   个点中取两个点的组合是
+   :math:`\frac{n!}{2!(n-2)!}`\ ，所以是\ :math:`O(n^2)`\ ，对每一条有向线段，查看剩余
+   :math:`n-2`
+   个点是否在其右侧，这样时间复杂度就达到了\ :math:`O(n^3)`\ 。最后一步依次找出有向线段并按顺序连接，时间复杂度是
+   :math:`O(n^2)` ，所以最终时间复杂度就是\ :math:`O(n^3)`\ 。
 
 关于 **degenerate case** 或者叫做 **degeneracy**
 
-在判断一个点 *k* 是否在有向线段 *p* -> *q* 右侧时，点 *k*
-是可能落在有向线段 *p* -> *q*
+在判断一个点 *k* 是否在有向线段 :math:`p \rightarrow q` 右侧时，点 *k*
+是可能落在有向线段 :math:`p \rightarrow q`
 上的，针对这种退化情况，可以把它也当做是在有向线段右侧的一种（退化）情况。
 
 关于 **rounding error** 导致的程序健壮性问题（robustness）
 
-在实际情况中，因为使用的是浮点数计算，那么仍然是在判断一个点 *k*
-是否在有向线段 *p* -> *q* 右侧时，可能产生微小的误差（rounding
-errors），导致最终计算出来的convex hull的点集合 :math:`\mathcal{E}`
-有三种情况：
+在实际情况中，因为使用的是浮点数计算，那么仍然是在判断一个点 :math:`k`
+是否在有向线段 :math:`p \rightarrow q`
+右侧时，可能产生微小的误差（rounding errors），导致最终计算出来的convex
+hull的点集合 :math:`\mathcal{E}` 有三种情况：
 
 1. 要么不是真正意义上的convex hull（但仍然是非常接近实际情况的）
 
@@ -450,55 +455,58 @@ errors），导致最终计算出来的convex hull的点集合 :math:`\mathcal{E
 第二种算法是时间复杂度比第一种算法低，采用了所谓的 *incremental
 algorithm* 的方法，文中名为ConvexHull算法。
 
-这种算法的总体思路是，将所有的点按照 *x* 坐标由大到小排序为 *p1*, *p2*,
-*p3*, ...,
-*pN*\ ，因为前提是凸多边形，所以先按照从左向右的方向，找到这convex
-hull的上半部分边界 *upper hull*\ ，即 *p1*, *u0*, *u1*, ...,
-*pN*\ （其中\ *u0*, *u1*, ... 都是集合中的点），再找到convex
-hull的下半部分边界 *lower hull*\ ，即\ *p1*, *v0*, *v1*, ...,
-*pN*\ （其中\ *v0*, *v1*, ... 也都是集合中的点）。
+这种算法的总体思路是，将所有的点按照 :math:`x` 坐标由大到小排序为
+:math:`p_1`, :math:`p_2`, :math:`p_3`, ...,
+:math:`p_N`\ ，因为前提是凸多边形，所以先按照从左向右的方向，找到这convex
+hull的上半部分边界 *upper hull*\ ，即 :math:`p_1`, :math:`u_0`,
+:math:`u_1`, ..., :math:`p_N`\ （其中\ :math:`u_0`, :math:`u_1`, ...
+都是集合中的点），再找到convex hull的下半部分边界 *lower
+hull*\ ，即\ :math:`p_1`, :math:`v_0`, :math:`v_1`, ...,
+:math:`p_N`\ （其中\ :math:`v_0`, :math:`v_1`, ... 也都是集合中的点）。
 
 这个所谓的 *incremental algorithm*
 方法的关键步骤在于，如何在向已有的但不完整的\ *upper/lower hull*
 添加一个点之后，更新这个不完整的\ *upper/lower
 hull*\ ，使得其向左或向右延伸一段（最终到达最右或最左的点）。
 
-换句话说，假如现已有\ *upper hull*\ 的点是 *p1*, *p2*, ..., *p(i-1)*,
-如何找到下一个点 *pi*\ ，使得 *p1*, *p2*, ..., *pi* 是最终 *upper hull*
-的一部分。
+换句话说，假如现已有\ *upper hull*\ 的点是 :math:`p_1`, :math:`p_2`,
+..., :math:`p_{i-1}`, 如何找到下一个点 *pi*\ ，使得 :math:`p_1`,
+:math:`p_2`, ..., :math:`p_i` 是最终 *upper hull* 的一部分。
 
 因为我们约定是按照顺时针方向来标记最终的convex hull的，所以，沿着convex
-hull的边界行走，一定是\ **“右转”**\ 的。因此，可以按照此方法来确定如何加入上面提到的\ *pi*\ 点，从而生成一条新的convex
+hull的边界行走，一定是\ **“右转”**\ 的。因此，可以按照此方法来确定如何加入上面提到的\ :math:`pi`\ 点，从而生成一条新的convex
 hull的一部分。
 
-假设我们现在计算的是 *upper hull*\ ，那么我们遍历的点一定是按照 *x*
-坐标有小到大的顺序，那么当加入点 *pi* 时，点 *pi* 的 *x*
-坐标就是目前的convex hull 点 *p1*, *p2*, ..., *p(i-1)* 里面 *x*
-坐标最大的。
+假设我们现在计算的是 *upper hull*\ ，那么我们遍历的点一定是按照
+:math:`x` 坐标有小到大的顺序，那么当加入点 :math:`p_i` 时，点
+:math:`p_i` 的 :math:`x` 坐标就是目前的convex hull 点 :math:`p_1`,
+:math:`p_2`, ..., :math:`p_{i-1}` 里面 :math:`x` 坐标最大的。
 
-加入点 *pi* 后，此时点列为 *p1*, *p2*, ..., *p(i-1)*,
-*pi*\ 。此时我们检查最后三个点 *p(i-2)*, *p(i-1)*, *pi*\ 。
+加入点 :math:`p_i` 后，此时点列为 :math:`p_1`, :math:`p_2`, ...,
+:math:`p_{i-1}`, :math:`p_i`\ 。此时我们检查最后三个点 :math:`p_{i-2}`,
+:math:`p_{i-1}`, :math:`p_i`\ 。
 
--  如果这三个点是\ **“右转”**\ 的，那么新加入的点 *pi*\ ，就是最终 upper
-   convex hull的一部分（但有可能在加入之后的点以后，继续做调整从而删除点
-   *pi*\ ）。
+-  如果这三个点是\ **“右转”**\ 的，那么新加入的点
+   :math:`p_i`\ ，就是最终 upper convex
+   hull的一部分（但有可能在加入之后的点以后，继续做调整从而删除点
+   :math:`p_i`\ ）。
 
--  如果这三个点是\ **“左转”**\ 的，那么因为目前 *pi* 的 *x*
+-  如果这三个点是\ **“左转”**\ 的，那么因为目前 :math:`p_i` 的 :math:`x`
    坐标最大，它就一定是在目前遍历过的convex hull上，所以我们就需要从
-   *p(i-1)*
+   :math:`p_{i-1}`
    开始向后检查，每次删除最后3个点的中间的点（即每次的倒数第二个点），做重新调整。
 
-   先删除 *p(i-1)* 这个点，然后检查此时的最后三个点，\ *p(i-3)*,
-   *p(i-2)*,
-   *pi*\ ，如果它们组成了\ **“右转”**\ 的折线，那么本次调整到此结束，然后继续加入下一个点
-   *p(i+1)*\ ；如果它们组成了\ **“左转”**\ 的折线，那么就需要再次删除中间点，即\ *p(i-2)*\ ，然后继续检查时的最后三个点，\ *p(i-4)*,
-   *p(i-3)*,
-   *pi*\ ，并重复上述步骤，直到最后三个点组成\ **“右转”**\ 的折线（或者直到剩下最后2个点），本次调整才到此结束，然后继续加入下一个点
-   *p(i+1)*\ 。
+   先删除 :math:`p_{i-1}`
+   这个点，然后检查此时的最后三个点，\ :math:`p_{i-3}`, :math:`p_{i-2}`,
+   :math:`p_i`\ ，如果它们组成了\ **“右转”**\ 的折线，那么本次调整到此结束，然后继续加入下一个点
+   :math:`p_{i+1}`\ ；如果它们组成了\ **“左转”**\ 的折线，那么就需要再次删除中间点，即\ :math:`p_{i-2}`\ ，然后继续检查时的最后三个点，\ :math:`p_{i-4}`,
+   :math:`p_{i-3}`,
+   :math:`p_i`\ ，并重复上述步骤，直到最后三个点组成\ **“右转”**\ 的折线（或者直到剩下最后2个点），本次调整才到此结束，然后继续加入下一个点
+   :math:`p_{i+1}`\ 。
 
 当针对上述两种情况做完调整之后，此时继续加入下一个点
-*p(i+1)*\ ，并重复上述步骤，直到加入最右边的点 *pN*\ ，此时就得到了
-*upper hull*\ 。
+:math:`p_{i+1}`\ ，并重复上述步骤，直到加入最右边的点
+:math:`p_N`\ ，此时就得到了 *upper hull*\ 。
 
 寻找 *lower hull* 的incremental的步骤和上述类似。
 
@@ -513,41 +521,45 @@ hull的一部分。
 
 **算法简述**\ ：
 
--  将集合 *P* 按 *x* 坐标排序为 *p1*, *p2*, ..., *pN*
+-  将集合 :math:`P` 按 *x* 坐标排序为 :math:`p_1`, :math:`p_2`, ...,
+   :math:`p_N`
 
--  把\ *p1*, *p2* 放入序列 :math:`\mathcal{L}`\ ，并且 *p1* 是第一个点，
-   *p2* 是第二个点
+-  把\ :math:`p_1`, :math:`p_2` 放入序列 :math:`\mathcal{L}`\ ，并且
+   :math:`p_1` 是第一个点， :math:`p_2` 是第二个点
 
--  变量 *i*\ ，值从3到N，依次遍历加入序列 **L1**\ ，每次加入点
-   *pi*\ ，检查最后三个点是否组成\ **“右转”**\ 的折线段。如果是，继续遍历下一个值，否则删除当前序列
-   **L1**
+-  变量 :math:`i`\ ，值从3到N，依次遍历加入序列
+   :math:`L_1`\ ，每次加入点
+   :math:`p_i`\ ，检查最后三个点是否组成\ **“右转”**\ 的折线段。如果是，继续遍历下一个值，否则删除当前序列
+   :math:`L_1`
    的倒数第二个点，并继续检查最后三个点是否组成\ **“右转”**\ 的折线段，以此类推，直到当前序列
-   **L1** 的最后三个点组成\ **“右转”**\ 的折线段，才继续遍历下一个 *i*
-   值。
+   :math:`L_1` 的最后三个点组成\ **“右转”**\ 的折线段，才继续遍历下一个
+   *i* 值。
 
--  当变量 *i* 遍历完成时，就得到了convex hull的上半部分 upper
-   hull的点序列是 **L1** 。
+-  当变量 :math:`i` 遍历完成时，就得到了convex hull的上半部分 upper
+   hull的点序列是 :math:`L_1` 。
 
--  把\ *pN*, *p(N-1)* 放入序列 **L2**\ ，并且 *pN* 是第一个点， *p(N-1)*
-   是第二个点
+-  把\ :math:`p_N`, :math:`p_{N-1}` 放入序列 :math:`L_2`\ ，并且
+   :math:`p_N` 是第一个点， :math:`p_{N-1}` 是第二个点
 
--  变量 *j*\ ，值从N-2到1，依次加入序列 **L2**\ ，和上面寻找upper
+-  变量 :math:`j`\ ，值从N-2到1，依次加入序列
+   :math:`L_2`\ ，和上面寻找upper
    hull的办法类似，仍然是确保每加入一点后，调整序列
-   **L2**\ ，使得其最后三点组成\ **“右转”**\ 的折线段，然后才继续遍历下一个
-   *j* 值。
+   :math:`L_2`\ ，使得其最后三点组成\ **“右转”**\ 的折线段，然后才继续遍历下一个
+   :math:`j` 值。
 
--  把序列 **L2** 的第一个和最后一个点去掉，避免重复点。
+-  把序列 :math:`L_2` 的第一个和最后一个点去掉，避免重复点。
 
--  把序列 **L1** 和序列 **L2** 合并，即得到最终的点序列
+-  把序列 :math:`L_1` 和序列 :math:`L_2` 合并，即得到最终的点序列
    :math:`\mathcal{L}`\ 。
 
-时间复杂度：O(nlogn)
+时间复杂度：\ :math:`O(nlogn)`
 
 对于该算法的几点说明
 
--  在排序时，如果 *x* 坐标相同，可以按照 lexicographic
-   的办法排序，即先按照 *x* 坐标排序，如果 *x* 坐标相同，就再按照 *y*
-   坐标排序（仅对 *x* 坐标相同的点的情况下）。
+-  在排序时，如果 :math:`x` 坐标相同，可以按照 lexicographic
+   的办法排序，即先按照 :math:`x` 坐标排序，如果 :math:`x`
+   坐标相同，就再按照 :math:`y` 坐标排序（仅对 :math:`x`
+   坐标相同的点的情况下）。
 
 -  在上面判断最后三点是否组成\ **“右转”**\ 的折线段时，如果这三点共线，仍然把这种情况归为\ **”左转“**\ 的情况，从而触发删除三点里面中间点的操作处理。
 
@@ -565,28 +577,29 @@ hull的一部分。
 
 关于第二种算法正确性的证明，文中采用了数学归纳法。
 
-以upper hull为例，假如现已有点列 {*p1*, *p2*, ..., *p(i-1)*}，准备加入点
-*pi*\ 。根据算法，点列{*p1*, *p2*, ...,
+以upper hull为例，假如现已有点列 {:math:`p_1`, :math:`p_2`, ...,
+*p(i-1)*}，准备加入点 *pi*\ 。根据算法，点列{:math:`p_1`, :math:`p_2`,
+...,
 *p(i-1)*}中最后三点一定是组成\ **“右转”**\ 的折线段（即除了这些点，到目前最大的点为止，其他点都在这些点的下方）。我们把此时的upper
 hull点列叫做 old chain。
 
 在加入点 *pi* 之后，按照字典序（lexicographic），最小的点是
-*p1*\ ，最大的点是 *pi*\ ，经过调整，此时的upper hull我们叫做new
+:math:`p_1`\ ，最大的点是 *pi*\ ，经过调整，此时的upper hull我们叫做new
 chain（而且new chain的最后一个点一定是\ *pi*\ ）。
 
 可以断言的是old chain一定是在new chain的下方（有可能点\ *pi*\ 就是old
 chain的延伸，但是在算法中，这种共线的情况被当做是左转而被排除掉了）。
 
-按照算法，我们需要证明的是，到目前为止，除了{*p1*, *p2*, ...,
-*pi*}，所有的点都在new chain的下方。
+按照算法，我们需要证明的是，到目前为止，除了{:math:`p_1`, :math:`p_2`,
+..., *pi*}，所有的点都在new chain的下方。
 
 假如有一个点位于new chain的上方，那么这个点就必须介于 *p(i-1)* 和
 *pi*\ 之间，因为在加入 *pi* 之前，所有的点都位于old
 chain的下方。但这又是矛盾的，因为 *p(i-1)* 和 *pi*
 之间没有其它点，因为所有点已经是按照字典序排列过了的。
 
-因此归纳出来，到目前为止，除了{*p1*, *p2*, ..., *pi*}，所有的点都在new
-chain的下方。算法正确性得到证明。
+因此归纳出来，到目前为止，除了{:math:`p_1`, :math:`p_2`, ...,
+*pi*}，所有的点都在new chain的下方。算法正确性得到证明。
 
 关于时间复杂度的证明。
 
@@ -596,7 +609,7 @@ for循环是线性的，关键在于其里面用于检查右转折线段和删�
 
 这个while循环首先可以肯定至少执行一次（检查右转折线段），而额外执行的次数，是为了删除每次得到的序列最后三点的中间点，而因为所有点只会被加入序列一次，所以，每个点最多也只会被删除一次，那么这个for循环里面的while循环执行的上限就是O(n)。
 
-所以，带有while循环的这个for循环，时间复杂度是O(n)，而不是O(n^2)。
+所以，带有while循环的这个for循环，时间复杂度是O(n)，而不是\ :math:`O(n^2)`\ 。
 
 因此计算upper hull的时间复杂度就是O(nlogn)。
 
@@ -690,7 +703,7 @@ GIS中，在overlay上，不同信息有交叉的地方（比如查看河流和�
 其中线段的端点碰到其他的线段，也算作交点。
 
 Brute-forced
-algorithm的时间复杂度是O(n^2)，但实际情况，有可能只有很少的一些线段相交，并不必计算每个线段和其他线段的交点。
+algorithm的时间复杂度是\ :math:`O(n^2)`\ ，但实际情况，有可能只有很少的一些线段相交，并不必计算每个线段和其他线段的交点。
 
 即，我们希望算法的复杂度依赖的不仅是输入点的个数，而且也是输出的交点的个数，这样的算法叫做\ **output-sensitive
 algorithm**\ 。
@@ -734,10 +747,10 @@ line**\ 的\ **status**\ ，并测试线段之间有无交点（如有，就计�
    neighbor就会发生改变，所以就要测试（计算）这两条segments和它们各自左右相邻的segment的交点。
 
    Lemma 2.1 Let *si* and *sj* be two non-horizontal segments whose
-   interiors intersect in a single point *p*, and assume there is no
-   third segment passing through *p*. Then there is an event point above
-   *p* where *si* and *sj* become adjacent and are tested for
-   intersection.
+   interiors intersect in a single point :math:`p`, and assume there is
+   no third segment passing through :math:`p`. Then there is an event
+   point above :math:`p` where *si* and *sj* become adjacent and are
+   tested for intersection.
 
 因为根据前面遇到的event point是一条线段的upper
 point时的操作（计算adjacent segment之间的intersection
@@ -790,7 +803,7 @@ sweep line遇到三种不同event point时对应的操作
 
 算法当中需要的两个数据结构
 
--  **event queue**\ （记作 **Q**\ ）
+-  **event queue**\ （记作 :math:`\mathcal{Q}`\ ）
 
    **需要支持删除一个点（event
    point）的操作**\ ，并返回这个点以便对其处理。
@@ -804,15 +817,17 @@ sweep line遇到三种不同event point时对应的操作
 
    同时，允许两个event point是共点的（coincide，比如两条线段的upper
    point可能是同一个点），但把它们当做是同一个点，所以需要支持查看一个event
-   point是否在\ **Q**\ 中已经存在。
+   point是否在\ :math:`\mathcal{Q}`\ 中已经存在。
 
    根据上述特点，采用平衡二叉搜索树（\ **Balanced Binary Search
-   Tree**\ ，BST），并定义点（event point） *p* < *q*
+   Tree**\ ，BST），并定义点（event point） :math:`p` < :math:`q`
    的“小于”操作符（\ ``<``\ ）为
 
-   （1）如果 *p* 和 *q* 的y坐标相同，那么 *p* 的x坐标小于\ *q* 的x坐标
+   （1）如果 :math:`p` 和 :math:`q` 的y坐标相同，那么 :math:`p`
+   的x坐标小于\ :math:`q` 的x坐标
 
-   （2）如果 *p* 和 *q* 的y坐标不相同，那么 *p* 的y坐标小于\ *q* 的y坐标
+   （2）如果 :math:`p` 和 :math:`q` 的y坐标不相同，那么 :math:`p`
+   的y坐标小于\ :math:`q` 的y坐标
 
    需要删除一个点的操作的原因是，sweep line向下移动时，需要event
    point的顺序，移动到下一个event
@@ -857,17 +872,21 @@ sweep line遇到三种不同event point时对应的操作
 
 **算法简述**\ ：
 
-首先，初始化一个空的event queue，记作 **Q**\ 。然后把集合 **S**
-里线段的end points都插入到 **Q** 中，当一个end point是线段的upper
+首先，初始化一个空的event queue，记作 :math:`\mathcal{Q}`\ 。然后把集合
+**S** 里线段的end points都插入到 :math:`\mathcal{Q}` 中，当一个end
+point是线段的upper
 point时，要同时带上其所在的线段的信息（属于那条线段）。
 
 然后，初始化一个空的status 数据结构，记作 **J**\ 。
 
-之后，依次遍历 **Q**\ ，每次从 **Q** 中返回下一个event point *p*\ （同时
-*p* 从 **Q** 中被移除），然后根据event point *p*\ ，调用对 *p*
+之后，依次遍历 :math:`\mathcal{Q}`\ ，每次从 :math:`\mathcal{Q}`
+中返回下一个event point :math:`p`\ （同时 :math:`p` 从
+:math:`\mathcal{Q}` 中被移除），然后根据event point :math:`p`\ ，调用对
+:math:`p`
 的处理函数\ **HandleEventPoint(p)**\ （如下）。这个遍历的终止条件是
-**Q** 为空。（即这是一个while循环，而在遍历过程中可能有新event point加入
-**Q** ）
+:math:`\mathcal{Q}`
+为空。（即这是一个while循环，而在遍历过程中可能有新event point加入
+:math:`\mathcal{Q}` ）
 
 **算法复杂度**\ ：
 
@@ -877,18 +896,19 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 
 **HandleEventPoint(p)** 步骤简述
 
--  输入是点 *p*
+-  输入是点 :math:`p`
 
--  记 upper end point为 *p* 的线段集合为 **U(p)**\ ，这些线段是和点 *p*
+-  记 upper end point为 :math:`p` 的线段集合为
+   **U(p)**\ ，这些线段是和点 :math:`p`
    对应存储的。如果线段是水平的，它的upper end point是左边的端点。
 
--  在status **J** 中找到所有包含点 *p* 的线段，它们都是相邻的，记
-   **L(p)** 是lower endpoint为 *p* 的线段集合，记 **C(p)**
-   是线段中间包含点 *p* 的线段集合（即点 *p*
+-  在status **J** 中找到所有包含点 :math:`p` 的线段，它们都是相邻的，记
+   **L(p)** 是lower endpoint为 :math:`p` 的线段集合，记 **C(p)**
+   是线段中间包含点 :math:`p` 的线段集合（即点 :math:`p`
    是它们之间某两条或几条线段的交点）。
 
--  如果 **L(p)** ∪ **U(p)** ∪\ **C(p)** 至少有一条线段，就说明点 *p*
-   是一个交点
+-  如果 **L(p)** ∪ **U(p)** ∪\ **C(p)** 至少有一条线段，就说明点
+   :math:`p` 是一个交点
 
    -  报告这个结构，并同时报告它所在的线段（在\ **L(p)**\ ， **U(p)** 和
       **C(p)** 中）
@@ -897,7 +917,7 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 
 -  向status **J** 中添加\ **U(p)** ∪\ **C(p)**
    （即它们的并集），并且插入的这些线段的顺序是，按照它们和sweep line在
-   *p*
+   :math:`p`
    稍下方一点位置相交的顺序。如果有线段是水平的，那么它要排在其他线段的最后面。
 
 -  从上面的两个步骤可以得到，删除了\ **C(p)** 又添加了\ **C(p)**
@@ -905,7 +925,7 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 
 -  如果\ **U(p)** ∪\ **C(p)** （即它们的并集）为空集
 
-   -  把 status **J** 中，在 *p* 点左右两边的线段记为 *sl* 和
+   -  把 status **J** 中，在 :math:`p` 点左右两边的线段记为 *sl* 和
       *sr*\ ，调用寻找event point的函数\ **FindNewEvent(sl, sr, p)**
 
       如果 *sl* 或 *sr* 不存在，就忽略此步骤。
@@ -913,15 +933,15 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 -  如果\ **U(p)** ∪\ **C(p)** （即它们的并集）不是空集
 
    -  把既在 **U(p)** ∪\ **C(p)** 中又在status **J**
-      中，最左边的线段记作 *s1*\ ，把在status **J** 中 *s1*
-      左边的线段记作 *sl*\ ，然后调用寻找event
+      中，最左边的线段记作 :math:`s_1`\ ，把在status **J** 中
+      :math:`s_1` 左边的线段记作 *sl*\ ，然后调用寻找event
       point的函数\ **FindNewEvent(sl, s1, p)**\ 。
 
       如果 *sl* 不存在，就忽略此步骤。
 
    -  把既在 **U(p)** ∪\ **C(p)** 中又在status **J**
-      中，最右边的线段记作 *s2*\ ，把在status **J** 中 *s1*
-      右边的线段记作 *sr*\ ，然后调用寻找event
+      中，最右边的线段记作 :math:`s_2`\ ，把在status **J** 中
+      :math:`s_1` 右边的线段记作 *sr*\ ，然后调用寻找event
       point的函数\ **FindNewEvent(s2, sr, p)**
 
       如果 *sr* 不存在，就忽略此步骤。
@@ -929,10 +949,11 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 **FindNewEvent(sl, sr, p)** 步骤简述
 
 -  如果线段 *sl* 和 *sr* 在sweep line的下方相交，或者就在sweep
-   line上相交并且在当前event point *p* 的右边，那么这个新的交点就是在
-   **Q** 中还没出现的新的event point
+   line上相交并且在当前event point :math:`p`
+   的右边，那么这个新的交点就是在 :math:`\mathcal{Q}`
+   中还没出现的新的event point
 
-   -  把这个新的交点加入到 **Q** 中
+   -  把这个新的交点加入到 :math:`\mathcal{Q}` 中
 
 Lemma 2.2 和Lemma 2.3
 分别是这个算法的正确性，以及算法的时间复杂度的证明。
