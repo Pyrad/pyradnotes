@@ -527,13 +527,13 @@ hull的一部分。
 -  把\ :math:`p_1`, :math:`p_2` 放入序列 :math:`\mathcal{L}`\ ，并且
    :math:`p_1` 是第一个点， :math:`p_2` 是第二个点
 
--  变量 :math:`i`\ ，值从3到N，依次遍历加入序列
+-  变量 :math:`i`\ ，值从 :math:`3` 到 :math:`N`\ ，依次遍历加入序列
    :math:`L_1`\ ，每次加入点
    :math:`p_i`\ ，检查最后三个点是否组成\ **“右转”**\ 的折线段。如果是，继续遍历下一个值，否则删除当前序列
    :math:`L_1`
    的倒数第二个点，并继续检查最后三个点是否组成\ **“右转”**\ 的折线段，以此类推，直到当前序列
    :math:`L_1` 的最后三个点组成\ **“右转”**\ 的折线段，才继续遍历下一个
-   *i* 值。
+   :math:`i` 值。
 
 -  当变量 :math:`i` 遍历完成时，就得到了convex hull的上半部分 upper
    hull的点序列是 :math:`L_1` 。
@@ -578,42 +578,43 @@ hull的一部分。
 关于第二种算法正确性的证明，文中采用了数学归纳法。
 
 以upper hull为例，假如现已有点列 {:math:`p_1`, :math:`p_2`, ...,
-*p(i-1)*}，准备加入点 *pi*\ 。根据算法，点列{:math:`p_1`, :math:`p_2`,
-...,
-*p(i-1)*}中最后三点一定是组成\ **“右转”**\ 的折线段（即除了这些点，到目前最大的点为止，其他点都在这些点的下方）。我们把此时的upper
+:math:`p_{i-1}` }，准备加入点 :math:`p_i`\ 。根据算法，点列{:math:`p_1`,
+:math:`p_2`, ...,
+*:math:`p_{i-1}`*}中最后三点一定是组成\ **“右转”**\ 的折线段（即除了这些点，到目前最大的点为止，其他点都在这些点的下方）。我们把此时的upper
 hull点列叫做 old chain。
 
-在加入点 *pi* 之后，按照字典序（lexicographic），最小的点是
-:math:`p_1`\ ，最大的点是 *pi*\ ，经过调整，此时的upper hull我们叫做new
-chain（而且new chain的最后一个点一定是\ *pi*\ ）。
+在加入点 :math:`p_i` 之后，按照字典序（lexicographic），最小的点是
+:math:`p_1`\ ，最大的点是 :math:`p_i`\ ，经过调整，此时的upper
+hull我们叫做new chain（而且new chain的最后一个点一定是 :math:`p_i`\ ）。
 
 可以断言的是old chain一定是在new chain的下方（有可能点\ *pi*\ 就是old
 chain的延伸，但是在算法中，这种共线的情况被当做是左转而被排除掉了）。
 
 按照算法，我们需要证明的是，到目前为止，除了{:math:`p_1`, :math:`p_2`,
-..., *pi*}，所有的点都在new chain的下方。
+..., :math:`p_i`}，所有的点都在new chain的下方。
 
 假如有一个点位于new chain的上方，那么这个点就必须介于 *p(i-1)* 和
-*pi*\ 之间，因为在加入 *pi* 之前，所有的点都位于old
-chain的下方。但这又是矛盾的，因为 *p(i-1)* 和 *pi*
+*pi*\ 之间，因为在加入 :math:`p_i` 之前，所有的点都位于old
+chain的下方。但这又是矛盾的，因为 :math:`p_{i-1}` 和 :math:`p_i`
 之间没有其它点，因为所有点已经是按照字典序排列过了的。
 
 因此归纳出来，到目前为止，除了{:math:`p_1`, :math:`p_2`, ...,
-*pi*}，所有的点都在new chain的下方。算法正确性得到证明。
+:math:`p_i`}，所有的点都在new chain的下方。算法正确性得到证明。
 
 关于时间复杂度的证明。
 
-对于upper hull，按字典序排序，时间复杂度是O(nlogn)。
+对于upper hull，按字典序排序，时间复杂度是\ :math:`O(nlogn)`\ 。
 
-for循环是线性的，关键在于其里面用于检查右转折线段和删除中间点的while循环的执行次数。
+``for``\ 循环是线性的，关键在于其里面用于检查右转折线段和删除中间点的while循环的执行次数。
 
-这个while循环首先可以肯定至少执行一次（检查右转折线段），而额外执行的次数，是为了删除每次得到的序列最后三点的中间点，而因为所有点只会被加入序列一次，所以，每个点最多也只会被删除一次，那么这个for循环里面的while循环执行的上限就是O(n)。
+这个\ ``while``\ 循环首先可以肯定至少执行一次（检查右转折线段），而额外执行的次数，是为了删除每次得到的序列最后三点的中间点，而因为所有点只会被加入序列一次，所以，每个点最多也只会被删除一次，那么这个\ ``for``\ 循环里面的\ ``while``\ 循环执行的上限就是\ :math:`O(n)`\ 。
 
-所以，带有while循环的这个for循环，时间复杂度是O(n)，而不是\ :math:`O(n^2)`\ 。
+所以，带有\ ``while``\ 循环的这个\ ``for``\ 循环，时间复杂度是\ :math:`O(n)`\ ，而不是\ :math:`O(n^2)`\ 。
 
-因此计算upper hull的时间复杂度就是O(nlogn)。
+因此计算upper hull的时间复杂度就是\ :math:`O(nlogn)`\ 。
 
-对于lower hull也是类似的。所以加起来，整个算法的时间复杂度就是O(nlogn)。
+对于lower
+hull也是类似的。所以加起来，整个算法的时间复杂度就是\ :math:`O(nlogn)`\ 。
 
 .. _12-degeneracies-and-robustness:
 
@@ -670,7 +671,7 @@ Geometry的几种应用领域，已经每个领域要解决的问题。
 Geometry的经典问题，而本章第二种算法，其实是Graham’s
 scan算法，是Andrew基于最早的Graham提出的算法的改进。
 
-还有其他的一些算法，时间复杂度也是O(nlogn)。
+还有其他的一些算法，时间复杂度也是\ :math:`O(nlogn)`\ 。
 
 .. _2-line-segment-intersection---thematic-map-overlay:
 
@@ -2262,6 +2263,42 @@ facet），从而再测试铸件（多面体 :math:`\mathcal{P}`
    Moreover, if :math:`\mathcal{P}` is castable, a mold and a valid
    direction for removing :math:`\mathcal{P}` from it can be computed in
    the same amount of time.
+
+.. _43-incremental-linear-programming:
+
+4.3 Incremental Linear Programming
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:math:`\mathbb{R}^d` （\ :math:`d` 维实数空间）上，
+
+Maximize：
+
+.. math:: c_1x_1 + c_2x_2 + \cdots + c_dx_d
+
+Subject to：
+
+.. math::
+
+   \left\{\begin{matrix} 
+   a_{1,1}x_1 + c_{1,2}x_2 + \cdots + c_{1,d}x_d \le b_1 \\
+   a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
+   \vdots \\
+   a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
+   \end{matrix}\right.
+
+Point :math:`p` = :math:`(x_1, x_2, \dots, x_d)`
+
+direction :math:`\vec{c} = (c_1, c_2, \dots, c_d)` 是
+:math:`\mathbb{R}^d` （\ :math:`d` 维实数空间）上的向量。
+
+用\ :math:`f_\vec{c}` 来表示 :math:`c_1x_1 + c_2x_2 + \cdots + c_dx_d`
+这个目标函数。（let :math:`f_\vec{c}` denote the objective function）
+
+射线（ray） :math:`\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.`
+
+一个半平面 :math:`h \in H` 的法向量 :math:`\overrightarrow{\eta}(h)` 。
+
+:math:`2\small{D}\normalsize{R}\small{ANDOMIZED}\normalsize{B}\small{OUNDED}\normalsize{L}\small{P}`
 
 .. _410-references:
 
