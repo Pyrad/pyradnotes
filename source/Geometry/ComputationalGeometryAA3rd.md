@@ -1457,7 +1457,7 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 
 为了方便叙述，显然可以把所有讨论的向量的起始点移动到三维空间的原点。因为模具的顶部平面是向上开口的，所以我们要寻找的向量 $\overrightarrow{d}$ 其实是正 $z$ 轴的方向（想象一下要把铸件从开口处移除），那么可以取 $z = 1$ 这个三维空间的平面，这个平面上面的任意一个点 $(x, y, 1)$ 就能表示一个起点是原点的向量。
 
-假设铸件的每个面向外的法向量是 $\overrightarrow\eta = ( \overrightarrow\eta_x + \overrightarrow\eta_y + \overrightarrow\eta_z )$，那么一个向量 $\overrightarrow{d}$ 和这个法向量夹角小于90°的充要条件是，它们的点积小于等于0（非正）。因此有下面的不等式（inequality）：
+假设铸件的每个面向外的法向量是 $\overrightarrow\eta = ( \overrightarrow\eta_x + \overrightarrow\eta_y + \overrightarrow\eta_z )$，那么一个向量 $\overrightarrow{d}$ （$\vec{d} = (x, y, 1)$）和这个法向量夹角小于90°的充要条件是，它们的点积小于等于0（非正）。因此有下面的不等式（inequality）：
 $$
 \overrightarrow\eta_xd_x + \overrightarrow\eta_yd_y + \overrightarrow\eta_z \le 0
 $$
@@ -1472,6 +1472,53 @@ $$
 **定理4.2**  记 $\mathcal{P}$ 是有 $n$ 个面的多面体（铸件），以时间复杂度$O(n^2)$和空间复杂度$O(n)$，可以确定该多面体 $\mathcal{P}$ 是否可铸造。此外，如果 $\mathcal{P}$ 是可铸造的，那么可以以相同的时间复杂度和空间复杂度计算出一个模具和一个可以把 $\mathcal{P}$ 从模具中移出的合法向量（方向）。
 
 > Theorem 4.2 Let $\mathcal{P}$ be a polyhedron with $n$ facets. In $O(n^2)$ expected time and using $O(n)$ storage it can be decided whether $\mathcal{P}$ is castable. Moreover, if $\mathcal{P}$ is castable, a mold and a valid direction for removing $\mathcal{P}$ from it can be computed in the same amount of time.
+
+
+
+### 4.2 Half-Plane Intersection
+
+本章要讨论的问题，可以看做是对（二元一次）不等式方程组的求解
+$$
+\left\{\begin{matrix} 
+a_1x + b_1y  \le c_1 \\
+a_2x + b_2y  \le c_2 \\
+\vdots \\
+a_nx + b_ny  \le c_n \\
+\end{matrix}\right.
+$$
+方程组中每个不等式就是一个线性约束（linear constraint），记作 $h_i$，它实际上代表了平面上的由一条直线分割的半个平面。其中 $(x,y) \in \mathbb{R}^2$，即$(x,y)$是二维实数域上的点。
+
+记这样的一组线性约束为 $H = \{h_1, h_2, \dots, h_n\}$，它代表了 $n$ 个半平面的交集。我们要求解的结果，就是属于这个交集的所有的点$(x,y)$。
+
+因为每个半平面是一个convex（凸包），而convex之间的交集还是convex，所以这些半平面的交集也是平面上的一个convex（凸包）。这个交集区域边界上的点也是某个半平面边界直线上的点，交集区域的每条边也是属于某个半平面边界直线。因为是convex，所以每条半平面边界直线顶多形成交集区域的一条边，所以最后交集的边至多有 $n$ 条。
+
+下面图中展示了几种交集的情况。
+
+==（举例的图在74页，页码是67）==
+
+
+
+首先给出分治算法来计算 $n$ 个半平面的交集。
+
+算法：$IntersectHalfPlanes(H)$
+
+输入：二维平面上 $n$ 个半平面的一组约束 $H$ （$H = \{h_1, h_2, \dots, h_n\}$，其中 $h_i = \{(x,y) \in \mathbb{R}^2 | a_ix + b_iy  \le c_i \}$）。
+
+输出：一个凸包多边形区域 $C:= \textstyle \bigcap_{h \in H} h$。
+
+算法步骤
+
+- 如果 $H$ 只包含有一个约束条件（即 $n=1$），那么 $C$ 就是这唯一的一个半平面
+- 如果 $H$ 包含大于一个约束条件（$n > 1$），就把 $H$ 划分为两个子约束集合 $H_1$ 和 $H_2$，每个集合有 $\left \lceil n/2 \right \rceil $ 个约束条件。
+- 调用函数 $IntersectHalfPlanes(H_1)$，得到结果 $C_1$。
+- 调用函数 $IntersectHalfPlanes(H_2)$，得到结果 $C_2$。
+- 调用函数 $IntersectConvexRegions(C_1, C_2)$，得到结果 $C$。
+
+
+
+这里函数 $IntersectConvexRegions$ 实际上就是第二章里面的求解polygon交集的算法，时间复杂度是 $O(nlogn + klogn)$，$n$ 是两个polygon的顶点个数。需要注意的一点是，polygon（区域）可能退化为一条线段或者一个点，或者这个polygon（区域）就是没有边界的。
+
+
 
 
 
