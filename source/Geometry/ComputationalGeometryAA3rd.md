@@ -1509,7 +1509,7 @@ $$
 算法步骤
 
 - 如果 $H$ 只包含有一个约束条件（即 $n=1$），那么 $C$ 就是这唯一的一个半平面
-- 如果 $H$ 包含大于一个约束条件（$n > 1$），就把 $H$ 划分为两个子约束集合 $H_1$ 和 $H_2$，每个集合有 $\left \lceil n/2 \right \rceil $ 个约束条件。
+- 如果 $H$ 包含大于一个约束条件（$n > 1$），就把 $H$ 划分为两个子约束集合 $H_1$ 和 $H_2$，每个集合有  $\lceil n/2 \rceil $ 个约束条件。
 - 调用函数 $IntersectHalfPlanes(H_1)$，得到结果 $C_1$。
 - 调用函数 $IntersectHalfPlanes(H_2)$，得到结果 $C_2$。
 - 调用函数 $IntersectConvexRegions(C_1, C_2)$，得到结果 $C$。
@@ -1517,6 +1517,22 @@ $$
 
 
 这里函数 $IntersectConvexRegions$ 实际上就是第二章里面的求解polygon交集的算法，时间复杂度是 $O(nlogn + klogn)$，$n$ 是两个polygon的顶点个数。需要注意的一点是，polygon（区域）可能退化为一条线段或者一个点，或者这个polygon（区域）就是没有边界的。
+
+
+
+假设通过递归调用已经计算出来了 $C_1$ 和 $C_2$，因为它们各自都是由 $n/2 + 1$ 个半平面计算得到，所以它们各自至多有 $n/2 + 1$ 条edge，根据第二章计算overlay的算法，时间复杂度就是 $O((n+k)logn)$，$k$ 是 $C_1$ 和 $C_2$ edge的交点个数。对于这样任意一个交点 $v$，它是来自于 $C_1$ 中的一条edge $e_1$ 和 $C_2$ 中的一条edge $e_2$ 相交得到的交点，因此这个交点也必然属于 $C_1 \bigcap C_2$。而 $C_1 \bigcap C_2$ 是 $n$ 个半平面相交得到的区域，因此它至多有 $n$ 条边（也至多有 $n$ 个顶点），故 $k \le n$ 。因此时间复杂度就是 $O(nlogn)$ 。
+
+==（举例的图在75页，页码是68）==
+
+所以算法的复杂度可以用以下的式子表示
+$$
+T(n) =
+\left\{\begin{matrix}
+O(1), if \space\space  n = 1 \\
+O(nlogn) + 2T(n/2), if \space\space  n > 1
+\end{matrix}\right.
+$$
+这个递归表达的最终结果就是 $T(n) = O(nlog^2n)$。
 
 
 
