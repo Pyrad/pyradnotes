@@ -2312,8 +2312,7 @@ facet），从而再测试铸件（多面体 :math:`\mathcal{P}`
 
 -  如果 :math:`H` 包含大于一个约束条件（\ :math:`n > 1`\ ），就把
    :math:`H` 划分为两个子约束集合 :math:`H_1` 和
-   :math:`H_2`\ ，每个集合有 :math:`\left \lceil n/2 \right \rceil `
-   个约束条件。
+   :math:`H_2`\ ，每个集合有 :math:`\lceil n/2 \rceil ` 个约束条件。
 
 -  调用函数 :math:`IntersectHalfPlanes(H_1)`\ ，得到结果 :math:`C_1`\ 。
 
@@ -2326,6 +2325,80 @@ facet），从而再测试铸件（多面体 :math:`\mathcal{P}`
 实际上就是第二章里面的求解polygon交集的算法，时间复杂度是
 :math:`O(nlogn + klogn)`\ ，\ :math:`n`
 是两个polygon的顶点个数。需要注意的一点是，polygon（区域）可能退化为一条线段或者一个点，或者这个polygon（区域）就是没有边界的。
+
+假设通过递归调用已经计算出来了 :math:`C_1` 和
+:math:`C_2`\ ，因为它们各自都是由 :math:`n/2 + 1`
+个半平面计算得到，所以它们各自至多有 :math:`n/2 + 1`
+条edge，根据第二章计算overlay的算法，时间复杂度就是
+:math:`O((n+k)logn)`\ ，\ :math:`k` 是 :math:`C_1` 和 :math:`C_2`
+edge的交点个数。对于这样任意一个交点 :math:`v`\ ，它是来自于 :math:`C_1`
+中的一条edge :math:`e_1` 和 :math:`C_2` 中的一条edge :math:`e_2`
+相交得到的交点，因此这个交点也必然属于 :math:`C_1 \bigcap C_2`\ 。而
+:math:`C_1 \bigcap C_2` 是 :math:`n`
+个半平面相交得到的区域，因此它至多有 :math:`n` 条边（也至多有 :math:`n`
+个顶点），故 :math:`k \le n` 。因此时间复杂度就是 :math:`O(nlogn)` 。
+
+（举例的图在75页，页码是68，从上到下第一个图）
+
+所以算法的复杂度可以用以下的式子表示
+
+.. math::
+
+   T(n) =
+   \left\{\begin{matrix}
+   O(1), if \space\space  n = 1 \\
+   O(nlogn) + 2T(n/2), if \space\space  n > 1
+   \end{matrix}\right.
+
+这个递归表达的最终结果就是 :math:`T(n) = O(nlog^2n)`\ 。
+
+因为\ :math:`IntersectHalfPlanes(H)`\ 算法中用来计算两个polygon交集的程序默认两个polygon是任意的（即可以是凸的，也可以是凹的），但其实在这个算法中能保证两个polygon是凸的，这样就可以根据这个特性对算法加速。
+
+为了方便叙述，需要精确描述一个凸的多边形区域 :math:`C`\ （convex
+polygonal region，可以是无边界的）。把这个凸多边形区域 :math:`C`
+左侧和右侧的边，分别以排序的半平面列表来分开记录（存储）。在排序的列表中，每个半平面所对应的边界的出现顺序，就是从上到下遍历时依次出现的顺序。把\ **左边**\ 的边界列表记作
+:math:`\mathcal{L}_{left}(C)`\ ，把\ **右边**\ 的边界列表记作
+:math:`\mathcal{L}_{right}(C)`\ 。这里不显式记录顶点，它们可以根据两条连续出现的边的交点而计算得出。
+
+（举例的图在75页，页码是68，从上到下第二个图）
+
+下面为了简化叙述，我们假设没有水平的edge。但可以把顶部的水平的edge归到左侧的边界列表中，把底部的水平的edge归到右侧的边界列表中。
+
+经过改进的（两个convex polygon region）算法也是plane sweep
+algorithm。从上到下移动sweep line，并且维护和sweep line相交的
+:math:`C_1` 与 :math:`C_2` 中的边。因为 :math:`C_1` 和 :math:`C_2`
+都是convex，所以和sweep
+line相交的边最多只有4条，因此不需要维护一个复杂的数据结构（BST），而是直接使用4个指针指向它们，\ :math:`left\_edge\_C1`\ ，
+:math:`right\_edge\_C1`\ ，\ :math:`left\_edge\_C2` 和
+:math:`right\_edge\_ C2`\ 。如果和左侧或右侧边界没有相交的edge，指针就指向空\ ``NULL``\ 。
+
+初始时，记 :math:`C_1` 最高的顶点的 :math:`y` 坐标值是
+:math:`y_1`\ （如果 :math:`C_1` 的上方是无边界的，就令
+:math:`y = \infin`\ ）。类似的 :math:`C_2` 最高的顶点的 :math:`y`
+坐标值是 :math:`y_2`\ 。取 :math:`y_{start} = min(y_1, y_2)`\ ，所以
+:math:`C_1` 和 :math:`C_2` 所有的顶点都在 :math:`y_{start}`
+下方，因此sweep line从 :math:`y_{start}`
+处开始移动，\ :math:`left\_edge\_C1`\ ，
+:math:`right\_edge\_C1`\ ，\ :math:`left\_edge\_C2` 和
+:math:`right\_edge\_ C2` 的初始值就是sweep line在 :math:`y_{start}`
+处时和 :math:`C_1` 与 :math:`C_2` 相交的边。
+
+（举例的图在76页，页码是69）
+
+根据plane sweep
+algorithm，通常需要一个queue来存储event。在本算法中，就是 :math:`C_1` 和
+:math:`C_2` 中的边和sweep
+line开始（或终止）相交的点，也就是\ :math:`left\_edge\_C1`\ ，
+:math:`right\_edge\_C1`\ ，\ :math:`left\_edge\_C2` 和
+:math:`right\_edge\_ C2` 的下端的端点中 :math:`y`
+坐标最高的那个点。（如果有两个 :math:`y`
+坐标相同的点，就按照从左向右的顺序）
+
+当sweep line到达某个event point的时候，边界上就会出现一条新的边
+:math:`e`\ 。处理的办法是，首先检查这条新的边 :math:`e` 是属于
+:math:`C_1` 还是 :math:`C_2`\ ，再检查它是 :math:`C_1`\ （或 :math:`C_2`
+）的左侧还是右侧边界，然后调用相对的处理程序。下面以这条边 :math:`e` 是
+:math:`C_1` 左侧边界上的一条边为例，说明处理过程。
 
 .. _43-incremental-linear-programming:
 
@@ -2342,11 +2415,11 @@ Subject to：
 
 .. math::
 
-   \left\{\begin{matrix} 
-   a_{1,1}x_1 + c_{1,2}x_2 + \cdots + c_{1,d}x_d \le b_1 \\
-   a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
-   \vdots \\
-   a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
+   \left\{\begin{matrix} 
+   a_{1,1}x_1 + c_{1,2}x_2 + \cdots + c_{1,d}x_d \le b_1 \\
+   a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
+   \vdots \\
+   a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
    \end{matrix}\right.
 
 Point :math:`p` = :math:`(x_1, x_2, \dots, x_d)`
