@@ -35,8 +35,12 @@ date: 2022-04-22 17:48:28
 	```shell
 	# Check last 4 git logs by printing each log in one line
 	git log --oneline --graph -4
-	# Check last one log, normally
+	# Check last one log, w/o modified files
 	git log -1
+	# Check last one log, w/ modified files
+	git log -1 --name-only
+	# Check last one log, w/ added/modified/deleted files
+	git log -1 --name-status
 	# Show commits before/after/between data(s)
 	git log --oneline --after="2022.06.09" --before="2022.06.12"
 	git log --oneline --since="2022.06.09" --until="2022.06.12"
@@ -48,6 +52,7 @@ date: 2022-04-22 17:48:28
 	
 6.	If you add a new file which hasn't been tracked before in the repository,
 	first you have to put this file into the so-called "staged area", using command below,
+	
 	```shell
 	git add <FILE_NAME>
 	```
