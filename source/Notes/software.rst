@@ -35,3 +35,9 @@ This is to keep down some software programs of daily use or which might be very 
     * - **FreeMind**
       - FreeMind is a premier free mind-mapping software written in Java. 
       - `FreeMind <https://freemind.sourceforge.net/wiki/index.php/Main_Page>`_
+    * - **Pandoc**
+      - A universal document converter. 
+      - `Pandoc <https://pandoc.org/>`_
+    * - **Obsidian**
+      - A powerful and extensible knowledge base that works on folders of plain text files.
+      - `Obsidian <https://obsidian.md/>`_ (`Obsidian GitHub Releases <https://github.com/obsidianmd/obsidian-releases>`_)
