@@ -49,14 +49,14 @@ if os.environ.get('READTHEDOCS', None) == 'True':
 		print("rtd_package_path is not a path")
 	
 	print("---------------------------------------------------")
-	sphinx_path = rtd_package_path + "/sphinx"
-	if os.path.isdir(sphinx_path):
-		fnum = len(os.listdir(sphinx_path))
-		for i,fd in enumerate(os.listdir(sphinx_path)):
+	sphinxcontrib_path = rtd_package_path + "/sphinxcontrib"
+	if os.path.isdir(sphinxcontrib_path):
+		fnum = len(os.listdir(sphinxcontrib_path))
+		for i,fd in enumerate(os.listdir(sphinxcontrib_path)):
 			print("{} {}".format(i, fd))
-		print("Total packages in sphinx_path:", fnum)
+		print("Total packages in sphinxcontrib_path:", fnum)
 	else:
-		print("sphinx_path is not a path")
+		print("sphinxcontrib_path is not a path")
 
 
 # -- General configuration ---------------------------------------------------
