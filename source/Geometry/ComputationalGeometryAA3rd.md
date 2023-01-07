@@ -1562,10 +1562,56 @@ $$
 
 判断情况之后，再执行以下处理：
 
-- 如果 $p$ 位于 $left\_edge\_C2$ 和 $right\_edge\_C2$ 之间，那么以 $p$ 点为upper point的这条edge $e$ 就是最终 $C$ 中的一条边，把包含这条 $e$ 的boundary line所在的半平面（的表达式）添加到 $\mathcal{L}_{left}(C)$ 中。
+- 首先检查，如果 $p$ 位于 $left\_edge\_C2$ 和 $right\_edge\_C2$ 之间，那么以 $p$ 点为upper point的这条edge $e$ 就是最终 $C$ 中的一条边，把包含这条 $e$ 的boundary line所在的半平面（表达式）添加到 $\mathcal{L}_{left}(C)$ 中。
+- 其次检查，这条边 $e$ 是否和 $right\_edge\_C2$ 相交。如果相交，那么交点就是最终 $C$ 中的顶点。并且有
+	- 如果 $p$ 位于 $right\_edge\_C2$ **右侧**（沿着$right\_edge\_C2$ 走，$C_2$ 在其左侧，以此为参考的 $p$ 位于其 $right\_edge\_C2$ 的**右侧**），那么 $e$ 和 $right\_edge\_C2$ 从**交点开始**的各自边的部分，就是 $C$ 中的两条edge（或edge的一部分）。
+	  这种情况下，就把 $e$ 所在的半平面（表达式）添加到$\mathcal{L}_{left}(C)$中，把$right\_edge\_C2$ 所在的半平面（表达式）添加到$\mathcal{L}_{right}(C)$中。
+	-  如果 $p$ 位于 $right\_edge\_C2$ **左侧**（沿着$right\_edge\_C2$ 走，$C_2$ 在其左侧，以此为参考的 $p$ 位于其 $right\_edge\_C2$ 的**左侧**），那么 $e$ 和 $right\_edge\_C2$ 各自的边到**交点结束**的部分，就是 $C$ 中的两条edge（或edge的一部分）。
+	  这种情况下，不需要把 $e$ 或 $right\_edge\_C2$所在的半平面添加到$\mathcal{L}_{left}(C)$或$\mathcal{L}_{right}(C)$中，因为它们会在其他时机被添加进去。
+- 最后再检查，这条边 $e$ 是否和 $left\_edge\_C2$ 相交。如果相交，那么交点就也是最终 $C$ 中的顶点。并且有
+	- 如果 $p$ 位于 $left\_edge\_C2$ **右侧**（沿着$left\_edge\_C2$ 走，$C_2$ 在其左侧，以此为参考的 $p$ 位于其 $left\_edge\_C2$ 的**右侧**），那么以交点开始的边 $e$ 的部分就是 $C$ 中的边，并把对应的half-plane添加到 $\mathcal{L}_{left}(C)$ 中。
+	-  如果 $p$ 位于 $left\_edge\_C2$ **左侧**（沿着$left\_edge\_C2$ 走，$C_2$ 在其左侧，以此为参考的 $p$ 位于其 $left\_edge\_C2$ 的**左侧**），那么以交点开始的边 $left\_edge\_C2$ 的部分就是 $C$ 中的边，并把对应的half-plane添加到 $\mathcal{L}_{left}(C)$ 中。
+==（上面三个处理中对应的3个图在77页，页码是70）==
 
+需要注意的是，我们可能向 $\mathcal{L}_{left}(C)$ 中添加 $e$ 所在的half-plan，或 $left\_edge\_C2$ 所在的half-plane。如果以 $left\_edge\_C2$ 和 $e$ 的交点开始的 $left\_edge\_C2$ 的部分edge是最终 $C$ 中的edge的话， $left\_edge\_C2$ 才能加到 $\mathcal{L}_{left}(C)$ 中。而准备添加 $e$ 时，要确保最终组成 $C$ 中的edge，要么是 $e$ 从其upper endpoint开始的，要么是 $e$ 从它和 $right\_edge\_C2$ 的交点开始的部分，而且这两种情况下都要先添加 $e$ 。
 
+从上可知，处理每条edge花费的是常数时间，那么计算两个convex polygon相交的时间复杂度就是 $O(n)$。
 
+为了证明算法是正确的，需要证明我们能找到最终 $C$ 中的所有的边（edge），并且顺序是正确的。
+考虑 $C$ 中的一条edge $e_C$，记它的upper endpoint为 $p$。
+- 要么 $p$ 是 $C_1$ 或 $C_2$ 中某条edge的upper endpoint。
+  这种情况下，当sweep line到达 $p$ 点的时候，我们就能找到 $C$ 中的这条edge $e_C$。
+- 要么它是 $C_1$ 中的一条edge $e$ 和 $C_2$ 中的一条edge $e'$ 的交点。
+  这种情况下，当sweep line到达 $e$ 和 $e'$ 的两个upper endpoint的较低（lower）的那个时，我们同样也能找到 $C$ 中的这条edge $e_C$。
+因此，我们就能找到最终 $C$ 中的所有的边。而证明其顺序正确性不难（？？）。
+
+**定理4.3** 计算平面上两个凸多边形区域的交集的时间复杂度是$O(n)$。
+> Theorem 4.3 The intersection of two convex polygonal regions in the plane can be computed in $O(n)$ time.
+
+根据这个结论，回到之前的算法 $IntersectHalfPlanes(H)$，之前我们分析的时间复杂度是
+
+$$
+T(n) =
+\left\{\begin{matrix}
+O(1), if \space\space  n = 1 \\
+O(nlogn) + 2T(n/2), if \space\space  n > 1
+\end{matrix}\right.
+$$
+其中 $O(nlogn)$ 是计算两个任意多边形区域交集的时间复杂度。现在我们证明了计算两个凸多边形区域的交集的时间复杂度是$O(n)$，那么就有了
+$$
+T(n) =
+\left\{\begin{matrix}
+O(1), if \space\space  n = 1 \\
+O(n) + 2T(n/2), if \space\space  n > 1
+\end{matrix}\right.
+$$
+这个式子最终的结果是 $T(nlogn)$。
+所以有下面的推论：
+
+**推论4.4** 计算平面上 $n$ 个半平面交集的时间复杂度是 $O(nlogn)$，并且空间复杂度是线性的。
+> Corollary 4.4 The common intersection of a set of n half-planes in the plane can be computed in $O(nlogn)$ time and linear storage.
+
+计算半平面交集的问题和计算凸包（convex hull）的问题紧密相关，并且有一种算法和第一章中的$ConvexHull$算法几乎一致。这两种计算问题的关系在第8.2节和第11.4节有更详细的讨论。
 
 
 
