@@ -1232,7 +1232,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-**引理3.5** **通过添加一系列不相交的对角线，MakeMonotone算法可以把一个多边形 $\mathcal{P}$ 划分为一些单调的子多边形。**
+**引理3.5** 通过添加一系列不相交的对角线，MakeMonotone算法可以把一个多边形 $\mathcal{P}$ 划分为一些单调的子多边形。
 
 > **Lemma 3.5** Algorithm MAKEMONOTONE adds a set of non-intersecting diagonals that partitions P into monotone subpolygons.
 
@@ -1254,7 +1254,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-**定理3.6** **存在一个时间复杂度为 $O(nlogn)$ 和空间复杂度为 $O(n)$ 的算法，可以把一个有 $n$ 个顶点的简单多边形分解为关于y轴单调的多边形。**
+**定理3.6** 存在一个时间复杂度为 $O(nlogn)$ 和空间复杂度为 $O(n)$ 的算法，可以把一个有 $n$ 个顶点的简单多边形分解为关于y轴单调的多边形。
 
 > Theorem 3.6 A simple polygon with $n$ vertices can be partitioned into y-monotone polygons in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
 
@@ -1338,7 +1338,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 
 
-**定理3.8** **一个有$n$ 个顶点的简单多边形，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。**
+**定理3.8** 一个有$n$ 个顶点的简单多边形，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。
 
 > Theorem 3.8 A simple polygon with $n$ vertices can be triangulated in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
 
@@ -1354,7 +1354,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 ==（平面细分的三角划分的举例的图在67页，页码是59）==
 
-**定理3.9** **一个有$n$ 个顶点的平面细分，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。**
+**定理3.9** 一个有$n$ 个顶点的平面细分，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。
 
 > Theorem 3.9 A planar subdivision with $n$ vertices in total can be triangulated in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
 
@@ -1546,7 +1546,7 @@ $$
 
 经过改进的（两个convex polygon region）算法也是plane sweep algorithm。从上到下移动sweep line，并且维护和sweep line相交的 $C_1$ 与 $C_2$ 中的边。因为 $C_1$ 和 $C_2$ 都是convex，所以和sweep line相交的边最多只有4条，因此不需要维护一个复杂的数据结构（BST），而是直接使用4个指针指向它们，$left\_edge\_C1$， $right\_edge\_C1$，$left\_edge\_C2$ 和 $right\_edge\_ C2$。如果和左侧或右侧边界没有相交的edge，指针就指向空`NULL`。
 
-初始时，记 $C_1$ 最高的顶点的 $y$ 坐标值是 $y_1$（如果 $C_1$ 的上方是无边界的，就令 $y = \infin$）。类似的 $C_2$ 最高的顶点的 $y$ 坐标值是 $y_2$。取 $y_{start} = min(y_1, y_2)$，所以 $C_1$ 和 $C_2$ 所有的顶点都在 $y_{start}$ 下方，因此sweep line从 $y_{start}$ 处开始移动，$left\_edge\_C1$， $right\_edge\_C1$，$left\_edge\_C2$ 和 $right\_edge\_ C2$ 的初始值就是sweep line在 $y_{start}$ 处时和 $C_1$ 与 $C_2$ 相交的边。
+初始时，记 $C_1$ 最高的顶点的 $y$ 坐标值是 $y_1$（如果 $C_1$ 的上方是无边界的，就令 $y = \infty$）。类似的 $C_2$ 最高的顶点的 $y$ 坐标值是 $y_2$。取 $y_{start} = min(y_1, y_2)$，所以 $C_1$ 和 $C_2$ 所有的顶点都在 $y_{start}$ 下方，因此sweep line从 $y_{start}$ 处开始移动，$left\_edge\_C1$， $right\_edge\_C1$，$left\_edge\_C2$ 和 $right\_edge\_ C2$ 的初始值就是sweep line在 $y_{start}$ 处时和 $C_1$ 与 $C_2$ 相交的边。
 
 ==（举例的图在76页，页码是69）==
 
