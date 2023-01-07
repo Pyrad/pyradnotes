@@ -27,7 +27,7 @@ import sys, os
 ###---------------------------------------------------------------------------------
 def dbg_show_py_package_path(path_name):
 	env_var_val = os.environ.get('READTHEDOCS', None)
-	if os.environ.get('READTHEDOCS', None) != 'True':
+	if env_var_val != 'True':
 		print("[Pyrad] [dbg_show_py_package_path] Error, env var READTHEDOCS is:", env_var_val)
 		print("[Pyrad] [dbg_show_py_package_path] Error, should use this function for ReadTheDoc")
 		return
@@ -42,17 +42,20 @@ def dbg_show_py_package_path(path_name):
 
 def dbg_show_rtd_py_package_paths():
 	env_var_val = os.environ.get('READTHEDOCS', None)
-	if os.environ.get('READTHEDOCS', None) != 'True':
+	if env_var_val != 'True':
 		print("[Pyrad] [dbg_show_rtd_py_package_paths] Error, env var READTHEDOCS is:", env_var_val)
 		print("[Pyrad] [dbg_show_rtd_py_package_paths] Error, should use this function for ReadTheDoc")
 		return
 
 	rtd_package_path = "/home/docs/checkouts/readthedocs.org/user_builds/pyrads-notes/envs/latest/lib/python3.7/site-packages"
+	print("----------------<py-site-packages>/-----------------")
 	dbg_show_py_package_path(rtd_package_path)
-	print("---------------------------------------------------")
+	print("----------------<py-site-packages>/sphinxcontrib-----------------")
 	sphinxcontrib_path = rtd_package_path + "/sphinxcontrib"
 	dbg_show_py_package_path(sphinxcontrib_path)
-	print("---------------------------------------------------")
+	print("----------------<py-site-packages>/sphinx/ext-----------------")
+	sphinx_ext_path = rtd_package_path + "/sphinx/ext"
+	dbg_show_py_package_path(sphinx_ext_path)
 
 
 if os.environ.get('READTHEDOCS', None) == 'True':
