@@ -938,6 +938,209 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 
 
+## ReadTheDocs
+
+### Python Packages Installed
+
+当前ReadTheDocs的Python package路径py-site-packages是
+
+```shell
+rtd_package_path = /home/docs/checkouts/readthedocs.org/user_builds/pyrads-notes/envs/latest/lib/python3.7/site-packages
+```
+
+
+
+目前（2023-01-07）来看，ReadTheDocs网站提供了如下的Python package。
+
+```shell
+----------------<py-site-packages>/-----------------
+0 docutils-0.17.1.dist-info
+1 zipp-3.11.0.dist-info
+2 imagesize
+3 Jinja2-3.1.2.dist-info
+4 mock-1.0.1.dist-info
+5 urllib3
+6 readthedocs_ext
+7 alabaster
+8 recommonmark-0.5.0.dist-info
+9 pkg_resources
+10 urllib3-1.26.13.dist-info
+11 Pillow.libs
+12 setuptools
+13 wheel-0.38.4.dist-info
+14 pytz
+15 alabaster-0.7.12.dist-info
+16 sphinxcontrib_applehelp-1.0.2-py3.8-nspkg.pth
+17 readthedocs_sphinx_ext-2.2.0.dist-info
+18 pygments
+19 sphinxcontrib_serializinghtml-1.1.5.dist-info
+20 sphinxcontrib_devhelp-1.0.2.dist-info
+21 recommonmark
+22 sphinx-5.3.0.dist-info
+23 typing_extensions-4.4.0.dist-info
+24 snowballstemmer
+25 imagesize.py
+26 sphinxcontrib_htmlhelp-2.0.0-py3.9-nspkg.pth
+27 imagesize-1.4.1.dist-info
+28 _distutils_hack
+29 sphinxcontrib_qthelp-1.0.3.dist-info
+30 sphinxcontrib_qthelp-1.0.3-py3.8-nspkg.pth
+31 wheel
+32 idna-3.4.dist-info
+33 sphinx_rtd_theme-1.1.1.dist-info
+34 pip-22.3.1.dist-info
+35 commonmark-0.9.1.dist-info
+36 requests-2.28.1.dist-info
+37 snowballstemmer-2.2.0.dist-info
+38 babel
+39 charset_normalizer
+40 docutils
+41 pip
+42 packaging
+43 typing_extensions.py
+44 pytz-2022.7.dist-info
+45 packaging-22.0.dist-info
+46 requests
+47 certifi-2022.12.7.dist-info
+48 Babel-2.11.0.dist-info
+49 sphinxcontrib_serializinghtml-1.1.5-py3.9-nspkg.pth
+50 Pillow-9.4.0.dist-info
+51 markupsafe
+52 sphinxcontrib_htmlhelp-2.0.0.dist-info
+53 sphinxcontrib_applehelp-1.0.2.dist-info
+54 charset_normalizer-2.1.1.dist-info
+55 sphinxcontrib
+56 sphinx_rtd_theme
+57 __pycache__
+58 zipp
+59 distutils-precedence.pth
+60 sphinx
+61 Pygments-2.14.0.dist-info
+62 importlib_metadata-6.0.0.dist-info
+63 sphinxcontrib_devhelp-1.0.2-py3.8-nspkg.pth
+64 setuptools-58.2.0.dist-info
+65 mock.py
+66 idna
+67 certifi
+68 importlib_metadata
+69 PIL
+70 commonmark
+71 sphinxcontrib_jsmath-1.0.1.dist-info
+72 jinja2
+73 sphinxcontrib_jsmath-1.0.1-py3.7-nspkg.pth
+74 MarkupSafe-2.1.1.dist-info
+---------------------------------------------------
+Total packages: 75
+```
+
+
+
+### Python Packages in sphinx sub-folder
+
+目前（2023-01-07）来看，ReadTheDocs网站提供sphinx的Python package中，有如下的子Python package。
+
+```shell
+----------------<py-site-packages>/sphinx/ext-----------------
+0 parsers.py
+1 jinja2glue.py
+2 events.py
+3 setup_command.py
+4 py.typed
+5 locale
+6 __main__.py
+7 deprecation.py
+8 themes
+9 directives
+10 config.py
+11 theming.py
+12 io.py
+13 pygments_styles.py
+14 ext
+15 highlighting.py
+16 addnodes.py
+17 texinputs
+18 errors.py
+19 search
+20 cmd
+21 registry.py
+22 environment
+23 application.py
+24 pycode
+25 domains
+26 __init__.py
+27 extension.py
+28 util
+29 builders
+30 testing
+31 templates
+32 roles.py
+33 __pycache__
+34 transforms
+35 writers
+36 versioning.py
+37 project.py
+38 texinputs_win
+---------------------------------------------------
+Total packages in sphinx_path: 39
+```
+
+
+
+### Python Packages in sphinxcontrib sub-folder
+
+目前（2023-01-07）来看，ReadTheDocs网站提供sphinxcontrib的Python package中，有如下的子Python package。
+
+```shell
+----------------<py-site-packages>/sphinxcontrib-----------------
+0 applehelp
+1 devhelp
+2 qthelp
+3 htmlhelp
+4 serializinghtml
+5 jsmath
+---------------------------------------------------
+Total packages in sphinxcontrib_path: 6
+```
+
+
+
+### Python Packages in sphinx/ext sub-folder
+
+目前（2023-01-07）来看，ReadTheDocs网站提供sphinx/ext下面的Python package
+
+```shell
+----------------<py-site-packages>/sphinx/ext-----------------
+0 imgmath.py
+1 ifconfig.py
+2 coverage.py
+3 githubpages.py
+4 imgconverter.py
+5 mathjax.py
+6 viewcode.py
+7 inheritance_diagram.py
+8 __init__.py
+9 doctest.py
+10 autodoc
+11 duration.py
+12 autosectionlabel.py
+13 todo.py
+14 autosummary
+15 __pycache__
+16 napoleon
+17 graphviz.py
+18 extlinks.py
+19 linkcode.py
+20 apidoc.py
+21 intersphinx.py
+Total packages: 22
+```
+
+
+
+
+
+
+
 ## Sphinx
 
 ### MyST-Parser
@@ -1045,7 +1248,25 @@ graph TB
 	f2--false-->n3[else语句块]-->e;
 ```
 
+**需要注意的是**，目前（2023-01-07）ReadTheDocs似乎在它的Python site-packages下面没有mermaid的module：[sphinxcontrib-mermaid](https://pypi.org/project/sphinxcontrib-mermaid/)。因此需要手动下载Python的mermaid的module，然后上传到repo里面，再通过添加system path的方法，使得ReadTheDocs的环境可以找到这个自定义的Python module。
 
+可以参考repo里面我自己添加的说明 [sphinxcontrib_mermaid_v071/READM_Pyrad.txt](https://gitee.com/pyrad/pyradnotes/blob/master/source/pyextensions/sphinxcontrib_mermaid_v071/READM_Pyrad.txt)：
+
+> This is actually Python package **sphinxcontrib-mermaid**.
+> And this is downloaded by the following command.
+>
+> Why these files are extracted here and the folder renamed as **sphinxcontrib_mermaid_v071**?
+> Because ReadTheDocs doesn't have Python package **sphinxcontrib-mermaid**.
+> So I have to download it manually and then upload it to the git repo.
+> These 3 files(autoclassdiag.py, exceptions.py, mermaid.py) theoratically should be placed in `<py-site-packages>/sphinxcontrib`.
+> But ReadTheDocs already has the path `<py-site-packages>/sphinxcontrib`, so I can't place it there.
+> Thus I place it here, and add this to the system path to let it be able to find it.
+>
+> Download command,
+>
+> ```shell
+> pip download sphinxcontrib-mermaid -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -d "D:\Programs\MyPyPackages\SphinxMermaid_with_its_dependency"
+> ```
 
 
 
