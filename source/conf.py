@@ -37,6 +37,27 @@ author = 'Pyrad'
 # The full version, including alpha/beta/rc tags
 release = '0.1'
 
+# Debug information 2023-01-07
+if os.environ.get('READTHEDOCS', None) == 'True':
+	rtd_package_path = "/home/docs/checkouts/readthedocs.org/user_builds/pyrads-notes/envs/latest/lib/python3.7/site-packages"
+	if os.path.isdir(rtd_package_path):
+		fnum = len(os.listdir(rtd_package_path))
+		for i,fd in enumerate(os.listdir(rtd_package_path)):
+			print("{} {}".format(i, fd))
+		print("Total packages:", fnum)
+	else:
+		print("rtd_package_path is not a path")
+	
+	print("---------------------------------------------------")
+	sphinx_path = rtd_package_path + "/sphinx"
+	if os.path.isdir(sphinx_path):
+		fnum = len(os.listdir(sphinx_path))
+		for i,fd in enumerate(os.listdir(sphinx_path)):
+			print("{} {}".format(i, fd))
+		print("Total packages in sphinx_path:", fnum)
+	else:
+		print("sphinx_path is not a path")
+
 
 # -- General configuration ---------------------------------------------------
 
