@@ -48,10 +48,14 @@ release = '0.1'
 #extensions = ['recommonmark']
 #extensions = ['myst_parser']
 extensions = ['sphinx_markdown_tables']
+# myst_parser is for the Markdown parser
 extensions.append('myst_parser')
 # extensions.append('recommonmark')
 # Use MathJax to render LaTeX equations for html files
 extensions.append('sphinx.ext.mathjax')
+
+# Use mermaid for diagraming and charting
+extensions.append('sphinxcontrib.mermaid')
 
 
 # Add any paths that contain templates here, relative to this directory.
