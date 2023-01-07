@@ -940,7 +940,67 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 ## Sphinx
 
-### Official
+### MyST-Parser
+
+[MyST-Paser](https://myst-parser.readthedocs.io/en/latest/index.html)是一款增强型的Markdown语法处理程序，是Sphinx和Docutils的用来解析的Markedly Structured Text（MyST）扩展程序。
+
+```sh
+pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com myst-parser
+```
+
+在目前的机器上，因为其他需要的package已经安装过了，所以只安装了以下几个package。
+
+```bash
+Successfully installed markdown-it-py-2.1.0 mdit-py-plugins-0.3.3 mdurl-0.1.2 myst-parser-0.18.1 pyyaml-6.0
+```
+
+为了在ReadTheDocs上托管并生成对应的文档，这几个package也是需要下载下来
+
+```bash
+pip download myst-parser -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -d "D:\Programs\MyPyPackages\MyST_Parser"
+```
+
+然后把每个package的后缀修改为`.zip`，然后解压出来对应的Python module文件或文件目录，然后上传到repo里，修改（和修改）Sphinx的`conf.py`如下
+
+```python
+## ...
+if os.environ.get('READTHEDOCS', None) == 'True':
+    sys.path.insert(0, os.path.abspath(os.path.join('.', 'pyextensions')))
+    sys.path.insert(0, os.path.abspath('.'))
+    import myst_parser
+
+## ...
+extensions.append('myst_parser')
+
+## ...
+```
+
+注意，上传到的目录是`_static/source/pyextensions`这个目录，它是我专门用来放置这些ReadTheDocs上没有的module的package目录。
+
+之后，在sphinx的顶层目录`make html`时，就会调用`myst-parser`来解析Markdown文件。
+
+
+
+### MathJax
+
+为了更方便清晰美观地在Markdown和reStructuredText中表达和书写数学公式，可以使用[MathJax](https://www.mathjax.org/)。
+
+在[MathJax](https://www.mathjax.org/)的[GitHub Repository](https://github.com/MathJax/MathJax)下载最新的source code（当前版本是3.2.2），解压之后把目录`es5`拷贝到sphinx的`_static`目录下。
+
+然后修改Sphinx的`conf.py`如下
+
+```python
+extensions.append('sphinx.ext.mathjax')
+mathjax_path = 'es5/tex-chtml.js'
+```
+
+需要注意的是，目前sphinx似乎对Markdown文件中的公式不能使用MathJax做支持，因此生成的`html`网页中的公式不能正常显示。
+
+暂时的解决办法是，在Markdown编辑器中边界文件，书写数学公式（编辑器本身可以支持数学公式的渲染），然后生成同名的`.rst`（reStructuredText）文件，并在`index.rst`中指明使用这个`.rst`来生成网页，这样生成的网页中MathJax就可以正常显示数学公式了。
+
+
+
+### Official Links
 
 [Welcome - Sphinx](https://www.sphinx-doc.org/en/master/index.html)
 
@@ -950,7 +1010,7 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 
 
 
-### References
+### References Links
 
 [Sphinx 基础教程](https://blog.csdn.net/enjoyyl/article/details/97820201)
 
