@@ -23,13 +23,13 @@ import sys, os
 
 
 ###---------------------------------------------------------------------------------
-### Here are some debug functions to show some messages from ReadTheDoc (2023-01-07)
+### Here are some debug functions to show some messages from ReadTheDocs (2023-01-07)
 ###---------------------------------------------------------------------------------
 def dbg_show_py_package_path(path_name):
 	env_var_val = os.environ.get('READTHEDOCS', None)
 	if env_var_val != 'True':
 		print("[Pyrad] [dbg_show_py_package_path] Error, env var READTHEDOCS is:", env_var_val)
-		print("[Pyrad] [dbg_show_py_package_path] Error, should use this function for ReadTheDoc")
+		print("[Pyrad] [dbg_show_py_package_path] Error, should use this function for ReadTheDocs")
 		return
 
 	if os.path.isdir(path_name):
@@ -44,7 +44,7 @@ def dbg_show_rtd_py_package_paths():
 	env_var_val = os.environ.get('READTHEDOCS', None)
 	if env_var_val != 'True':
 		print("[Pyrad] [dbg_show_rtd_py_package_paths] Error, env var READTHEDOCS is:", env_var_val)
-		print("[Pyrad] [dbg_show_rtd_py_package_paths] Error, should use this function for ReadTheDoc")
+		print("[Pyrad] [dbg_show_rtd_py_package_paths] Error, should use this function for ReadTheDocs")
 		return
 
 	rtd_package_path = "/home/docs/checkouts/readthedocs.org/user_builds/pyrads-notes/envs/latest/lib/python3.7/site-packages"
@@ -57,8 +57,9 @@ def dbg_show_rtd_py_package_paths():
 	sphinx_ext_path = rtd_package_path + "/sphinx/ext"
 	dbg_show_py_package_path(sphinx_ext_path)
 
+HAS_READTHEDOCS_ENV_VAR = os.environ.get('READTHEDOCS', None) == 'True'
 
-if os.environ.get('READTHEDOCS', None) == 'True':
+if HAS_READTHEDOCS_ENV_VAR is True:
     sys.path.insert(0, os.path.abspath(os.path.join('.', 'pyextensions')))
     sys.path.insert(0, os.path.abspath('.'))
     import sphinx_markdown_tables
@@ -75,7 +76,8 @@ author = 'Pyrad'
 release = '0.1'
 
 # Debug information 2023-01-07
-if os.environ.get('READTHEDOCS', None) == 'True':
+enable_debug = False
+if enable_debug is True and HAS_READTHEDOCS_ENV_VAR is True:
 	dbg_show_rtd_py_package_paths()
 
 
@@ -95,9 +97,10 @@ extensions.append('myst_parser')
 # Use MathJax to render LaTeX equations for html files
 extensions.append('sphinx.ext.mathjax')
 
-# Use mermaid for diagraming and charting
-#extensions.append('sphinxcontrib.mermaid')
-extensions.append('sphinxcontrib_mermaid_v071.mermaid')
+# Use mermaid for diagraming and charting.
+# Only add this local Python package if in ReadTheDocs.
+if HAS_READTHEDOCS_ENV_VAR is True:
+	extensions.append('sphinxcontrib_mermaid_v071.mermaid')
 
 
 # Add any paths that contain templates here, relative to this directory.
