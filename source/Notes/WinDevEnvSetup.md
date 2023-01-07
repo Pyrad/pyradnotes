@@ -1000,6 +1000,69 @@ mathjax_path = 'es5/tex-chtml.js'
 
 
 
+### Mermaid for Sphinx & MyST-parser
+
+为了使得[MyST-Paser](https://myst-parser.readthedocs.io/en/latest/index.html)能够识别mermaid，并在生成的html中正常渲染图表，需要添加[sphinxcontrib-mermaid](https://pypi.org/project/sphinxcontrib-mermaid/)这个Python package。
+
+```shell
+pip install sphinxcontrib-mermaid
+```
+
+下载之后，需要如下编写mermaid的代码块。
+
+为了在sphinx中使用MyST-parser进行渲染，在Markdown文件中要写成\`\`\`{mermaid}\`\`\`，而不是\`\`\`mermaid\`\`\`（即要加上一对花括号使得MyST-parser能够识别）。但这样的问题是在Markdown编辑器（比如Typora，Obsidian等）里不能正常渲染，只有通过MyST-parser在sphinx中生成网页之后才能渲染。
+
+下面的mermaid的code block在编辑器里面**不能**实时渲染，但在生成的html文件里渲染是正常的。
+
+```{mermaid}
+graph TB
+	%% s=start  e=end  f=fork  n=normal
+
+	s([开始])-->f1{{if条件}};
+
+	%% 分支点2
+	f1--true-->n1[if语句块]-->e([结束]);
+	f1--false-->f2{{else if条件}};
+
+	%% 分支点1
+	f2--true-->n2[else if语句块]-->e;
+	f2--false-->n3[else语句块]-->e;
+```
+
+下面的mermaid的code block在编辑器里面**可以**实时渲染，但在生成的html文件里不能正常渲染。
+
+```mermaid
+graph TB
+	%% s=start  e=end  f=fork  n=normal
+	s([开始])-->f1{{if条件}};
+
+	%% 分支点1
+	f1--true-->n1[if语句块]-->e([结束]);
+	f1--false-->f2{{else if条件}};
+
+	%% 分支点2
+	f2--true-->n2[else if语句块]-->e;
+	f2--false-->n3[else语句块]-->e;
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+[It is possible to have sphinx MyST rendering mermaid](https://stackoverflow.com/questions/67364913/it-is-possible-to-have-sphinx-myst-rendering-mermaid)
+
+
+
+
+
 ### Official Links
 
 [Welcome - Sphinx](https://www.sphinx-doc.org/en/master/index.html)
