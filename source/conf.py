@@ -99,8 +99,11 @@ extensions.append('sphinx.ext.mathjax')
 
 # Use mermaid for diagraming and charting.
 # Only add this local Python package if in ReadTheDocs.
+# Otherwise import it from normal Python package path of system
 if HAS_READTHEDOCS_ENV_VAR is True:
 	extensions.append('sphinxcontrib_mermaid_v071.mermaid')
+else:
+	extensions.append('sphinxcontrib.mermaid')
 
 
 # Add any paths that contain templates here, relative to this directory.
