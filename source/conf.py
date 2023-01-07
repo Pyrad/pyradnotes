@@ -21,6 +21,40 @@
 
 import sys, os
 
+
+###---------------------------------------------------------------------------------
+### Here are some debug functions to show some messages from ReadTheDoc (2023-01-07)
+###---------------------------------------------------------------------------------
+def dbg_show_py_package_path(path_name):
+	env_var_val = os.environ.get('READTHEDOCS', None)
+	if os.environ.get('READTHEDOCS', None) != 'True':
+		print("[Pyrad] [dbg_show_py_package_path] Error, env var READTHEDOCS is:", env_var_val)
+		print("[Pyrad] [dbg_show_py_package_path] Error, should use this function for ReadTheDoc")
+		return
+
+	if os.path.isdir(path_name):
+		fnum = len(os.listdir(path_name))
+		for i,fd in enumerate(os.listdir(path_name)):
+			print("{} {}".format(i, fd))
+		print("Total packages:", fnum)
+	else:
+		print("path_name is not a path:", path_name)
+
+def dbg_show_rtd_py_package_paths():
+	env_var_val = os.environ.get('READTHEDOCS', None)
+	if os.environ.get('READTHEDOCS', None) != 'True':
+		print("[Pyrad] [dbg_show_rtd_py_package_paths] Error, env var READTHEDOCS is:", env_var_val)
+		print("[Pyrad] [dbg_show_rtd_py_package_paths] Error, should use this function for ReadTheDoc")
+		return
+
+	rtd_package_path = "/home/docs/checkouts/readthedocs.org/user_builds/pyrads-notes/envs/latest/lib/python3.7/site-packages"
+	dbg_show_py_package_path(rtd_package_path)
+	print("---------------------------------------------------")
+	sphinxcontrib_path = rtd_package_path + "/sphinxcontrib"
+	dbg_show_py_package_path(sphinxcontrib_path)
+	print("---------------------------------------------------")
+
+
 if os.environ.get('READTHEDOCS', None) == 'True':
     sys.path.insert(0, os.path.abspath(os.path.join('.', 'pyextensions')))
     sys.path.insert(0, os.path.abspath('.'))
@@ -39,24 +73,7 @@ release = '0.1'
 
 # Debug information 2023-01-07
 if os.environ.get('READTHEDOCS', None) == 'True':
-	rtd_package_path = "/home/docs/checkouts/readthedocs.org/user_builds/pyrads-notes/envs/latest/lib/python3.7/site-packages"
-	if os.path.isdir(rtd_package_path):
-		fnum = len(os.listdir(rtd_package_path))
-		for i,fd in enumerate(os.listdir(rtd_package_path)):
-			print("{} {}".format(i, fd))
-		print("Total packages:", fnum)
-	else:
-		print("rtd_package_path is not a path")
-	
-	print("---------------------------------------------------")
-	sphinxcontrib_path = rtd_package_path + "/sphinxcontrib"
-	if os.path.isdir(sphinxcontrib_path):
-		fnum = len(os.listdir(sphinxcontrib_path))
-		for i,fd in enumerate(os.listdir(sphinxcontrib_path)):
-			print("{} {}".format(i, fd))
-		print("Total packages in sphinxcontrib_path:", fnum)
-	else:
-		print("sphinxcontrib_path is not a path")
+	dbg_show_rtd_py_package_paths()
 
 
 # -- General configuration ---------------------------------------------------
