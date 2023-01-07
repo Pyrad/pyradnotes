@@ -96,7 +96,8 @@ extensions.append('myst_parser')
 extensions.append('sphinx.ext.mathjax')
 
 # Use mermaid for diagraming and charting
-extensions.append('sphinxcontrib.mermaid')
+#extensions.append('sphinxcontrib.mermaid')
+extensions.append('sphinxcontrib_mermaid_v071.mermaid')
 
 
 # Add any paths that contain templates here, relative to this directory.

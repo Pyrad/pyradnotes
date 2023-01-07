@@ -1,0 +1,12 @@
+This is actually Python package sphinxcontrib-mermaid.
+And this is downloaded by the following command.
+
+Why these files are extracted here and the folder renamed as sphinxcontrib_mermaid_v071?
+Because ReadTheDocs doesn't have Python package sphinxcontrib-mermaid.
+So I have to download it manually and then upload it to the git repo.
+These 3 files(autoclassdiag.py, exceptions.py, mermaid.py) theoratically should be placed in "<py-site-packages>/sphinxcontrib".
+But ReadTheDocs already has the path "<py-site-packages>/sphinxcontrib", so I can't place it there.
+Thus I place it here, and add this to the system path to let it be able to find it.
+
+Download command,
+pip download sphinxcontrib-mermaid -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -d "D:\Programs\MyPyPackages\SphinxMermaid_with_its_dependency"
