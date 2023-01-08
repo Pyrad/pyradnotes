@@ -142,7 +142,7 @@ Published by Springer
 
 **parameterize** */*pəˈræmɪt(ə)raɪz*/* *vt.* 用参数表示；确定……的参数
 
-
+**coin** */kɔɪn/* v.创造新词，首次使用；铸币，造币；
 
 
 
@@ -241,7 +241,7 @@ inequality 不相等
 
 - Chapter 4
   - Linear optimization (linear programming，就是线性规划)
-  - Simplex Algorithm (单纯型算法，in operations research area)
+  - Simplex Algorithm (运筹学中的单纯形算法，in operations research area)
   - Low-dimensional linear programming problems
 
 
@@ -1624,14 +1624,18 @@ $$
 
 ### 4.3 Incremental Linear Programming
 
+上一节讲述的是，计算 $n$ 个半平面相交的所有解的算法，即计算 $n$ 个线性约束所有的解。类似排序算法，这种算法的渐近下界是 $\Omega(nlogn)$，即最坏的情况下的时间复杂度。而对于我们的铸件移除问题，不需要得出所有的解，只需要其中的一个解即可，这就使得我们可以找到更快的算法。
 
+求解一组线性约束的一个解的问题，和**运筹学**（**Operation Research**，**OR**）领域的一类问题紧密相关，它就是线性规划（或叫线性优化）。英文是***linear programming***（***linear optimization***），这里的programming指的是给计算机发送指令（giving instructions to a computer）。
+>This term was coined before “programming” came to mean “giving instructions to a computer”.
 
-$\mathbb{R}^d$ （$d$ 维实数空间）上，
-
+线性规划问题，是求解一组线性约束的一个解，并且这个解使得一个线性目标函数的值最大化。下面是更精确的描述。
+$\mathbb{R}^d$ （$d$ 维实数空间）上，有一个要使得其最大化的目标函数，
 Maximize：
 $$
 c_1x_1 + c_2x_2 + \cdots + c_dx_d
 $$
+这个目标函数最大化的解，要满足一组线性约束条件，
 Subject to：
 $$
 \left\{\begin{matrix} 
@@ -1641,13 +1645,22 @@ a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
 a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
 \end{matrix}\right.
 $$
-Point $p$ = $(x_1, x_2, \dots, x_d)$
+$a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
+需要最大化的函数叫做**目标函数**（*objective function*）。
+目标函数和这一组线性约束一起，叫做线性程序（*a linear program*）。
+变量的个数 $d$，是这个线性程序的维度（*dimension*）。
+通过上节可知，一组线性约束可看做是$\mathbb{R}^d$空间上的 $n$ 个半平面，而一个线性程序的解，实际上就是这 $n$ 个半平面的交集区域（区域中的每个点都是线性程序的一个解）。我们把这个交集区域叫作 ***feasible region***，这个区域里面的点（即线性程序的一个解）叫作***feasible***，而这个区域外面的点，叫做***infeasible***。
+这个交集区域可能是无界限的，也可能是空的。当这个交集区域是空时，我们把这个线性程序也叫做***infeasible***。
+**目标函数**（*objective function*）实际上可以看做是$\mathbb{R}^d$空间上的一个向量，所以它最大化，可以转换为求一个点 $p$ = $(x_1, x_2, \dots, x_d)$ 在 $\mathbb{R}^d$ 空间（$d$ 维实数空间）上沿方向 $\vec{c} = (c_1, c_2, \dots, c_d)$ 的极值。
+因此，一个线性程序的解，就是求解在feasible region上的一个点，使得其在 $\vec{c} = (c_1, c_2, \dots, c_d)$ 上取得极值。
+我们用符号$f_\vec{c}$ 来表示由方向 $\vec{c}$ 定义的目标函数（ $c_1x_1 + c_2x_2 + \cdots + c_dx_d$ ）。
+>let $f_\vec{c}$ denote the objective function defined by  $\vec{c}$ .
 
-direction $\vec{c} = (c_1, c_2, \dots, c_d)$ 是 $\mathbb{R}^d$ （$d$ 维实数空间）上的向量。
+==（上面提到的线性程序的解的示意图在79页，页码是72，位于最上面的第一个图）==
 
-用$f_\vec{c}$ 来表示 $c_1x_1 + c_2x_2 + \cdots + c_dx_d$ 这个目标函数。（let $f_\vec{c}$ denote the objective function）
+运筹学（**Operation Research**，**OR**）中的许多问题可以用线性程序来描述，并由此产生了许多算法，**单纯形算法**（**simplex algorithm**）就是实际中最常用最有效的算法之一。
 
-
+运筹学中解决的一般都是有多个变量的多线性约束问题，即变量个数和约束条件很多。而本章讨论的是两个变量在 $n$ 个线性约束条件下目标函数的求解，运筹学中传统的线性程序方法在这种低维度的线性程序求解中并不是非常有效率，因此在计算几何中就有其他更有效的算法。
 
 
 
@@ -1669,32 +1682,27 @@ $2\small{D}\normalsize{R}\small{ANDOMIZED}\normalsize{B}\small{OUNDED}\normalsiz
 
 ### 4.10 References
 
-- Latex 数学字体示例
-
+#### 4.10.1 Latex 数学字体示例
 $\mathnormal{ABCDEabcde1234}$
-
 $\mathrm{ABCDEabcde1234}$
-
 $\mathit{ABCDEabcde1234}$
-
 $\mathbf{ABCDEabcde1234}$
-
 $\mathsf{ABCDEabcde1234}$
-
 $\mathtt{ABCDEabcde1234}$
-
 $\mathcal{ABCDEabcde1234}$
-
 $\mathscr{ABCDEabcde1234}$
-
 $\mathfrak{ABCDEabcde1234}$
-
 $\mathbb{ABCDEabcde1234}$
 
+#### 4.10.2 渐近界
+$\Theta$ ：渐近紧确界，表示既为上界，也为下界（tight），即相等（$=$）、准确的复杂度。
+$O$ ：渐近上界，表示渐近上界（tightness unknown），即小于等于（$\le$），近似复杂度。
+$\Omega$ ：渐近下界，表示渐近上界（tightness unknown），即大于等于（$\ge$），近似复杂度。
+$o$ ：非渐近紧确上界，表示上界（not tight），即明确小于（$\lt$），准确计算得出。
+$\omega$ ：非渐近紧确上界，表示下界（not tight），即明确大于（$\gt$），准确计算得出。
 
-
-
-
+[时间复杂度的五个记号](https://blog.csdn.net/qq_41976613/article/details/105026946)
+[算法导论-渐近记号](https://blog.csdn.net/so_geili/article/details/53353593?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task)
 
 
 
