@@ -1300,6 +1300,48 @@ graph TB
 
 
 
+## Obsidian
+
+### Intro
+
+Obsidian不是开源软件，但个人可以免费使用它，商用用途需付费获得license。
+
+### Links
+
+[Obsidian Official Site](https://obsidian.md/)
+
+### Releases
+
+[Obsidian Releases on Github](https://github.com/obsidianmd/obsidian-releases)
+
+### Use
+
+在Windows平台下面，可以使用`Ctrl + P`打开命令面板。
+
+### Plugins
+
+因为墙的关系，下载Obsidian的插件需要翻墙。
+
+这里从视频[由此开始 Obsidian 使用教程 3.高级功能与插件](https://www.bilibili.com/video/BV1DB4y1H7G7/?t=921&vd_source=05aabc7e72e595bed3d072985363efa7)中的链接得到百度网盘上这些插件的[分享链接](https://pan.baidu.com/s/148Ockd8JSxwSAsXkol_0Iw?pwd=td75)，保存到了我的网盘的全部文件>Softwares>ObsidianPluginsThemes这个目录下面。
+
+如果要安装插件，需要
+
+- 在Obsidian的设置中关闭安全模式。
+
+- 然后把对应的插件文件夹（整个）拷贝到Obsidian对应的vault的`.obsidian/plugins`这个目录下。如果`plugins`目录不存在，就新建一个`plugins`名称的目录。
+
+这里我按照上面两个步骤，把`obsidian-pandoc`这个插件目录从网盘下载下来，拷贝到了`D:/Gitee/pyradnotes/.obsidian/plugins`这个目录下面，然后重启Obsidian，通过`Ctrl + P`打开命令面板，就可以看到一`Pandoc Plugin:`开头的一系列功能选项了。
+
+比如`Pandoc Plugin: Export as reStructuredText (RST)`，就可以根据当前的`.md`文件生成一个同名的`.rst`文件。
+
+这里发现通过Obsidian的pandoc插件生成的`.rst`文件，和通过Typora生成的`.rst`文件，有一些差别，但总体不影响生成最终的html文件（sphinx docs）。
+
+
+
+
+
+
+
 ## MathJax
 
 ### Official
