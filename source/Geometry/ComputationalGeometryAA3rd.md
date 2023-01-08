@@ -1720,7 +1720,7 @@ $$
 
 下面的引理4.5，说明了每当我们增加一个线性约束（半平面）时，optimal vertex如何改变，而这是我们算法的基础。
 
-引理4.5 对$C_i$ 和 $v_i$ （$1 \le i \le n$），有：
+**引理4.5** 对$C_i$ 和 $v_i$ （$1 \le i \le n$），有：
 1. 如果 $v_{i-1} \in h_i$，那么 $v_i = v_{i-1}$。
 2. 如果 $v_{i-1} \notin h_i$，那么要么 $C_i = \emptyset$，要么 $v_i \in \ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）
 证明：
@@ -1732,8 +1732,25 @@ $$
 书中接着以两个图，说明了添加了一个半平面（$h_k$）之后，optimal vertex的变化情况。
 ==（两个示意图在81页，页码是74，位于下面的两个图）==
 
-虽然引理4.5告诉了我们当添加一个新的半平面到当前的约束组时，optimal vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex。
+虽然**引理4.5**告诉了我们当添加一个新的半平面到当前的约束组时，optimal vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex。
 
+如果是**引理4.5**中说明的第一种情况，那么下一个要求解的optimal vertex $v_i$ 就是当前的optimal vertex $v_{i-1}$。
+如果是**引理4.5**中说明的第二种情况，那么问题就转化为：找到$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）上的一个点$p$，使得目标函数$f_\vec{c}(p)$最大化，并且点$p \in h$（$h \in H_{i-1}$），即点$p$是前$i-1$个半平面交集上的点。
+
+为了简化术语，我们假定$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）不是垂直的，这样我们就能只用$x$的坐标来参数化它。定义一个函数 $\overline{f_\vec{c}}:\mathbb{R} \to  \mathbb{R}$，使得对任意一点 $p \in \ell_i$，有 $f_\vec{c}(p) = \overline{f_\vec{c}(p_x)}$ 。对一个半平面$h(h \in H_{i-1})$，记 $\sigma(h,\ell_i)$ 为 $\ell_i$ 和 $h$ 的边界线的交点的$x$坐标。如果没有交点，要么是$\ell_i$上的每个点都满足条件约束$h$（也即半平面$h$），要么$\ell_i$上没有点满足条件约束$h$（也即半平面$h$）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
+根据 $\ell_i \cap h$ 的交集区域是被限定在左侧还是右侧，可以得到对解的$x$坐标的约束形式，即$x \ge \sigma(h, \ell_i)$或者$x \le \sigma(h, \ell_i)$。因此需要求解的问题可以重新表述如下，
+为最大化的目标函数为
+$$
+\overline{f_\vec{c}(x)}
+$$
+它服从于
+$$
+x \ge \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space left
+
+$$
+$$
+x \le \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space right
+$$
 
 
 
