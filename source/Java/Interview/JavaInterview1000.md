@@ -1,4 +1,6 @@
-## **一、Java基础**
+# 1000 Jave Interview Questions
+
+## 一、Java基础
 
 [1.JDK动态代理和CGLIB动态代理的区别](https://zwmst.com/355.html)
 
@@ -98,7 +100,7 @@
 
 [49.说下面向对象四大特性](https://zwmst.com/217.html)
 
-## **二、Java IO**
+## 二、Java IO
 
 [1.IO多路复用的底层原理](https://zwmst.com/390.html)
 
@@ -132,7 +134,7 @@
 
 [16.Java 中有几种类型的流？](https://zwmst.com/360.html)
 
-## **三、Java虚拟机**
+## 三、Java虚拟机
 
 [1.如何判断一个常量是废弃常量 ？](https://zwmst.com/481.html)
 
@@ -218,7 +220,7 @@
 
 [42.栈帧里面包含哪些东西？](https://zwmst.com/393.html)
 
-## **四、Kafka**
+## 四、Kafka
 
 [1.简述Follower副本消息同步的完整流程](https://zwmst.com/555.html)
 
@@ -284,7 +286,7 @@
 
 [32.为什么要使用kafka？为什么要使用消息队列？](https://zwmst.com/484.html)
 
-## **五、Linux**
+## 五、Linux
 
 [1.在Linux下如何指定dns服务器，来解析某个域名？](https://zwmst.com/636.html)
 
@@ -360,7 +362,7 @@
 
 [37.vim有几种工作模式？](https://zwmst.com/561.html)
 
-## **六、Mybatis**
+## 六、Mybatis
 
 [1.Mybatis的一级、二级缓存](https://zwmst.com/1793.html)
 
@@ -392,7 +394,7 @@
 
 [15.什么是Mybatis？](https://zwmst.com/1763.html)
 
-## **七、MySQL**
+## 七、MySQL
 
 [1.解释MySQL外连接、内连接与自连接的区别](https://zwmst.com/735.html)
 
@@ -488,7 +490,7 @@
 
 [47.什么是索引?](https://zwmst.com/639.html)
 
-## **八、Netty**
+## 八、Netty
 
 [1.Netty高性能体现在哪些方面？](https://zwmst.com/762.html)
 
@@ -516,7 +518,7 @@
 
 [13.什么是Reactor模型？Reactor的3种版本都知道吗？](https://zwmst.com/738.html)
 
-## **九、RabbitMQ**
+## 九、RabbitMQ
 
 [1.vhost 是什么？起什么作用？](https://zwmst.com/1823.html)
 
@@ -558,7 +560,7 @@
 
 [20.消息基于什么传输？](https://zwmst.com/1825.html)
 
-## **十、Redis**
+## 十、Redis
 
 [1.Redis如何做内存优化？](https://zwmst.com/824.html)
 
@@ -620,7 +622,7 @@
 
 [30.什么是Redis？简述它的优缺点？](https://zwmst.com/765.html)
 
-## **十一、Spring**
+## 十一、Spring
 
 [1.@Component和@Bean的区别是什么？](https://zwmst.com/1867.html)
 
@@ -674,7 +676,7 @@
 
 [26.什么是spring?](https://zwmst.com/1838.html)
 
-## **十二、Spring Boot**
+## 十二、Spring Boot
 
 [1.SpringBoot 2.X有哪些新特性？与1.X有什么区别？](https://zwmst.com/1934.html)
 
@@ -718,7 +720,7 @@
 
 [21.什么是springboot](https://zwmst.com/1894.html)
 
-## **十三、Spring Cloud**
+## 十三、Spring Cloud
 
 [1.Eureka和zookeeper都可以提供服务注册与发现的功能，两者的区别](https://zwmst.com/859.html)
 
@@ -754,7 +756,7 @@
 
 [17.什么是 Spring Cloud？](https://zwmst.com/827.html)
 
-## **十四、Zookeeper**
+## 十四、Zookeeper
 
 [1.zookeeper负载均衡和nginx负载均衡区别](https://zwmst.com/1992.html)
 
@@ -810,7 +812,7 @@
 
 [27.Zookeeper有哪些节点类型？](https://zwmst.com/1937.html)
 
-## **十五、多线程**
+## 十五、多线程
 
 [1.你将如何使用thread dump？你将如何分析Thread dump？](https://zwmst.com/951.html)
 
@@ -898,7 +900,7 @@
 
 [43.Thread.sleep(0)的作用是什么？](https://zwmst.com/937.html)
 
-## **十六、分布式**
+## 十六、分布式
 
 [1.SOA和微服务架构有哪些区别?](https://zwmst.com/984.html)
 
@@ -930,7 +932,7 @@
 
 [15.雪花算法了解过吗？](https://zwmst.com/955.html)
 
-## **十七、计算机网络**
+## 十七、计算机网络
 
 [1.HTTP协议包括哪些请求？](https://zwmst.com/1609.html)
 
@@ -964,7 +966,7 @@
 
 [16.请简述TCP和UDP的区别](https://zwmst.com/1578.html)
 
-## **十八、设计模式**
+## 十八、设计模式
 
 [1.Spring 当中用到了哪些设计模式？](https://zwmst.com/1017.html)
 
@@ -996,7 +998,7 @@
 
 [15.接口是什么？为什么要使用接口而不是直接使用具体类？](https://zwmst.com/987.html)
 
-## **十九、数据结构与算法**
+## 十九、数据结构与算法
 
 [1.谈一谈，id全局唯一且自增，如何实现？](https://zwmst.com/1044.html)
 
@@ -1022,7 +1024,7 @@
 
 [12.什么是算法？](https://zwmst.com/1020.html)
 
-## **二十、微服务**
+## 二十、微服务
 
 [1.作为服务注册中心，Eureka比Zookeeper好在哪里?](https://zwmst.com/1073.html)
 
@@ -1052,7 +1054,7 @@
 
 [14.微服务有哪些优缺点？](https://zwmst.com/1047.html)
 
-## **二十一、消息队列**
+## 二十一、消息队列
 
 [1.为什么使用消息队列？](https://zwmst.com/1094.html)
 
@@ -1074,7 +1076,7 @@
 
 [10.消息队列有哪些应用场景？](https://zwmst.com/1076.html)
 
-## **二十二、Docker**
+## 二十二、Docker
 
 [1.在 非 Linux 操作系统平台上如何运行 Docker ?](https://zwmst.com/1137.html)
 
@@ -1118,7 +1120,7 @@
 
 [21.什么是Docker](https://zwmst.com/1097.html)
 
-## **二十三、Dubbo**
+## 二十三、Dubbo
 
 [1.说说 Dubbo 服务暴露的过程。](https://zwmst.com/1193.html)
 
@@ -1174,7 +1176,7 @@
 
 [27.Dubbo是什么？](https://zwmst.com/1141.html)
 
-## **二十四、Elasticsearch**
+## 二十四、Elasticsearch
 
 [1.如何监控 Elasticsearch 集群状态？](https://zwmst.com/1666.html)
 
@@ -1216,7 +1218,7 @@
 
 [20.为什么要使用Elasticsearch?](https://zwmst.com/1626.html)
 
-## **二十五、Java8**
+## 二十五、Java8
 
 [1.Lambda表达式的参数列表与Lambda箭头运算符有何不同？](https://zwmst.com/1216.html)
 
@@ -1240,7 +1242,7 @@
 
 [11.Java 8 新特性简介](https://zwmst.com/1196.html)
 
-## **二十六、Java高并发**
+## 二十六、Java高并发
 
 [1.ForkJoin框架](https://zwmst.com/1709.html)
 
@@ -1282,7 +1284,7 @@
 
 [20.什么是进程](https://zwmst.com/1671.html)
 
-## **二十七、Java集合**
+## 二十七、Java集合
 
 [1.Iterator是什么？](https://zwmst.com/1738.html)
 
@@ -1334,7 +1336,7 @@
 
 [25.Enumeration和Iterator接口的区别？](https://zwmst.com/1740.html)
 
-## **二十八、Jenkins**
+## 二十八、Jenkins
 
 [1.什么是Blue Ocean](https://zwmst.com/1238.html)
 
@@ -1354,7 +1356,7 @@
 
 [9.什么是Jenkins？](https://zwmst.com/1219.html)
 
-## **二十九、Kubernetes**
+## 二十九、Kubernetes
 
 [1.Replica Set 和 Replication Controller之间有什么区别？](https://zwmst.com/1282.html)
 
@@ -1396,7 +1398,7 @@
 
 [20.什么是Kubernetes？](https://zwmst.com/1241.html)
 
-## **三十、Maven**
+## 三十、Maven
 
 [1.依赖的解析机制](https://zwmst.com/1314.html)
 
@@ -1428,7 +1430,7 @@
 
 [15.maven是什么？](https://zwmst.com/1286.html)
 
-## **三十一、MongoDB**
+## 三十一、MongoDB
 
 [1.为什么MongoDB的数据文件很大？](https://zwmst.com/1575.html)
 
@@ -1470,7 +1472,7 @@
 
 [20.什么是MongoDB？](https://zwmst.com/1537.html)
 
-## **三十二、Mycat**
+## 三十二、Mycat
 
 [1.你们项目中分片的实现方式是什么？](https://zwmst.com/1531.html)
 
@@ -1492,7 +1494,7 @@
 
 [10.Mycat是什么？](https://zwmst.com/1513.html)
 
-## **三十三、Nginx**
+## 三十三、Nginx
 
 [1.请陈述stub_status和sub_filter指令的作用是什么?](https://zwmst.com/1510.html)
 
@@ -1524,7 +1526,7 @@
 
 [15.请解释一下什么是 Nginx ？](https://zwmst.com/1482.html)
 
-## **三十四、RocketMQ**
+## 三十四、RocketMQ
 
 [1.任何一台Broker突然宕机了怎么办？](https://zwmst.com/1479.html)
 
@@ -1556,7 +1558,7 @@
 
 [15.RocketMQ中的Topic和JMS的queue有什么区别？](https://zwmst.com/1451.html)
 
-## **三十五、Servlet**
+## 三十五、Servlet
 
 [1.init(ServletConfig)方法与异常](https://zwmst.com/1448.html)
 
@@ -1580,7 +1582,7 @@
 
 [11.Servlet的生命周期？](https://zwmst.com/1428.html)
 
-## **三十六、Shiro**
+## 三十六、Shiro
 
 [1.Session Manager 会话管理介绍一下](https://zwmst.com/1424.html)
 
@@ -1602,7 +1604,7 @@
 
 [10.什么是shiro](https://zwmst.com/1406.html)
 
-## **三十七、Tomcat**
+## 三十七、Tomcat
 
 [1.Tomcat一个请求的完整过程](https://zwmst.com/1403.html)
 
@@ -1624,7 +1626,7 @@
 
 [10.Tomcat的缺省端口是多少，怎么修改？](https://zwmst.com/1385.html)
 
-## **三十八、编译原理**
+## 三十八、编译原理
 
 [1.全局优化](https://zwmst.com/1380.html)
 
@@ -1644,7 +1646,7 @@
 
 [9.词法分析](https://zwmst.com/1364.html)
 
-## **三十九、操作系统**
+## 三十九、操作系统
 
 [1.守护、僵尸、孤儿进程的概念](https://zwmst.com/1361.html)
 
