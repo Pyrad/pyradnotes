@@ -1,9 +1,9 @@
-### Words Commonly Mispronounced by Chinese Programmers
-#### 中国程序员容易发音错误的单词(点击🔊收听正确读音)
+# Words Commonly Mispronounced by Chinese Programmers
+**中国程序员容易发音错误的单词(点击🔊收听正确读音)**
 
 
 
-#### 引用
+## 引用
 
 **本文直接引用了GitHub上的repository**： **[shimohq](https://github.com/shimohq)/[chinese-programmer-wrong-pronunciation](https://github.com/shimohq/chinese-programmer-wrong-pronunciation)**
 
@@ -130,10 +130,10 @@
 | width | [🔊](https://dict.youdao.com/dictvoice?audio=width&type=1)  /wɪdθ/ | [🔊](https://dict.youdao.com/dictvoice?audio=width&type=2)  /wɪdθ,wɪtθ/ |  ❌ /waɪdθ/ |
 | YouTube | [🔊](https://dict.youdao.com/dictvoice?audio=youtube&type=1)  /'juː'tjuːb/ | [🔊](https://dict.youdao.com/dictvoice?audio=youtube&type=2)  /'juː'tjuːb/ |  ❌ /'juː'tʊbɪ/ |
 
-#### 附注
+## 附注
 * 当使用简名 ‘Kube’ 称呼 ‘Kubernetes’ 时, 发音则与 ‘cube’(/kjuːb/) 一致
 
-#### 其他相关链接
+## 其他相关链接
 1. 真人发音 https://www.bilibili.com/video/bv1nv411i7z3 (by @hailintao)
 1. 简洁的单词列表，正确读音不用再打开新网页 https://cpwp.netlify.app/ (by @antfu7)
 1. 国际音标严式记音（纽约音）https://github.com/b1f6c1c4/programming-pronunciations-en_US (by @b1f6c1c4)
@@ -141,12 +141,12 @@
 1. [iOS app](https://apps.apple.com/cn/app/%E7%8C%BF%E5%8D%95%E8%AF%8D-%E4%B8%AD%E5%9B%BD%E7%A8%8B%E5%BA%8F%E5%91%98%E5%AE%B9%E6%98%93%E5%8F%91%E9%9F%B3%E9%94%99%E8%AF%AF%E7%9A%84%E5%8D%95%E8%AF%8D/id1626487291) (by @Chang12)
 
 
-#### 说明
+## 说明
 1. 本着简单的原则, 又为了避免程序猿们出现选择困难症, '正确音标'采用了最接近有道词典音频的英式 DJ 音标, 不代表其唯一性
 1. 专业在线英语词典请参考[知乎链接:在线英语词典哪个比较好?](https://www.zhihu.com/question/19707759)
 1. 无页面跳转收听正确读音请安装我们的 [chromium 扩展](https://github.com/shimohq/chinese-programmer-wrong-pronunciation/tree/master/tools/chromium_extension)
 
-#### 参考资料
+## 参考资料
 1. [https://www.zhihu.com/question/19739907](https://www.zhihu.com/question/19739907)
 2. [https://www.v2ex.com/t/131094](https://www.v2ex.com/t/131094)
 3. [https://www.v2ex.com/t/309350](https://www.v2ex.com/t/309350)

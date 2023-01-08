@@ -1,3 +1,8 @@
+# Simple Markdown Syntax
+
+## Headings
+
+```markdown
 # Heading 0
 
 ## Heading 1
@@ -5,14 +10,10 @@
 ### Heading 2
 
 #### Heading 3
+```
 
 
-
-
-
-# Font
-
-
+## Font
 
 **This is bold font**
 
@@ -24,35 +25,19 @@
 
 
 
-# Image
-
-
+## Image
 
 ![Riho](../_static/riho.jpg)
 
 
 
 
-
-
-
-
-
-
-
-
-
-# Hyperlink
-
-
+## Hyperlink
 
 [My Link](https://www.google.com)
 
 
-
-# List
-
-
+## List
 
 ### Unordered List
 
@@ -68,9 +53,7 @@
 
 
 
-# Table
-
-
+## Table
 
 | name  | sex  | age  |
 | ----- | ---- | ---- |
@@ -78,7 +61,7 @@
 
 
 
-# Reference
+## Reference
 
 > This is a reference sentence.
 >
@@ -86,7 +69,7 @@
 
 
 
-# Math Formula
+## Math Formula
 
 Refer to page: [Typora数学公式汇总（Markdown）](https://zhuanlan.zhihu.com/p/261750408?utm_source=wechat_session)
 

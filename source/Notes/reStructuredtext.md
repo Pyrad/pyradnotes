@@ -44,11 +44,11 @@ Pyrad
 
 
 
-### Syntax
+## Syntax
 
 Here is a reference cheat sheet https://github.com/ralsina/rst-cheatsheet/blob/master/rst-cheatsheet.rst
 
-#### Text formatting
+## Text formatting
 
 ```rst
 .. emphasis, and include multiple words
@@ -71,7 +71,7 @@ Here is a reference cheat sheet https://github.com/ralsina/rst-cheatsheet/blob/m
 
 
 
-#### Lists Bulleted, Numbered, and Multi-level
+## Lists Bulleted, Numbered, and Multi-level
 
 ```rst
 .. list without numbers
@@ -101,7 +101,7 @@ Here is a reference cheat sheet https://github.com/ralsina/rst-cheatsheet/blob/m
 
 
 
-#### Admonitions (警告)
+## Admonitions (警告)
 
 4 callouts: **Green**, **blue**, **yellow** and **red**
 
@@ -140,7 +140,7 @@ Here is a reference cheat sheet https://github.com/ralsina/rst-cheatsheet/blob/m
 
 
 
-#### Images
+## Images
 
 ```rst
 .. Insert a picture from a folder 
@@ -154,7 +154,7 @@ Here is a reference cheat sheet https://github.com/ralsina/rst-cheatsheet/blob/m
 
 
 
-#### Code blocks
+## Code blocks
 
 If the code in your file are all belong to a same programming language, you could set this in `conf.py` to indicate this as below.
 
@@ -197,7 +197,7 @@ Here is a tcl function code sample
 
 
 
-#### Tables
+## Tables
 
 4 ways to render
 
@@ -272,7 +272,7 @@ Lego Mindstorms  Yes             $350  Medium
 
   
 
-#### Links
+## Links
 
 - External links
 

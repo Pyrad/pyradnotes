@@ -1892,7 +1892,7 @@ $$
 **<big>源码1：</big>**
 
 ````shell
-```mermaid
+```{mermaid}
 graph TB
 	%% s=start  e=end  f=fork  n=normal
 	
@@ -1950,8 +1950,8 @@ graph TB
 
 **<big>源码2：</big>**
 
-````txt
-```mermaid
+````shell
+```{mermaid}
 graph LR
 	%% s=start  e=end  f= fork n=normal 
 	
@@ -2032,8 +2032,8 @@ pie
 
 **<big>源码：</big>**
 
-````txt
-```mermaid
+````shell
+```{mermaid}
 sequenceDiagram
 	%% 自动编号
 	autonumber
@@ -2190,8 +2190,8 @@ sequenceDiagram
 
 **<big>源码：</big>**
 
-````txt
-```mermaid
+````shell
+```{mermaid}
 gantt
     title A Gantt Diagram
     dateFormat  YYYY-MM-DD
@@ -2228,8 +2228,8 @@ gantt
 
 **<big>源码：</big>**
 
-````md
-```mermaid
+````shell
+```{mermaid}
 classDiagram
     Animal <|-- Duck
     Animal <|-- Fish
