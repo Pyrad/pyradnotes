@@ -2630,7 +2630,7 @@ program，以及如何不使用手动添加约束来解决bounded linear program
 下面的引理4.5，说明了每当我们增加一个线性约束（半平面）时，optimal
 vertex如何改变，而这是我们算法的基础。
 
-引理4.5 对\ :math:`C_{i}` 和 :math:`v_{i}`
+**引理4.5** 对\ :math:`C_{i}` 和 :math:`v_{i}`
 （\ :math:`1 \leq i \leq n`\ ），有：
 
 #. 如果 :math:`v_{i - 1} \in h_{i}`\ ，那么
@@ -2686,8 +2686,41 @@ vertex如何改变，而这是我们算法的基础。
   vertex的变化情况。
 | （两个示意图在81页，页码是74，位于下面的两个图）
 
-虽然引理4.5告诉了我们当添加一个新的半平面到当前的约束组时，optimal
+虽然\ **引理4.5**\ 告诉了我们当添加一个新的半平面到当前的约束组时，optimal
 vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex。
+
+| 如果是\ **引理4.5**\ 中说明的第一种情况，那么下一个要求解的optimal
+  vertex :math:`v_{i}` 就是当前的optimal vertex :math:`v_{i - 1}`\ 。
+| 如果是\ **引理4.5**\ 中说明的第二种情况，那么问题就转化为：找到\ :math:`\ell_{i}`\ （\ :math:`\ell_{i}`
+  是半平面 :math:`h_{i}`
+  的边界直线）上的一个点\ :math:`p`\ ，使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化，并且点\ :math:`p \in h`\ （\ :math:`h \in H_{i - 1}`\ ），即点\ :math:`p`\ 是前\ :math:`i - 1`\ 个半平面交集上的点。
+
+| 为了简化术语，我们假定\ :math:`\ell_{i}`\ （\ :math:`\ell_{i}`
+  是半平面 :math:`h_{i}`
+  的边界直线）不是垂直的，这样我们就能只用\ :math:`x`\ 的坐标来参数化它。定义一个函数
+  :math:`\overset{―}{f_{\overset{\rightarrow}{c}}}:\mathbb{R} \rightarrow \mathbb{R}`\ ，使得对任意一点
+  :math:`p \in \ell_{i}`\ ，有
+  :math:`f_{\overset{\rightarrow}{c}}(p) = \overset{―}{f_{\overset{\rightarrow}{c}}(p_{x})}`
+  。对一个半平面\ :math:`h(h \in H_{i - 1})`\ ，记
+  :math:`\sigma(h,\ell_{i})` 为 :math:`\ell_{i}` 和 :math:`h`
+  的边界线的交点的\ :math:`x`\ 坐标。如果没有交点，要么是\ :math:`\ell_{i}`\ 上的每个点都满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ），要么\ :math:`\ell_{i}`\ 上没有点满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
+| 根据 :math:`\ell_{i} \cap h`
+  的交集区域是被限定在左侧还是右侧，可以得到对解的\ :math:`x`\ 坐标的约束形式，即\ :math:`x \geq \sigma(h,\ell_{i})`\ 或者\ :math:`x \leq \sigma(h,\ell_{i})`\ 。因此需要求解的问题可以重新表述如下，
+| 为最大化的目标函数为
+
+.. container:: math math-block is-loaded
+
+   .. math:: \overset{―}{f_{\overset{\rightarrow}{c}}(x)}
+
+它服从于
+
+.. container:: math math-block is-loaded
+
+   .. math:: x \geq \sigma(h,\ell_{i}),\ h \in H_{i - 1}\ and\ \ell_{i} \cap h\ is\ bounded\ to\ the\ left
+
+.. container:: math math-block is-loaded
+
+   .. math:: x \leq \sigma(h,\ell_{i}),\ h \in H_{i - 1}\ and\ \ell_{i} \cap h\ is\ bounded\ to\ the\ right
 
 射线（ray）
 :math:`\rho = \{ p + \lambda\overset{\rightarrow}{d}:\lambda > 0\}.`
