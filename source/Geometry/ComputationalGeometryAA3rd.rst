@@ -2512,6 +2512,183 @@ algorithm**\ ）就是实际中最常用最有效的算法之一。
 :math:`n`
 个线性约束条件下目标函数的求解，运筹学中传统的线性程序方法在这种低维度的线性程序求解中并不是非常有效率，因此在计算几何中就有其他更有效的算法。
 
+我们以 :math:`H` 表示2维平面上一组线性约束，
+:math:`\overset{\rightarrow}{c} = (c_{x},c_{y})`
+表示目标函数的方向，因此目标函数就是
+:math:`f_{\overset{\rightarrow}{c}}(p) = c_{x}p_{x} + c_{y}p_{y}`
+。我们的目的就是，找到 :math:`\mathbb{R}^{2}`
+上的一个点（\ :math:`p \in \mathbb{R}^{2}`\ ），使得
+:math:`p \in \bigcap H` （所有半平面的交集区域），并且
+:math:`f_{\overset{\rightarrow}{c}}(p)` 取得最大值。我们用
+:math:`(H,\overset{\rightarrow}{c})` 表示这个线性程序，并用 :math:`C`
+表示feasible region。
+
+从几何上来看，线性程序 :math:`(H,\overset{\rightarrow}{c})`
+的解有以下四种情况
+
+-  情况1，无解
+   即所有半平面的交集是空。这种情况下，线性程序是infeasible，线性约束就没有解。
+-  情况2，有解
+   交集区域是无限的。此时，feasible region沿着
+   :math:`\overset{\rightarrow}{c}` 方向是无限的，而且有一条射线
+   :math:`\rho` 是完全被包含在feasible region :math:`C`
+   当中，我们要求的解，就是这样一条射线 :math:`\rho`\ 。
+-  情况3，有解
+   交集区域是有限的。 此时，feasible
+   region的一条edge上的向外的法向的点，位于
+   :math:`\overset{\rightarrow}{c}`
+   方向上。这时候，线性程序有解，但解不唯一，这条edge :math:`e`
+   上任意一个点就是feasible
+   point，它都能使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`
+   取得最大值。
+-  情况4，有解
+   交集区域退化为一个点（属于某即个半平面边界直线共同的交点）。如果不属于之前三种情况中的一种，那么就有一个唯一解，这个解就是
+   feasible region :math:`C` 中的点 :math:`v`\ ，并且使得目标函数在
+   :math:`\overset{\rightarrow}{c}` 方向上取得极值。
+
+（上面提到的线性程序的解的示意图在79页，页码是72，位于中间的四个一排的图）
+
+| 我们的2维线性程序的算法是增量式的，它逐一增加约束条件，并且维护每个中间线性程序的解。然而，我们的算法要求每个中间线性程序的解是唯一且明确定义的。换句话说，它要求每个中间线性程序的解，就是像前面提到的情况4一样，feasible
+  region上有一个唯一的\ **optimal vertex**\ 。
+| 为了满足这个要求，给线性程序添加两个额外的约束条件，以便保证交集的区域是有限的。比如，当
+  :math:`c_{x} > 0` 并且 :math:`c_{y} > 0` 时，取一足够大的值
+  :math:`M(M \in \mathbb{R})`\ ，添加两个约束条件 :math:`p_{x} \leq M`
+  和 :math:`p_{y} \leq M`\ 。这里 :math:`M`
+  的选取应该足够大，并且使得添加的两个约束条件不影响最终的最优解。
+
+对于这样额外的界定约束条件，在实际的线性程序应用场景中，都有自然的现实限制。在我们讨论的铸造问题当中，机械原理的限制，使得我们不能把多面体沿着几乎水平的方向移出模具（比如，不能以和\ :math:`xy`\ 平面小于\ :math:`1{^\circ}`\ 的方向移出）。这样，\ :math:`p_{x}`\ 和\ :math:`p_{y}`\ 的绝对值就显然有上限（即存在一个足够大的值
+:math:`M(M \in \mathbb{R})`\ ）， 满足\ :math:`p_{x} \leq M` 和
+:math:`p_{y} \leq M`\ 。
+
+在4.5节会讨论unbounded linear
+program，以及如何不使用手动添加约束来解决bounded linear program。
+
+为精确期间，把这两个额外的新约束做如下定义。
+
+.. container:: math math-block is-loaded
+
+   .. math::
+
+      \begin{array}{r}
+      {m_{1}:=\left\{ \begin{matrix}
+      {p_{x} \leq M,\ if\ c_{x} > 1} \\
+      {- p_{x} \leq M,\ otherwise} \\
+      \end{matrix} \right.} \\
+      \end{array}
+
+.. container:: math math-block is-loaded
+
+   .. math::
+
+      \begin{array}{r}
+      {m_{2}:=\left\{ \begin{matrix}
+      {p_{y} \leq M,\ if\ c_{y} > 1} \\
+      {- p_{y} \leq M,\ otherwise} \\
+      \end{matrix} \right.} \\
+      \end{array}
+
+| 这里 :math:`m_{1},m_{2}` 的选取只和目标函数中的参数
+  :math:`\overset{\rightarrow}{c}` 有关，和线性约束
+  :math:`H`\ （即所有的半平面）无关。而
+  :math:`C_{0} = m_{1}\bigcap m_{2}` 这个feasible
+  region是一个正交的楔形。
+| 另外如果是前面提到的情况3，有多个不唯一的解，约定俗成地，我们按照字典序，取最小的那个点（解）。概念上，这相当于把
+  :math:`\overset{\rightarrow}{c}`
+  轻微旋转了一个小角度，这样它就和任何一个半平面对应的直线就不垂直了。
+| 需要注意的是，哪怕一个有界的线性程序，按照字典序可能也找不到最小的点（解）。我们需要选择约束条件
+  :math:`m_{1}` 和 :math:`m_{2}` ，使得这样的情况不会发生。
+| 在选择了这样两个额外的约束条件之后，任意有解的线性程序就只有唯一的解，就是feasible
+  region上的一个vertex，我们把这样的vertex叫做 **optimal vertex**\ 。
+
+| 记 :math:`(H,\overset{\rightarrow}{c})` 是一个线性程序，把 :math:`n`
+  个半平面依次记为 :math:`h_{1},h_{2},\ldots,h_{n}`\ 。
+| 记 :math:`H_{i}` 是前 :math:`i`
+  个线性约束和两个额外约束\ :math:`m_{1},m_{2}`\ 的组合，记
+  :math:`C_{i}` 是这样一组线性约束的feasible region。
+
+.. container:: math math-block is-loaded
+
+   .. math:: H_{i}:={m_{1},m_{2},h_{1},h_{2},\ldots,h_{n}}
+
+.. container:: math math-block is-loaded
+
+   .. math:: C_{i}:={m_{1} \cap m_{2} \cap h_{1} \cap h_{2} \cap \cdots \cap h_{n}}
+
+加上 :math:`C_{0}`\ ，我们的每个feasible region :math:`C_{i}`
+（\ :math:`i \leq n`\ ）都有一个唯一的optimal vertex，记作
+:math:`v_{i}`\ 。显然有
+
+.. container:: math math-block is-loaded
+
+   .. math:: C_{0} \supseteq C_{1} \supseteq C_{2} \supseteq \cdots \supseteq C_{n} = C
+
+这也就是说，对于任何一个
+:math:`i`\ （\ :math:`0 \leq i \leq n`\ ），如果
+:math:`C_{i} = \varnothing`\ ，那么对于任意一个
+:math:`j`\ （\ :math:`i \leq j \leq n`\ ），线性程序就是feasible的，我们的算法也就能提前退出。
+
+下面的引理4.5，说明了每当我们增加一个线性约束（半平面）时，optimal
+vertex如何改变，而这是我们算法的基础。
+
+引理4.5 对\ :math:`C_{i}` 和 :math:`v_{i}`
+（\ :math:`1 \leq i \leq n`\ ），有：
+
+#. 如果 :math:`v_{i - 1} \in h_{i}`\ ，那么
+   :math:`v_{i} = v_{i - 1}`\ 。
+#. 如果 :math:`v_{i - 1} \notin h_{i}`\ ，那么要么
+   :math:`C_{i} = \varnothing`\ ，要么
+   :math:`v_{i} \in \ell_{i}`\ （\ :math:`\ell_{i}` 是半平面
+   :math:`h_{i}` 的边界直线）
+   证明：
+#. 令 :math:`v_{i - 1} \in h_{i}`\ 。因为
+   :math:`C_{i} = C_{i - 1} \cap h_{i}`\ ，并且
+   :math:`v_{i - 1} \in C_{i - 1}`\ ，这就意味着
+   :math:`v_{i - 1} \in C_{i}`\ （这是显然的）。进一步，因为
+   :math:`C_{i} \subseteq C_{i - 1}`\ （即 :math:`C_{i}` 属于
+   :math:`C_{i - 1}`\ ），所以 :math:`C_{i}` 的optimal vertex不可能比
+   :math:`C_{i - 1}` 更好，所以，\ :math:`v_{i - 1}` 同样也是
+   :math:`C_{i}` 的optimal vertex。
+#. 令 :math:`v_{i - 1} \notin h_{i}`\ 。采用反证法，假设 :math:`C_{i}`
+   非空，并且 :math:`v_{i}` 不在 :math:`\ell_{i}` 上。考虑线段
+   :math:`\overset{―}{v_{i - 1}v_{i}}` ，
+   :math:`v_{i - 1} \in C_{i - 1}`\ （因为
+   :math:`v_{i - 1}`\ 是\ :math:`C_{i - 1}`\ 的optimal
+   vertex），并且因为\ :math:`C_{i} \subset C_{i - 1}`\ ，所以也有
+   :math:`v_{i} \in C_{i - 1}`\ 。又因为
+   :math:`C_{i - 1}`\ 是凸的，所以线段
+   :math:`\overset{―}{v_{i - 1}v_{i}}` 完全被包含在
+   :math:`C_{i - 1}`\ 中。因为
+   :math:`v_{i - 1}`\ 是\ :math:`C_{i - 1}`\ 的optimal
+   vertex，而且目标函数
+   :math:`f_{\overset{\rightarrow}{c}}`\ 是线性的，所以沿着线段
+   :math:`\overset{―}{v_{i - 1}v_{i}}` ，点 :math:`p` 从 :math:`v_{i}`
+   移动到
+   :math:`v_{i - 1}`\ 时，\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 是单调递增的。因为
+   :math:`v_{i - 1} \notin h_{i}`\ 并且\ :math:`C_{i} \subset C_{i - 1}`\ ，所以线段
+   :math:`\overset{―}{v_{i - 1}v_{i}}` 和
+   :math:`\ell_{i}`\ 必然有交点，记作 :math:`q`\ 。而又因为线段
+   :math:`\overset{―}{v_{i - 1}v_{i}}` 完全被包含在
+   :math:`C_{i - 1}`\ 中，所以交点 :math:`q` 也必然在
+   :math:`C_{i}`\ 中（因为\ :math:`\ell_{i}`\ 是\ :math:`C_{i}`\ 的边界）。因为
+   :math:`q` 在线段 :math:`\overset{―}{v_{i - 1}v_{i}}`
+   上，所以根据前面的结论（沿着线段 :math:`\overset{―}{v_{i - 1}v_{i}}`
+   ，点 :math:`p` 从 :math:`v_{i}` 移动到
+   :math:`v_{i - 1}`\ 时，\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 是单调递增的），就有
+   :math:`f_{\overset{\rightarrow}{c}}(q) > f_{\overset{\rightarrow}{c}}(v_{i})`\ 。这就是说在\ :math:`C_{i}`\ 中存在另外一个不同于optimal
+   vertex :math:`v_{i}` 的点
+   :math:`q`\ ，它使得\ :math:`f_{\overset{\rightarrow}{c}}`\ 的取值比
+   :math:`v_{i}`\ 还要大，但这是和\ :math:`v_{i}`\ 的定义是矛盾的，因此假设不成立。故的证。
+
+（用来说明线段 :math:`\overset{―}{v_{i - 1}v_{i}}`
+的示意图在81页，页码是74，位于上面的一个图）
+
+| 书中接着以两个图，说明了添加了一个半平面（\ :math:`h_{k}`\ ）之后，optimal
+  vertex的变化情况。
+| （两个示意图在81页，页码是74，位于下面的两个图）
+
+虽然引理4.5告诉了我们当添加一个新的半平面到当前的约束组时，optimal
+vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex。
+
 射线（ray）
 :math:`\rho = \{ p + \lambda\overset{\rightarrow}{d}:\lambda > 0\}.`
 

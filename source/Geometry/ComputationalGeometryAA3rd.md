@@ -1726,6 +1726,7 @@ $$
 证明：
 1. 令 $v_{i-1} \in h_i$。因为 $C_i = C_{i-1} \cap h_i$，并且 $v_{i-1} \in C_{i-1}$，这就意味着 $v_{i-1} \in C_i$（这是显然的）。进一步，因为 $C_i \subseteq C_{i-1}$（即 $C_i$ 属于 $C_{i-1}$），所以 $C_i$ 的optimal vertex不可能比 $C_{i-1}$ 更好，所以，$v_{i-1}$ 同样也是 $C_i$ 的optimal vertex。
 2. 令  $v_{i-1} \notin h_i$。采用反证法，假设 $C_i$ 非空，并且 $v_i$ 不在 $\ell_i$ 上。考虑线段 $\overline{v_{i-1}v_i}$ ， $v_{i-1} \in C_{i-1}$（因为 $v_{i-1}$是$C_{i-1}$的optimal vertex），并且因为$C_i \subset C_{i-1}$，所以也有 $v_i \in C_{i-1}$。又因为 $C_{i-1}$是凸的，所以线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中。因为 $v_{i-1}$是$C_{i-1}$的optimal vertex，而且目标函数 $f_\vec{c}$是线性的，所以沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_\vec{c}(p)$是单调递增的。因为 $v_{i-1} \notin h_i$并且$C_i \subset C_{i-1}$，所以线段 $\overline{v_{i-1}v_i}$ 和 $\ell_i$必然有交点，记作 $q$。而又因为线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中，所以交点 $q$ 也必然在 $C_i$中（因为$\ell_i$是$C_i$的边界）。因为 $q$ 在线段 $\overline{v_{i-1}v_i}$ 上，所以根据前面的结论（沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_\vec{c}(p)$是单调递增的），就有 $f_\vec{c}(q) \gt f_\vec{c}(v_i)$。这就是说在$C_i$中存在另外一个不同于optimal vertex $v_i$ 的点 $q$，它使得$f_\vec{c}$的取值比 $v_i$还要大，但这是和$v_i$的定义是矛盾的，因此假设不成立。故的证。
+
 ==（用来说明线段 $\overline{v_{i-1}v_i}$ 的示意图在81页，页码是74，位于上面的一个图）==
 
 书中接着以两个图，说明了添加了一个半平面（$h_k$）之后，optimal vertex的变化情况。
