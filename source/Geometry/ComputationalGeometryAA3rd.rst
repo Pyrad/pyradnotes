@@ -2701,11 +2701,11 @@ vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex
   :math:`\overset{―}{f_{\overset{\rightarrow}{c}}}:\mathbb{R} \rightarrow \mathbb{R}`\ ，使得对任意一点
   :math:`p \in \ell_{i}`\ ，有
   :math:`f_{\overset{\rightarrow}{c}}(p) = \overset{―}{f_{\overset{\rightarrow}{c}}(p_{x})}`
-  。对一个半平面\ :math:`h(h \in H_{i - 1})`\ ，记
+  （还没想明白如何理解？如何找到这样的一个映射函数？好像要解微分方程？）。对一个半平面\ :math:`h(h \in H_{i - 1})`\ ，记
   :math:`\sigma(h,\ell_{i})` 为 :math:`\ell_{i}` 和 :math:`h`
-  的边界线的交点的\ :math:`x`\ 坐标。如果没有交点，要么是\ :math:`\ell_{i}`\ 上的每个点都满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ），要么\ :math:`\ell_{i}`\ 上没有点满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
+  的边界线的交点的\ :math:`x`\ **坐标**\ 。如果没有交点，要么是\ :math:`\ell_{i}`\ 上的每个点都满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ），要么\ :math:`\ell_{i}`\ 上没有点满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
 | 根据 :math:`\ell_{i} \cap h`
-  的交集区域是被限定在左侧还是右侧，可以得到对解的\ :math:`x`\ 坐标的约束形式，即\ :math:`x \geq \sigma(h,\ell_{i})`\ 或者\ :math:`x \leq \sigma(h,\ell_{i})`\ 。因此需要求解的问题可以重新表述如下，
+  的交集区域是被限定在左侧还是右侧，可以得到对解的\ :math:`x`\ **坐标**\ 的约束形式，即\ :math:`x \geq \sigma(h,\ell_{i})`\ 或者\ :math:`x \leq \sigma(h,\ell_{i})`\ 。因此需要求解的问题可以重新表述如下，
 | 为最大化的目标函数为
 
 .. container:: math math-block is-loaded
@@ -2721,6 +2721,57 @@ vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex
 .. container:: math math-block is-loaded
 
    .. math:: x \leq \sigma(h,\ell_{i}),\ h \in H_{i - 1}\ and\ \ell_{i} \cap h\ is\ bounded\ to\ the\ right
+
+上面提到的 :math:`\ell_{i} \cap h`
+的交集区域是被限定在左侧或右侧。\ **为何有左右侧之分**\ ？因为\ :math:`h`\ 是半平面，它和\ :math:`\ell_{i}`\ 相交之后，落在\ :math:`h`\ 这个半平面这一侧的\ :math:`\ell_{i}`\ 的部分，如果只看其\ :math:`x`\ 坐标是包含\ **负无穷**\ （\ :math:`- \infty`\ ），但小于某个\ :math:`x`\ 坐标值，就相当于被限定到了左边，即有右侧上限，也就是\ **is
+bounded to
+right**\ 。同理，如果相交的\ :math:`\ell_{i}`\ 部分落在\ :math:`h`\ 的这个半平面这一侧的\ :math:`\ell_{i}`\ 的部分，如果只看其\ :math:`x`\ 坐标是包含\ **正无穷**\ （\ :math:`+ \infty`\ ），但大于于某个\ :math:`x`\ 坐标值，就相当于被限定到了右边边，即有左侧上限，也就是\ **is
+bounded to left**\ 。
+
+这个一维线性程序的解是容易的，令
+
+.. container:: math math-block is-loaded
+
+   .. math:: x_{left} = \underset{h \in H_{i - 1}}{max}\ \{\sigma(h,\ell_{i}):\ell_{i} \cap h\ is\ bounded\ to\ \ the\ left\}
+
+.. container:: math math-block is-loaded
+
+   .. math:: x_{right} = \underset{h \in H_{i - 1}}{min}\ \{\sigma(h,\ell_{i}):\ell_{i} \cap h\ is\ bounded\ to\ \ the\ left\}
+
+| 即取\ :math:`x_{left}`\ 是所有\ :math:`h(h \in H_{i - 1})`\ 的边界线和\ :math:`\ell_{i}`\ 的交点的\ :math:`x`\ 坐标的最大值，\ :math:`x_{right}`\ 是所有\ :math:`h(h \in H_{i - 1})`\ 的边界线和\ :math:`\ell_{i}`\ 的交点的\ :math:`x`\ 坐标的最小值，那么区间\ :math:`\lbrack x_{left},x_{right}\rbrack`\ 就是这个一维线性程序的解（feasible
+  region）。因此如果
+  :math:`x_{left} > x_{right}`\ ，那就说明这个线性程序无解（infeasible），否则根据目标函数，当\ :math:`\ell_{i}`\ 上的点\ :math:`p`
+  在\ :math:`x_{left}`\ 或\ :math:`x_{right}`\ 处取得极值。
+| 需要注意的是，因为我们添加了额外的约束\ :math:`m_{1}`\ 和\ :math:`m_{2}`\ ，所以一维线性程序（的解）不会是无界的。
+
+**引理4.6**
+可以在线性时间里解出一维线性程序。因此，如果是\ **引理4.5**\ 中的第二种情况时，我们能以\ :math:`O(i)`\ 时间复杂度计算出来新的optimal
+vertex :math:`v_{i}`\ ，或者判定这个线性程序无解（infeasible）。
+
+下面是更详细的线性规划算法描述。
+
+| 算法：\ :math:`2DBoundedLP(H,\overset{\rightarrow}{c},m_{1},m_{2})`
+| 输入：线性程序 :math:`(H \cup {m_{1},m_{2}},\overset{\rightarrow}{c})`
+  ，\ :math:`H`\ 是\ :math:`n`\ 个半平面，向量
+  :math:`\overset{\rightarrow}{c} \in \mathbb{R}^{2}`\ （即二维实数域），\ :math:`m_{1}`\ 和\ :math:`m_{2}`\ 是解的额外限定约束条件。
+| 输出：如果线性程序
+  :math:`(H \cup {m_{1},m_{2}},\overset{\rightarrow}{c})`
+  无解（infeasible），就声明无解并退出。否则，就点\ :math:`p`\ ，它是按字典序找到的、能使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化的点。
+| 步骤：
+
+-  令 :math:`v_{0}` 是 :math:`C_{0}` 角落上的点。
+-  令\ :math:`H`\ 是\ :math:`h_{1},h_{2},\ldots,h_{n}`\ 这n个半平面
+-  从\ :math:`1`\ 到\ :math:`n`\ ，遍历\ :math:`i`
+
+   -  如果 :math:`h_{i - 1}`\ 这个半平面的 optimal vertex
+      :math:`v_{i - 1}`\ 也在半平面
+      :math:`h_{i}`\ 上，那么\ :math:`h_{i}`\ 这个半平面的 optimal
+      vertex :math:`v_{i}`\ 也同样是\ :math:`v_{i - 1}`\ 。
+   -  如果 :math:`h_{i - 1}` 这个半平面的 optimal vertex
+      :math:`v_{i - 1}`\ 也\ **不在**\ 半平面
+      :math:`h_{i}`\ 上，那么找到\ :math:`\ell_{i}`\ （半平面\ :math:`h_{i}`\ 的边界线）上的一个点\ :math:`p`\ ，它满足前\ :math:`i - 1`\ 个线性条件约束（即\ :math:`H_{i - 1}`\ ），并且它能够使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化，此时，\ :math:`p`\ 就是要找的\ :math:`v_{i}`\ 。如果找不到这样的点\ :math:`p`\ ，就停止循环，报告这个线性程序无解，然后退出。
+
+-  循环到最后，报告\ :math:`v_{n}`\ ，这就是这个线性程序的解。
 
 射线（ray）
 :math:`\rho = \{ p + \lambda\overset{\rightarrow}{d}:\lambda > 0\}.`

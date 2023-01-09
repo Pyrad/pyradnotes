@@ -1737,8 +1737,8 @@ $$
 如果是**引理4.5**中说明的第一种情况，那么下一个要求解的optimal vertex $v_i$ 就是当前的optimal vertex $v_{i-1}$。
 如果是**引理4.5**中说明的第二种情况，那么问题就转化为：找到$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）上的一个点$p$，使得目标函数$f_\vec{c}(p)$最大化，并且点$p \in h$（$h \in H_{i-1}$），即点$p$是前$i-1$个半平面交集上的点。
 
-为了简化术语，我们假定$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）不是垂直的，这样我们就能只用$x$的坐标来参数化它。定义一个函数 $\overline{f_\vec{c}}:\mathbb{R} \to  \mathbb{R}$，使得对任意一点 $p \in \ell_i$，有 $f_\vec{c}(p) = \overline{f_\vec{c}(p_x)}$ 。对一个半平面$h(h \in H_{i-1})$，记 $\sigma(h,\ell_i)$ 为 $\ell_i$ 和 $h$ 的边界线的交点的$x$坐标。如果没有交点，要么是$\ell_i$上的每个点都满足条件约束$h$（也即半平面$h$），要么$\ell_i$上没有点满足条件约束$h$（也即半平面$h$）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
-根据 $\ell_i \cap h$ 的交集区域是被限定在左侧还是右侧，可以得到对解的$x$坐标的约束形式，即$x \ge \sigma(h, \ell_i)$或者$x \le \sigma(h, \ell_i)$。因此需要求解的问题可以重新表述如下，
+为了简化术语，我们假定$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）不是垂直的，这样我们就能只用$x$的坐标来参数化它。定义一个函数 $\overline{f_\vec{c}}:\mathbb{R} \to  \mathbb{R}$，使得对任意一点 $p \in \ell_i$，有 $f_\vec{c}(p) = \overline{f_\vec{c}(p_x)}$ （还没想明白如何理解？如何找到这样的一个映射函数？好像要解微分方程？）。对一个半平面$h(h \in H_{i-1})$，记 $\sigma(h,\ell_i)$ 为 $\ell_i$ 和 $h$ 的边界线的交点的$x$**坐标**。如果没有交点，要么是$\ell_i$上的每个点都满足条件约束$h$（也即半平面$h$），要么$\ell_i$上没有点满足条件约束$h$（也即半平面$h$）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
+根据 $\ell_i \cap h$ 的交集区域是被限定在左侧还是右侧，可以得到对解的$x$**坐标**的约束形式，即$x \ge \sigma(h, \ell_i)$或者$x \le \sigma(h, \ell_i)$。因此需要求解的问题可以重新表述如下，
 为最大化的目标函数为
 $$
 \overline{f_\vec{c}(x)}
@@ -1751,6 +1751,35 @@ $$
 $$
 x \le \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space right
 $$
+
+上面提到的 $\ell_i \cap h$ 的交集区域是被限定在左侧或右侧。**为何有左右侧之分**？因为$h$是半平面，它和$\ell_i$相交之后，落在$h$这个半平面这一侧的$\ell_i$的部分，如果只看其$x$坐标是包含**负无穷**（$-\infty$），但小于某个$x$坐标值，就相当于被限定到了左边，即有右侧上限，也就是**is bounded to right**。同理，如果相交的$\ell_i$部分落在$h$的这个半平面这一侧的$\ell_i$的部分，如果只看其$x$坐标是包含**正无穷**（$+\infty$），但大于于某个$x$坐标值，就相当于被限定到了右边边，即有左侧上限，也就是**is bounded to left**。
+
+这个一维线性程序的解是容易的，令
+$$
+x_{left} = \sideset{}{}{max}_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left  \}
+$$
+$$
+x_{right} = \sideset{}{}{min}_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left  \}
+$$
+
+即取$x_{left}$是所有$h(h \in H_{i-1})$的边界线和$\ell_i$的交点的$x$坐标的最大值，$x_{right}$是所有$h(h \in H_{i-1})$的边界线和$\ell_i$的交点的$x$坐标的最小值，那么区间$[x_{left}, x_{right}]$就是这个一维线性程序的解（feasible region）。因此如果 $x_{left} > x_{right}$，那就说明这个线性程序无解（infeasible），否则根据目标函数，当$\ell_i$上的点$p$ 在$x_{left}$或$x_{right}$处取得极值。
+需要注意的是，因为我们添加了额外的约束$m_1$和$m_2$，所以一维线性程序（的解）不会是无界的。
+
+**引理4.6** 可以在线性时间里解出一维线性程序。因此，如果是**引理4.5**中的第二种情况时，我们能以$O(i)$时间复杂度计算出来新的optimal vertex $v_i$，或者判定这个线性程序无解（infeasible）。
+
+下面是更详细的线性规划算法描述。
+
+算法：$2DBoundedLP(H, \vec{c}, m_1, m_2)$
+输入：线性程序 $(H \cup {m_1, m_2}, \vec{c})$ ，$H$是$n$个半平面，向量 $\vec{c} \in \mathbb{R}^2$（即二维实数域），$m_1$和$m_2$是解的额外限定约束条件。
+输出：如果线性程序 $(H \cup {m_1, m_2}, \vec{c})$ 无解（infeasible），就声明无解并退出。否则，就点$p$，它是按字典序找到的、能使得目标函数$f_\vec{c}(p)$最大化的点。
+步骤：
+- 令 $v_0$ 是 $C_0$ 角落上的点。
+- 令$H$是$h_1, h_2, \dots, h_n$这n个半平面
+- 从$1$到$n$，遍历$i$
+	- 如果 $h_{i-1}$这个半平面的 optimal vertex $v_{i-1}$也在半平面 $h_i$上，那么$h_i$这个半平面的 optimal vertex $v_i$也同样是$v_{i-1}$。
+	- 如果 $h_{i-1}$ 这个半平面的 optimal vertex $v_{i-1}$也**不在**半平面 $h_i$上，那么找到$\ell_i$（半平面$h_i$的边界线）上的一个点$p$，它满足前$i-1$个线性条件约束（即$H_{i-1}$），并且它能够使得目标函数$f_\vec{c}(p)$最大化，此时，$p$就是要找的$v_i$。如果找不到这样的点$p$，就停止循环，报告这个线性程序无解，然后退出。
+- 循环到最后，报告$v_n$，这就是这个线性程序的解。
+
 
 
 
