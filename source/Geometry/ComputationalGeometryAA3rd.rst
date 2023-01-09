@@ -2773,6 +2773,27 @@ vertex :math:`v_{i}`\ ，或者判定这个线性程序无解（infeasible）。
 
 -  循环到最后，报告\ :math:`v_{n}`\ ，这就是这个线性程序的解。
 
+| **引理4.7**
+  对一个有\ :math:`n`\ 个约束条件和\ :math:`2`\ 个变量的有界的线性程序，算法\ :math:`2DBoundedLP(H,\overset{\rightarrow}{c},m_{1},m_{2})`\ 可以用\ :math:`O(n^{2})`\ 的时间复杂度和线性的空间复杂度求得解。
+| 证明：
+| 根据前面的\ **引理4.5**\ 及其结论，证明了可以找到这样的\ :math:`v_{i}`\ 是\ :math:`C_{i}`\ 的optimal
+  vertex，因此可以得出\ **引理4.7**\ 的正确性。而且如果某个\ :math:`C_{i}`\ 是空集，那么因为
+  :math:`C = C_{n} \subseteq C_{i}`
+  ，所以最终的\ :math:`C`\ 也就是空集。
+| 易得空间复杂度是线性的。
+| 同样根据引理4.6，对于每个\ :math:`i`\ ，计算一维线性程序的时间复杂度是\ :math:`O(i)`\ ，所以最终的时间复杂度是
+
+.. container:: math math-block is-loaded
+
+   .. math:: \sum\limits_{i = 1}^{n}O(i) = O(n^{2})
+
+| 虽然这样的算法是简单并且很好的，但还是太慢了。对于每次添加第\ :math:`i`\ 个约束时计算optimal
+  vertex花费的诗句是\ :math:`O(i)`\ ，它不是紧确界（tight
+  bound），而是渐近上限（即小于等于，\ :math:`\leq`\ ）。而根据\ **引理4.5**\ ，只有当\ :math:`v_{i - 1} \notin h_{i}`\ 时，花费的时间是\ :math:`\Theta(i)`\ （渐近紧确界，即相等，\ :math:`=`\ ），而当\ :math:`v_{i - 1} \in h_{i}`\ 时，只需要花费常数时间。但我们不能保证每次都有\ :math:`v_{i - 1} \in h_{i}`\ ，书中此处举了一个例子，说明了每次第\ :math:`i`\ 个约束条件就会导致前一个的optimal
+  vertex
+  :math:`v_{i - 1}`\ 不再满足这第\ :math:`i`\ 个约束条件，而且花费的时间就是\ :math:`\Theta(n^{2})`\ 。接下来的4.3节说明了如何进行一定意义上的加速处理。
+| （举例的示意图在83页，页码是76）
+
 射线（ray）
 :math:`\rho = \{ p + \lambda\overset{\rightarrow}{d}:\lambda > 0\}.`
 
