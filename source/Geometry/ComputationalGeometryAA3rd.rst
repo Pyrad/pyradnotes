@@ -2794,6 +2794,9 @@ vertex :math:`v_{i}`\ ，或者判定这个线性程序无解（infeasible）。
   :math:`v_{i - 1}`\ 不再满足这第\ :math:`i`\ 个约束条件，而且花费的时间就是\ :math:`\Theta(n^{2})`\ 。接下来的4.3节说明了如何进行一定意义上的加速处理。
 | （举例的示意图在83页，页码是76）
 
+4.4 Randomized Linear Programming
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 射线（ray）
 :math:`\rho = \{ p + \lambda\overset{\rightarrow}{d}:\lambda > 0\}.`
 

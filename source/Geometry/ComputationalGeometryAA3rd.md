@@ -1793,6 +1793,10 @@ $$
 ==（举例的示意图在83页，页码是76）==
 
 
+### 4.4 Randomized Linear Programming
+
+
+
 
 
 射线（ray） $\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.$
