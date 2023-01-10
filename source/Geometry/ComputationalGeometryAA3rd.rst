@@ -181,6 +181,9 @@ with）
 
 **coin** */kɔɪn/* v.创造新词，首次使用；铸币，造币；
 
+**intriguing** /ɪnˈtriːɡɪŋ/
+adj.非常有趣的，引人入胜的（intrigue现在分词）
+
 Usage
 -----
 
@@ -280,6 +283,7 @@ Names
    -  Simplex Algorithm (运筹学中的单纯形算法，in operations research
       area)
    -  Low-dimensional linear programming problems
+   -  expected running time 期望运行时间（即n个运行时间的数学期望）
 
 Maths
 -----
@@ -2796,6 +2800,58 @@ vertex :math:`v_{i}`\ ，或者判定这个线性程序无解（infeasible）。
 
 4.4 Randomized Linear Programming
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+| 在前面一节的结尾，作者举例说明了每次遍历到下一个半平面时，总是会导致optimal
+  vertex改变，这样运行时间就会是最差的情况。但如果把遍历到的半平面的顺序做下改变，比如，从原先的\ :math:`H = \{ h_{1},h_{2},\ldots,h_{n}\}`\ 变为\ :math:`H = \{ h_{n},h_{n - 1},\ldots,h_{1}\}`\ ，这样除了第一次添加半平面时需要计算一次optimal
+  vertex，之后每次添加半平面，optimal
+  vertex就不再发生变化，因此运行时间就会变成\ :math:`O(n)`\ 。
+| 但很可惜的是，这样的顺序也许存在，但是我们不太好找出来，因为我们要在整个算法开始之前就要确定好添加半平面的顺序。
+| 这就是一个引人入胜的现象了。我们不能保证\ :math:`H`\ 的顺序可以产生良好的运行时间，但是我们可以取\ :math:`H`\ 的一个随机顺序。虽然这样在运气不好的情况下仍然产生二次方的运行时间，但如果运气好，我们就能达到更快的运行时间。事实上，我们下面会证明在多数情况下，我们能取得较快的运行时间。
+| 为了完整描述起见，把带有\ :math:`H`\ 随机顺序的算法罗列如下：
+
+| 算法：\ :math:`2DRandomizedBoundedLP(H,\overset{\rightarrow}{c},m_{1},m_{2})`
+| 输入：线性程序 :math:`(H \cup {m_{1},m_{2}},\overset{\rightarrow}{c})`
+  ，\ :math:`H`\ 是\ :math:`n`\ 个半平面，向量
+  :math:`\overset{\rightarrow}{c} \in \mathbb{R}^{2}`\ （即二维实数域），\ :math:`m_{1}`\ 和\ :math:`m_{2}`\ 是解的额外限定约束条件。
+| 输出：如果线性程序
+  :math:`(H \cup {m_{1},m_{2}},\overset{\rightarrow}{c})`
+  无解（infeasible），就声明无解并退出。否则，就点\ :math:`p`\ ，它是按字典序找到的、能使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化的点。
+| 步骤：
+
+-  令 :math:`v_{0}` 是 :math:`C_{0}` 角落上的点。
+-  通过调用随机排序算法\ :math:`RandomPermutation(H\lbrack 1\cdots n\rbrack)`\ ，得到\ :math:`n`\ 个半平面\ :math:`H`\ 的一个随机排序序列\ :math:`h_{1},h_{2},\ldots,h_{n}`\ 。
+-  从\ :math:`1`\ 到\ :math:`n`\ ，遍历\ :math:`i`
+
+   -  如果 :math:`h_{i - 1}`\ 这个半平面的 optimal vertex
+      :math:`v_{i - 1}`\ 也在半平面
+      :math:`h_{i}`\ 上，那么\ :math:`h_{i}`\ 这个半平面的 optimal
+      vertex :math:`v_{i}`\ 也同样是\ :math:`v_{i - 1}`\ 。
+   -  如果 :math:`h_{i - 1}` 这个半平面的 optimal vertex
+      :math:`v_{i - 1}`\ 也\ **不在**\ 半平面
+      :math:`h_{i}`\ 上，那么找到\ :math:`\ell_{i}`\ （半平面\ :math:`h_{i}`\ 的边界线）上的一个点\ :math:`p`\ ，它满足前\ :math:`i - 1`\ 个线性条件约束（即\ :math:`H_{i - 1}`\ ），并且它能够使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化，此时，\ :math:`p`\ 就是要找的\ :math:`v_{i}`\ 。如果找不到这样的点\ :math:`p`\ ，就停止循环，报告这个线性程序无解，然后退出。
+
+-  循环到最后，报告\ :math:`v_{n}`\ ，这就是这个线性程序的解。
+
+| 算法\ :math:`2DRandomizedBoundedLP`\ ，和算法\ :math:`2DBoundedLP`\ ，唯一的区别是，在遍历\ :math:`n`\ 个半平面之前，计算\ :math:`n`\ 个半平面的一个排序序列。
+| 我们假设有一个随机数发生器\ :math:`Random(k)`\ ，它根据输入\ :math:`k`\ 产生一个范围在\ :math:`\lbrack 1,k\rbrack`\ 之间的一个随机数，并且花费的时间复杂度是常数时间。
+| 随机排序的算法\ :math:`RandomPermutation`\ 如下。
+
+| 算法：\ :math:`RandomPermutation(A)`
+| 输入：一个数组\ :math:`A\lbrack 1\cdots n\rbrack`
+| 输出：还是有同样元素的数组\ :math:`A\lbrack 1\cdots n\rbrack`\ ，但是是以一个随机顺序重新排序的
+| 步骤：
+
+-  从\ :math:`n`\ 到\ :math:`2`\ ，遍历\ :math:`k`
+-  对于每个当前的\ :math:`k`\ ，调用随机数发生器\ :math:`Random(k)`\ ，得到一个索引值\ :math:`rndindex`
+-  交换元素\ :math:`A\lbrack k\rbrack`\ 和\ :math:`A\lbrack rndindex\rbrack`\ 。
+
+这个新的线性程序的算法就是随机算法（\ **randomized
+algorithm**\ ）。它的运行时间取决于算法中每次得到的随机序列。
+
+| 那么这样的随机算法的运行时间（或者时间复杂度）是怎么样的呢？
+| 因为\ :math:`n`\ 个半平面的排列有\ :math:`n!`\ 种，所以运行时间就有\ :math:`n!`\ 种。而每种随机排列所产生的随机算法的运行时间是相互独立的（独立同分布），所以我们就需要分析它们的\ **期望运行时间**\ （\ **expected
+  running
+  time**\ ），也就是这\ :math:`n!`\ 种运行时间的数学期望。而定理4.8说明了这样的期望运行时间是\ :math:`O(n)`\ ，而且我们对\ :math:`n`\ 个半平面的输入没有做任何的假设和限定。
 
 射线（ray）
 :math:`\rho = \{ p + \lambda\overset{\rightarrow}{d}:\lambda > 0\}.`
