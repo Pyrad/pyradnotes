@@ -153,3 +153,18 @@ watch -l array_name[array_index]
 
 选项`-l`告诉编译器对变量名（或表达式）去求值（evaluate）。
 
+
+
+# GDB save breakpoints
+
+Save current breakpoints as a file
+
+```shell
+save breakpoints my_bp_fname.brk
+```
+
+Load a breakpoint file into current gdb sesseion
+
+```shell
+source my_bp_fname.brk
+```
