@@ -8,8 +8,6 @@ date: 2022-04-22 17:48:28
 git init
 ```
 
-
-
 ## Set the name and email
 
 Globally
@@ -18,13 +16,13 @@ Globally
 $ git config --global user.name <USER_NAME>
 $ git config --global user.email <EMAIL>
 ```
+
 Locally
+
 ```shell
 $ git config --local user.name <USER_NAME>
 $ git config --local user.email <EMAIL>
 ```
-
-
 
 ## Existing configurations
 
@@ -33,12 +31,12 @@ use command
 ```shell
 $ git config --list
 ```
+
 To get a specific configuration, use command `git config <CONFIG_NAME>`, e.g.
+
 ```shell
 $ git config user.name
 ```
-
-
 
 ## To get help
 
@@ -47,8 +45,6 @@ use command like this, `git help <KEYWORD>`, e.g.
 ```shell
 $ git help config
 ```
-
-
 
 ## Check logs
 
@@ -70,8 +66,6 @@ git log --oneline --before="2022.06.12"
 git log --oneline --until="2022.06.12"
 ```
 
-
-
 ## Add & Commit
 
 If you add a new file which hasn't been tracked before in the repository,
@@ -80,17 +74,19 @@ first you have to put this file into the so-called "staged area", using command 
 ```shell
 git add <FILE_NAME>
 ```
+
 If you have already modified a file which has been tracked before in the repository,
 you also have to put file into the so-called "staged area", using the command below (indeed same as the command above),
+
 ```shell
 git add <FILE_NAME>
 ```
+
 After you have put the file (newly added or already be tracked in repo), you put file(s) into (local) repository using the command below,
+
 ```shell
 git commit
 ```
-
-
 
 ## Differences (`git diff`)
 
@@ -99,6 +95,7 @@ If you modify a file, you can tell the difference by the command below,
 ```shell
 git diff
 ```
+
 If you have already put the file(s) into the staged area, you will see nothing by 'git diff'.
 This time, you should use the command below to tell the differences,
 
@@ -106,7 +103,9 @@ This time, you should use the command below to tell the differences,
 git diff --cached
 git diff --staged  --> git version >= 1.61
 ```
+
 Use a tool to check the differences of files,
+
 ```shell
 # full
 git difftool --tool=tkdiff
@@ -115,11 +114,10 @@ git difftool -t <tool_name>
 ```
 
 To see all the differences in current branch and master branch, use command below to output those differences,
+
 ```shell
 git format-patch -M master -o <OUTPUT_DIR>
 ```
-
-
 
 ## Patch a branch
 
@@ -128,8 +126,6 @@ To patch the current branch with `*.patch` files, use command,
 ```shell
 git am ~/<SOME_DIR>/*.patch
 ```
-
-
 
 ## Create/Delete branch
 
@@ -144,12 +140,12 @@ To remove/delete a branch (git branch), use command
 ```shell
 git branch -d <BRANCH_NAME>
 ```
+
 If there's anything not fully merged, git will stop the deletion. Use force command to do it (if confirmed to delete),
+
 ```shell
 git branch -D <BRANCH_NAME>
 ```
-
-
 
 ## Clean untracked files
 
@@ -160,6 +156,7 @@ One way to remove untracked files is,
 ```shell
 git clean -n
 ```
+
 Note here the option `-n` is very important, it just shows files untracked, no deleting
 
 (2) Clean if all the files listed above are supposed to be removed,
@@ -168,31 +165,27 @@ Note here the option `-n` is very important, it just shows files untracked, no d
 git clean -f
 ```
 
-
-
 ## Remove unstaged files
 
 To remove unstaged files, use commands below,
 
-(1)	For a specific file use:
+(1)    For a specific file use:
 
 ```shell
 git checkout <PATH_TO_FILE_TO_REVERT>
 ```
-(2)	For all unstaged files use:
+
+(2)    For all unstaged files use:
+
 ```shell
 git checkout -- .
 ```
-
-
 
 ## Rename a branch
 
 ```shell
 git branch -m <OLD_BRANCH_NAME> <NEW_BRANCH_NAME>
 ```
-
-
 
 ## Rebase a branch
 
@@ -201,13 +194,12 @@ git branch -m <OLD_BRANCH_NAME> <NEW_BRANCH_NAME>
 ```shell
 git checkout <DEV_BRANCH>
 ```
+
 2. Rebase
 
 ```shell
 git rebase master
 ```
-
-
 
 ## Show origin information
 
@@ -217,13 +209,12 @@ $ git remote -v
 $ git remote show origin
 ```
 
-
-
 ## Move a file
 
 ```shell
 git mv <OLD_FILE> <NEW_FILE>
 ```
+
 By moving files with git, we notify git about two things
 
 (1) The hello.html file was deleted.
@@ -232,8 +223,6 @@ By moving files with git, we notify git about two things
 
 Both facts are staged immediately and ready for a commit. Git status command reports the file has been moved.
 
-
-
 ## Git aliases
 
 Equals to `git checkout`
@@ -241,20 +230,24 @@ Equals to `git checkout`
 ```shell
 $ git config --global alias.co checkout
 ```
+
 Equals to `git branch`
+
 ```shell
 $ git config --global alias.br branch
 ```
+
 Equals to `git commit`
+
 ```shell
 $ git config --global alias.ci commit
 ```
+
 Equals to `git status`
+
 ```shell
 $ git config --global alias.st status
 ```
-
-
 
 ## Steps to create branch & push
 
@@ -277,14 +270,12 @@ git commit -m "XXXXX"
 git push (or use git push origin <NEW_BRANCH_NAME>)
 ```
 
-
-
 ## Remove files and restore files
 
 Reference website [git 删除文件与恢复](https://www.jianshu.com/p/c3ff8f0da85e)
 
 - A file was deleted locally by `shell` commands other than `git` commands, but it was not added to the stage area, use `checkout` option to restore
-
+  
   ```shell
   # Remove a file locally by shell commands
   rm <FILE>
@@ -293,7 +284,7 @@ Reference website [git 删除文件与恢复](https://www.jianshu.com/p/c3ff8f0d
   ```
 
 - A file was deleted locally by `shell` commands other than `git` commands, and it **was** added to the stage area, first use `reset` command to rollback the file to the status of locally removed, and then use `checkout` option to restore
-
+  
   ```shell
   ##### 1st situation
   # Remove a file locally by shell commands
@@ -315,7 +306,7 @@ Reference website [git 删除文件与恢复](https://www.jianshu.com/p/c3ff8f0d
   ```
 
 - A file was deleted locally either by `shell` commands or `git` commands, and it **was** not only added to the stage area, but also committed to local repository, then we need to use `reset --hard <ID>` to rollback (ID is got by using `git log` command)
-
+  
   ```shell
   ##### 1st situation
   # Remove a file locally by shell commands
@@ -339,9 +330,9 @@ Reference website [git 删除文件与恢复](https://www.jianshu.com/p/c3ff8f0d
   # Rollback
   git reset --hard <ID>
   ```
-  
-- A file was deleted locally either by `shell` commands or `git` commands, and it **was** not only committed to the local repository, but also push to the remote repository (e.g., Github), then following the steps above, and the use `git push -f`to push the restored files back to the remote repository. Note here `-f` is a must, because git doesn't allow lower versions override higher versions.
 
+- A file was deleted locally either by `shell` commands or `git` commands, and it **was** not only committed to the local repository, but also push to the remote repository (e.g., Github), then following the steps above, and the use `git push -f`to push the restored files back to the remote repository. Note here `-f` is a must, because git doesn't allow lower versions override higher versions.
+  
   ```sh
   ##### 1st situation
   # Remove a file locally by shell commands
@@ -369,9 +360,6 @@ Reference website [git 删除文件与恢复](https://www.jianshu.com/p/c3ff8f0d
   # Push to remote
   git push -f
   ```
-
-
-
 
 ## Change repository's fetch origin
 
@@ -410,8 +398,6 @@ warning: remote.origin.url has multiple values
 fatal: could not set 'remote.origin.url' to 'git@gitee.com:pyrad/cpp11.git'
 ```
 
-
-
 ## Set editor when committing
 
 修改`git`提交`commit`时所使用的编辑器
@@ -419,8 +405,6 @@ fatal: could not set 'remote.origin.url' to 'git@gitee.com:pyrad/cpp11.git'
 ```bash
 $ git config --global core.editor "vim"
 ```
-
-
 
 ## Change last commit message
 
@@ -430,3 +414,10 @@ $ git config --global core.editor "vim"
 $ git commit --amend
 ```
 
+## Git to show messages of only one commit
+
+Only show the names of files modified, w/o diff
+
+```shell
+git show SHA_COMMIT_KEY --name-only
+```
