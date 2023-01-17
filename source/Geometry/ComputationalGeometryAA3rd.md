@@ -1832,6 +1832,10 @@ $$
 因为$n$个半平面的排列有$n!$种，所以运行时间就有$n!$种。而每种随机排列所产生的随机算法的运行时间是相互独立的（独立同分布），所以我们就需要分析它们的**期望运行时间**（***expected running time***），也就是这$n!$种运行时间的数学期望。而定理4.8说明了这样的期望运行时间是$O(n)$，而且我们对$n$个半平面的输入没有做任何的假设和限定。
 
 
+**引理4.8** 二维平面空间上，有$n$个约束条件的线性规划问题，可以以$O(n)$的时间复杂度和最坏情况下线性的空间复杂的解决。
+
+>Lemma 4.8 The 2-dimensional linear programming problem with n constraints can be solved in $O(n)$ randomized expected time using worst-case linear storage.
+
 
 
 
