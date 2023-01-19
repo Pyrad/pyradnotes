@@ -69,3 +69,6 @@ Vocabulary  (reStructuredtext)
     * - **preamble**
       - /ˈpriːæmb(ə)l/
       - *n.* （法规、契约的）序言，绪论；前言，开场白
+    * - **blow-by-blow**
+      - /ˈbləu-bai-bləu/
+      - *adj.* 详尽的；逐一记录的
