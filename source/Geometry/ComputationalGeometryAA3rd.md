@@ -8,8 +8,6 @@
 
 Notes by Pyrad, 2023-01-03
 
-
-
 ## About the book
 
 **Third Edition (March 2008)**
@@ -17,8 +15,6 @@ Notes by Pyrad, 2023-01-03
 **[Mark de Berg](http://www.win.tue.nl/~mdberg/),** TU Eindhoven (the Netherlands)
 **[Otfried Cheong](http://tclab.kaist.ac.kr/~otfried/),** KAIST (Korea)
 **[Marc van Kreveld](http://www.cs.uu.nl/staff/marc.html), [Mark Overmars](http://www.cs.uu.nl/staff/markov.html),** Utrecht University (the Netherlands)
-
-
 
 [Website URL](http://www.cs.uu.nl/geobook/)
 
@@ -28,15 +24,9 @@ Published by Springer
 
 [Errata Page for 2nd Edition](http://www.cs.uu.nl/geobook/buglist2a.pdf)
 
-
-
 ## Resources
 
 [*Handbook of Discrete and Computational Geometry, 3rd Edition, Online Page*](https://www.csun.edu/~ctoth/Handbook/HDCG3.html)
-
-
-
-
 
 ## Words
 
@@ -146,8 +136,6 @@ Published by Springer
 
 **intriguing** /ɪnˈtriːɡɪŋ/ adj.非常有趣的，引人入胜的（intrigue现在分词）
 
-
-
 ## Usage
 
 thought experiment
@@ -180,81 +168,58 @@ dot product 点积（注意，不是production）
 
 inequality 不相等
 
-
-
 > Define the *y*-interval of a segment to be its orthogonal projection onto the *y*-axis.
->
+> 
 > 把一条线段在 *y* 轴上的正交投影，叫做它的 *y*-interval
 
-
-
 > they are far apart in the y-direction
->
+> 
 > 它们在y方向上相距足够远
 
-
-
 > We denote the *event queue* by Q
->
+> 
 > 我们把event queue记作$\mathcal{Q}$
 
-
-
 > This horizontal sweeping line is sloping just a tiny bit upward
->
+> 
 > 这条横向的扫描线翘起来一点点
 
-
-
 > We need an operation that removes the next event that will occur from Q, and returns it so that **it can be treated**.
->
+> 
 > 需要一个从队列Q里面删除下个event（point）的操作，并且返回它，以便（对它进行）处理。
 
-
-
 > Therefore we model a gallery as a **polygonal region** in the plane.
->
+> 
 > 我们把画廊当做一个二维平面上的多边形
-
-
 
 > different orientations of the object **give rise to** different molds.
 
-
-
 > Take the plane spanned by the vectors (we assume both vectors are rooted at the origin)
->
+> 
 > 由两个向量展开的平面，假设这两个向量从原点出发。
-
-
-
-
 
 ## Names
 
 - Graham’s scan
+
 - output-sensitive algorithm
+
 - planar graph
+
 - planar subdivisions
+
 - Chapter 3
+  
   - Art Gallery Problem (combinatorial geometry)
   - dual graph
   - Monotone polygon
 
 - Chapter 4
+  
   - Linear optimization (linear programming，就是线性规划)
   - Simplex Algorithm (运筹学中的单纯形算法，in operations research area)
   - Low-dimensional linear programming problems
   - expected running time 期望运行时间（即n个运行时间的数学期望）
-
-
-
-
-
-
-
-
-
 
 ## Maths
 
@@ -263,8 +228,6 @@ $e'$ ：$e$ prime（或 $e$ dash）
 $e''$ ：$e$ double prime（或 $e$ double dash）
 
 $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符号（circumflex）
-
-
 
 ## Contents
 
@@ -288,8 +251,6 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 - Bibliography
 - Index
 
-
-
 ## Preface
 
 序言要点
@@ -300,8 +261,6 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 - 带星号（`*`）的章节作为扩展阅读，以及叫做 *Notes and Comments*的小节，可以通过其了解更多。
 - 不需要应用领域的知识，只需要基本的数据结构和算法知识储备。
 - 有网页可以找到[Errata Page](http://www.cs.uu.nl/geobook/)以及其他可用资源。
-
-
 
 ## 1 Computational Geometry - Introduction
 
@@ -318,8 +277,6 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 - CAD/CAM
 - Geographic Information System
 
-
-
 ### 1.1 An Example: Convex Hulls
 
 好的几何算法问题解决方案，本质上有两方面
@@ -328,8 +285,6 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 - 对算法和数据结构的合理使用
 
 本节举例，介绍了两种计算二维平面上凸体的轮廓的算法（二维平面凸体，planar convex hulls）
-
-
 
 #### 1.1.1 第一种算法
 
@@ -349,21 +304,15 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 
 **算法复杂度**：$O(n^3)$
 
-
-
 对于伪代码中的几个的说明
 
 - 诸如判断一个点在一条直线（线段）的左边或右边的操作，默认已经有现成的实现可以使用
 - 从集合 $\mathcal{E}$ 中找出依次连接的有向线段的步骤是，首先从 $\mathcal{E}$ 中取任一有向线段 $e_1$，以其头点（即 $p \rightarrow q$ 线段的 $q$ 点）为目标，从集合 $\mathcal{E}$ 中找出第二条有向线段 $e_2$，其尾点（即 $p \rightarrow q$ 线段的 $p$ 点）为 $e_1$ 的头点，然后再以 $e_2$ 的头点搜索下一条有向线段，直到搜索到的这些线段 $e_1$,  $e_2$, $e_3$, ..., $e_N$ 构成一条闭合的折线段。
 - 关于算法复杂度是$O(n^3)$。从 $n$ 个点中取两个点的组合是 $\frac{n!}{2!(n-2)!}$，所以是$O(n^2)$，对每一条有向线段，查看剩余 $n-2$ 个点是否在其右侧，这样时间复杂度就达到了$O(n^3)$。最后一步依次找出有向线段并按顺序连接，时间复杂度是 $O(n^2)$ ，所以最终时间复杂度就是$O(n^3)$。
 
-
-
 关于 ***degenerate case*** 或者叫做 ***degeneracy***
 
 在判断一个点 *k* 是否在有向线段 $p \rightarrow q$ 右侧时，点 *k* 是可能落在有向线段 $p \rightarrow q$ 上的，针对这种退化情况，可以把它也当做是在有向线段右侧的一种（退化）情况。
-
-
 
 关于 ***rounding error*** 导致的程序健壮性问题（robustness）
 
@@ -374,8 +323,6 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 3. 要么最终的集合 $\mathcal{E}$ 中的有向线段除了可以组成一个闭合的折线段外，还有额外剩余的几条有向线段
 
 正是由于这种robust的问题，迫使我们需要寻找一种更为健壮和正确的算法。
-
-
 
 #### 1.1.2 第二种算法
 
@@ -396,14 +343,12 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 - 如果这三个点是**“右转”**的，那么新加入的点 $p_i$，就是最终 upper convex hull的一部分（但有可能在加入之后的点以后，继续做调整从而删除点 $p_i$）。
 
 - 如果这三个点是**“左转”**的，那么因为目前 $p_i$ 的 $x$ 坐标最大，它就一定是在目前遍历过的convex hull上，所以我们就需要从 $p_{i-1}$ 开始向后检查，每次删除最后3个点的中间的点（即每次的倒数第二个点），做重新调整。
-
+  
   先删除 $p_{i-1}$ 这个点，然后检查此时的最后三个点，$p_{i-3}$, $p_{i-2}$, $p_i$，如果它们组成了**“右转”**的折线，那么本次调整到此结束，然后继续加入下一个点 $p_{i+1}$；如果它们组成了**“左转”**的折线，那么就需要再次删除中间点，即$p_{i-2}$，然后继续检查时的最后三个点，$p_{i-4}$, $p_{i-3}$, $p_i$，并重复上述步骤，直到最后三个点组成**“右转”**的折线（或者直到剩下最后2个点），本次调整才到此结束，然后继续加入下一个点 $p_{i+1}$。
 
 当针对上述两种情况做完调整之后，此时继续加入下一个点 $p_{i+1}$，并重复上述步骤，直到加入最右边的点 $p_N$，此时就得到了 *upper hull*。
 
 寻找 *lower hull* 的incremental的步骤和上述类似。
-
-
 
 第二种算法简述
 
@@ -426,15 +371,11 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 
 时间复杂度：$O(nlogn)$
 
-
-
 对于该算法的几点说明
 
 - 在排序时，如果 $x$ 坐标相同，可以按照 lexicographic 的办法排序，即先按照 $x$ 坐标排序，如果 $x$ 坐标相同，就再按照 $y$ 坐标排序（仅对 $x$ 坐标相同的点的情况下）。
 - 在上面判断最后三点是否组成**“右转”**的折线段时，如果这三点共线，仍然把这种情况归为**”左转“**的情况，从而触发删除三点里面中间点的操作处理。
 - 因为使用的是floating point calculation，并且依然存在rounding error，所以最后的点列表，有一定概率并不是实际上真正的convex hull的点列表（比如有三个点靠的很近以至于是一个左转的折线段，但被计算为右转了），但这种结果是可以接受的。
-
-
 
 #### 1.1.3 计算convex hull的时间复杂度
 
@@ -454,8 +395,6 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 
 因此归纳出来，到目前为止，除了{$p_1$, $p_2$, ..., $p_i$}，所有的点都在new chain的下方。算法正确性得到证明。
 
-
-
 关于时间复杂度的证明。
 
 对于upper hull，按字典序排序，时间复杂度是$O(nlogn)$。
@@ -470,8 +409,6 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 
 对于lower hull也是类似的。所以加起来，整个算法的时间复杂度就是$O(nlogn)$。
 
-
-
 ### 1.2 Degeneracies and Robustness
 
 提出算法的三个步骤（阶段）
@@ -480,19 +417,13 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 - 其次，再考虑前面可能出现的退化情况（边界条件，特殊和极端情况等问题），调整算法细节以便处理。
 - 最后，实现细节。比如原子操作，如何遍历等等。
 
-
-
 比如，在convex hull的算法中，我们可以先假设没有三个共线的点，没有两个点的 *x* 坐标是相同的。
 
 symbolic perturbation schemes指在设计和实现阶段忽略了special case，但在实际应用过程当中算法仍然正确的方法。
 
-
-
 在实现细节的阶段，使用实数（浮点数）计算可能导致假设在某种情况下失效的问题，这是算法健壮性的体现。就像前面第二种算法中提到的，最终的output也许不是真正意义上的真实结果，但也是十分接近真实的结果，在这种情况下，需要预期这种情况可能的后果，并避免有次可能产生的crash问题等等。
 
 使用现有的arithmetic library是其中一种办法，如果不能达到我们所需要的要求，就需要自己实现一些特定情况下的处理。
-
-
 
 ### 1.3 Application Domains
 
@@ -504,8 +435,6 @@ symbolic perturbation schemes指在设计和实现阶段忽略了special case，
 - CAD/CAM
 - Other applications domains （比如 molecular modeling，pattern recognition等）
 
-
-
 ### 1.4 Notes and Comments
 
 本节主要是对本章内容的一些延伸以及参考书籍资料等出处说明，提到了本章算法的来源，其发展的简要历史，以及相似算法的研究情况。
@@ -513,12 +442,6 @@ symbolic perturbation schemes指在设计和实现阶段忽略了special case，
 比如，本章所讨论的convex hull问题是Computational Geometry的经典问题，而本章第二种算法，其实是Graham’s scan算法，是Andrew基于最早的Graham提出的算法的改进。
 
 还有其他的一些算法，时间复杂度也是$O(nlogn)$。
-
-
-
-
-
-
 
 ## 2 Line Segment Intersection - Thematic Map Overlay
 
@@ -532,8 +455,6 @@ symbolic perturbation schemes指在设计和实现阶段忽略了special case，
 
 GIS中，在overlay上，不同信息有交叉的地方（比如查看河流和道路的重叠情况），有时是一个交叉点，有时是一个交叉的区域。
 
-
-
 ### 2.1 Line Segment Intersection
 
 本节要解决的问题是，给定二维平面上一个有 *n* 个线段的集合，找出所有的交点。
@@ -546,15 +467,11 @@ Brute-forced algorithm的时间复杂度是$O(n^2)$，但实际情况，有可�
 
 即，我们希望算法的复杂度依赖的不仅是输入点的个数，而且也是输出的交点的个数，这样的算法叫做***output-sensitive algorithm***。
 
-
-
 可以利用的观察几何结果是：靠的比较近的线段是可能有交点的候选计算对象，而相离较远的线段是不需要计算交点的。
 
 所以思路是，把所有线段向y轴做投影，得到投影线段有重叠的那些线段，就是需要计算交点的候选线段。
 
 为什么没有投影重叠的线段就一定没有交点？这可以通过反证法得出，如果没有投影重叠的线段有交点，那么这个交点的y坐标值一定是介于两个线段的4个端点的y值之间，而这又说明这两条线段是有投影重叠的，因此矛盾，从而的证。
-
-
 
 使用到的技术叫做：***plane sweep algorithm***。
 
@@ -572,81 +489,69 @@ Brute-forced algorithm的时间复杂度是$O(n^2)$，但实际情况，有可�
 
 - 如果***event point***是两条线段的**intersection point**（这个intersection point是前面计算得到加入进来的），那么在该点之后，相邻的adjacent neighbor就会发生改变，所以就要测试（计算）这两条segments和它们各自左右相邻的segment的交点。
 
-
-
 > Lemma 2.1 Let *si* and *sj* be two non-horizontal segments whose interiors intersect in a single point $p$, and assume there is no third segment passing through $p$. Then there is an event point above $p$ where *si* and *sj* become adjacent and are tested for intersection.
 
 因为根据前面遇到的event point是一条线段的upper point时的操作（计算adjacent segment之间的intersection point），这个引理主要想说明，如果两条都不是水平（也不共线）的线段，如果有交点，那么在这个交点的上方，一定有一个event point，在那个event point的时候，这两条线段变成adjacent，并且会被检查（计算）是否有交点。
 
 这里**暂时忽略**了三种特殊情况：两条线段可能共线（重合），可能有水平的情况，以及有第三天线段穿过交点。
 
-
-
 所以，简要叙述，***line sweeping algorithm***的大体思路如下
 
 > Let’s briefly recap the overall approach. We imagine moving a horizontal sweep line ℓ downwards over the plane. The sweep line halts at certain event points; in our case these are the endpoints of the segments, which we know beforehand, and the intersection points, which are computed on the fly.
->
+> 
 > While the sweep line moves we maintain the ordered sequence of segments intersected by it. When the sweep line halts at an event point the sequence of segments changes and, depending on the type of event point, we have to take several actions to update the status and detect intersections.
 
 假设有一条水平扫描线，从上而下移动，每次移动到一个特殊的点（event point）。这样的event point有两种，一种是每条线段的upper point（end point），另一种是某两条线段的交点（intersection point）。前一种在计算之前就已知，而后一种是在扫描线移动过程中计算得出。
 
 当扫描线移动时，维护一个有序的线段列表，列表中的每个线段是和扫描线相交的。当扫描线移动到下一个event point的时候，更新线段列表使其保持有序，同时根据event point的类型，更新状态（它是和扫描线相交的线段集合，每次操作有可能添加或删除一条线段）并检查某两条线段是否有交点。
 
-
-
 sweep line遇到三种不同event point时对应的操作
 
 - 如果**event point**是一条线段的**upper point**（end point），就要检查这个upper point所在的线段，和它左右两个相邻的线段是否有交点，如果有交点，那么这个交点就是一个新的event point。当然，upper point所在的线段要放入status中去。
-
+  
   因为sweep line上方的event point都是已知的或已经计算过的，所以关注的是sweep line下方的交点。
 
 - 如果**event point**是某两条线段的**交点**（intersection point），那么这两条线段在所维护的有序线段列表（status）里面的位置就要交换，同时因为位置变化，它们各自相邻的线段也发生了变化（但只变化了一个，因为另一个仍然是它们自己中的一个），所以也要检查它们和各自新邻近的线段之间是否有交点，如果有并且是之前没有的event point，那么就有发现了一个或两个新的event point。
 
 - 如果**event point**是一条线段的**lower point**（end point），那么这条线段原先左右两条线段就变成了直接相邻的线段，就要检查（计算）这两条线段是否有交点，同样的，如果有，就是新的event point。当然，这个lower point所在的线段要从status里面移除出去。
 
-
-
-
-
 算法当中需要的两个数据结构
 
 - **event queue**（记作 $\mathcal{Q}$）
-
+  
   **需要支持删除一个点（event point）的操作**，并返回这个点以便对其处理。
-
+  
   （如果两个点有相通的y坐标，返回x坐标较小的一个。这个实际上说明，如果一个线段是水平时，当水平的sweep line扫描到这条线段时，upper point是其左边的点，lower point右边的点，即sweep line先遇到的event point是左边的点。）
-
+  
   **需要支持插入一个点（event point）的操作**，因为新的intersection point是在sweep line移动过程中计算得出。
-
+  
   同时，允许两个event point是共点的（coincide，比如两条线段的upper point可能是同一个点），但把它们当做是同一个点，所以需要支持查看一个event point是否在$\mathcal{Q}$中已经存在。
-
+  
   根据上述特点，采用平衡二叉搜索树（**Balanced Binary Search Tree**，BST），并定义点（event point） $p$ < $q$ 的“小于”操作符（`<`）为
-
+  
   （1）如果 $p$ 和 $q$ 的y坐标相同，那么 $p$ 的x坐标小于$q$ 的x坐标
-
+  
   （2）如果 $p$ 和 $q$ 的y坐标不相同，那么 $p$ 的y坐标小于$q$ 的y坐标
-
+  
   需要删除一个点的操作的原因是，sweep line向下移动时，需要event point的顺序，移动到下一个event point上，而这是二叉树删除一个节点并返回的操作（同时二叉搜索树会重新平衡并排序）
-
+  
   需要插入一个点的操作的原因是，当sweep line移动到不是intersection point的event point的时候，要计算相邻两条线段之间的intersection point，如果有就要插入BST，所以这是BST的插入节点的操作。
 
 - **status**（记作 ***J***）
-
+  
   这个所谓的状态，是指当前和水平的sweep line相交的**线段**的**有序**集合。
-
+  
   对于给定的一条线段，为了计算它和相邻线段的相交情况，它必须是可以动态调整的，即：
-
+  
   （1）当sweep line遇到一条线段的upper end point的时候，该线段需要放入status，并且需要查看此时它和左右相邻的两条线段的相交情况，如果有交点就需要计算出来，并放入**event queue**里
-
+  
   （2）当sweep line遇到一条线段的lower end point的时候，该线段需要从status中移除，同时它原先左右相邻的两条线段现在变为直接相邻，那么也要再次查看并计算这两条线段是否有交点，如果有，同样放入**event queue**里
-
+  
   （3）当sweep line遇到的event point是intersection point的时候，那么就需要交换这两条相交的线段在status中的位置，同时在status中，它们各自分别有一条相邻的线段发生了变化，同样需要再查看并计算交点，如果有交点，同样放入**event queue**里
-
+  
   同样根据上面的特点，也采用平衡二叉搜索树（**Balanced Binary Search Tree**，BST），但这里的BST里面，只有叶子节点是存储了线段的信息，而树中间的每个节点（interior nodes），存储的都是其左子树里面最右边（叶）节点的线段信息。
-
+  
   虽然中间的节点也可以存储线段信息，但为了方便陈述算法，所以中间节点都是用来引导寻找最终叶节点的导引信息（values to guide the search），而不是最终的线段数据信息（data item）。
-
-
 
 ***FindIntersections***算法简述
 
@@ -668,8 +573,6 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 
 或者更具体地，O((n+I)logn)，其中，n是输入线段个数，I是交点个数
 
-
-
 ***HandleEventPoint(p)*** 步骤简述
 
 - 输入是点 $p$
@@ -679,7 +582,7 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 - 在status ***J*** 中找到所有包含点 $p$ 的线段，它们都是相邻的，记 ***L(p)*** 是lower endpoint为 $p$ 的线段集合，记 ***C(p)*** 是线段中间包含点 $p$ 的线段集合（即点 $p$ 是它们之间某两条或几条线段的交点）。
 
 - 如果 ***L(p)*** ∪ ***U(p)*** ∪***C(p)*** 至少有一条线段，就说明点 $p$ 是一个交点
-
+  
   - 报告这个结构，并同时报告它所在的线段（在***L(p)***， ***U(p)*** 和 ***C(p)*** 中）
 
 - 从status ***J*** 中删除***L(p)*** ∪***C(p)*** （即它们的并集）
@@ -689,41 +592,35 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 - 从上面的两个步骤可以得到，删除了***C(p)*** 又添加了***C(p)*** ，那么***C(p)*** 中的线段在status ***J*** 中的顺序逆序了。
 
 - 如果***U(p)*** ∪***C(p)*** （即它们的并集）为空集
-
+  
   - 把 status ***J*** 中，在 $p$ 点左右两边的线段记为 *sl* 和 *sr*，调用寻找event point的函数***FindNewEvent(sl, sr, p)***
-
+    
     如果 *sl* 或 *sr* 不存在，就忽略此步骤。
 
 - 如果***U(p)*** ∪***C(p)*** （即它们的并集）不是空集
-
+  
   - 把既在 ***U(p)*** ∪***C(p)*** 中又在status ***J*** 中，最左边的线段记作 $s_1$，把在status ***J*** 中 $s_1$ 左边的线段记作 *sl*，然后调用寻找event point的函数***FindNewEvent(sl, s1, p)***。
-
+    
     如果 *sl* 不存在，就忽略此步骤。
-
+  
   - 把既在 ***U(p)*** ∪***C(p)*** 中又在status ***J*** 中，最右边的线段记作 $s_2$，把在status ***J*** 中 $s_1$ 右边的线段记作 *sr*，然后调用寻找event point的函数***FindNewEvent(s2, sr, p)***
-
+    
     如果 *sr* 不存在，就忽略此步骤。
-
-
 
 ***FindNewEvent(sl, sr, p)*** 步骤简述
 
 - 如果线段 *sl* 和 *sr* 在sweep line的下方相交，或者就在sweep line上相交并且在当前event point $p$ 的右边，那么这个新的交点就是在 $\mathcal{Q}$ 中还没出现的新的event point
   - 把这个新的交点加入到 $\mathcal{Q}$ 中
 
-
-
 Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间复杂度的证明。
 
 根据这两个引理，得出Theorem 2.4。
 
 >  Lemma 2.2 Algorithm FINDINTERSECTIONS computes all intersection points and the segments that contain it correctly.
->
+> 
 > Lemma 2.3 The running time of Algorithm FINDINTERSECTIONS for a set S of n line segments in the plane is O(nlogn+I logn), where I is the number of intersection points of segments in S.
->
+> 
 > Theorem 2.4 Let S be a set of n line segments in the plane. All intersection points in S, with for each intersection point the segments involved in it, can be reported in O(nlogn+I logn) time and O(n) space, where I is the number of intersection points.
-
-
 
 ### 2.2 The Doubly-Connected Edge List
 
@@ -740,7 +637,7 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
 - 因为一个edge是两个face的边界，所以edge上需要有两个指针来指向这两个face
 
 - 为了更方便表示当前描述的edge是哪个face的edge，可以把一条edge拆解为两条 ***half-edge***
-
+  
   - 这两条half-edge是不同face的，而且每个half-edge都有唯一的指向前一个half-edge和执行后一个half-edge的指针
   - 而这同样意味着，一条half-edge只属于同一个face
   - 对于同一条edge的两条half-edge，我们把它们叫做 ***twins***
@@ -749,7 +646,7 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
   - 根据上面的定义，为了访问face的边界，可以只存储一个指向half-edge的指针，这样就可以沿着逆时针方向遍历这个face的所有half-edge了。
 
 - 为了在表示洞（hole）时，仍然有沿着half-edge走时，face还在它的左边，就把洞的half-edge的方向定义为顺时针。
-
+  
   而且，为了表示洞，需要需要有两个指向half-edge的指针，一个逆时针表示包含洞的face的边界，一个顺时针表示洞本身。
 
 - 还可以存储多个half-edge的指针，而且这些指针沿着这些edge遍历起来的时候，没有重复的edge，这就是isolated island的形式（为了简化期间，书中暂时不作讨论）
@@ -757,26 +654,26 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
 **总结起来**，doubly-connected edge list数据结构有三种记录数据（record）
 
 - vertex record
-
+  
   它用来记录每个vertex（记作v）的坐标Coordinate(v)，并且它还有一个指针$IncidentEdge(v)$指向一条half-edge，而且这条half-edge的起点就是v
 
 - face record
-
+  
   一个face（记作$f$）
-
+  
   - 存储一个指针$OuterComponent(f)$，指向的是outer boundary的half-edge。（如果face是unbound，即open edges的话，这个指针就是空？）
   - 还存储一个指针$InnerComponent(f)$，指向的是inner boundary的half-edge，这是用来表示洞的
 
 - half-edge record
-
+  
   一个half-edge（记作$e$）
-
+  
   - 存储一个指针$Origin(e)$指向它的起点（origin）
   - 存储一个指针$Twin(e)$指向它的twin half-edge
   - 存储一个指针$IncidentFace(e)$，表示它绑定（bound）的face
   - 存储一个指向它前面half-edge的指针$Prev(e)$
   - 存储一个指向它后面half-edge的指针$Next(e)$
-
+  
   没有必要存储它的终点（destination），因为可以通过$Origin(Twin(e))$得到。
 
 本节还画了vertex，edge，half-edge，face以及上面提到的各种record的示意图，如下。
@@ -784,8 +681,6 @@ Lemma 2.2 和Lemma 2.3 分别是这个算法的正确性，以及算法的时间
 （图暂时省略，图位于第32页，页码是41）
 
 这里也提到了，有时候有些record在一些应用中不是必须的（比如river和road构成的face，在某些应用中没有太多意义），所以在实现的时候可以适当忽略，以便在算法实现中更方便地调整其他数据。
-
-
 
 ### 2.3 Computing the Overlay of Two Subdivisions
 
@@ -811,11 +706,7 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 在sweep line向下扫描的过程中，sweep line上面是已经计算好的最终overlay结果的一部分，是不再变化的。
 
-
-
 当遇到一个event point时候的处理：当event point是来自原先同一个subdivision的edges时，那么这个event point是可以被复用的；但如果event point是来自原先两个subdivision的不同edges时，那么我们就需要更新数据结构$D$，更新（加入或删除）某些edges，以便把两个subdivision通过新的intersection point而连接起来。
-
-
 
 这里通过举例，说明了一个subdivision中的一条edge，是如何和另一个subdivision中的其他几个edge相交，然后做处理的。这个过程比较tedious，但是不难（difficult）
 
@@ -825,11 +716,7 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 值得说明的是，这个例子中，一条edge恰好经过的是另一个subdivision的一个vertex，因此，在调整新产生的edge的prev和next的时候，是按照clockwise的转向，找到第一个相邻的edge作为Next()指针所指向的edge，而按照anti-clockwise的转向，找到其第一个相邻的edge作为Prev()指针所指向的edge。这个可以结合图的说明清晰容易地看到。
 
-
-
 除了更新生成的新half-edge pair，还要找到$O(S_1, S_2)$ 中每个face $f$ 的 $OuterComponent(f)$ （指向一个表示outer boundary的half-edge）和$InnerComponent(f)$ （指向一个或几个half-edge的指针，表示一个或多个洞）。还要给每个edge的$IncidentFace()$设定合理的指针指向face record。最后，每个$face$还要用原先两个subdivision中包含这个$face$的face name来给它做label。
-
-
 
 如何判断一个half-edges组成的boundary是outer boundary，还是表示hole的inner boundary？
 
@@ -837,19 +724,13 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 （这里的图位于第36页，页码是45）
 
-
-
 通过一个图的例子，说明了如何确定一个face $f$是由一个或几个cycle组成的。如果是多个cycles组成，一般有几个洞的cycle（half-edges是顺时针的）和一个outer cycle（for outer boundary）组成，而且一个洞要通过对应的数据结构（比如class上的成员变量）连接到另一个洞或outer boundary上，这样才能表明这些cycles组成的是同一个face $f$。
-
-
 
 > Lemma 2.5 Each connected component of the graph $G$ corresponds exactly to the set of cycles incident to one face.
 
 关于这个lemma的证明，没看懂。
 
 总之，他想说明的是，一个face上的洞，是和这同一个face上的其他洞相连的，或者是和这个face对应的$OuterComponent(f)$ 相连接，而这些相连接的洞（实际上就是$InnerComponent(f)$ ？）和$OuterComponent(f)$ 就组成了这个face $f$。
-
-
 
 如果构建graph $G$？
 
@@ -863,8 +744,6 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 
 （这里用来说明的图，位于第37页，页码是46）
 
-
-
 最后一件事情是，在overlay结果 $O(S_1, S_2)$ 中，每个face $f$ 都要找到它原先分别在 $S_1$ 和 $S_2$ 中的label。
 
 假如一个vertex $v$ 是来自 $S_1$ 的一条edge $e_1$ 和 $S_2$ 的一条edge $e_2$ 的相交得到新的点，那么可以从edge $e_1$ 和 $e_2$ 的 $IncidentFace(f)$ 得到各自在原先 $S_1$ 和 $S_2$ 中的label name。
@@ -872,8 +751,6 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 但如果vertex $v$ 本身就是来自 $S_1$ 的一个点（或者$S_2$ 的一个点），那么我们首先能得知它来自 $S_1$ 的哪个face（因为能从 $v$ 对应的half-edge的 $IncidentFace(f)$ 上得到。其次，就需要找到在 $S_2$ 上的哪个face包含这个vertex $v$。
 
 书中在此处没有展开解释，只说明了仍然使用本章介绍共的plane sweep algorithm就可以找到，而且也不用再次调用这个plane sweep algorithm，而是在原先扫描的过程中，就可以找到。
-
-
 
 ***MapOverlay***算法简述
 
@@ -886,6 +763,7 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 1. 新建一个doubly-connected edge list $D$，并把两个原始输入$S_1$ 和 $S_2$ 拷贝到 $D$ 中
 
 2. 通过第2.1节中提到的plane sweep algorithm，计算$S_1$ 和 $S_2$ 中每个edge的交点，除了在每个event point时更新 $J$ （status）和 $Q$ （event point），还需要处理
+   
    - 更新步骤1中建立的的doubly-connected edge list $D$（前面的叙述中有举例如果$S_1$的一条edge穿过了$S_2$的一个vertex时，如何生成新的half-edge pair，以及复用原先的half-edge pair并调整相应的record指针）
    - 在处理$D$中的每个event point之后，记录每个event point左边第一个half-edge的信息
 
@@ -896,16 +774,14 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 5. 构建graph $G$。这样的 $G$ 是一个或多个component组成。每个component由一个或几个表示boundary的cycle(s)组成，如果一个boundary cycle表示的是洞，那么它的leftmost的vertex就要通过一个所谓的"arc"连接到另外一个表示洞的boundary cycle（或者最终连接到一个表示非洞的boundary cycle上）
 
 6. 对于步骤5中建立的graph $G$ 的每个component：
-
+   
    假设 $C$ 是这个component中唯一的outer boundary cycle，并用 $f$ 表示由这个cycle所包含的face。
-
+   
    创建 $f$ 的face record，设定指针 $OuterComponent(f)$ 指向 $C$ 中的某一个half-edge即可；设定指针数组（或列表）$InnerComponent(f)$ ，它是这个component中每个洞上的某一个half-edge的指针集合；把这个component中每条half-edge所指向face的指针$IncidentFace(e)$ 设置为指向 $f$ 的face record。
 
 7. 结果$O(S_1, S_2)$中的每个face，都用$S_1$ 和 $S_2$ 中对应的face名字做标记（label）
 
 **算法时间复杂度**：$O(nlogn + klogn)$
-
-
 
 > Theorem 2.6 Let $S_1$ be a planar subdivision of complexity $n_1$, let $S_2$ be a subdivision of complexity $n_2$, and let $n := n_1 +n_2$. The overlay of $S_1$ and $S_2$ can be constructed in $O(nlogn + klogn)$ time, where k is the complexity of the overlay.
 
@@ -915,8 +791,6 @@ Q是用来存储event point的（BST实现），而J是用来存储和sweep line
 - 步骤2中，plane sweep algorithm的时间复杂度是 $O(nlogn + klogn)$
 - 步骤4-6中，用来填写face record的时间复杂度是和 $O(S_1, S_2)$ 线性相关的
 - 步骤7中，把结果中的每个face用$S_1$ 和 $S_2$ 中对应的face名字做标记的时间复杂度是 $O(nlogn + klogn)$
-
-
 
 ### 2.4 Boolean Operations
 
@@ -931,8 +805,6 @@ Map overlay算法最为常见的应用之一，就是polygon的Boolean操作，�
 - 如果计算的是$P_1$ 和 $P_2$的交集（ $P_1 ∩ P_2$），我们就从overlay结果中找到那些同时带有$P_1$ 和 $P_2$ label的face。
 - 如果计算的是$P_1$ 和 $P_2$的并集（ $P_1 ∪ P_2$），我们就从overlay结果中找到那些带有$P_1$ 或 $P_2$ 或同时带有$P_1$ 和 $P_2$label 的face。
 - 如果计算的是$P_1$ 和 $P_2$的差集（ $P_1 \ P_2$），我们就从overlay结果中找到那些只带有$P_1$ 、不带有 $P_2$ label的face。
-
-
 
 ### 2.5 Notes and Comments
 
@@ -953,23 +825,17 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 本章提到的用来存储平面细分（subdivision）的数据结构是the doubly-connected edge list，Muller 和 Preparata描述了这种数据结构。此外，还有Baumgart的the winged edge structure，Guibas 和Stolfi的the quad edge structure等。这些数据结构的差异总体上不大。
 
-
-
 ### 2.6 References
 
 - [库拉托夫斯基定理](https://baike.baidu.com/item/%E5%BA%93%E6%8B%89%E6%89%98%E5%A4%AB%E6%96%AF%E5%9F%BA%E5%AE%9A%E7%90%86/2748841?fr=aladdin)
 - [可平面图（planar graph）](https://baike.baidu.com/item/%E5%8F%AF%E5%B9%B3%E9%9D%A2%E5%9B%BE/19138688?fr=aladdin)
 - [Geometry Symbol Names](https://www.rapidtables.com/math/symbols/Geometry_Symbols.html)
 
-
-
 ## 3 Polygon Triangulation - Guarding an Art Gallery
 
 作者通过前言，引出了所谓的 ***Art Gallery Problem***，即我们需要多少台摄像机才能监控画廊？并且我们需要在什么位置摆放它们？
 
 > How many cameras do we need to guard a given gallery and how do we decide where to place them?
-
-
 
 ### 3.1 Guarding and Triangulations
 
@@ -1000,8 +866,6 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 - 如果 $\overrightarrow{uw}$ 位于这个多边形的内部，那么$\overrightarrow{uw}$ 就是这个多边形的一条对角线。
 - 如果 $\overrightarrow{uw}$ 位于这个多边形的外部或横跨这个多边形的内外，那么就一定有一些顶点是位于由点 $v$， $u$ 和 $w$ 组成的三角形 $\bigtriangleup{vuw}$ 内部，找到这些点里面距离 $\overrightarrow{uw}$ 最远的点记作 $v'$，那么 $vv'$ 就一定是这个多边形的一条对角线。（至于原因，见上面的分析）
 
-
-
 有了上述的定理，那么用来监控画廊的摄像机个数就可以是 $n-2$，但这有点太多了。因为，比如把一台摄像机放在对角线上，那么它就可以监控两个三角形（区域）；如果放在某些顶点上，那么摄像机似乎可以监控更多的区域。
 
 假设 $\mathcal{T}_p$ 是多边形 $\mathcal{P}$ 的一个三角形划分（triangulation），给多边形的每个顶点（vertex）三种颜色中的其中一种：黑（black），白（white）和灰（gray），**并且使得**，每两个由多边形的edge（或对角线）相连的两个vertex，其颜色不同。这叫作 ***3-coloring of a triangulated polygon***（三角形划分的一种三色赋值）。
@@ -1022,19 +886,13 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 （这里用来说明的图，位于第56页，页码是48，从上往下第2个图）
 
-
-
 **定理3.2**，（画廊定理），对任意有 $n$ 个顶点的简单多边形， $\lfloor n/3 \rfloor$ 台摄像机只是偶尔是必须的（因为大多数情况下只要更少），而且总是可以满足从多边形内部的任意一点看到至少一台摄像机的要求。
 
 > Theorem 3.2 (Art Gallery Theorem) For a simple polygon with n vertices, $\lfloor n/3 \rfloor$ cameras are occasionally necessary and always sufficient to have every point in the polygon visible from at least one of the cameras.
 
-
-
 **定理3.3**，对任意有 $n$ 个顶点的简单多边形，从多边形内部的任意一点看到至少一台摄像机，计算这样的至多 $\lfloor n/3 \rfloor$ 台摄像机的时间复杂度是 $O(nlogn)$。
 
 > Theorem 3.3 Let $\mathcal{P}$  be a simple polygon with n vertices. A set of $\lfloor n/3 \rfloor$ camera positions in $\mathcal{P}$ such that any point inside $\mathcal{P}$ is visible from at least one of the cameras can be computed in $O(nlogn)$ time.
-
-
 
 ### 3.2 Partitioning a Polygon into Monotone Pieces
 
@@ -1046,8 +904,6 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 退而求其次，就先把多边形分解成所谓的monotone pieces（**单调多边形**），这就容易很多。
 
-
-
 什么是简单的**单调多边形**（monotone simple polygon）？
 
 如果一个多边形是关于某一条直线 $\ell$ 是**单调**的，那么对于任意一条垂直于 $\ell$ 的直线 $\ell'$，它和这个多边形的相交部分是连接的。换句话说，这个相交的部分就是一条线段，或者一个点，或者没有相交。（就是说不会有多个相交的线段或点）
@@ -1058,21 +914,17 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 （这里用来说明的图，位于第57页，页码是49，从上往下第1个图）
 
-
-
 所以，把一个多边形 $\mathcal{P}$ 做三角划分，首先是把它分解成沿 *y* 轴单调的多边形，然后再对这些单调多边形做三角划分。
 
 为了说明多边形的顶点的类型，定义一个点在另一个点上方和下方的概念。
 
 - 点 $p$ 在点 $q$ 下方（below）
-
+  
   $p_y < q_y$，或者当$p_y = q_y$时，$p_x < q_x$
 
 - 点 $p$ 在点 $q$ 上方（above）
-
+  
   $p_y > q_y$，或者当$p_y = q_y$时，$p_x > q_x$
-
-
 
 什么是多边形的**turn vertex**（**转向顶点**）？
 
@@ -1086,35 +938,29 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 （这里用来说明的图，位于第57页，页码是49，从上往下第2个图）
 
-
-
 定义一个多边形中5种类型的vertex
 
 ==（这里用来说明的图，位于第58页，页码是50）==
 
 - **start vertex**
-
+  
   如果顶点 $v$ 是start vertex，那么它相邻的两个vertex都在它的**下方**（below，定义见前述），并且顶点 $v$ 所在的多边形的内角比 $\pi$ **小**。
 
 - **end vertex**
-
+  
   如果顶点 $v$ 是end vertex，那么它相邻的两个vertex都在它的**上方**（above），并且顶点 $v$ 所在的多边形的内角比 $\pi$ **小**。
 
 - **regular vertex**
-
+  
   不是turn vertex的vertex都是regular vertex。所以，regular vertex相邻的两个vertex，一个在它**上方**，一个在它**下方**。
 
 - **split vertex**
-
+  
   如果顶点 $v$ 是split vertex，那么它相邻的两个vertex都在它的**下方**（below），并且顶点 $v$ 所在的多边形的内角比 $\pi$ **大**。（和start vertex类似）
 
 - **merge vertex**
-
+  
   如果顶点 $v$ 是merge vertex，那么它相邻的两个vertex都在它的**上方**（above），并且顶点 $v$ 所在的多边形的内角比 $\pi$ **大**。（和end vertex类似）
-
-
-
-
 
 **引理3.4** 如果一个多边形没有split vertex，也没有merge vertex，那么它就是一个关于y轴单调的多边形。
 
@@ -1131,16 +977,12 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 - 如果点 $r \neq p$，那么点 $q$ 和 $r$ 之间的多边形轮廓上的最**高**的一点就是split vertex。
 
 - 如果点 $r = p$，那么我们从点 $q$ 再次出发，但这次是沿着和之前相反的方向行走，同样地，会碰到多边形和水平直线 $\ell$ 相交的点 $r'$。
-
+  
   这个点 $r'$ 必定和 $p$ 不同（$r' \neq p$），原因是如果$r' \neq p$，这就意味着水平直线 $\ell$ 和多边形只有一条相交的线段，即 $pq$（或 $qr'$），而这和多边形是关于y轴**非单调**矛盾。
-
+  
   所以点 $r'$ 和 $p$ 不同，而这就意味着点 $r'$ 和 $p$ 之间多边形轮廓上的最**低**的一点就是merge vertex。
 
-
-
 引理3.4说明，如果我们消除了split vertex和merge vertex，那么多边形就能被分解成关于y轴单调的多边形了。而这，可以通过从split vertex引出一条向上的对角线、从merge vertex引出一条向下的对角线而实现。
-
-
 
 如何给一个**split vertex**添加对角线？还是使用plane sweep method。
 
@@ -1156,17 +998,11 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 所以，当我们替换一条edge $e_x$ 的$helper(e_x)$ 时，检查旧的helper点是不是一个merge vertex。如果是，就连接新的helper点和旧的helper点构成一条对角线。而当新的helper点是split vertex的时候，这样的对角线总是会被连接出来的，而此时如果旧的helper点还是一个merge vertex，那么这一条对角线就同时消除了split vertex和merge vertex。
 
-
-
 在前面讨论添加对角线的算法中，对于每个vertex，我们需要找到它左边的edge。因此，我们把和sweep line相交的edge当做一棵二叉搜索树 $\mathcal{T}$ 的叶节点来存储，而且这些从左到右的叶节点依次对应从左到右和sweep line相间的的edge。
 
 因为我们只关心在split vertex或merge vertex左边的edge，所以在这棵二叉搜索树 $\mathcal{T}$ 中只存储一种类型的edge，即，相对于这些edge，多边形 $\mathcal{P}$ 的内部都在这些edge的右边。同时每个edge我们都会存储它对应的helper（即$helper(e_j)$），这棵二叉搜索树 $\mathcal{T}$ 和它存储的这样的edge就构成了sweep line algorithm的status。当sweep line和一条edge开始相交，或者分开时，这个status就会被更新，一条edge的helper（即$helper(e_j)$）就可能会被替换。
 
-
-
 假设多边形 $\mathcal{P}$ 是以doubly-connected edge list表示（如果是以逆时针的vertex list表示，就先转换为一个doubly-connected edge list），同样的，把多边形 $\mathcal{P}$ 划分之后的结果（单调多边形）和所添加的对角线，也用一个doubly-connected edge list $\mathcal{D}$ 来表示。在split vertex和merge vertex处计算出来的对角线，也加入到了这个doubly-connected edge list中。为了方便，存储在status中的每个edge，和它们在doubly-connected edge list 中对应的edge，互相有一个指针相互指向，这样的**交叉指针**就能使得这样的edge可以快速找到在另一个数据结构里面的对应edge。
-
-
 
 ***MakeMonotone***算法简述
 
@@ -1177,45 +1013,33 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 **算法简述**：
 
 1. 构建多边形 $\mathcal{P}$ 的顶点的一个优先级队列 $\mathcal{Q}$，排序是按照每个顶点的y坐标。如果两个顶点的y坐标相同，有较小的x坐标的点有更高的优先级。
-1. 初始化一棵空的二叉搜索树 $\mathcal{T}$ 。
-1. 执行循环：只要优先级队列 $\mathcal{Q}$ 不空，每次从其队列中取出优先级最高的一个顶点 $v_i$，然后根据这个顶点的类型（split/merge/...），调用对应的处理程序。
-
-
+2. 初始化一棵空的二叉搜索树 $\mathcal{T}$ 。
+3. 执行循环：只要优先级队列 $\mathcal{Q}$ 不空，每次从其队列中取出优先级最高的一个顶点 $v_i$，然后根据这个顶点的类型（split/merge/...），调用对应的处理程序。
 
 下面就是根据每个顶点的类型，对应的相应处理。当处理每个顶点vertex的时候，有两件必须做的事情
 
 - 检查是否应该给一个vertex添加对角线。当一个vertex是split vertex，或者，在替换一个edge的helper（$helper(e_j)$），并发现前一个（旧的）helper是一个merge vertex的时候，就需要添加对角线。
 - 更新status数据结构  $\mathcal{T}$ （即二叉搜索树）中的信息（通过前面提到的交叉指针）
 
-
-
 ==（下面几个针对不同类型vertex的处理，对应的一个例子的图在62页，页码是54）==
 
 需要注意的是，本书中每个多边形vertex（下面的 $i$）的起始索引是`1`，而不是`0`。
 
-
-
 算法 $HandleStartVertex(v_i)$ （**vertex是start vertex**）
 
 1. 在二叉搜索树 $\mathcal{T}$ 中添加edge $e_i$，并且把$helper(e_i)$设定为 $v_i$。
-
-
 
 算法 $HandleEndVertex(v_i)$ （**vertex是end vertex**）
 
 1. 如果$helper(e_{i-1})$ 是merge vertex，就生成一条连接 $v_i$ 到 $helper(e_{i-1})$ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中。
 2. 从二叉搜索树 $\mathcal{T}$ 中删除vertex $e_{i-1}$。
 
-
-
 算法 $HandleSplitVertex(v_i)$ （**vertex是split vertex**）
 
 1. 在二叉搜索树 $\mathcal{T}$ 中找到这个顶点 $v_i$ 左边的第一个（直接）邻居edge $e_j$ 。
 2. 在doubly-connected edge list $\mathcal{D}$ 中，添加一条对角线，这条对角线用来连接 $v_i$ 和 $helper(e_j)$ 。
-3.  $helper(e_j)$ $\longleftarrow$  $v_i$ （连接 $v_i$ 和 $helper(e_j)$ 的意思）
+3. $helper(e_j)$ $\longleftarrow$  $v_i$ （连接 $v_i$ 和 $helper(e_j)$ 的意思）
 4. 在二叉搜索树 $\mathcal{T}$ 中插入edge $e_i$，并且把 $helper(e_i)$ 设定为vertex $v_i$。
-
-
 
 算法 $HandleMergeVertex(v_i)$ （**vertex是Merge vertex**）
 
@@ -1225,15 +1049,11 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 4. 如果$helper(e_j)$ 是一个merge vertex，就生成一条连接 $v_i$ 到 $helper(e_j)$ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中。
 5. $helper(e_j)$ $\longleftarrow$  $v_i$ （连接 $v_i$ 和 $helper(e_j)$ 的意思）
 
-
-
 算法 $HandleRegularVertex(v_i)$ （**vertex是regular vertex**）
 
 1. 处理这个regular vertex的前提是，多边形 $\mathcal{P}$ 的内部位于vertex $v_i$ 的右边。如果前提不成立，不用继续下面的处理。
 2. 如果$helper(e_{i-1})$ 是一个merge vertex，就生成一条连接 $v_i$ 到 $helper(e_{i-1})$ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中，然后从二叉搜索树 $\mathcal{T}$ 中删除 vertex $e_{i-1}$，再在二叉搜索树 $\mathcal{T}$ 中添加edge $e_i$，并且把$helper(e_i)$设定为 $v_i$。
 3. 如果$helper(e_{i-1})$ **不是**一个merge vertex，那就在二叉搜索树 $\mathcal{T}$ 中找到这个顶点 $v_i$ 左边的第一个（直接）邻居edge $e_j$ 。如果$helper(e_j)$ 是一个merge vertex，就生成一条连接 $v_i$ 到 $helper(e_j)$ 的对角线，并加入到doubly-connected edge list $\mathcal{D}$ 中（$helper(e_j)$ $\longleftarrow$  $v_i$ ）。
-
-
 
 **引理3.5** 通过添加一系列不相交的对角线，MakeMonotone算法可以把一个多边形 $\mathcal{P}$ 划分为一些单调的子多边形。
 
@@ -1255,8 +1075,6 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 又因为没有多边形 $\mathcal{P}$ 的顶点在四边形 $Q$ 中，因此前面已经加过的每条对角线的两个端点，就一定是在 $v_i$ 上方（或者说是四边形 $Q$ 的上方），因此当前添加的对角线，就不会和之前已经添加的对角线相交。因此命题的证。
 
-
-
 **定理3.6** 存在一个时间复杂度为 $O(nlogn)$ 和空间复杂度为 $O(n)$ 的算法，可以把一个有 $n$ 个顶点的简单多边形分解为关于y轴单调的多边形。
 
 > Theorem 3.6 A simple polygon with $n$ vertices can be partitioned into y-monotone polygons in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
@@ -1264,8 +1082,6 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 构造优先级队列 $\mathcal{Q}$ 花费线性时间，初始化一棵二叉搜索树 $\mathcal{T}$ 花费常数时间。处理每个event时，对 $\mathcal{Q}$ 进行一次操作（取点，即event），对 $\mathcal{T}$ 进行一次操作（至多一次查询，一次插入和一次删除），至多给doubly-connected edge list $\mathcal{D}$ 中添加两条对角线。优先级队列和平衡二叉搜索树的查询和更新花费 $O(logn)$，给 $\mathcal{D}$ 中添加对角线花费 $O(1)$ 。因此，处理每一个event的时间复杂度就是 $O(logn)$，故整个算法的时间复杂度就是 $O(nlogn)$。
 
 每个vertex在 $\mathcal{Q}$ 中至多存储一次，每条edge在 $\mathcal{T}$ 中至多存储一次，因此整个算法的空间复杂度就是$O(n)$。
-
-
 
 ### 3.3 Triangulating a Monotone Polygon
 
@@ -1283,8 +1099,6 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 ==（图在64页，页码是56，从上向下第1个图）==
 
-
-
 当处理下一个vertex $v_j$ 时，分两种情况：
 
 - 情况一，$v_j$ 位于由单独的一条多边形 $\mathcal{P}$ 的edge组成的“漏斗”（funnel）的一条边界上
@@ -1301,8 +1115,6 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 那么如何检查 $v_j$ 和弹出的栈顶的vertex（记作 $v_k$ ）能否连成一条对角线？我们检查 $v_j$，$v_k$ 和前一个弹出栈的vertex，查看这三者之间的关系。
 
 ==（情况一的举例的图在65页，页码是57）==
-
-
 
 ***TriangulateMonotonePolygon***算法简述
 
@@ -1323,13 +1135,9 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 步骤1中合并排序的时间复杂度是线性的 $O(n)$，步骤2花费常数时间。步骤3开始的for循环，总共执行 $n-3$ 次，每次执行花费线性时间。在for循环的每次执行中，至多有两个vertex被压入栈，因此连同步骤2中的入栈，总共的入栈次数是 $2n-4$ 次。而又因为出栈的次数不可能比入栈的次数还多，所以for循环执行的总的时间复杂度就是 $O(n)$。最后步骤6也花费线性时间，因此，该算法的时间复杂度就是 $O(n)$。
 
-
-
 定理3.7 一个有$n$ 个顶点的、沿y轴严格单调的多边形，可以在线性时间里完成三角划分。
 
 > Theorem 3.7 A strictly y-monotone polygon with $n$ vertices can be triangulated in linear time.
-
-
 
 前面的论述中都是假定多边形是沿着y轴严格单调的（即沿着轮廓边界向下走，方向永远向下，不会向上，也不会水平向左或向右），但实际上只要按照之前提到的，把遇到的y坐标相同的两个vertex，当做从左向右的顺序，那么这个对单调多边形三角划分的算法依然是正确的。
 
@@ -1339,15 +1147,9 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 
 ==（带洞的多边形的三角划分的举例的图在66页，页码是58）==
 
-
-
 **定理3.8** 一个有$n$ 个顶点的简单多边形，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。
 
 > Theorem 3.8 A simple polygon with $n$ vertices can be triangulated in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
-
-
-
-
 
 其实，前面提到的把一个多边形 $\mathcal{P}$ 分解成单调多边形的算法中，并没有限定这个多边形 $\mathcal{P}$ 是不带洞的。换句话说，这个三角形划分的算法也可以用到带洞的多边形上。
 
@@ -1360,8 +1162,6 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 **定理3.9** 一个有$n$ 个顶点的平面细分，可以以 $O(nlogn)$ 的时间复杂度完成三角划分，其空间复杂度是 $O(n)$ 。
 
 > Theorem 3.9 A planar subdivision with $n$ vertices in total can be triangulated in $O(nlogn)$ time with an algorithm that uses $O(n)$ storage.
-
-
 
 ### 3.4 Notes and Comments
 
@@ -1384,13 +1184,13 @@ Aggarwal，Lee和Lin说明了对一个给定的简单多边形，找到守卫最
 本书第4,6,9和11章提到的随机化（randomization）的方法，被证明是找到更快算法的一种有力工具。Clarkson等人，Devillers，Seidel展示了多种 $O(nlog^*n)$ 时间复杂度的**iterated logarithm**算法（迭代对数算法）。
 
 > Iterated logarithm or $log^*(n)$, is the number of times the logarithm function must be iteratively applied before the result is less than or equal to 1.
+> 
 > $$
 > log^*(n) := \left\{\begin{matrix} 
->   0, n \le 1 \\  
->   1 + log^*(log(n)) , n \gt 1
-> \end{matrix}\right.
+0, n \le 1 \\ 
+1 + log^*(log(n)) , n \gt 1
+\end{matrix}\right.
 > $$
-> 
 
 这些算法不仅比 $O(nloglogn)$ 的算法稍快，而且更简单。其中Seidel的算法更和本书第6章提到的构建平面细分的梯形划分紧密相关。但这些算法仍然不是对简单多边形三角划分的线性算法。
 
@@ -1400,11 +1200,7 @@ Aggarwal，Lee和Lin说明了对一个给定的简单多边形，找到守卫最
 
 Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Theta(n^2)$ 个额外的顶点，并且这样才能总是满足把一个多面体划分为多个四面体的要求。后来，Chazelle和Palios把这个边界优（bound）化到了 $\Theta(n+ r^2)$ ，这里 $r$ 是多面体上反射边（reflex edges）的个数。这个算法的时间复杂度是 $O(nr + r^2logr)$。不使用额外的顶点，而要把一个多面体划分为多个四面体的问题是NP完全难题（NP-hard）。
 
-
-
 ### 3.5 Exercises
-
-
 
 ### 3.6 References
 
@@ -1413,12 +1209,6 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 [Latex数学字体](https://zhuanlan.zhihu.com/p/556258509)
 
 [MathJax的基本使用](https://www.cnblogs.com/mqingqing123/p/12711372.html)
-
-
-
-
-
-
 
 ## 4 Linear Programming - Manufacturing with Molds
 
@@ -1430,8 +1220,6 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 - 我们只考虑模具只有一个整体部件组成，不是由多个部件组成。
 - 我们只允许通过一次单独的变换，把铸件从模具中移出（不是旋转出来？）
 
-
-
 ### 4.1 The Geometry of Casting
 
 在本章讨论的情况中，铸造的物体有一个水平的顶部平面（top facet），而且它是唯一一面不和模具接触的。
@@ -1442,11 +1230,7 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 
 我们需要做的是，决定多面体  $\mathcal{P}$ 是否可以通过一次转换（translation）就可以从模具中移出。换句话说，我们要找出来是否存在一个向量 $\overrightarrow{d}$ ，使得多面体  $\mathcal{P}$ 沿着它可以移动到无限远而不碰到（intersecting）模具。
 
-
-
 因为 $f$ 是铸件的平面，同时它也是和模具平面 $\hat{f}$ 贴合的平面。如果 $\overrightarrow{d}$ 和平面 $f$ 向外的法向量（记作 $\eta(f)$）的夹角小于90°，那么在移除是铸件就会被阻挡。所以必要的条件就是 $\overrightarrow{d}$ 要和铸件 $\mathcal{P}$ 所有平面的向外的法向量夹角小于90°。下面的定理4.1也说明了这个必要条件也是充分条件（即充要条件）。
-
-
 
 **定理4.1** 如果一个向量 $\overrightarrow{d}$ 和多面体 $\mathcal{P}$ 所有面向外的法向量的夹角小于90°，那么这个多面体 $\mathcal{P}$ 就能沿着方向 $\overrightarrow{d}$ 从模具中移出。
 
@@ -1456,14 +1240,14 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 
 此外，从**定理4.1**还可以得出一个有意思的结论：如果多面体 $\mathcal{P}$ 可以通过一系列短的向量移出模具，那么它也能一次通过一个向量移出模具。
 
-
-
 为了方便叙述，显然可以把所有讨论的向量的起始点移动到三维空间的原点。因为模具的顶部平面是向上开口的，所以我们要寻找的向量 $\overrightarrow{d}$ 其实是正 $z$ 轴的方向（想象一下要把铸件从开口处移除），那么可以取 $z = 1$ 这个三维空间的平面，这个平面上面的任意一个点 $(x, y, 1)$ 就能表示一个起点是原点的向量。
 
 假设铸件的每个面向外的法向量是 $\overrightarrow\eta = ( \overrightarrow\eta_x + \overrightarrow\eta_y + \overrightarrow\eta_z )$，那么一个向量 $\overrightarrow{d}$ （$\vec{d} = (x, y, 1)$）和这个法向量夹角小于90°的充要条件是，它们的点积小于等于0（非正）。因此有下面的不等式（inequality）：
+
 $$
 \overrightarrow\eta_xd_x + \overrightarrow\eta_yd_y + \overrightarrow\eta_z \le 0
 $$
+
 这个不等式实际上表示了 $z = 1$ 这个平面上的半个平面，即一条直线的左边平面，或者右边平面。（当然这个叙述不严谨，因为对于铸件面是水平的面时，有 $\overrightarrow\eta_x = \overrightarrow\eta_y = 0$ 。但在本章讨论的例子中，这个条件不可能满足或者一开始就永远满足，所以可以不做讨论）。
 
 换句话说，铸件的每个面代表了 $z = 1$ 这个平面上的半个平面（half-plane），而这些平面相交的共同部分的任意一个点，代表了一个向量 $\overrightarrow{d}$ ，沿着这个向量，铸件就可以从模具中移出。这就是说，我们把这个铸造问题转化为了求解一个平面上多个半平面交集部分的几何问题。如果一个铸件有 $n$ 个面，那么就需要求解 $n-1$ 个半平面交集部分（因为顶部平面不需要参与求解）。
@@ -1476,19 +1260,19 @@ $$
 
 > Theorem 4.2 Let $\mathcal{P}$ be a polyhedron with $n$ facets. In $O(n^2)$ expected time and using $O(n)$ storage it can be decided whether $\mathcal{P}$ is castable. Moreover, if $\mathcal{P}$ is castable, a mold and a valid direction for removing $\mathcal{P}$ from it can be computed in the same amount of time.
 
-
-
 ### 4.2 Half-Plane Intersection
 
 本章要讨论的问题，可以看做是对（二元一次）不等式方程组的求解
+
 $$
 \left\{\begin{matrix} 
-a_1x + b_1y  \le c_1 \\
-a_2x + b_2y  \le c_2 \\
+a_1x + b_1y \le c_1 \\
+a_2x + b_2y \le c_2 \\
 \vdots \\
-a_nx + b_ny  \le c_n \\
+a_nx + b_ny \le c_n \\
 \end{matrix}\right.
 $$
+
 方程组中每个不等式就是一个线性约束（linear constraint），记作 $h_i$，它实际上代表了平面上的由一条直线分割的半个平面。其中 $(x,y) \in \mathbb{R}^2$，即$(x,y)$是二维实数域上的点。
 
 记这样的一组线性约束为 $H = \{h_1, h_2, \dots, h_n\}$，它代表了 $n$ 个半平面的交集。我们要求解的结果，就是属于这个交集的所有的点$(x,y)$。
@@ -1498,8 +1282,6 @@ $$
 下面图中展示了几种交集的情况。
 
 ==（举例的图在74页，页码是67）==
-
-
 
 首先给出分治算法来计算 $n$ 个半平面的交集。
 
@@ -1517,27 +1299,23 @@ $$
 - 调用函数 $IntersectHalfPlanes(H_2)$，得到结果 $C_2$。
 - 调用函数 $IntersectConvexRegions(C_1, C_2)$，得到结果 $C$。
 
-
-
 这里函数 $IntersectConvexRegions$ 实际上就是第二章里面的求解polygon交集的算法，时间复杂度是 $O(nlogn + klogn)$，$n$ 是两个polygon的顶点个数。需要注意的一点是，polygon（区域）可能退化为一条线段或者一个点，或者这个polygon（区域）就是没有边界的。
-
-
 
 假设通过递归调用已经计算出来了 $C_1$ 和 $C_2$，因为它们各自都是由 $n/2 + 1$ 个半平面计算得到，所以它们各自至多有 $n/2 + 1$ 条edge，根据第二章计算overlay的算法，时间复杂度就是 $O((n+k)logn)$，$k$ 是 $C_1$ 和 $C_2$ edge的交点个数。对于这样任意一个交点 $v$，它是来自于 $C_1$ 中的一条edge $e_1$ 和 $C_2$ 中的一条edge $e_2$ 相交得到的交点，因此这个交点也必然属于 $C_1 \bigcap C_2$。而 $C_1 \bigcap C_2$ 是 $n$ 个半平面相交得到的区域，因此它至多有 $n$ 条边（也至多有 $n$ 个顶点），故 $k \le n$ 。因此时间复杂度就是 $O(nlogn)$ 。
 
 ==（举例的图在75页，页码是68，从上到下第一个图）==
 
 所以算法的复杂度可以用以下的式子表示
+
 $$
 T(n) =
 \left\{\begin{matrix}
-O(1), if \space\space  n = 1 \\
-O(nlogn) + 2T(n/2), if \space\space  n > 1
+O(1), if \space\space n = 1 \\
+O(nlogn) + 2T(n/2), if \space\space n > 1
 \end{matrix}\right.
 $$
+
 这个递归表达的最终结果就是 $T(n) = O(nlog^2n)$。
-
-
 
 因为$IntersectHalfPlanes(H)$算法中用来计算两个polygon交集的程序默认两个polygon是任意的（即可以是凸的，也可以是凹的），但其实在这个算法中能保证两个polygon是凸的，这样就可以根据这个特性对算法加速。
 
@@ -1569,7 +1347,7 @@ $$
 - 其次检查，这条边 $e$ 是否和 $right\_edge\_C2$ 相交。如果相交，那么交点就是最终 $C$ 中的顶点。并且有
   - 如果 $p$ 位于 $right\_edge\_C2$ **右侧**（沿着$right\_edge\_C2$ 走，$C_2$ 在其左侧，以此为参考的 $p$ 位于其 $right\_edge\_C2$ 的**右侧**），那么 $e$ 和 $right\_edge\_C2$ 从**交点开始**的各自边的部分，就是 $C$ 中的两条edge（或edge的一部分）。
     这种情况下，就把 $e$ 所在的半平面（表达式）添加到$\mathcal{L}_{left}(C)$中，把$right\_edge\_C2$ 所在的半平面（表达式）添加到$\mathcal{L}_{right}(C)$中。
-  -  如果 $p$ 位于 $right\_edge\_C2$ **左侧**（沿着$right\_edge\_C2$ 走，$C_2$ 在其左侧，以此为参考的 $p$ 位于其 $right\_edge\_C2$ 的**左侧**），那么 $e$ 和 $right\_edge\_C2$ 各自的边到**交点结束**的部分，就是 $C$ 中的两条edge（或edge的一部分）。
+  - 如果 $p$ 位于 $right\_edge\_C2$ **左侧**（沿着$right\_edge\_C2$ 走，$C_2$ 在其左侧，以此为参考的 $p$ 位于其 $right\_edge\_C2$ 的**左侧**），那么 $e$ 和 $right\_edge\_C2$ 各自的边到**交点结束**的部分，就是 $C$ 中的两条edge（或edge的一部分）。
     这种情况下，不需要把 $e$ 或 $right\_edge\_C2$所在的半平面添加到$\mathcal{L}_{left}(C)$或$\mathcal{L}_{right}(C)$中，因为它们会在其他时机被添加进去。
 - 最后再检查，这条边 $e$ 是否和 $left\_edge\_C2$ 相交。如果相交，那么交点就也是最终 $C$ 中的顶点。并且有
   - 如果 $p$ 位于 $left\_edge\_C2$ **右侧**（沿着$left\_edge\_C2$ 走，$C_2$ 在其左侧，以此为参考的 $p$ 位于其 $left\_edge\_C2$ 的**右侧**），那么以交点开始的边 $e$ 的部分就是 $C$ 中的边，并把对应的half-plane添加到 $\mathcal{L}_{left}(C)$ 中。
@@ -1583,6 +1361,7 @@ $$
 
 为了证明算法是正确的，需要证明我们能找到最终 $C$ 中的所有的边（edge），并且顺序是正确的。
 考虑 $C$ 中的一条edge $e_C$，记它的upper endpoint为 $p$。
+
 - 要么 $p$ 是 $C_1$ 或 $C_2$ 中某条edge的upper endpoint。
   这种情况下，当sweep line到达 $p$ 点的时候，我们就能找到 $C$ 中的这条edge $e_C$。
 - 要么它是 $C_1$ 中的一条edge $e$ 和 $C_2$ 中的一条edge $e'$ 的交点。
@@ -1591,6 +1370,7 @@ $$
 因此，我们就能找到最终 $C$ 中的所有的边。而证明其顺序正确性不难（？？）。
 
 **定理4.3** 计算平面上两个凸多边形区域的交集的时间复杂度是$O(n)$。
+
 > **Theorem 4.3** The intersection of two convex polygonal regions in the plane can be computed in $O(n)$ time.
 
 根据这个结论，回到之前的算法 $IntersectHalfPlanes(H)$，之前我们分析的时间复杂度是
@@ -1602,44 +1382,46 @@ O(1), if \space\space  n = 1 \\
 O(nlogn) + 2T(n/2), if \space\space  n > 1
 \end{matrix}\right.
 $$
+
 其中 $O(nlogn)$ 是计算两个任意多边形区域交集的时间复杂度。现在我们证明了计算两个凸多边形区域的交集的时间复杂度是$O(n)$，那么就有了
+
 $$
 T(n) =
 \left\{\begin{matrix}
-O(1), if \space\space  n = 1 \\
-O(n) + 2T(n/2), if \space\space  n > 1
+O(1), if \space\space n = 1 \\
+O(n) + 2T(n/2), if \space\space n > 1
 \end{matrix}\right.
 $$
+
 这个式子最终的结果是 $T(nlogn)$。
 所以有下面的推论：
 
 **推论4.4** 计算平面上 $n$ 个半平面交集的时间复杂度是 $O(nlogn)$，并且空间复杂度是线性的。
+
 > **Corollary 4.4** The common intersection of a set of n half-planes in the plane can be computed in $O(nlogn)$ time and linear storage.
 
 计算半平面交集的问题和计算凸包（convex hull）的问题紧密相关，并且有一种算法和第一章中的$ConvexHull$算法几乎一致。这两种计算问题的关系在第8.2节和第11.4节有更详细的讨论。
-
-
-
-
-
-
-
 
 ### 4.3 Incremental Linear Programming
 
 上一节讲述的是，计算 $n$ 个半平面相交的所有解的算法，即计算 $n$ 个线性约束所有的解。类似排序算法，这种算法的渐近下界是 $\Omega(nlogn)$，即最坏的情况下的时间复杂度。而对于我们的铸件移除问题，不需要得出所有的解，只需要其中的一个解即可，这就使得我们可以找到更快的算法。
 
 求解一组线性约束的一个解的问题，和**运筹学**（**Operation Research**，**OR**）领域的一类问题紧密相关，它就是线性规划（或叫线性优化）。英文是***linear programming***（***linear optimization***），这里的programming指的是给计算机发送指令（giving instructions to a computer）。
->This term was coined before “programming” came to mean “giving instructions to a computer”.
+
+> This term was coined before “programming” came to mean “giving instructions to a computer”.
 
 线性规划问题，是求解一组线性约束的一个解，并且这个解使得一个线性目标函数的值最大化。下面是更精确的描述。
 $\mathbb{R}^d$ （$d$ 维实数空间）上，有一个要使得其最大化的目标函数，
 Maximize：
+
 $$
 c_1x_1 + c_2x_2 + \cdots + c_dx_d
 $$
-这个目标函数最大化的解，要满足一组线性约束条件，
+
+
+
 Subject to：
+
 $$
 \left\{\begin{matrix} 
 a_{1,1}x_1 + c_{1,2}x_2 + \cdots + c_{1,d}x_d \le b_1 \\
@@ -1648,6 +1430,9 @@ a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
 a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
 \end{matrix}\right.
 $$
+
+
+
 $a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
 需要最大化的函数叫做**目标函数**（*objective function*）。
 目标函数和这一组线性约束一起，叫做线性程序（*a linear program*）。
@@ -1657,7 +1442,8 @@ $a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
 **目标函数**（*objective function*）实际上可以看做是$\mathbb{R}^d$空间上的一个向量，所以它最大化，可以转换为求一个点 $p$ = $(x_1, x_2, \dots, x_d)$ 在 $\mathbb{R}^d$ 空间（$d$ 维实数空间）上沿方向 $\vec{c} = (c_1, c_2, \dots, c_d)$ 的极值。
 因此，一个线性程序的解，就是求解在feasible region上的一个点，使得其在 $\vec{c} = (c_1, c_2, \dots, c_d)$ 上取得极值。
 我们用符号$f_{\vec{c}}$ 来表示由方向 $\vec{c}$ 定义的目标函数（ $c_1x_1 + c_2x_2 + \cdots + c_dx_d$ ）。
->let $f_{\vec{c}}$ denote the objective function defined by  $\vec{c}$ .
+
+> let $f_{\vec{c}}$ denote the objective function defined by  $\vec{c}$ .
 
 ==（上面提到的线性程序的解的示意图在79页，页码是72，位于最上面的第一个图）==
 
@@ -1668,6 +1454,7 @@ $a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
 我们以 $H$ 表示2维平面上一组线性约束， $\vec{c} = (c_x, c_y)$ 表示目标函数的方向，因此目标函数就是 $f_{\vec{c}} (p) = c_xp_x + c_yp_y$ 。我们的目的就是，找到 $\mathbb{R}^2$ 上的一个点（$p \in \mathbb{R}^2$），使得 $p \in \bigcap H$ （所有半平面的交集区域），并且  $f_{\vec{c}} (p)$ 取得最大值。我们用 $(H, \vec{c})$ 表示这个线性程序，并用 $C$ 表示feasible region。
 
 从几何上来看，线性程序  $(H, \vec{c})$ 的解有以下四种情况
+
 - 情况1，无解
   即所有半平面的交集是空。这种情况下，线性程序是infeasible，线性约束就没有解。
 - 情况2，有解
@@ -1679,7 +1466,6 @@ $a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
 
 ==（上面提到的线性程序的解的示意图在79页，页码是72，位于中间的四个一排的图）==
 
-
 我们的2维线性程序的算法是增量式的，它逐一增加约束条件，并且维护每个中间线性程序的解。然而，我们的算法要求每个中间线性程序的解是唯一且明确定义的。换句话说，它要求每个中间线性程序的解，就是像前面提到的情况4一样，feasible region上有一个唯一的***optimal vertex***。
 为了满足这个要求，给线性程序添加两个额外的约束条件，以便保证交集的区域是有限的。比如，当 $c_x > 0$ 并且 $c_y > 0$ 时，取一足够大的值 $M (M \in \mathbb{R})$，添加两个约束条件 $p_x \le M$ 和 $p_y \le M$。这里 $M$ 的选取应该足够大，并且使得添加的两个约束条件不影响最终的最优解。
 
@@ -1688,6 +1474,7 @@ $a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
 在4.5节会讨论unbounded linear program，以及如何不使用手动添加约束来解决bounded linear program。
 
 为精确期间，把这两个额外的新约束做如下定义。
+
 $$
 \begin{split}
 m_1 := \left\{ \begin{matrix}
@@ -1695,6 +1482,7 @@ m_1 := \left\{ \begin{matrix}
 {-p_x \le M, \ otherwise} \\
 \end{matrix} \right.\end{split}
 $$
+
 $$
 \begin{split}
 m_2 := \left\{ \begin{matrix}
@@ -1702,6 +1490,7 @@ m_2 := \left\{ \begin{matrix}
 {-p_y \le M, \ otherwise} \\
 \end{matrix} \right.\end{split}
 $$
+
 这里 $m_1, m_2$ 的选取只和目标函数中的参数 $\vec{c}$ 有关，和线性约束 $H$（即所有的半平面）无关。而 $C_0 = m_1 \bigcap m_2$ 这个feasible region是一个正交的楔形。
 另外如果是前面提到的情况3，有多个不唯一的解，约定俗成地，我们按照字典序，取最小的那个点（解）。概念上，这相当于把 $\vec{c}$ 轻微旋转了一个小角度，这样它就和任何一个半平面对应的直线就不垂直了。
 需要注意的是，哪怕一个有界的线性程序，按照字典序可能也找不到最小的点（解）。我们需要选择约束条件 $m_1$ 和 $m_2$ ，使得这样的情况不会发生。
@@ -1709,26 +1498,34 @@ $$
 
 记 $(H, \vec{c})$ 是一个线性程序，把 $n$ 个半平面依次记为 $h_1, h_2, \dots, h_n$。
 记 $H_i$ 是前 $i$ 个线性约束和两个额外约束$m_1, m_2$的组合，记 $C_i$ 是这样一组线性约束的feasible region。
+
 $$
 H_i := {m_1, m_2, h_1, h_2, \dots, h_n}
 $$
+
 $$
 C_i := {m_1 \cap m_2 \cap h_1 \cap h_2 \cap \dots \cap h_n}
 $$
+
 加上 $C_0$，我们的每个feasible region $C_i$ （$i \le n$）都有一个唯一的optimal vertex，记作 $v_i$。显然有
+
 $$
 C_0 \supseteq C_1 \supseteq C_2 \supseteq \cdots \supseteq C_n = C
 $$
+
+
+
 这也就是说，对于任何一个 $i$（$0 \le i \le n$），如果 $C_i = \emptyset$，那么对于任意一个 $j$（$i \le j \le n$），线性程序就是feasible的，我们的算法也就能提前退出。
 
 下面的引理4.5，说明了每当我们增加一个线性约束（半平面）时，optimal vertex如何改变，而这是我们算法的基础。
 
 **引理4.5** 对$C_i$ 和 $v_i$ （$1 \le i \le n$），有：
+
 1. 如果 $v_{i-1} \in h_i$，那么 $v_i = v_{i-1}$。
 2. 如果 $v_{i-1} \notin h_i$，那么要么 $C_i = \emptyset$，要么 $v_i \in \ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）
-证明：
-1. 令 $v_{i-1} \in h_i$。因为 $C_i = C_{i-1} \cap h_i$，并且 $v_{i-1} \in C_{i-1}$，这就意味着 $v_{i-1} \in C_i$（这是显然的）。进一步，因为 $C_i \subseteq C_{i-1}$（即 $C_i$ 属于 $C_{i-1}$），所以 $C_i$ 的optimal vertex不可能比 $C_{i-1}$ 更好，所以，$v_{i-1}$ 同样也是 $C_i$ 的optimal vertex。
-2. 令  $v_{i-1} \notin h_i$。采用反证法，假设 $C_i$ 非空，并且 $v_i$ 不在 $\ell_i$ 上。考虑线段 $\overline{v_{i-1}v_i}$ ， $v_{i-1} \in C_{i-1}$（因为 $v_{i-1}$是$C_{i-1}$的optimal vertex），并且因为$C_i \subset C_{i-1}$，所以也有 $v_i \in C_{i-1}$。又因为 $C_{i-1}$是凸的，所以线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中。因为 $v_{i-1}$是$C_{i-1}$的optimal vertex，而且目标函数 $f_{\vec{c}}$是线性的，所以沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_{\vec{c}}(p)$是单调递增的。因为 $v_{i-1} \notin h_i$并且$C_i \subset C_{i-1}$，所以线段 $\overline{v_{i-1}v_i}$ 和 $\ell_i$必然有交点，记作 $q$。而又因为线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中，所以交点 $q$ 也必然在 $C_i$中（因为$\ell_i$是$C_i$的边界）。因为 $q$ 在线段 $\overline{v_{i-1}v_i}$ 上，所以根据前面的结论（沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_{\vec{c}}(p)$是单调递增的），就有 $f_{\vec{c}}(q) \gt f_{\vec{c}}(v_i)$。这就是说在$C_i$中存在另外一个不同于optimal vertex $v_i$ 的点 $q$，它使得$f_{\vec{c}}$的取值比 $v_i$还要大，但这是和$v_i$的定义是矛盾的，因此假设不成立。故的证。
+   证明：
+3. 令 $v_{i-1} \in h_i$。因为 $C_i = C_{i-1} \cap h_i$，并且 $v_{i-1} \in C_{i-1}$，这就意味着 $v_{i-1} \in C_i$（这是显然的）。进一步，因为 $C_i \subseteq C_{i-1}$（即 $C_i$ 属于 $C_{i-1}$），所以 $C_i$ 的optimal vertex不可能比 $C_{i-1}$ 更好，所以，$v_{i-1}$ 同样也是 $C_i$ 的optimal vertex。
+4. 令  $v_{i-1} \notin h_i$。采用反证法，假设 $C_i$ 非空，并且 $v_i$ 不在 $\ell_i$ 上。考虑线段 $\overline{v_{i-1}v_i}$ ， $v_{i-1} \in C_{i-1}$（因为 $v_{i-1}$是$C_{i-1}$的optimal vertex），并且因为$C_i \subset C_{i-1}$，所以也有 $v_i \in C_{i-1}$。又因为 $C_{i-1}$是凸的，所以线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中。因为 $v_{i-1}$是$C_{i-1}$的optimal vertex，而且目标函数 $f_{\vec{c}}$是线性的，所以沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_{\vec{c}}(p)$是单调递增的。因为 $v_{i-1} \notin h_i$并且$C_i \subset C_{i-1}$，所以线段 $\overline{v_{i-1}v_i}$ 和 $\ell_i$必然有交点，记作 $q$。而又因为线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中，所以交点 $q$ 也必然在 $C_i$中（因为$\ell_i$是$C_i$的边界）。因为 $q$ 在线段 $\overline{v_{i-1}v_i}$ 上，所以根据前面的结论（沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_{\vec{c}}(p)$是单调递增的），就有 $f_{\vec{c}}(q) \gt f_{\vec{c}}(v_i)$。这就是说在$C_i$中存在另外一个不同于optimal vertex $v_i$ 的点 $q$，它使得$f_{\vec{c}}$的取值比 $v_i$还要大，但这是和$v_i$的定义是矛盾的，因此假设不成立。故的证。
 
 ==（用来说明线段 $\overline{v_{i-1}v_i}$ 的示意图在81页，页码是74，位于上面的一个图）==
 
@@ -1743,26 +1540,28 @@ $$
 为了简化术语，我们假定$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）不是垂直的，这样我们就能只用$x$的坐标来参数化它。定义一个函数 $\overline{f_{\vec{c}}}:\mathbb{R} \to  \mathbb{R}$，使得对任意一点 $p \in \ell_i$，有 $f_{\vec{c}}(p) = \overline{f_{\vec{c}}(p_x)}$ （还没想明白如何理解？如何找到这样的一个映射函数？好像要解微分方程？）。对一个半平面$h(h \in H_{i-1})$，记 $\sigma(h,\ell_i)$ 为 $\ell_i$ 和 $h$ 的边界线的交点的$x$**坐标**。如果没有交点，要么是$\ell_i$上的每个点都满足条件约束$h$（也即半平面$h$），要么$\ell_i$上没有点满足条件约束$h$（也即半平面$h$）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
 根据 $\ell_i \cap h$ 的交集区域是被限定在左侧还是右侧，可以得到对解的$x$**坐标**的约束形式，即$x \ge \sigma(h, \ell_i)$或者$x \le \sigma(h, \ell_i)$。因此需要求解的问题可以重新表述如下，
 为最大化的目标函数为
+
 $$
 \overline{f_{\vec{c}}(x)}
 $$
+
+
 它服从于
-$$
-x \ge \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space left
 
 $$
-$$
-x \le \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space right
+x \ge \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space left
 $$
 
 上面提到的 $\ell_i \cap h$ 的交集区域是被限定在左侧或右侧。**为何有左右侧之分**？因为$h$是半平面，它和$\ell_i$相交之后，落在$h$这个半平面这一侧的$\ell_i$的部分，如果只看其$x$坐标是包含**负无穷**（$-\infty$），但小于某个$x$坐标值，就相当于被限定到了左边，即有右侧上限，也就是**is bounded to right**。同理，如果相交的$\ell_i$部分落在$h$的这个半平面这一侧的$\ell_i$的部分，如果只看其$x$坐标是包含**正无穷**（$+\infty$），但大于于某个$x$坐标值，就相当于被限定到了右边边，即有左侧上限，也就是**is bounded to left**。
 
 这个一维线性程序的解是容易的，令
+
 $$
-x_{left} = \sideset{}{}{max}_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left  \}
+x_{left} = \max_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left \}
 $$
+
 $$
-x_{right} = \sideset{}{}{min}_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left  \}
+x_{right} = \min_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left \}
 $$
 
 即取$x_{left}$是所有$h(h \in H_{i-1})$的边界线和$\ell_i$的交点的$x$坐标的最大值，$x_{right}$是所有$h(h \in H_{i-1})$的边界线和$\ell_i$的交点的$x$坐标的最小值，那么区间$[x_{left}, x_{right}]$就是这个一维线性程序的解（feasible region）。因此如果 $x_{left} > x_{right}$，那就说明这个线性程序无解（infeasible），否则根据目标函数，当$\ell_i$上的点$p$ 在$x_{left}$或$x_{right}$处取得极值。
@@ -1776,11 +1575,12 @@ $$
 输入：线性程序 $(H \cup {m_1, m_2}, \vec{c})$ ，$H$是$n$个半平面，向量 $\vec{c} \in \mathbb{R}^2$（即二维实数域），$m_1$和$m_2$是解的额外限定约束条件。
 输出：如果线性程序 $(H \cup {m_1, m_2}, \vec{c})$ 无解（infeasible），就声明无解并退出。否则，就点$p$，它是按字典序找到的、能使得目标函数$f_{\vec{c}}(p)$最大化的点。
 步骤：
+
 - 令 $v_0$ 是 $C_0$ 角落上的点。
 - 令$H$是$h_1, h_2, \dots, h_n$这n个半平面
 - 从$1$到$n$，遍历$i$
-	- 如果 $h_{i-1}$这个半平面的 optimal vertex $v_{i-1}$也在半平面 $h_i$上，那么$h_i$这个半平面的 optimal vertex $v_i$也同样是$v_{i-1}$。
-	- 如果 $h_{i-1}$ 这个半平面的 optimal vertex $v_{i-1}$也**不在**半平面 $h_i$上，那么找到$\ell_i$（半平面$h_i$的边界线）上的一个点$p$，它满足前$i-1$个线性条件约束（即$H_{i-1}$），并且它能够使得目标函数$f_{\vec{c}}(p)$最大化，此时，$p$就是要找的$v_i$。如果找不到这样的点$p$，就停止循环，报告这个线性程序无解，然后退出。
+  - 如果 $h_{i-1}$这个半平面的 optimal vertex $v_{i-1}$也在半平面 $h_i$上，那么$h_i$这个半平面的 optimal vertex $v_i$也同样是$v_{i-1}$。
+  - 如果 $h_{i-1}$ 这个半平面的 optimal vertex $v_{i-1}$也**不在**半平面 $h_i$上，那么找到$\ell_i$（半平面$h_i$的边界线）上的一个点$p$，它满足前$i-1$个线性条件约束（即$H_{i-1}$），并且它能够使得目标函数$f_{\vec{c}}(p)$最大化，此时，$p$就是要找的$v_i$。如果找不到这样的点$p$，就停止循环，报告这个线性程序无解，然后退出。
 - 循环到最后，报告$v_n$，这就是这个线性程序的解。
 
 **引理4.7** 对一个有$n$个约束条件和$2$个变量的有界的线性程序，算法$2DBoundedLP(H, \vec{c}, m_1, m_2)$可以用$O(n^2)$的时间复杂度和线性的空间复杂度求得解。
@@ -1788,13 +1588,13 @@ $$
 根据前面的**引理4.5**及其结论，证明了可以找到这样的$v_i$是$C_i$的optimal vertex，因此可以得出**引理4.7**的正确性。而且如果某个$C_i$是空集，那么因为 $C = C_n \subseteq C_i$ ，所以最终的$C$也就是空集。
 易得空间复杂度是线性的。
 同样根据引理4.6，对于每个$i$，计算一维线性程序的时间复杂度是$O(i)$，所以最终的时间复杂度是
+
 $$
 \sum_{i=1}^{n} O(i) = O(n^2)
 $$
 
 虽然这样的算法是简单并且很好的，但还是太慢了。对于每次添加第$i$个约束时计算optimal vertex花费的诗句是$O(i)$，它不是紧确界（tight bound），而是渐近上限（即小于等于，$\le$）。而根据**引理4.5**，只有当$v_{i-1} \notin h_i$时，花费的时间是$\Theta(i)$（渐近紧确界，即相等，$=$），而当$v_{i-1} \in h_i$时，只需要花费常数时间。但我们不能保证每次都有$v_{i-1} \in h_i$，书中此处举了一个例子，说明了每次第$i$个约束条件就会导致前一个的optimal vertex $v_{i-1}$不再满足这第$i$个约束条件，而且花费的时间就是$\Theta(n^2)$。接下来的4.3节说明了如何进行一定意义上的加速处理。
 ==（举例的示意图在83页，页码是76）==
-
 
 ### 4.4 Randomized Linear Programming
 
@@ -1807,11 +1607,12 @@ $$
 输入：线性程序 $(H \cup {m_1, m_2}, \vec{c})$ ，$H$是$n$个半平面，向量 $\vec{c} \in \mathbb{R}^2$（即二维实数域），$m_1$和$m_2$是解的额外限定约束条件。
 输出：如果线性程序 $(H \cup {m_1, m_2}, \vec{c})$ 无解（infeasible），就声明无解并退出。否则，就点$p$，它是按字典序找到的、能使得目标函数$f_{\vec{c}}(p)$最大化的点。
 步骤：
+
 - 令 $v_0$ 是 $C_0$ 角落上的点。
 - 通过调用随机排序算法$RandomPermutation(H[1\cdots n])$，得到$n$个半平面$H$的一个随机排序序列$h_1, h_2, \dots, h_n$。
 - 从$1$到$n$，遍历$i$
-	- 如果 $h_{i-1}$这个半平面的 optimal vertex $v_{i-1}$也在半平面 $h_i$上，那么$h_i$这个半平面的 optimal vertex $v_i$也同样是$v_{i-1}$。
-	- 如果 $h_{i-1}$ 这个半平面的 optimal vertex $v_{i-1}$也**不在**半平面 $h_i$上，那么找到$\ell_i$（半平面$h_i$的边界线）上的一个点$p$，它满足前$i-1$个线性条件约束（即$H_{i-1}$），并且它能够使得目标函数$f_{\vec{c}}(p)$最大化，此时，$p$就是要找的$v_i$。如果找不到这样的点$p$，就停止循环，报告这个线性程序无解，然后退出。
+  - 如果 $h_{i-1}$这个半平面的 optimal vertex $v_{i-1}$也在半平面 $h_i$上，那么$h_i$这个半平面的 optimal vertex $v_i$也同样是$v_{i-1}$。
+  - 如果 $h_{i-1}$ 这个半平面的 optimal vertex $v_{i-1}$也**不在**半平面 $h_i$上，那么找到$\ell_i$（半平面$h_i$的边界线）上的一个点$p$，它满足前$i-1$个线性条件约束（即$H_{i-1}$），并且它能够使得目标函数$f_{\vec{c}}(p)$最大化，此时，$p$就是要找的$v_i$。如果找不到这样的点$p$，就停止循环，报告这个线性程序无解，然后退出。
 - 循环到最后，报告$v_n$，这就是这个线性程序的解。
 
 算法$2DRandomizedBoundedLP$，和算法$2DBoundedLP$，唯一的区别是，在遍历$n$个半平面之前，计算$n$个半平面的一个排序序列。
@@ -1822,6 +1623,7 @@ $$
 输入：一个数组$A[1 \cdots n]$
 输出：还是有同样元素的数组$A[1 \cdots n]$，但是是以一个随机顺序重新排序的
 步骤：
+
 - 从$n$到$2$，遍历$k$
 - 对于每个当前的$k$，调用随机数发生器$Random(k)$，得到一个索引值$rndindex$
 - 交换元素$A[k]$和$A[rndindex]$。
@@ -1831,38 +1633,23 @@ $$
 那么这样的随机算法的运行时间（或者时间复杂度）是怎么样的呢？
 因为$n$个半平面的排列有$n!$种，所以运行时间就有$n!$种。而每种随机排列所产生的随机算法的运行时间是相互独立的（独立同分布），所以我们就需要分析它们的**期望运行时间**（***expected running time***），也就是这$n!$种运行时间的数学期望。而定理4.8说明了这样的期望运行时间是$O(n)$，而且我们对$n$个半平面的输入没有做任何的假设和限定。
 
-
 **引理4.8** 二维平面空间上，有$n$个约束条件的线性规划问题，可以以$O(n)$的时间复杂度和最坏情况下线性的空间复杂的解决。
 
->Lemma 4.8 The 2-dimensional linear programming problem with n constraints can be solved in $O(n)$ randomized expected time using worst-case linear storage.
+> Lemma 4.8 The 2-dimensional linear programming problem with n constraints can be solved in $O(n)$ randomized expected time using worst-case linear storage.
 
 证明：我们之前已经观察到，需要的空间复杂度是线性的。
 因为$RANDOMPERMUTATION$算法的时间复杂度是$O(n)$，所以剩下需要分析的就是添加半平面 $h_1, h_2, \dots, h_n$的运行时间。
-
-
-
-
-
 
 射线（ray） $\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.$
 
 一个半平面 $h \in H$ 的法向量 $\overrightarrow{\eta}(h)$ 。
 
-
-
 $2\small{D}\normalsize{R}\small{ANDOMIZED}\normalsize{B}\small{OUNDED}\normalsize{L}\small{P}$
-
-
-
-
-
-
-
-
 
 ### 4.10 References
 
 #### 4.10.1 Latex 数学字体示例
+
 $\mathnormal{ABCDEabcde1234}$
 $\mathrm{ABCDEabcde1234}$
 $\mathit{ABCDEabcde1234}$
@@ -1875,6 +1662,7 @@ $\mathfrak{ABCDEabcde1234}$
 $\mathbb{ABCDEabcde1234}$
 
 #### 4.10.2 渐近界
+
 $\Theta$ ：渐近紧确界，表示既为上界，也为下界（tight），即相等（$=$）、准确的复杂度。
 $O$ ：渐近上界，表示渐近上界（tightness unknown），即小于等于（$\le$），近似复杂度。
 $\Omega$ ：渐近下界，表示渐近上界（tightness unknown），即大于等于（$\ge$），近似复杂度。
@@ -1883,15 +1671,3 @@ $\omega$ ：非渐近紧确上界，表示下界（not tight），即明确大�
 
 [时间复杂度的五个记号](https://blog.csdn.net/qq_41976613/article/details/105026946)
 [算法导论-渐近记号](https://blog.csdn.net/so_geili/article/details/53353593?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task)
-
-
-
-
-
-
-
-
-
-
-
-
