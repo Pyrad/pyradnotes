@@ -1640,6 +1640,9 @@ $$
 证明：我们之前已经观察到，需要的空间复杂度是线性的。
 因为$RANDOMPERMUTATION$算法的时间复杂度是$O(n)$，所以剩下需要分析的就是添加半平面 $h_1, h_2, \dots, h_n$的运行时间。
 
+
+
+
 射线（ray） $\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.$
 
 一个半平面 $h \in H$ 的法向量 $\overrightarrow{\eta}(h)$ 。

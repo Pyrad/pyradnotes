@@ -26,10 +26,9 @@ About the book
   (the Netherlands)
 | `Otfried Cheong <http://tclab.kaist.ac.kr/~otfried/>`__\ **,** KAIST
   (Korea)
-| `Marc van
-  Kreveld <http://www.cs.uu.nl/staff/marc.html>`__\ **,**\ `Mark
-  Overmars <http://www.cs.uu.nl/staff/markov.html>`__\ **,** Utrecht
-  University (the Netherlands)
+| `Marc van Kreveld <http://www.cs.uu.nl/staff/marc.html>`__\ **,**
+  `Mark Overmars <http://www.cs.uu.nl/staff/markov.html>`__\ **,**
+  Utrecht University (the Netherlands)
 
 `Website URL <http://www.cs.uu.nl/geobook/>`__
 
@@ -1219,7 +1218,7 @@ algorithm，而是在原先扫描的过程中，就可以找到。
 
 Map overlay算法最为常见的应用之一，就是polygon的Boolean操作，即
 **与**\ （\ :math:`AND`\ ，
-∩），\ **或**\ （\ :math:`OR`\ ，∪），\ **非**\ （\ :math:`NOT`\ ，\）。
+∩），\ **或**\ （\ :math:`OR`\ ，∪），\ **非**\ （\ :math:`NOT`\ ，\\）。
 
 （这里用来说明的图，位于第39页，页码是30）
 
@@ -2220,7 +2219,7 @@ facet），从而再测试铸件（多面体 :math:`\mathcal{P}`
    :math:`C` 就是这唯一的一个半平面
 -  如果 :math:`H` 包含大于一个约束条件（\ :math:`n > 1`\ ），就把
    :math:`H` 划分为两个子约束集合 :math:`H_{1}` 和
-   :math:`H_{2}`\ ，每个集合有 $\lceil n/2 \\rceil $ 个约束条件。
+   :math:`H_{2}`\ ，每个集合有 $\\lceil n/2 \\rceil $ 个约束条件。
 -  调用函数 :math:`IntersectHalfPlanes(H_{1})`\ ，得到结果
    :math:`C_{1}`\ 。
 -  调用函数 :math:`IntersectHalfPlanes(H_{2})`\ ，得到结果
@@ -2466,8 +2465,7 @@ instructions to a computer）。
 
    .. math:: c_{1}x_{1} + c_{2}x_{2} + \cdots + c_{d}x_{d}
 
-| 这个目标函数最大化的解，要满足一组线性约束条件，
-| Subject to：
+Subject to：
 
 .. container:: math math-block is-loaded
 
@@ -2722,10 +2720,6 @@ vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex
 
    .. math:: x \geq \sigma(h,\ell_{i}),\ h \in H_{i - 1}\ and\ \ell_{i} \cap h\ is\ bounded\ to\ the\ left
 
-.. container:: math math-block is-loaded
-
-   .. math:: x \leq \sigma(h,\ell_{i}),\ h \in H_{i - 1}\ and\ \ell_{i} \cap h\ is\ bounded\ to\ the\ right
-
 上面提到的 :math:`\ell_{i} \cap h`
 的交集区域是被限定在左侧或右侧。\ **为何有左右侧之分**\ ？因为\ :math:`h`\ 是半平面，它和\ :math:`\ell_{i}`\ 相交之后，落在\ :math:`h`\ 这个半平面这一侧的\ :math:`\ell_{i}`\ 的部分，如果只看其\ :math:`x`\ 坐标是包含\ **负无穷**\ （\ :math:`- \infty`\ ），但小于某个\ :math:`x`\ 坐标值，就相当于被限定到了左边，即有右侧上限，也就是\ **is
 bounded to
@@ -2736,11 +2730,11 @@ bounded to left**\ 。
 
 .. container:: math math-block is-loaded
 
-   .. math:: x_{left} = \underset{h \in H_{i - 1}}{max}\ \{\sigma(h,\ell_{i}):\ell_{i} \cap h\ is\ bounded\ to\ \ the\ left\}
+   .. math:: x_{left} = \max\limits_{h \in H_{i - 1}}\ \{\sigma(h,\ell_{i}):\ell_{i} \cap h\ is\ bounded\ to\ \ the\ left\}
 
 .. container:: math math-block is-loaded
 
-   .. math:: x_{right} = \underset{h \in H_{i - 1}}{min}\ \{\sigma(h,\ell_{i}):\ell_{i} \cap h\ is\ bounded\ to\ \ the\ left\}
+   .. math:: x_{right} = \min\limits_{h \in H_{i - 1}}\ \{\sigma(h,\ell_{i}):\ell_{i} \cap h\ is\ bounded\ to\ \ the\ left\}
 
 | 即取\ :math:`x_{left}`\ 是所有\ :math:`h(h \in H_{i - 1})`\ 的边界线和\ :math:`\ell_{i}`\ 的交点的\ :math:`x`\ 坐标的最大值，\ :math:`x_{right}`\ 是所有\ :math:`h(h \in H_{i - 1})`\ 的边界线和\ :math:`\ell_{i}`\ 的交点的\ :math:`x`\ 坐标的最小值，那么区间\ :math:`\lbrack x_{left},x_{right}\rbrack`\ 就是这个一维线性程序的解（feasible
   region）。因此如果
@@ -2852,6 +2846,17 @@ algorithm**\ ）。它的运行时间取决于算法中每次得到的随机序�
 | 因为\ :math:`n`\ 个半平面的排列有\ :math:`n!`\ 种，所以运行时间就有\ :math:`n!`\ 种。而每种随机排列所产生的随机算法的运行时间是相互独立的（独立同分布），所以我们就需要分析它们的\ **期望运行时间**\ （\ **expected
   running
   time**\ ），也就是这\ :math:`n!`\ 种运行时间的数学期望。而定理4.8说明了这样的期望运行时间是\ :math:`O(n)`\ ，而且我们对\ :math:`n`\ 个半平面的输入没有做任何的假设和限定。
+
+**引理4.8**
+二维平面空间上，有\ :math:`n`\ 个约束条件的线性规划问题，可以以\ :math:`O(n)`\ 的时间复杂度和最坏情况下线性的空间复杂的解决。
+
+   Lemma 4.8 The 2-dimensional linear programming problem with n
+   constraints can be solved in :math:`O(n)` randomized expected time
+   using worst-case linear storage.
+
+| 证明：我们之前已经观察到，需要的空间复杂度是线性的。
+| 因为\ :math:`RANDOMPERMUTATION`\ 算法的时间复杂度是\ :math:`O(n)`\ ，所以剩下需要分析的就是添加半平面
+  :math:`h_{1},h_{2},\ldots,h_{n}`\ 的运行时间。
 
 射线（ray）
 :math:`\rho = \{ p + \lambda\overset{\rightarrow}{d}:\lambda > 0\}.`
