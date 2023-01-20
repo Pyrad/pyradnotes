@@ -168,3 +168,25 @@ Load a breakpoint file into current gdb sesseion
 ```shell
 source my_bp_fname.brk
 ```
+
+## Start GDB with a program and its arguments
+
+`gcc` is the name of the program, and everything after it is the arguments, because `--args` is specified.
+
+```shell
+gdb --args gcc -O2 -c foo.c
+```
+
+## Run gdb without printing the front material
+
+```shell
+gdb --silent
+gdb --quiet
+gdb -q
+```
+
+## Run gdb with a core dump file
+
+```shell
+gdb <program_name> <core_dump_file>
+```
