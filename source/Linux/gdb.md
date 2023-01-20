@@ -157,13 +157,13 @@ watch -l array_name[array_index]
 
 ## GDB save breakpoints
 
-Save current breakpoints as a file
+### Save current breakpoints as a file
 
 ```shell
 save breakpoints my_bp_fname.brk
 ```
 
-Load a breakpoint file into current gdb sesseion
+### Load a breakpoint file into current gdb sesseion
 
 ```shell
 source my_bp_fname.brk
@@ -185,8 +185,10 @@ gdb --quiet
 gdb -q
 ```
 
-## Run gdb with a core dump file
+
+## Run gdb with a core dump file
 
 ```shell
 gdb <program_name> <core_dump_file>
 ```
+
