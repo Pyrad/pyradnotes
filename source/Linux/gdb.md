@@ -155,7 +155,7 @@ watch -l array_name[array_index]
 
 
 
-# GDB save breakpoints
+## GDB save breakpoints
 
 Save current breakpoints as a file
 
