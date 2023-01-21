@@ -72,3 +72,6 @@ Vocabulary  (reStructuredtext)
     * - **blow-by-blow**
       - /ˈbləu-bai-bləu/
       - *adj.* 详尽的；逐一记录的
+    * - **pagination**
+      - */*ˌpædʒɪˈneɪʃ(ə)n*/*
+      - n.标记页数；页码
