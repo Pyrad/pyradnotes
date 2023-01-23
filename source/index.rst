@@ -35,7 +35,7 @@ A Tour of Life (Pyrad's Notes!)
 
 .. toctree::
    :maxdepth: 1
-   :caption: Alorithms:
+   :caption: Algorithms:
 
    AlgorithmsDataStructures/index
    Leetcode/index
