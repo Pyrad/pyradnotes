@@ -220,6 +220,8 @@ inequality 不相等
   - Simplex Algorithm (运筹学中的单纯形算法，in operations research area)
   - Low-dimensional linear programming problems
   - expected running time 期望运行时间（即n个运行时间的数学期望）
+  - Linearity of expectation
+  - Backward analysis
 
 ## Maths
 
@@ -1626,6 +1628,7 @@ $$
 那么这样的随机算法的运行时间（或者时间复杂度）是怎么样的呢？
 因为$n$个半平面的排列有$n!$种，所以运行时间就有$n!$种。而每种随机排列所产生的随机算法的运行时间是相互独立的（独立同分布），所以我们就需要分析它们的**期望运行时间**（***expected running time***），也就是这$n!$种运行时间的数学期望。而定理4.8说明了这样的期望运行时间是$O(n)$，而且我们对$n$个半平面的输入没有做任何的假设和限定。
 
+
 **引理4.8** 二维平面空间上，有$n$个约束条件的线性规划问题，可以以$O(n)$的时间复杂度和最坏情况下线性的空间复杂的解决。
 
 > Lemma 4.8 The 2-dimensional linear programming problem with n constraints can be solved in $O(n)$ randomized expected time using worst-case linear storage.
@@ -1654,7 +1657,18 @@ $$
 E[\sum_{i=1}^{n} O(i) \cdot X_i] = \sum_{i=1}^{n} O(i) \cdot E[X_i]
 $$
 
-$E[X_i]$是什么？它实际上就是$v_i \notin h_i$的概率。
+$E[X_i]$是什么？它实际上就是$v_{i-1} \notin h_i$的概率。下面使用所谓的**后向分析**（*backward analysis*）技术来分析这个概率。
+假设已经完成了算法步骤，计算出来了optimum vertex $v_n$。因为$v_n$是$C_n$上的一个vertex，所以它由至少两个半平面（half-plane）定义。此时我们后退一步，考察$C_{n-1}$。注意从$C_n$中移除$h_n$就得到了$C_{n-1}$。这种情况下，optimum vertex如何变化？（即$C_n$中对应的$v_n$，在从$C_n$中移除了$h_n$之后，对应的optimum vertex $v_{n-1}$是否发生变化）而$v_{n-1}$和$v_n$不同（即发生变化）的唯一情况是，$v_n$不是$C_n$中使得目标函数沿着$\vec{c}$方向上取得极值的顶点，而这只发生于此时移除的$h_n$是定义出$v_n$的（至少）两个半平面之一的时候。因为算法中添加半平面的顺序是随机的，所以$h_n$实际上是$\{h_1, h_2, \dots, h_n\}$中之一。因此，$h_n$是定义$v_n$的概率**至多**是$2/n$。这里说至多，原因是（一）$v_n$可能由多条半平面的边界直线的交点形成，因此这时候移除的$h_n$可能不会改变optimum vertex $v_n$（二）$v_n$还可能由$m_1$或$m_2$定义，它们不在前面提到的$\{h_1, h_2, \dots, h_n\}$之中。因为这两个原因，所以这个概率**至多**是$2/n$。
+==（举例的示意图在85页，页码是78）==
+
+为了计算$E[X_i]$的上界，我们固定前$i$个半平面构成的子集，这个子集构成了$C_i$。根据前面的分析，添加$h_i$时，使用**后向分析**。当添加$h_i$时需要重新计算一个新的optimal vertex的概率，就是我们把$h_i$从$C_i$中移除时optimal vertex发生改变的概率。而后者发生的概率，只有$h_i$是$\{h_1, h_2, \dots, h_i\}$中至多两个半平面之一的概率，而因为添加这些半平面的顺序是随机的，所以$h_i$是这两个特殊的半平面之一的概率就是$2/i$。我们推断出这个概率的条件，是基于这前$i$个半平面是$H$中的某个固定的子集的情况。但是因为这个推断出来的概率界限是对任何固定的子集适用的，所以我们就有 $E[X_i] \leqslant 2/i$。由此，我们得到了可以确定解决1维线性规划问题的总时间上界为
+
+$$
+\sum_{i=1}^{n} O(i) \cdot \frac{2}{i} = O(n)
+$$
+而且，我们也注意到这个算法其余部分的时间复杂度也是$O(n)$。
+注意这里的数学期望只和算法的随机（顺序）选择有关。我们没有对可能的输入做平均。对任意一个有$n$个半平面的集合作为输入而言，算法运行时间的数学期望就是$O(n)$，并且没有“坏”的输入。
+==（举例的示意图在86页，页码是79）==
 
 
 
@@ -1693,3 +1707,7 @@ $\omega$ ：非渐近紧确上界，表示下界（not tight），即明确大�
 
 [时间复杂度的五个记号](https://blog.csdn.net/qq_41976613/article/details/105026946)
 [算法导论-渐近记号](https://blog.csdn.net/so_geili/article/details/53353593?depth_1-utm_source=distribute.pc_relevant.none-task&utm_source=distribute.pc_relevant.none-task)
+
+#### 4.10.3 Latex Mathematical Symbols
+
+[A PDF Link of Latex Mathematical Symbols](https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf)
