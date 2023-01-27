@@ -1418,8 +1418,6 @@ $$
 c_1x_1 + c_2x_2 + \cdots + c_dx_d
 $$
 
-
-
 Subject to：
 
 $$
@@ -1430,8 +1428,6 @@ a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
 a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
 \end{matrix}\right.
 $$
-
-
 
 $a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
 需要最大化的函数叫做**目标函数**（*objective function*）。
@@ -1513,8 +1509,6 @@ $$
 C_0 \supseteq C_1 \supseteq C_2 \supseteq \cdots \supseteq C_n = C
 $$
 
-
-
 这也就是说，对于任何一个 $i$（$0 \le i \le n$），如果 $C_i = \emptyset$，那么对于任意一个 $j$（$i \le j \le n$），线性程序就是feasible的，我们的算法也就能提前退出。
 
 下面的引理4.5，说明了每当我们增加一个线性约束（半平面）时，optimal vertex如何改变，而这是我们算法的基础。
@@ -1544,7 +1538,6 @@ $$
 $$
 \overline{f_{\vec{c}}(x)}
 $$
-
 
 它服从于
 
@@ -1640,6 +1633,7 @@ $$
 证明：我们之前已经观察到，需要的空间复杂度是线性的。
 因为$RANDOMPERMUTATION$算法的时间复杂度是$O(n)$，所以剩下需要分析的就是添加半平面 $h_1, h_2, \dots, h_n$的运行时间。当optimal vertex不发生改变的时候，添加一个半平面需要的是常数时间（constant time）。但当optimal vertex发生改变的时候，我们需要解决一个1维的线性规划问题。现在来计算所有这些1维线性规划问题的时间界限。
 假定 $X_i$ 是一个随机变量，当 $v_i \notin h_i$ 时取值为$1$，否则当 $v_i \in h_i$ 时取值为 $0$，即
+
 $$
 \begin{split}
 X_i = \left\{ \begin{matrix}
@@ -1647,16 +1641,24 @@ X_i = \left\{ \begin{matrix}
 {0 \space , v_i \in h_i} \\
 \end{matrix} \right.\end{split}
 $$
+
 回忆起对于有$i$个线性约束条件的1维线性规划问题，解决它的时间复杂度是$O(i)$。据此，有$n$个半平面（线性约束条件）的线性规划问题所需的时间复杂度就是，
+
 $$
 \sum_{i=1}^{n} O(i) \cdot X_i
 $$
-使用数学期望的线性特性（*linearity of expectation*），随机变量之和的数学期望，等于随机变量数学期望的和（the expected value of a sum of random variables is the sum of the expected values
-of the random variables）。无论随机变量是否相关还是相互独立，这个线性特性都成立。所以，解决这个1维线性规划问题时间复杂度的数学期望就是，
+
+使用数学期望的线性特性（*linearity of expectation*），随机变量之和的数学期望，等于随机变量数学期望的和（the expected value of a sum of random variables is the sum of the expected values of the random variables）。无论随机变量是否相关还是相互独立，这个线性特性都成立。所以，解决这个1维线性规划问题时间复杂度的数学期望就是，
+
 $$
 E[\sum_{i=1}^{n} O(i) \cdot X_i] = \sum_{i=1}^{n} O(i) \cdot E[X_i]
 $$
+
 $E[X_i]$是什么？它实际上就是$v_i \notin h_i$的概率。
+
+
+
+
 
 
 
