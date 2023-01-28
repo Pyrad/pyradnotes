@@ -73,5 +73,8 @@ Vocabulary  (reStructuredtext)
       - /ˈbləu-bai-bləu/
       - *adj.* 详尽的；逐一记录的
     * - **pagination**
-      - */*ˌpædʒɪˈneɪʃ(ə)n*/*
-      - n.标记页数；页码
+      - /ˌpædʒɪˈneɪʃ(ə)n/
+      - n. 标记页数；页码
+    * - **egregious**
+      - /ɪˈɡriːdʒiəs/
+      - *adj.* 惊人的；过分的；恶名昭彰的
