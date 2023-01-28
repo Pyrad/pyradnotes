@@ -43,4 +43,4 @@ This is to keep down some software programs of daily use or which might be very 
       - `Obsidian <https://obsidian.md/>`_ (`Obsidian GitHub Releases <https://github.com/obsidianmd/obsidian-releases>`_)
     * - **Kate**
       - Get an Edge in Editing.
-      - `Kate <https://kate-editor.org/>`_ (`Kate Nightly Win64 <https://binary-factory.kde.org/view/Windows%2064-bit/job/Kate_Nightly_win64/>`_)
+      - `Kate <https://kate-editor.org/>`_ (`Nightly <https://binary-factory.kde.org/view/Windows%2064-bit/job/Kate_Nightly_win64/>`_, `Source <https://invent.kde.org/utilities/kate>`_)
