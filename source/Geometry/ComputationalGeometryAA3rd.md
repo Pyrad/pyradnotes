@@ -1692,6 +1692,23 @@ $$
 ==（举例的示意图在86页，页码是79）==
 
 
+### 4.5 Unbounded Linear Programs
+
+在前面的一节里，我们通过手动添加两个额外的条件约束，避免处理无界的线性规划问题。但这种办法并不总是合适的。甚至有时候线性规划问题本身是有界的（bounded），但我们也不知道一个足够大的上界$M$。更进一步，在实际情况中，无界的线性规划问题是存在的，所以我们需要正确地解决它。
+
+首先研究如何确定一个线性规划问题$(H, \vec{c})$是无界的。正如我们前面提到的，一个无界的线性规划问题，意味着有一条射线 $\rho$ 完全包含于解区域（feasible region）$C$中，这样沿着射线 $\rho$ 的方向，目标函数 $f_\vec{c}$ 可以取得任意大的值。
+
+如果我们以$p$表示射线的起点，以$\vec{d}$表示它的方向，那么就得到了射线 $\rho$ 的参数化表达
+
+$$
+\rho = \{p + \lambda \cdot \vec{d} : \lambda \gt 0 \}
+$$
+
+当且仅当 $\vec{d} \cdot \vec{c} \gt 0$时，目标函数 $f_\vec{c}$ 取得任意大的值。另一方面，所有半平面（条件约束）$H$中的一个半平面$h$（$h \in H$），它的朝向有解区域（feasible region）的法向量$\vec{\eta}(h)$，有$\vec{d} \cdot \vec{\eta} \geqslant 0$。下面的推理4.9，说明了关于$\vec{d}$的两个条件，就足够判断一个线性规划问题是否有界。
+
+推理4.9 一个线性规划问题 $(H, \vec{c})$是无界的充要条件是，存在一个向量 $\vec{d}$ 且有 $\vec{d} \cdot \vec{c} \gt 0$，使得$H$中的任意一个约束条件（半平面）$h$ 朝向有解区域的法向量 $\vec{\eta}(h)$ 有 $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$，而且同时使得线性规划问题 $(H^{\prime}, \vec{c})$ 有解，这里 $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$。
+
+> A linear program $(H, \vec{c})$ is unbounded if and only if there is a vector $\vec{d}$ with $\vec{d} \cdot \vec{c} \gt 0$ such that $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$ for all $h \in H$ and the linear program $(H, \vec{c})$ is feasible, where $ $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0$.
 
 
 
@@ -1702,6 +1719,8 @@ $$
 一个半平面 $h \in H$ 的法向量 $\overrightarrow{\eta}(h)$ 。
 
 $2\small{D}\normalsize{R}\small{ANDOMIZED}\normalsize{B}\small{OUNDED}\normalsize{L}\small{P}$
+
+
 
 ### 4.10 References
 
