@@ -2464,10 +2464,10 @@ Subject to：
 
 
    \left\{\begin{matrix} 
-   a_{1,1}x_1 + c_{1,2}x_2 + \cdots + c_{1,d}x_d \le b_1 \\
-   a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
+   a_{1,1}x_1 + a_{1,2}x_2 + \cdots + a_{1,d}x_d \le b_1 \\
+   a_{2,1}x_1 + a_{2,2}x_2 + \cdots + a_{2,d}x_d \le b_2 \\
    \vdots \\
-   a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
+   a_{n,1}x_1 + a_{n,2}x_2 + \cdots + a_{n,d}x_d \le b_n
    \end{matrix}\right.
 
 :math:`a_{i,j}`\ ，\ :math:`b_i` 和 :math:`c_i`
