@@ -14,9 +14,11 @@ Notes by Pyrad, 2023-01-03
 3 ways to generate corresponding reStructuredText from this markdown text
 
 1. Use `pandoc`
-```shell
+
+```sh
 pandoc -s ComputationalGeometryAA3rd.md -f markdown -t rst -o ComputationalGeometryAA3rd.rst
 ```
+
 
 2. In Typora, use `Export to` function, and choose export as reStructuredText format.
 
@@ -1313,7 +1315,7 @@ $$
 算法步骤
 
 - 如果 $H$ 只包含有一个约束条件（即 $n=1$），那么 $C$ 就是这唯一的一个半平面
-- 如果 $H$ 包含大于一个约束条件（$n > 1$），就把 $H$ 划分为两个子约束集合 $H_1$ 和 $H_2$，每个集合有  $\lceil n/2 \rceil $ 个约束条件。
+- 如果 $H$ 包含大于一个约束条件（$n > 1$），就把 $H$ 划分为两个子约束集合 $H_1$ 和 $H_2$，每个集合有  $\lceil n/2 \rceil$ 个约束条件。
 - 调用函数 $IntersectHalfPlanes(H_1)$，得到结果 $C_1$。
 - 调用函数 $IntersectHalfPlanes(H_2)$，得到结果 $C_2$。
 - 调用函数 $IntersectConvexRegions(C_1, C_2)$，得到结果 $C$。

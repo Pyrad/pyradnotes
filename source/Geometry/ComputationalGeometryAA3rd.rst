@@ -13,7 +13,7 @@ Note
 
 .. container::
 
-   This is because Sphinx didn't support math symbols/equations in Latex
+   This is because Sphinx didn’t support math symbols/equations in Latex
    very well, so first edit the markdown file, and then export it to
    corresponding rst file, and use that rst for Sphinx to create html
    pages.
@@ -23,12 +23,11 @@ Notes by Pyrad, 2023-01-03
 3 ways to generate corresponding reStructuredText from this markdown
 text
 
-#. Use ``pandoc``
+1. Use ``pandoc``
 
-.. code:: language-shell
+.. code:: sh
 
    pandoc -s ComputationalGeometryAA3rd.md -f markdown -t rst -o ComputationalGeometryAA3rd.rst
-   Copy
 
 2. In Typora, use ``Export to`` function, and choose export as
    reStructuredText format.
@@ -43,14 +42,12 @@ About the book
 
 **Third Edition (March 2008)**
 
-| `Mark de Berg <http://www.win.tue.nl/~mdberg/>`__\ **,** TU Eindhoven
-  (the Netherlands)
-| `Otfried Cheong <http://tclab.kaist.ac.kr/~otfried/>`__\ **,** KAIST
-  (Korea)
-| `Marc van
-  Kreveld <http://www.cs.uu.nl/staff/marc.html>`__\ **,**\ `Mark
-  Overmars <http://www.cs.uu.nl/staff/markov.html>`__\ **,** Utrecht
-  University (the Netherlands)
+`Mark de Berg <http://www.win.tue.nl/~mdberg/>`__\ **,** TU Eindhoven
+(the Netherlands) `Otfried
+Cheong <http://tclab.kaist.ac.kr/~otfried/>`__\ **,** KAIST (Korea)
+`Marc van Kreveld <http://www.cs.uu.nl/staff/marc.html>`__\ **,**\ `Mark
+Overmars <http://www.cs.uu.nl/staff/markov.html>`__\ **,** Utrecht
+University (the Netherlands)
 
 `Website URL <http://www.cs.uu.nl/geobook/>`__
 
@@ -73,7 +70,7 @@ Words
 
 **asymptote** */ˈæsɪmˌtoʊt/* *n.* [数] 渐近线
 
-**asymptotically** */,æsimp'tɔtikli,-kəli/* *adj.* 渐近线的
+**asymptotically** */,æsimp’tɔtikli,-kəli/* *adj.* 渐近线的
 
 **planar** */ˈpleɪnər/* *adj.* 平面的；二维的；平坦的
 
@@ -157,10 +154,10 @@ Words
 四边形的
 
 **trapezoid** */*\ ˈtræpəzɔɪd\ */* *n.*
-<英>不规则四边形；<美>梯形；（腕部近食指根底处的）小多角骨；\ *adj.*
+不规则四边形；梯形；（腕部近食指根底处的）小多角骨；\ *adj.*
 梯形的，不规则四边形的
 
-**polytope** */*'pɔlitəup\ */* *n.* [数] 多胞形，多面体；可剖分空间
+**polytope** */*\ ’pɔlitəup\ */* *n.* [数] 多胞形，多面体；可剖分空间
 
 **tetrahedra** */*\ ˌtetrəˈhiːdrə\ */* *n.* 四面体（tetrahedron 的变形）
 
@@ -180,7 +177,7 @@ Words
 
 **cavity** */*\ ˈkævəti\ */* *n.* 洞，腔；(牙齿的) 龋洞
 
-**latex** /‘la:tek/ 一种电子排版系统
+**latex** /’la:tek/ 一种电子排版系统
 
 **coplanar** */*\ kəʊˈpleɪnə(r)\ */* *adj.* [数] 共面的（be coplanar
 with）
@@ -225,7 +222,7 @@ coinciding point 共点
 
 in a sense 某种意义上
 
-incident to 由...产生（这里incident是 *adj.*\ ）
+incident to 由…产生（这里incident是 *adj.*\ ）
 
 hold for 适用
 
@@ -311,9 +308,9 @@ Names
 Maths
 -----
 
-:math:`e^{\prime}` ：\ :math:`e` prime（或 :math:`e` dash）
+:math:`e'` ：\ :math:`e` prime（或 :math:`e` dash）
 
-:math:`e^{''}` ：\ :math:`e` double prime（或 :math:`e` double dash）
+:math:`e''` ：\ :math:`e` double prime（或 :math:`e` double dash）
 
 :math:`\hat{f}` ：\ :math:`f` hat（或者 :math:`f`
 roof），caret符号更多的用于音调符号（circumflex）
@@ -395,10 +392,10 @@ convex hulls）
 **算法简述**\ ：
 
 从集合 :math:`\mathcal{P}` 中取任意不同两点 :math:`p` 和
-:math:`q`\ ，组成一有向线段 :math:`\overset{\rightarrow}{pq}` ，检查集合
+:math:`q`\ ，组成一有向线段 :math:`\overrightarrow{pq}` ，检查集合
 :math:`\mathcal{P}` 中剩余的任意一点 :math:`r`\ ，如果任意一点 :math:`r`
-都位于有向线段 :math:`p\rightarrow q` 的右侧，说明有向线段
-:math:`p\rightarrow q` 就是最终轮廓上的其中一条线段，将其加入集合
+都位于有向线段 :math:`p \rightarrow q` 的右侧，说明有向线段
+:math:`p \rightarrow q` 就是最终轮廓上的其中一条线段，将其加入集合
 :math:`\mathcal{E}` 中。
 
 穷举集合 :math:`\mathcal{P}` 中这样两个点 :math:`p` 和 :math:`q`
@@ -408,43 +405,42 @@ convex hulls）
 最后，从集合 :math:`\mathcal{E}`
 中找出依次连接的线段，并组成一个点列表，按照\ **顺时针**\ 方向排序。
 
-**算法复杂度**\ ：\ :math:`O(n^{3})`
+**算法复杂度**\ ：\ :math:`O(n^3)`
 
 对于伪代码中的几个的说明
 
 -  诸如判断一个点在一条直线（线段）的左边或右边的操作，默认已经有现成的实现可以使用
 -  从集合 :math:`\mathcal{E}` 中找出依次连接的有向线段的步骤是，首先从
-   :math:`\mathcal{E}` 中取任一有向线段 :math:`e_{1}`\ ，以其头点（即
-   :math:`p\rightarrow q` 线段的 :math:`q` 点）为目标，从集合
-   :math:`\mathcal{E}` 中找出第二条有向线段 :math:`e_{2}`\ ，其尾点（即
-   :math:`p\rightarrow q` 线段的 :math:`p` 点）为 :math:`e_{1}`
-   的头点，然后再以 :math:`e_{2}`
-   的头点搜索下一条有向线段，直到搜索到的这些线段 :math:`e_{1}`,
-   :math:`e_{2}`, :math:`e_{3}`, ..., :math:`e_{N}`
-   构成一条闭合的折线段。
--  关于算法复杂度是\ :math:`O(n^{3})`\ 。从 :math:`n`
+   :math:`\mathcal{E}` 中取任一有向线段 :math:`e_1`\ ，以其头点（即
+   :math:`p \rightarrow q` 线段的 :math:`q` 点）为目标，从集合
+   :math:`\mathcal{E}` 中找出第二条有向线段 :math:`e_2`\ ，其尾点（即
+   :math:`p \rightarrow q` 线段的 :math:`p` 点）为 :math:`e_1`
+   的头点，然后再以 :math:`e_2`
+   的头点搜索下一条有向线段，直到搜索到的这些线段 :math:`e_1`,
+   :math:`e_2`, :math:`e_3`, …, :math:`e_N` 构成一条闭合的折线段。
+-  关于算法复杂度是\ :math:`O(n^3)`\ 。从 :math:`n`
    个点中取两个点的组合是
-   :math:`\frac{n!}{2!(n - 2)!}`\ ，所以是\ :math:`O(n^{2})`\ ，对每一条有向线段，查看剩余
-   :math:`n - 2`
-   个点是否在其右侧，这样时间复杂度就达到了\ :math:`O(n^{3})`\ 。最后一步依次找出有向线段并按顺序连接，时间复杂度是
-   :math:`O(n^{2})` ，所以最终时间复杂度就是\ :math:`O(n^{3})`\ 。
+   :math:`\frac{n!}{2!(n-2)!}`\ ，所以是\ :math:`O(n^2)`\ ，对每一条有向线段，查看剩余
+   :math:`n-2`
+   个点是否在其右侧，这样时间复杂度就达到了\ :math:`O(n^3)`\ 。最后一步依次找出有向线段并按顺序连接，时间复杂度是
+   :math:`O(n^2)` ，所以最终时间复杂度就是\ :math:`O(n^3)`\ 。
 
 关于 **degenerate case** 或者叫做 **degeneracy**
 
-在判断一个点 *k* 是否在有向线段 :math:`p\rightarrow q` 右侧时，点 *k*
-是可能落在有向线段 :math:`p\rightarrow q`
+在判断一个点 *k* 是否在有向线段 :math:`p \rightarrow q` 右侧时，点 *k*
+是可能落在有向线段 :math:`p \rightarrow q`
 上的，针对这种退化情况，可以把它也当做是在有向线段右侧的一种（退化）情况。
 
 关于 **rounding error** 导致的程序健壮性问题（robustness）
 
 在实际情况中，因为使用的是浮点数计算，那么仍然是在判断一个点 :math:`k`
-是否在有向线段 :math:`p\rightarrow q`
+是否在有向线段 :math:`p \rightarrow q`
 右侧时，可能产生微小的误差（rounding errors），导致最终计算出来的convex
 hull的点集合 :math:`\mathcal{E}` 有三种情况：
 
-#. 要么不是真正意义上的convex hull（但仍然是非常接近实际情况的）
-#. 要么最终的集合 :math:`\mathcal{E}` 中的有向线段不是一个闭合的折线段
-#. 要么最终的集合 :math:`\mathcal{E}`
+1. 要么不是真正意义上的convex hull（但仍然是非常接近实际情况的）
+2. 要么最终的集合 :math:`\mathcal{E}` 中的有向线段不是一个闭合的折线段
+3. 要么最终的集合 :math:`\mathcal{E}`
    中的有向线段除了可以组成一个闭合的折线段外，还有额外剩余的几条有向线段
 
 正是由于这种robust的问题，迫使我们需要寻找一种更为健壮和正确的算法。
@@ -456,59 +452,57 @@ hull的点集合 :math:`\mathcal{E}` 有三种情况：
 algorithm* 的方法，文中名为ConvexHull算法。
 
 这种算法的总体思路是，将所有的点按照 :math:`x` 坐标由大到小排序为
-:math:`p_{1}`, :math:`p_{2}`, :math:`p_{3}`, ...,
-:math:`p_{N}`\ ，因为前提是凸多边形，所以先按照从左向右的方向，找到这convex
-hull的上半部分边界 *upper hull*\ ，即 :math:`p_{1}`, :math:`u_{0}`,
-:math:`u_{1}`, ..., :math:`p_{N}`\ （其中\ :math:`u_{0}`, :math:`u_{1}`,
-... 都是集合中的点），再找到convex hull的下半部分边界 *lower
-hull*\ ，即\ :math:`p_{1}`, :math:`v_{0}`, :math:`v_{1}`, ...,
-:math:`p_{N}`\ （其中\ :math:`v_{0}`, :math:`v_{1}`, ...
-也都是集合中的点）。
+:math:`p_1`, :math:`p_2`, :math:`p_3`, …,
+:math:`p_N`\ ，因为前提是凸多边形，所以先按照从左向右的方向，找到这convex
+hull的上半部分边界 *upper hull*\ ，即 :math:`p_1`, :math:`u_0`,
+:math:`u_1`, …, :math:`p_N`\ （其中\ :math:`u_0`, :math:`u_1`, …
+都是集合中的点），再找到convex hull的下半部分边界 *lower
+hull*\ ，即\ :math:`p_1`, :math:`v_0`, :math:`v_1`, …,
+:math:`p_N`\ （其中\ :math:`v_0`, :math:`v_1`, … 也都是集合中的点）。
 
 这个所谓的 *incremental algorithm*
 方法的关键步骤在于，如何在向已有的但不完整的\ *upper/lower hull*
 添加一个点之后，更新这个不完整的\ *upper/lower
 hull*\ ，使得其向左或向右延伸一段（最终到达最右或最左的点）。
 
-换句话说，假如现已有\ *upper hull*\ 的点是 :math:`p_{1}`, :math:`p_{2}`,
-..., :math:`p_{i - 1}`, 如何找到下一个点 *pi*\ ，使得 :math:`p_{1}`,
-:math:`p_{2}`, ..., :math:`p_{i}` 是最终 *upper hull* 的一部分。
+换句话说，假如现已有\ *upper hull*\ 的点是 :math:`p_1`, :math:`p_2`, …,
+:math:`p_{i-1}`, 如何找到下一个点 *pi*\ ，使得 :math:`p_1`, :math:`p_2`,
+…, :math:`p_i` 是最终 *upper hull* 的一部分。
 
 因为我们约定是按照顺时针方向来标记最终的convex hull的，所以，沿着convex
 hull的边界行走，一定是\ **“右转”**\ 的。因此，可以按照此方法来确定如何加入上面提到的\ :math:`pi`\ 点，从而生成一条新的convex
 hull的一部分。
 
 假设我们现在计算的是 *upper hull*\ ，那么我们遍历的点一定是按照
-:math:`x` 坐标有小到大的顺序，那么当加入点 :math:`p_{i}` 时，点
-:math:`p_{i}` 的 :math:`x` 坐标就是目前的convex hull 点 :math:`p_{1}`,
-:math:`p_{2}`, ..., :math:`p_{i - 1}` 里面 :math:`x` 坐标最大的。
+:math:`x` 坐标有小到大的顺序，那么当加入点 :math:`p_i` 时，点
+:math:`p_i` 的 :math:`x` 坐标就是目前的convex hull 点 :math:`p_1`,
+:math:`p_2`, …, :math:`p_{i-1}` 里面 :math:`x` 坐标最大的。
 
-加入点 :math:`p_{i}` 后，此时点列为 :math:`p_{1}`, :math:`p_{2}`, ...,
-:math:`p_{i - 1}`, :math:`p_{i}`\ 。此时我们检查最后三个点
-:math:`p_{i - 2}`, :math:`p_{i - 1}`, :math:`p_{i}`\ 。
+加入点 :math:`p_i` 后，此时点列为 :math:`p_1`, :math:`p_2`, …,
+:math:`p_{i-1}`, :math:`p_i`\ 。此时我们检查最后三个点 :math:`p_{i-2}`,
+:math:`p_{i-1}`, :math:`p_i`\ 。
 
 -  如果这三个点是\ **“右转”**\ 的，那么新加入的点
-   :math:`p_{i}`\ ，就是最终 upper convex
+   :math:`p_i`\ ，就是最终 upper convex
    hull的一部分（但有可能在加入之后的点以后，继续做调整从而删除点
-   :math:`p_{i}`\ ）。
+   :math:`p_i`\ ）。
 
--  如果这三个点是\ **“左转”**\ 的，那么因为目前 :math:`p_{i}` 的
-   :math:`x` 坐标最大，它就一定是在目前遍历过的convex
-   hull上，所以我们就需要从 :math:`p_{i - 1}`
+-  如果这三个点是\ **“左转”**\ 的，那么因为目前 :math:`p_i` 的 :math:`x`
+   坐标最大，它就一定是在目前遍历过的convex hull上，所以我们就需要从
+   :math:`p_{i-1}`
    开始向后检查，每次删除最后3个点的中间的点（即每次的倒数第二个点），做重新调整。
 
-   先删除 :math:`p_{i - 1}`
-   这个点，然后检查此时的最后三个点，\ :math:`p_{i - 3}`,
-   :math:`p_{i - 2}`,
-   :math:`p_{i}`\ ，如果它们组成了\ **“右转”**\ 的折线，那么本次调整到此结束，然后继续加入下一个点
-   :math:`p_{i + 1}`\ ；如果它们组成了\ **“左转”**\ 的折线，那么就需要再次删除中间点，即\ :math:`p_{i - 2}`\ ，然后继续检查时的最后三个点，\ :math:`p_{i - 4}`,
-   :math:`p_{i - 3}`,
-   :math:`p_{i}`\ ，并重复上述步骤，直到最后三个点组成\ **“右转”**\ 的折线（或者直到剩下最后2个点），本次调整才到此结束，然后继续加入下一个点
-   :math:`p_{i + 1}`\ 。
+   先删除 :math:`p_{i-1}`
+   这个点，然后检查此时的最后三个点，\ :math:`p_{i-3}`, :math:`p_{i-2}`,
+   :math:`p_i`\ ，如果它们组成了\ **“右转”**\ 的折线，那么本次调整到此结束，然后继续加入下一个点
+   :math:`p_{i+1}`\ ；如果它们组成了\ **“左转”**\ 的折线，那么就需要再次删除中间点，即\ :math:`p_{i-2}`\ ，然后继续检查时的最后三个点，\ :math:`p_{i-4}`,
+   :math:`p_{i-3}`,
+   :math:`p_i`\ ，并重复上述步骤，直到最后三个点组成\ **“右转”**\ 的折线（或者直到剩下最后2个点），本次调整才到此结束，然后继续加入下一个点
+   :math:`p_{i+1}`\ 。
 
 当针对上述两种情况做完调整之后，此时继续加入下一个点
-:math:`p_{i + 1}`\ ，并重复上述步骤，直到加入最右边的点
-:math:`p_{N}`\ ，此时就得到了 *upper hull*\ 。
+:math:`p_{i+1}`\ ，并重复上述步骤，直到加入最右边的点
+:math:`p_N`\ ，此时就得到了 *upper hull*\ 。
 
 寻找 *lower hull* 的incremental的步骤和上述类似。
 
@@ -523,29 +517,28 @@ hull的一部分。
 
 **算法简述**\ ：
 
--  将集合 :math:`P` 按 *x* 坐标排序为 :math:`p_{1}`, :math:`p_{2}`, ...,
-   :math:`p_{N}`
--  把\ :math:`p_{1}`, :math:`p_{2}` 放入序列 :math:`\mathcal{L}`\ ，并且
-   :math:`p_{1}` 是第一个点， :math:`p_{2}` 是第二个点
+-  将集合 :math:`P` 按 *x* 坐标排序为 :math:`p_1`, :math:`p_2`, …,
+   :math:`p_N`
+-  把\ :math:`p_1`, :math:`p_2` 放入序列 :math:`\mathcal{L}`\ ，并且
+   :math:`p_1` 是第一个点， :math:`p_2` 是第二个点
 -  变量 :math:`i`\ ，值从 :math:`3` 到 :math:`N`\ ，依次遍历加入序列
-   :math:`L_{1}`\ ，每次加入点
-   :math:`p_{i}`\ ，检查最后三个点是否组成\ **“右转”**\ 的折线段。如果是，继续遍历下一个值，否则删除当前序列
-   :math:`L_{1}`
+   :math:`L_1`\ ，每次加入点
+   :math:`p_i`\ ，检查最后三个点是否组成\ **“右转”**\ 的折线段。如果是，继续遍历下一个值，否则删除当前序列
+   :math:`L_1`
    的倒数第二个点，并继续检查最后三个点是否组成\ **“右转”**\ 的折线段，以此类推，直到当前序列
-   :math:`L_{1}`
-   的最后三个点组成\ **“右转”**\ 的折线段，才继续遍历下一个 :math:`i`
-   值。
+   :math:`L_1` 的最后三个点组成\ **“右转”**\ 的折线段，才继续遍历下一个
+   :math:`i` 值。
 -  当变量 :math:`i` 遍历完成时，就得到了convex hull的上半部分 upper
-   hull的点序列是 :math:`L_{1}` 。
--  把\ :math:`p_{N}`, :math:`p_{N - 1}` 放入序列 :math:`L_{2}`\ ，并且
-   :math:`p_{N}` 是第一个点， :math:`p_{N - 1}` 是第二个点
+   hull的点序列是 :math:`L_1` 。
+-  把\ :math:`p_N`, :math:`p_{N-1}` 放入序列 :math:`L_2`\ ，并且
+   :math:`p_N` 是第一个点， :math:`p_{N-1}` 是第二个点
 -  变量 :math:`j`\ ，值从N-2到1，依次加入序列
-   :math:`L_{2}`\ ，和上面寻找upper
+   :math:`L_2`\ ，和上面寻找upper
    hull的办法类似，仍然是确保每加入一点后，调整序列
-   :math:`L_{2}`\ ，使得其最后三点组成\ **“右转”**\ 的折线段，然后才继续遍历下一个
+   :math:`L_2`\ ，使得其最后三点组成\ **“右转”**\ 的折线段，然后才继续遍历下一个
    :math:`j` 值。
--  把序列 :math:`L_{2}` 的第一个和最后一个点去掉，避免重复点。
--  把序列 :math:`L_{1}` 和序列 :math:`L_{2}` 合并，即得到最终的点序列
+-  把序列 :math:`L_2` 的第一个和最后一个点去掉，避免重复点。
+-  把序列 :math:`L_1` 和序列 :math:`L_2` 合并，即得到最终的点序列
    :math:`\mathcal{L}`\ 。
 
 时间复杂度：\ :math:`O(nlogn)`
@@ -569,30 +562,29 @@ hull的一部分。
 
 关于第二种算法正确性的证明，文中采用了数学归纳法。
 
-以upper hull为例，假如现已有点列 {:math:`p_{1}`, :math:`p_{2}`, ...,
-:math:`p_{i - 1}` }，准备加入点
-:math:`p_{i}`\ 。根据算法，点列{:math:`p_{1}`, :math:`p_{2}`, ...,
-*:math:`p_{i - 1}`*}中最后三点一定是组成\ **“右转”**\ 的折线段（即除了这些点，到目前最大的点为止，其他点都在这些点的下方）。我们把此时的upper
+以upper hull为例，假如现已有点列 {:math:`p_1`, :math:`p_2`, …,
+:math:`p_{i-1}` }，准备加入点 :math:`p_i`\ 。根据算法，点列{:math:`p_1`,
+:math:`p_2`, …,
+*:math:`p_{i-1}`*}中最后三点一定是组成\ **“右转”**\ 的折线段（即除了这些点，到目前最大的点为止，其他点都在这些点的下方）。我们把此时的upper
 hull点列叫做 old chain。
 
-在加入点 :math:`p_{i}` 之后，按照字典序（lexicographic），最小的点是
-:math:`p_{1}`\ ，最大的点是 :math:`p_{i}`\ ，经过调整，此时的upper
-hull我们叫做new chain（而且new chain的最后一个点一定是
-:math:`p_{i}`\ ）。
+在加入点 :math:`p_i` 之后，按照字典序（lexicographic），最小的点是
+:math:`p_1`\ ，最大的点是 :math:`p_i`\ ，经过调整，此时的upper
+hull我们叫做new chain（而且new chain的最后一个点一定是 :math:`p_i`\ ）。
 
 可以断言的是old chain一定是在new chain的下方（有可能点\ *pi*\ 就是old
 chain的延伸，但是在算法中，这种共线的情况被当做是左转而被排除掉了）。
 
-按照算法，我们需要证明的是，到目前为止，除了{:math:`p_{1}`,
-:math:`p_{2}`, ..., :math:`p_{i}`}，所有的点都在new chain的下方。
+按照算法，我们需要证明的是，到目前为止，除了{:math:`p_1`, :math:`p_2`,
+…, :math:`p_i`}，所有的点都在new chain的下方。
 
 假如有一个点位于new chain的上方，那么这个点就必须介于 *p(i-1)* 和
-*pi*\ 之间，因为在加入 :math:`p_{i}` 之前，所有的点都位于old
-chain的下方。但这又是矛盾的，因为 :math:`p_{i - 1}` 和 :math:`p_{i}`
+*pi*\ 之间，因为在加入 :math:`p_i` 之前，所有的点都位于old
+chain的下方。但这又是矛盾的，因为 :math:`p_{i-1}` 和 :math:`p_i`
 之间没有其它点，因为所有点已经是按照字典序排列过了的。
 
-因此归纳出来，到目前为止，除了{:math:`p_{1}`, :math:`p_{2}`, ...,
-:math:`p_{i}`}，所有的点都在new chain的下方。算法正确性得到证明。
+因此归纳出来，到目前为止，除了{:math:`p_1`, :math:`p_2`, …,
+:math:`p_i`}，所有的点都在new chain的下方。算法正确性得到证明。
 
 关于时间复杂度的证明。
 
@@ -602,7 +594,7 @@ chain的下方。但这又是矛盾的，因为 :math:`p_{i - 1}` 和 :math:`p_{
 
 这个\ ``while``\ 循环首先可以肯定至少执行一次（检查右转折线段），而额外执行的次数，是为了删除每次得到的序列最后三点的中间点，而因为所有点只会被加入序列一次，所以，每个点最多也只会被删除一次，那么这个\ ``for``\ 循环里面的\ ``while``\ 循环执行的上限就是\ :math:`O(n)`\ 。
 
-所以，带有\ ``while``\ 循环的这个\ ``for``\ 循环，时间复杂度是\ :math:`O(n)`\ ，而不是\ :math:`O(n^{2})`\ 。
+所以，带有\ ``while``\ 循环的这个\ ``for``\ 循环，时间复杂度是\ :math:`O(n)`\ ，而不是\ :math:`O(n^2)`\ 。
 
 因此计算upper hull的时间复杂度就是\ :math:`O(nlogn)`\ 。
 
@@ -681,7 +673,7 @@ GIS中，在overlay上，不同信息有交叉的地方（比如查看河流和�
 其中线段的端点碰到其他的线段，也算作交点。
 
 Brute-forced
-algorithm的时间复杂度是\ :math:`O(n^{2})`\ ，但实际情况，有可能只有很少的一些线段相交，并不必计算每个线段和其他线段的交点。
+algorithm的时间复杂度是\ :math:`O(n^2)`\ ，但实际情况，有可能只有很少的一些线段相交，并不必计算每个线段和其他线段的交点。
 
 即，我们希望算法的复杂度依赖的不仅是输入点的个数，而且也是输出的交点的个数，这样的算法叫做\ **output-sensitive
 algorithm**\ 。
@@ -913,15 +905,15 @@ O((n+k)logn)，其中，n是输入线段个数，k是输出个数
 -  如果\ **U(p)** ∪\ **C(p)** （即它们的并集）不是空集
 
    -  把既在 **U(p)** ∪\ **C(p)** 中又在status **J**
-      中，最左边的线段记作 :math:`s_{1}`\ ，把在status **J** 中
-      :math:`s_{1}` 左边的线段记作 *sl*\ ，然后调用寻找event
+      中，最左边的线段记作 :math:`s_1`\ ，把在status **J** 中
+      :math:`s_1` 左边的线段记作 *sl*\ ，然后调用寻找event
       point的函数\ **FindNewEvent(sl, s1, p)**\ 。
 
       如果 *sl* 不存在，就忽略此步骤。
 
    -  把既在 **U(p)** ∪\ **C(p)** 中又在status **J**
-      中，最右边的线段记作 :math:`s_{2}`\ ，把在status **J** 中
-      :math:`s_{1}` 右边的线段记作 *sr*\ ，然后调用寻找event
+      中，最右边的线段记作 :math:`s_2`\ ，把在status **J** 中
+      :math:`s_1` 右边的线段记作 *sr*\ ，然后调用寻找event
       point的函数\ **FindNewEvent(s2, sr, p)**
 
       如果 *sr* 不存在，就忽略此步骤。
@@ -1032,13 +1024,13 @@ list数据结构有三种记录数据（record）
 
 简而言之，计算两个subdivision的overlay，就是根据两个subdivision的doubly-connected
 edge list（记作S1和S2），计算出一个新的doubly-connected edge
-list表示的subdivision（记作\ :math:`O(S_{1},S_{2})` ）。
+list表示的subdivision（记作\ :math:`O(S_1, S_2)` ）。
 
 （此处的图为，Figure 2.4，Overlaying two subdivisions）
 
 这个overlay，可以看做是S1的edges被S2的edges所切割，而S1中的大部分edge其实可以在新生成的doubly-connected
 edge
-list中来复用，仅那些被S2的edges所真正切割到的S1的edges，才需要在新生成的\ :math:`O(S_{1},S_{2})`
+list中来复用，仅那些被S2的edges所真正切割到的S1的edges，才需要在新生成的\ :math:`O(S_1, S_2)`
 被更新。
 
 为了计算overlay结果，要把两个doubly-connected edge
@@ -1047,13 +1039,13 @@ list中去。拷贝的结果当然不是一个合法的doubly-connected edge
 list，因为它不能代表一个平面的细分（subdivision）。overlay算法的任务就是，把这个不合法的doubly-connected
 edge list，通过计算两个network edges之间的交点，并把两个doubly-connected
 edge list的部分区域连接起来，从而最终得到一个合法的doubly-connected edge
-list，即结果\ :math:`O(S_{1},S_{2})` 。
+list，即结果\ :math:`O(S_1, S_2)` 。
 
-下面首先讨论的是，最终的overlay结果\ :math:`O(S_{1},S_{2})`
+下面首先讨论的是，最终的overlay结果\ :math:`O(S_1, S_2)`
 中的vertex和half-edge records，是如何被计算出来的。（关于新生成的face
 record，因为比较复杂，稍后再讨论）
 
-计算\ :math:`O(S_{1},S_{2})` 的办法，利用了前面提到的计算line
+计算\ :math:`O(S_1, S_2)` 的办法，利用了前面提到的计算line
 segments交点的plane sweep
 algorithm。算法操作的对象是，包含了S1和S2中所有line
 segment的线段集合（一个新的线段集合拷贝）。
@@ -1096,8 +1088,8 @@ pair）之后，如何调整它们以及周围的edge的Next()和Prev()指针。
 
 值得说明的是，这个例子中，一条edge恰好经过的是另一个subdivision的一个vertex，因此，在调整新产生的edge的prev和next的时候，是按照clockwise的转向，找到第一个相邻的edge作为Next()指针所指向的edge，而按照anti-clockwise的转向，找到其第一个相邻的edge作为Prev()指针所指向的edge。这个可以结合图的说明清晰容易地看到。
 
-除了更新生成的新half-edge pair，还要找到\ :math:`O(S_{1},S_{2})`
-中每个face :math:`f` 的 :math:`OuterComponent(f)` （指向一个表示outer
+除了更新生成的新half-edge pair，还要找到\ :math:`O(S_1, S_2)` 中每个face
+:math:`f` 的 :math:`OuterComponent(f)` （指向一个表示outer
 boundary的half-edge）和\ :math:`InnerComponent(f)`
 （指向一个或几个half-edge的指针，表示一个或多个洞）。还要给每个edge的\ :math:`IncidentFace()`\ 设定合理的指针指向face
 record。最后，每个\ :math:`face`\ 还要用原先两个subdivision中包含这个\ :math:`face`\ 的face
@@ -1108,8 +1100,8 @@ boundary，还是表示hole的inner boundary？
 
 选定leftmost的vertex（in case of ties，choose lowest of
 leftmost），因为沿着half-edge的走向是clockwise的就是outer
-boundary，所以计算这个vertex前后两个相邻的（有序的）half-edge的夹角，如果是小于\ :math:`90{^\circ}`\ ，那么就是outer
-vertex的half-edge，如果是大于\ :math:`90{^\circ}`\ ，就是inner
+boundary，所以计算这个vertex前后两个相邻的（有序的）half-edge的夹角，如果是小于\ :math:`90°`\ ，那么就是outer
+vertex的half-edge，如果是大于\ :math:`90°`\ ，就是inner
 boundary的half-edge。这个特性仅适用于leftmost（或lowest of leftmost if
 ties）的vertex。
 
@@ -1149,20 +1141,18 @@ line向下扫描时得出的，而且这个相邻的左边第一个half-edge，�
 
 （这里用来说明的图，位于第37页，页码是46）
 
-最后一件事情是，在overlay结果 :math:`O(S_{1},S_{2})` 中，每个face
-:math:`f` 都要找到它原先分别在 :math:`S_{1}` 和 :math:`S_{2}`
-中的label。
+最后一件事情是，在overlay结果 :math:`O(S_1, S_2)` 中，每个face :math:`f`
+都要找到它原先分别在 :math:`S_1` 和 :math:`S_2` 中的label。
 
-假如一个vertex :math:`v` 是来自 :math:`S_{1}` 的一条edge :math:`e_{1}`
-和 :math:`S_{2}` 的一条edge :math:`e_{2}`
-的相交得到新的点，那么可以从edge :math:`e_{1}` 和 :math:`e_{2}` 的
-:math:`IncidentFace(f)` 得到各自在原先 :math:`S_{1}` 和 :math:`S_{2}`
-中的label name。
+假如一个vertex :math:`v` 是来自 :math:`S_1` 的一条edge :math:`e_1` 和
+:math:`S_2` 的一条edge :math:`e_2` 的相交得到新的点，那么可以从edge
+:math:`e_1` 和 :math:`e_2` 的 :math:`IncidentFace(f)` 得到各自在原先
+:math:`S_1` 和 :math:`S_2` 中的label name。
 
-但如果vertex :math:`v` 本身就是来自 :math:`S_{1}`
-的一个点（或者\ :math:`S_{2}` 的一个点），那么我们首先能得知它来自
-:math:`S_{1}` 的哪个face（因为能从 :math:`v` 对应的half-edge的
-:math:`IncidentFace(f)` 上得到。其次，就需要找到在 :math:`S_{2}`
+但如果vertex :math:`v` 本身就是来自 :math:`S_1`
+的一个点（或者\ :math:`S_2` 的一个点），那么我们首先能得知它来自
+:math:`S_1` 的哪个face（因为能从 :math:`v` 对应的half-edge的
+:math:`IncidentFace(f)` 上得到。其次，就需要找到在 :math:`S_2`
 上的哪个face包含这个vertex :math:`v`\ 。
 
 书中在此处没有展开解释，只说明了仍然使用本章介绍共的plane sweep
@@ -1171,40 +1161,40 @@ algorithm，而是在原先扫描的过程中，就可以找到。
 
 **MapOverlay**\ 算法简述
 
-**输入**\ ：二维平面上的两个平面细分（subdivision）\ :math:`S_{1}` 和
-:math:`S_{2}`\ ，它们都是以doubly-connected edge list表示。
+**输入**\ ：二维平面上的两个平面细分（subdivision）\ :math:`S_1` 和
+:math:`S_2`\ ，它们都是以doubly-connected edge list表示。
 
-**输出**\ ：\ :math:`S_{1}` 和 :math:`S_{2}` 的overlay
+**输出**\ ：\ :math:`S_1` 和 :math:`S_2` 的overlay
 :math:`D`\ ，并且也是以doubly-connected edge list表示。
 
 **算法简述**\ ：
 
-#. 新建一个doubly-connected edge list
-   :math:`D`\ ，并把两个原始输入\ :math:`S_{1}` 和 :math:`S_{2}` 拷贝到
+1. 新建一个doubly-connected edge list
+   :math:`D`\ ，并把两个原始输入\ :math:`S_1` 和 :math:`S_2` 拷贝到
    :math:`D` 中
 
-#. 通过第2.1节中提到的plane sweep algorithm，计算\ :math:`S_{1}` 和
-   :math:`S_{2}` 中每个edge的交点，除了在每个event point时更新 :math:`J`
+2. 通过第2.1节中提到的plane sweep algorithm，计算\ :math:`S_1` 和
+   :math:`S_2` 中每个edge的交点，除了在每个event point时更新 :math:`J`
    （status）和 :math:`Q` （event point），还需要处理
 
    -  更新步骤1中建立的的doubly-connected edge list
-      :math:`D`\ （前面的叙述中有举例如果\ :math:`S_{1}`\ 的一条edge穿过了\ :math:`S_{2}`\ 的一个vertex时，如何生成新的half-edge
+      :math:`D`\ （前面的叙述中有举例如果\ :math:`S_1`\ 的一条edge穿过了\ :math:`S_2`\ 的一个vertex时，如何生成新的half-edge
       pair，以及复用原先的half-edge pair并调整相应的record指针）
    -  在处理\ :math:`D`\ 中的每个event point之后，记录每个event
       point左边第一个half-edge的信息
 
-#. 经过步骤2，\ :math:`D`\ 已经是\ :math:`S_{1}` 和 :math:`S_{2}`
-   的overlay结果\ :math:`O(S_{1},S_{2})`\ ，但是每个face :math:`f`
+3. 经过步骤2，\ :math:`D`\ 已经是\ :math:`S_1` 和 :math:`S_2`
+   的overlay结果\ :math:`O(S_1, S_2)`\ ，但是每个face :math:`f`
    的信息还没有计算出来
 
-#. 遍历\ :math:`D`\ ，确定\ :math:`O(S_{1},S_{2})`\ 中的boundary cycles
+4. 遍历\ :math:`D`\ ，确定\ :math:`O(S_1, S_2)`\ 中的boundary cycles
 
-#. 构建graph :math:`G`\ 。这样的 :math:`G`
+5. 构建graph :math:`G`\ 。这样的 :math:`G`
    是一个或多个component组成。每个component由一个或几个表示boundary的cycle(s)组成，如果一个boundary
-   cycle表示的是洞，那么它的leftmost的vertex就要通过一个所谓的"arc"连接到另外一个表示洞的boundary
+   cycle表示的是洞，那么它的leftmost的vertex就要通过一个所谓的”arc”连接到另外一个表示洞的boundary
    cycle（或者最终连接到一个表示非洞的boundary cycle上）
 
-#. 对于步骤5中建立的graph :math:`G` 的每个component：
+6. 对于步骤5中建立的graph :math:`G` 的每个component：
 
    假设 :math:`C` 是这个component中唯一的outer boundary cycle，并用
    :math:`f` 表示由这个cycle所包含的face。
@@ -1215,15 +1205,15 @@ algorithm，而是在原先扫描的过程中，就可以找到。
    ，它是这个component中每个洞上的某一个half-edge的指针集合；把这个component中每条half-edge所指向face的指针\ :math:`IncidentFace(e)`
    设置为指向 :math:`f` 的face record。
 
-#. 结果\ :math:`O(S_{1},S_{2})`\ 中的每个face，都用\ :math:`S_{1}` 和
-   :math:`S_{2}` 中对应的face名字做标记（label）
+7. 结果\ :math:`O(S_1, S_2)`\ 中的每个face，都用\ :math:`S_1` 和
+   :math:`S_2` 中对应的face名字做标记（label）
 
 **算法时间复杂度**\ ：\ :math:`O(nlogn + klogn)`
 
-   Theorem 2.6 Let :math:`S_{1}` be a planar subdivision of complexity
-   :math:`n_{1}`, let :math:`S_{2}` be a subdivision of complexity
-   :math:`n_{2}`, and let :math:`n:=n_{1} + n_{2}`. The overlay of
-   :math:`S_{1}` and :math:`S_{2}` can be constructed in
+   Theorem 2.6 Let :math:`S_1` be a planar subdivision of complexity
+   :math:`n_1`, let :math:`S_2` be a subdivision of complexity
+   :math:`n_2`, and let :math:`n := n_1 +n_2`. The overlay of
+   :math:`S_1` and :math:`S_2` can be constructed in
    :math:`O(nlogn + klogn)` time, where k is the complexity of the
    overlay.
 
@@ -1232,9 +1222,9 @@ algorithm，而是在原先扫描的过程中，就可以找到。
 -  步骤1中，拷贝两个doubly-connected edge list 到 :math:`D`
    中，算法复杂度是 :math:`O(n)`
 -  步骤2中，plane sweep algorithm的时间复杂度是 :math:`O(nlogn + klogn)`
--  步骤4-6中，用来填写face record的时间复杂度是和 :math:`O(S_{1},S_{2})`
+-  步骤4-6中，用来填写face record的时间复杂度是和 :math:`O(S_1, S_2)`
    线性相关的
--  步骤7中，把结果中的每个face用\ :math:`S_{1}` 和 :math:`S_{2}`
+-  步骤7中，把结果中的每个face用\ :math:`S_1` 和 :math:`S_2`
    中对应的face名字做标记的时间复杂度是 :math:`O(nlogn + klogn)`
 
 2.4 Boolean Operations
@@ -1242,30 +1232,28 @@ algorithm，而是在原先扫描的过程中，就可以找到。
 
 Map overlay算法最为常见的应用之一，就是polygon的Boolean操作，即
 **与**\ （\ :math:`AND`\ ，
-∩），\ **或**\ （\ :math:`OR`\ ，∪），\ **非**\ （\ :math:`NOT`\ ，\）。
+∩），\ **或**\ （\ :math:`OR`\ ，∪），\ **非**\ （\ :math:`NOT`\ ，）。
 
 （这里用来说明的图，位于第39页，页码是30）
 
 按照前面所述，把两个polygon看做是两个平面细分（subdivision），记作
-:math:`P_{1}` 和 :math:`P_{2}`\ ，那么map
-overlay的结果\ :math:`O(P_{1},P_{2})`
+:math:`P_1` 和 :math:`P_2`\ ，那么map overlay的结果\ :math:`O(P_1, P_2)`
 是一个新的平面细分，并且也用一个doubly-connected edge
 list所表示。这里最重要的是，作为结果的平面细分的每个face record
-:math:`f`\ ，都是用原来两个平面细分 :math:`P_{1}` 和 :math:`P_{2}`
+:math:`f`\ ，都是用原来两个平面细分 :math:`P_1` 和 :math:`P_2`
 共同标识的。
 
 所以，Boolean操作的求解转换为：
 
--  如果计算的是\ :math:`P_{1}` 和 :math:`P_{2}`\ 的交集（
-   :math:`P_{1} \cap P_{2}`\ ），我们就从overlay结果中找到那些同时带有\ :math:`P_{1}`
-   和 :math:`P_{2}` label的face。
--  如果计算的是\ :math:`P_{1}` 和 :math:`P_{2}`\ 的并集（
-   :math:`P_{1} \cup P_{2}`\ ），我们就从overlay结果中找到那些带有\ :math:`P_{1}`
-   或 :math:`P_{2}` 或同时带有\ :math:`P_{1}` 和 :math:`P_{2}`\ label
-   的face。
--  如果计算的是\ :math:`P_{1}` 和 :math:`P_{2}`\ 的差集（
-   :math:`P_{1}\ P_{2}`\ ），我们就从overlay结果中找到那些只带有\ :math:`P_{1}`
-   、不带有 :math:`P_{2}` label的face。
+-  如果计算的是\ :math:`P_1` 和 :math:`P_2`\ 的交集（
+   :math:`P_1 ∩ P_2`\ ），我们就从overlay结果中找到那些同时带有\ :math:`P_1`
+   和 :math:`P_2` label的face。
+-  如果计算的是\ :math:`P_1` 和 :math:`P_2`\ 的并集（
+   :math:`P_1 ∪ P_2`\ ），我们就从overlay结果中找到那些带有\ :math:`P_1`
+   或 :math:`P_2` 或同时带有\ :math:`P_1` 和 :math:`P_2`\ label 的face。
+-  如果计算的是\ :math:`P_1` 和 :math:`P_2`\ 的差集（
+   :math:`P_1 \ P_2`\ ），我们就从overlay结果中找到那些只带有\ :math:`P_1`
+   、不带有 :math:`P_2` label的face。
 
 .. _notes-and-comments-1:
 
@@ -1296,16 +1284,15 @@ intersection，\ **Mairson** 和
 problem**\ 的问题就是network overlay problem。
 
 line segment intersection counting
-problem是计算线段交点个数的问题（而不是报告所有交点坐标），所以它的输出就是一个整型数，不依赖于交点个数算法的时间复杂度是\ :math:`O(n^{\frac{4}{3}}log^{c}n)`\ ，其中
+problem是计算线段交点个数的问题（而不是报告所有交点坐标），所以它的输出就是一个整型数，不依赖于交点个数算法的时间复杂度是\ :math:`O(n^\frac{4}{3}log^cn)`\ ，其中
 :math:`c` 是某个小值常数。
 
-| Plane sweep是设计几何算法中最为重要的范式之一。第3章plane
-  sweep用它来处理polygon triangulation
-| problem，第7章用它来计算Voronoi diagram（维诺图） of a set of
-  points。本章提到的sweep
-  line是一条水平的（虚拟）直线，在某些情况下，sweep
-  line可能是其他的形式，比如第15章提到的可能是rotating line。plane
-  sweep也可以用于更高维度的空间，这时叫做space sweep algorithms。
+Plane sweep是设计几何算法中最为重要的范式之一。第3章plane
+sweep用它来处理polygon triangulation problem，第7章用它来计算Voronoi
+diagram（维诺图） of a set of points。本章提到的sweep
+line是一条水平的（虚拟）直线，在某些情况下，sweep
+line可能是其他的形式，比如第15章提到的可能是rotating line。plane
+sweep也可以用于更高维度的空间，这时叫做space sweep algorithms。
 
 本章提到的用来存储平面细分（subdivision）的数据结构是the
 doubly-connected edge list，Muller 和
@@ -1355,75 +1342,71 @@ hull（凸多边形），实际上只需要一个摄像机就可以。我们需�
 三角形划分通常不是唯一的。但三角形是否总是存在？三角形划分之后有多少个三角形？
 
 **定理3.1**\ ，每一个简单多边形存在一个三角形划分，并且一个有 :math:`n`
-个顶点的简单多边形可以划分为 :math:`n - 2` 个三角形。
+个顶点的简单多边形可以划分为 :math:`n-2` 个三角形。
 
    Theorem 3.1 Every simple polygon admits a triangulation, and any
    triangulation of a simple polygon with n vertices consists of exactly
    n−2 triangles.
 
 这个定理的简单证明见第55页（页码47）。其中没看懂的是证明diagonal open
-segment存在的时候，为什么 :math:`v` 和 :math:`v^{\prime}` 构成的open
-segment :math:`\overset{\rightarrow}{vv^{\prime}}` 不会和
-:math:`\mathcal{P}` 的其他edge相交？？？（需要以后再查看）。
+segment存在的时候，为什么 :math:`v` 和 :math:`v'` 构成的open segment
+:math:`\overrightarrow{vv'}` 不会和 :math:`\mathcal{P}`
+的其他edge相交？？？（需要以后再查看）。
 
-应该想明白了：如果这样的segment
-:math:`\overset{\rightarrow}{vv^{\prime}}` 和 :math:`\mathcal{P}`
-的一条edge相交的话，那么点 :math:`v^{\prime}`
+应该想明白了：如果这样的segment :math:`\overrightarrow{vv'}` 和
+:math:`\mathcal{P}` 的一条edge相交的话，那么点 :math:`v'`
 肯定位于这条edge的另外一侧，这也就是说，那条edge上的两个点，肯定有一个比
-:math:`v^{\prime}` 离 :math:`v`
-更近，这样就有产生矛盾，所以反证法得证\ :math:`v^{\prime}`
-就是离\ :math:`\overset{\rightarrow}{uw}`
-最远的（并且在triangle里面的）点。
+:math:`v'` 离 :math:`v`
+更近，这样就有产生矛盾，所以反证法得证\ :math:`v'`
+就是离\ :math:`\overrightarrow{uw}` 最远的（并且在triangle里面的）点。
 
 这个定理同时也说明了\ **如何找到一条对角线的方法**\ ：
 
 找到这个simple polygon最左下的顶点
 :math:`v`\ ，首先尝试连接它的两个直接相邻的点 :math:`u` 和 :math:`w`
 
--  如果 :math:`\overset{\rightarrow}{uw}`
-   位于这个多边形的内部，那么\ :math:`\overset{\rightarrow}{uw}`
+-  如果 :math:`\overrightarrow{uw}`
+   位于这个多边形的内部，那么\ :math:`\overrightarrow{uw}`
    就是这个多边形的一条对角线。
--  如果 :math:`\overset{\rightarrow}{uw}`
+-  如果 :math:`\overrightarrow{uw}`
    位于这个多边形的外部或横跨这个多边形的内外，那么就一定有一些顶点是位于由点
    :math:`v`\ ， :math:`u` 和 :math:`w` 组成的三角形
-   :math:`\bigtriangleup {vuw}` 内部，找到这些点里面距离
-   :math:`\overset{\rightarrow}{uw}` 最远的点记作
-   :math:`v^{\prime}`\ ，那么 :math:`vv^{\prime}`
+   :math:`\bigtriangleup{vuw}` 内部，找到这些点里面距离
+   :math:`\overrightarrow{uw}` 最远的点记作 :math:`v'`\ ，那么
+   :math:`vv'`
    就一定是这个多边形的一条对角线。（至于原因，见上面的分析）
 
 有了上述的定理，那么用来监控画廊的摄像机个数就可以是
-:math:`n - 2`\ ，但这有点太多了。因为，比如把一台摄像机放在对角线上，那么它就可以监控两个三角形（区域）；如果放在某些顶点上，那么摄像机似乎可以监控更多的区域。
+:math:`n-2`\ ，但这有点太多了。因为，比如把一台摄像机放在对角线上，那么它就可以监控两个三角形（区域）；如果放在某些顶点上，那么摄像机似乎可以监控更多的区域。
 
-假设 :math:`\mathcal{T}_{p}` 是多边形 :math:`\mathcal{P}`
+假设 :math:`\mathcal{T}_p` 是多边形 :math:`\mathcal{P}`
 的一个三角形划分（triangulation），给多边形的每个顶点（vertex）三种颜色中的其中一种：黑（black），白（white）和灰（gray），\ **并且使得**\ ，每两个由多边形的edge（或对角线）相连的两个vertex，其颜色不同。这叫作
 **3-coloring of a triangulated polygon**\ （三角形划分的一种三色赋值）。
 
 在这样的3-coloring of a triangulated
 polygon中，每个三角形都会有黑（black），白（white）和灰（gray）三种颜色的顶点。比如我们把摄像机放在那些灰色的顶点上，就可以实现监控整个画廊的目的。而通过选择放置在三种颜色的某种颜色上，我们就能实现使用至多
-:math:`\lfloor n/3\rfloor` 台摄像机来监控整个画廊。
+:math:`\lfloor n/3 \rfloor` 台摄像机来监控整个画廊。
 
 但这样的3-coloring of a triangulated polygon总是存在吗？答案是肯定的。
 
 要证明这一点，首先要查看所谓的\ **对偶图**\ （dual graph）。在这个对偶图
-:math:`\mathcal{G}(\mathcal{T}_{\mathcal{P}})`
+:math:`\mathcal{G}(\mathcal{T}_\mathcal{P})`
 中，（已经三角形划分的多边形的）每个三角形都有一个点（node，比如中心），把这个点对应的三角形记作
 :math:`t(\nu)`\ 。每两个node :math:`\nu` 和 :math:`\mu`
-之间有连线（arc），这样的连线（arcs）对应的是 :math:`\mathcal{T}_{p}`
+之间有连线（arc），这样的连线（arcs）对应的是 :math:`\mathcal{T}_p`
 的对角线。每条对角线把多边形 :math:`\mathcal{P}`
 一分为二，类似地，删去对偶图
-:math:`\mathcal{G}(\mathcal{T}_{\mathcal{P}})`
-的任意一条edge，这个对偶图
-:math:`\mathcal{G}(\mathcal{T}_{\mathcal{P}})`
-也会被一分为二。所以对偶图
-:math:`\mathcal{G}(\mathcal{T}_{\mathcal{P}})`
+:math:`\mathcal{G}(\mathcal{T}_\mathcal{P})` 的任意一条edge，这个对偶图
+:math:`\mathcal{G}(\mathcal{T}_\mathcal{P})` 也会被一分为二。所以对偶图
+:math:`\mathcal{G}(\mathcal{T}_\mathcal{P})`
 是一棵树（tree），但对带洞的多边形不成立。这就是说我们可以用简单图的遍历找到3-coloring（比如深度遍历）。
 
 （这里用来说明的图，位于第56页，页码是48）
 
 找到一种3-coloring的办法描述：因为实际上对偶图
-:math:`\mathcal{G}(\mathcal{T}_{\mathcal{P}})`
+:math:`\mathcal{G}(\mathcal{T}_\mathcal{P})`
 是一棵树，我们进行深度遍历时做相同的事情，即，遍历的过程中依次遇到每个三角形，并将其顶点涂为黑（black），白（white）和灰（gray）三种颜色，并且确保相邻的两个顶点颜色不同。而这也意味着，已经遍历过的所有三角形的顶点都已经涂上了合理的三种颜色。我们从对偶图
-:math:`\mathcal{G}(\mathcal{T}_{\mathcal{P}})`
+:math:`\mathcal{G}(\mathcal{T}_\mathcal{P})`
 的任意一个node出发开始深度遍历，假设当前遍历到了node
 :math:`\nu`\ ，它的前一个node是 :math:`\mu`\ ，因此 :math:`t(\nu)` 和
 :math:`t(\mu)`
@@ -1431,36 +1414,36 @@ polygon中，每个三角形都会有黑（black），白（white）和灰（gra
 :math:`t(\mu)` 的三个顶点已经有了颜色，这也就是说 :math:`t(\nu)`
 的三个顶点中已经有两个有了颜色，那么 :math:`t(\nu)`
 剩下的那个顶点的颜色也就确定了，而且这也是因为对偶图
-:math:`\mathcal{G}(\mathcal{T}_{\mathcal{P}})` 是一棵树，邻近node
+:math:`\mathcal{G}(\mathcal{T}_\mathcal{P})` 是一棵树，邻近node
 :math:`\nu` 的节点都还没有被访问到，所以 :math:`t(\nu)`
 剩下的那个顶点颜色就可以涂成剩余的那种颜色。
 
 总结一下就是，简单多边形的三角形划分，总是可以3-coloring，而且简单多边形（表示画廊）可以用至多
-:math:`\lfloor n/3\rfloor` 台摄像机来监控。
+:math:`\lfloor n/3 \rfloor` 台摄像机来监控。
 
-也许对某些多边形用不了 :math:`\lfloor n/3\rfloor` 台摄像机，但对任意的有
-:math:`n` 个顶点的多边形，最差的情况下乐观结果就需要
-:math:`\lfloor n/3\rfloor`
+也许对某些多边形用不了 :math:`\lfloor n/3 \rfloor`
+台摄像机，但对任意的有 :math:`n`
+个顶点的多边形，最差的情况下乐观结果就需要 :math:`\lfloor n/3 \rfloor`
 台摄像机。这里文中以一个有很多尖刺、基于一个水平base
 edge的组合多边形（comb-shaped）进行了说明，在这种polygon里面，找不到一个位置放置摄像机去同时看到两个尖刺区域。
 
 （这里用来说明的图，位于第56页，页码是48，从上往下第2个图）
 
 **定理3.2**\ ，（画廊定理），对任意有 :math:`n` 个顶点的简单多边形，
-:math:`\lfloor n/3\rfloor`
+:math:`\lfloor n/3 \rfloor`
 台摄像机只是偶尔是必须的（因为大多数情况下只要更少），而且总是可以满足从多边形内部的任意一点看到至少一台摄像机的要求。
 
    Theorem 3.2 (Art Gallery Theorem) For a simple polygon with n
-   vertices, :math:`\lfloor n/3\rfloor` cameras are occasionally
+   vertices, :math:`\lfloor n/3 \rfloor` cameras are occasionally
    necessary and always sufficient to have every point in the polygon
    visible from at least one of the cameras.
 
 **定理3.3**\ ，对任意有 :math:`n`
 个顶点的简单多边形，从多边形内部的任意一点看到至少一台摄像机，计算这样的至多
-:math:`\lfloor n/3\rfloor` 台摄像机的时间复杂度是 :math:`O(nlogn)`\ 。
+:math:`\lfloor n/3 \rfloor` 台摄像机的时间复杂度是 :math:`O(nlogn)`\ 。
 
    Theorem 3.3 Let :math:`\mathcal{P}` be a simple polygon with n
-   vertices. A set of :math:`\lfloor n/3\rfloor` camera positions in
+   vertices. A set of :math:`\lfloor n/3 \rfloor` camera positions in
    :math:`\mathcal{P}` such that any point inside :math:`\mathcal{P}` is
    visible from at least one of the cameras can be computed in
    :math:`O(nlogn)` time.
@@ -1485,13 +1468,13 @@ pieces（\ **单调多边形**\ ），这就容易很多。
 
 如果一个多边形是关于某一条直线 :math:`\ell`
 是\ **单调**\ 的，那么对于任意一条垂直于 :math:`\ell` 的直线
-:math:`\ell^{\prime}`\ ，它和这个多边形的相交部分是连接的。换句话说，这个相交的部分就是一条线段，或者一个点，或者没有相交。（就是说不会有多个相交的线段或点）
+:math:`\ell'`\ ，它和这个多边形的相交部分是连接的。换句话说，这个相交的部分就是一条线段，或者一个点，或者没有相交。（就是说不会有多个相交的线段或点）
 
    A simple polygon is called monotone with respect to a line
-   :math:`\ell` if for any line :math:`\ell^{\prime}` perpendicular to
-   :math:`\ell` the intersection of the polygon with
-   :math:`\ell^{\prime}` is connected. In other words, the intersection
-   should be a line segment, a point, or empty.
+   :math:`\ell` if for any line :math:`\ell'` perpendicular to
+   :math:`\ell` the intersection of the polygon with :math:`\ell'` is
+   connected. In other words, the intersection should be a line segment,
+   a point, or empty.
 
 如果一个多边形是关于\ *y*\ 轴单调，那么从最上面的顶点开始，沿着多边形的轮廓线段（向左或向右），到达最下面的顶点，我们总是向下移动或者水平移动，而从不会向上移动。这是关于\ *y*\ 轴单调的多边形的一个特性。
 
@@ -1504,11 +1487,11 @@ pieces（\ **单调多边形**\ ），这就容易很多。
 
 -  点 :math:`p` 在点 :math:`q` 下方（below）
 
-   :math:`p_{y} < q_{y}`\ ，或者当\ :math:`p_{y} = q_{y}`\ 时，\ :math:`p_{x} < q_{x}`
+   :math:`p_y < q_y`\ ，或者当\ :math:`p_y = q_y`\ 时，\ :math:`p_x < q_x`
 
 -  点 :math:`p` 在点 :math:`q` 上方（above）
 
-   :math:`p_{y} > q_{y}`\ ，或者当\ :math:`p_{y} = q_{y}`\ 时，\ :math:`p_{x} > q_{x}`
+   :math:`p_y > q_y`\ ，或者当\ :math:`p_y = q_y`\ 时，\ :math:`p_x > q_x`
 
 什么是多边形的\ **turn vertex**\ （\ **转向顶点**\ ）？
 
@@ -1520,7 +1503,7 @@ vertex**\ （\ **转向顶点**\ ），而通过添加对角线，就可以做�
 
 假如一个vertex :math:`v` 相接的两条edge都是向下的，那么我们需要从
 :math:`v`
-出发找一条向上的对角线（记作\ :math:`vv^{\prime}`\ ），这样把当前的多边形一分为二。\ :math:`v`
+出发找一条向上的对角线（记作\ :math:`vv'`\ ），这样把当前的多边形一分为二。\ :math:`v`
 在两个划分出来的多边形里面，和它相接的原来的edge是向下的，而从它出发的对角线是向上的，所以
 :math:`v` 就不再是一个\ **turn vertex**\ （\ **转向顶点**\ ）了。
 
@@ -1532,7 +1515,7 @@ vertex**\ （\ **转向顶点**\ ）。
 
 定义一个多边形中5种类型的vertex
 
-（这里用来说明的图，位于第58页，页码是50）
+==（这里用来说明的图，位于第58页，页码是50）==
 
 -  **start vertex**
 
@@ -1571,7 +1554,7 @@ vertex，那么它就是一个关于y轴单调的多边形。
    Lemma 3.4 A polygon is y-monotone if it has no split vertices or
    merge vertices.
 
-（这里用来说明的图，位于第59页，页码是51）
+==（这里用来说明的图，位于第59页，页码是51）==
 
 证明：办法是证明这个引理的充要条件，即，如果一个多边形不是y轴单调的，那么它就一定有一个split
 vertex或者merge vertex。
@@ -1592,16 +1575,15 @@ vertex或者merge vertex。
 
 -  如果点 :math:`r = p`\ ，那么我们从点 :math:`q`
    再次出发，但这次是沿着和之前相反的方向行走，同样地，会碰到多边形和水平直线
-   :math:`\ell` 相交的点 :math:`r^{\prime}`\ 。
+   :math:`\ell` 相交的点 :math:`r'`\ 。
 
-   这个点 :math:`r^{\prime}` 必定和 :math:`p`
-   不同（\ :math:`r^{\prime} \neq p`\ ），原因是如果\ :math:`r^{\prime} \neq p`\ ，这就意味着水平直线
+   这个点 :math:`r'` 必定和 :math:`p`
+   不同（\ :math:`r' \neq p`\ ），原因是如果\ :math:`r' \neq p`\ ，这就意味着水平直线
    :math:`\ell` 和多边形只有一条相交的线段，即 :math:`pq`\ （或
-   :math:`qr^{\prime}`\ ），而这和多边形是关于y轴\ **非单调**\ 矛盾。
+   :math:`qr'`\ ），而这和多边形是关于y轴\ **非单调**\ 矛盾。
 
-   所以点 :math:`r^{\prime}` 和 :math:`p` 不同，而这就意味着点
-   :math:`r^{\prime}` 和 :math:`p`
-   之间多边形轮廓上的最\ **低**\ 的一点就是merge vertex。
+   所以点 :math:`r'` 和 :math:`p` 不同，而这就意味着点 :math:`r'` 和
+   :math:`p` 之间多边形轮廓上的最\ **低**\ 的一点就是merge vertex。
 
 引理3.4说明，如果我们消除了split vertex和merge
 vertex，那么多边形就能被分解成关于y轴单调的多边形了。而这，可以通过从split
@@ -1610,11 +1592,11 @@ vertex引出一条向上的对角线、从merge vertex引出一条向下的对�
 如何给一个\ **split vertex**\ 添加对角线？还是使用plane sweep method。
 
 将多边形 :math:`\mathcal{P}` 的顶点按照逆时针记作
-:math:`v_{1},v_{2},...,v_{n}`\ ，同时把将多边形 :math:`\mathcal{P}`
-的边（edge）按照逆时针记作 :math:`e_{1},e_{2},...,e_{n}`\ ，并且当
-:math:`i` 满足 :math:`1 \leq i < n`
-时，\ :math:`e_{i} = \overset{―}{v_{i}v_{i + 1}}`\ ，当 :math:`i = n`
-时，\ :math:`e_{n} = \overset{―}{v_{n}v_{1}}`\ 。
+:math:`v_1, v_2, ..., v_n`\ ，同时把将多边形 :math:`\mathcal{P}`
+的边（edge）按照逆时针记作 :math:`e_1, e_2, ..., e_n`\ ，并且当
+:math:`i` 满足 :math:`1 \le i \lt n`
+时，\ :math:`e_i = \overline{v_iv_{i+1}}`\ ，当 :math:`i = n`
+时，\ :math:`e_n = \overline{v_nv_1}`\ 。
 
 在plane sweep algorithm应用到当前场景中时，event
 point就是多边形的这些顶点，并且不会有新的event point加入。这些event
@@ -1622,31 +1604,31 @@ point被存储在一个优先级队列 :math:`\mathcal{Q}` 中（priority
 queue），优先级就是\ :math:`y`\ 坐标值（如果两点有相同的\ :math:`y`\ 坐标，\ :math:`x`\ 坐标较小的优先级更高）。利用这样的优先级队列，下一个event
 point被找到的时间复杂度就是 :math:`O(logn)`\ 。
 
-当sweep line到达一个\ **split vertex** :math:`v_{i}` 时，需要添加一条从
-:math:`v_{i}` 出发向上的对角线。记多边形的两条边 :math:`e_{j}` 和
-:math:`e_{k}` 分别是 :math:`v_{i}` 在sweep
-line（水平）上左右相邻的第一条edge（即 :math:`e_{j}`\ ， :math:`e_{k}`
-和sweep line相交），然后找到 :math:`e_{j}` 和 :math:`e_{k}` 之间的高于
-:math:`v_{i}` 的\ **最低**\ 点（记作\ :math:`helper(e_{j})`\ ），然后和
-:math:`v_{i}` 连接即得到所求对角线。如果没有这样的点，就连接
-:math:`v_{i}` 和 :math:`e_{j}` 或 :math:`e_{k}`
-两条线段中某一条的上方的点（也记作（\ :math:`helper(e_{j})`\ ）。
+当sweep line到达一个\ **split vertex** :math:`v_i` 时，需要添加一条从
+:math:`v_i` 出发向上的对角线。记多边形的两条边 :math:`e_j` 和
+:math:`e_k` 分别是 :math:`v_i` 在sweep
+line（水平）上左右相邻的第一条edge（即 :math:`e_j`\ ， :math:`e_k`
+和sweep line相交），然后找到 :math:`e_j` 和 :math:`e_k` 之间的高于
+:math:`v_i` 的\ **最低**\ 点（记作\ :math:`helper(e_j)`\ ），然后和
+:math:`v_i` 连接即得到所求对角线。如果没有这样的点，就连接 :math:`v_i`
+和 :math:`e_j` 或 :math:`e_k`
+两条线段中某一条的上方的点（也记作（\ :math:`helper(e_j)`\ ）。
 
-（这里用来说明的图，位于第60页，页码是52的第1个图）
+==（这里用来说明的图，位于第60页，页码是52的第1个图）==
 
-当sweep line到达一个\ **merge vertex** :math:`v_{i}` 时，需要添加一条从
-:math:`v_{i}` 出发向上的对角线。同样地，记多边形的两条边 :math:`e_{j}`
-和 :math:`e_{k}` 分别是 :math:`v_{i}` 在sweep
-line（水平）上左右相邻的第一条edge（即 :math:`e_{j}`\ ， :math:`e_{k}`
-和sweep line相交）。然后找到 :math:`e_{j}` 和 :math:`e_{k}` 之间的低于于
-:math:`v_{i}` 的\ **最高**\ 点，然后和 :math:`v_{i}`
-连接即得到所求对角线。但此时 :math:`v_{i}` 就在sweep
+当sweep line到达一个\ **merge vertex** :math:`v_i` 时，需要添加一条从
+:math:`v_i` 出发向上的对角线。同样地，记多边形的两条边 :math:`e_j` 和
+:math:`e_k` 分别是 :math:`v_i` 在sweep
+line（水平）上左右相邻的第一条edge（即 :math:`e_j`\ ， :math:`e_k`
+和sweep line相交）。然后找到 :math:`e_j` 和 :math:`e_k` 之间的低于于
+:math:`v_i` 的\ **最高**\ 点，然后和 :math:`v_i`
+连接即得到所求对角线。但此时 :math:`v_i` 就在sweep
 line上，而它之下的点还没有扫描到，所以我们此时找不到这样的点，但这样的点却可以在之后找到。当sweep
-line继续向下扫描遇到点 :math:`v_{m}` 时，如果它左边的第一条和sweep
-line相交的线就是 :math:`e_{j}`\ ，并且找到它的\ :math:`helper(e_{j})`
-就是 :math:`v_{i}`\ ，那么 :math:`v_{m}` 就是我们前面要找的这样的点。
+line继续向下扫描遇到点 :math:`v_m` 时，如果它左边的第一条和sweep
+line相交的线就是 :math:`e_j`\ ，并且找到它的\ :math:`helper(e_j)` 就是
+:math:`v_i`\ ，那么 :math:`v_m` 就是我们前面要找的这样的点。
 
-所以，当我们替换一条edge :math:`e_{x}` 的\ :math:`helper(e_{x})`
+所以，当我们替换一条edge :math:`e_x` 的\ :math:`helper(e_x)`
 时，检查旧的helper点是不是一个merge
 vertex。如果是，就连接新的helper点和旧的helper点构成一条对角线。而当新的helper点是split
 vertex的时候，这样的对角线总是会被连接出来的，而此时如果旧的helper点还是一个merge
@@ -1660,10 +1642,10 @@ line相间的的edge。
 因为我们只关心在split vertex或merge
 vertex左边的edge，所以在这棵二叉搜索树 :math:`\mathcal{T}`
 中只存储一种类型的edge，即，相对于这些edge，多边形 :math:`\mathcal{P}`
-的内部都在这些edge的右边。同时每个edge我们都会存储它对应的helper（即\ :math:`helper(e_{j})`\ ），这棵二叉搜索树
+的内部都在这些edge的右边。同时每个edge我们都会存储它对应的helper（即\ :math:`helper(e_j)`\ ），这棵二叉搜索树
 :math:`\mathcal{T}` 和它存储的这样的edge就构成了sweep line
 algorithm的status。当sweep
-line和一条edge开始相交，或者分开时，这个status就会被更新，一条edge的helper（即\ :math:`helper(e_{j})`\ ）就可能会被替换。
+line和一条edge开始相交，或者分开时，这个status就会被更新，一条edge的helper（即\ :math:`helper(e_j)`\ ）就可能会被替换。
 
 假设多边形 :math:`\mathcal{P}` 是以doubly-connected edge
 list表示（如果是以逆时针的vertex
@@ -1686,85 +1668,82 @@ edge list
 
 **算法简述**\ ：
 
-#. 构建多边形 :math:`\mathcal{P}` 的顶点的一个优先级队列
+1. 构建多边形 :math:`\mathcal{P}` 的顶点的一个优先级队列
    :math:`\mathcal{Q}`\ ，排序是按照每个顶点的y坐标。如果两个顶点的y坐标相同，有较小的x坐标的点有更高的优先级。
-#. 初始化一棵空的二叉搜索树 :math:`\mathcal{T}` 。
-#. 执行循环：只要优先级队列 :math:`\mathcal{Q}`
+2. 初始化一棵空的二叉搜索树 :math:`\mathcal{T}` 。
+3. 执行循环：只要优先级队列 :math:`\mathcal{Q}`
    不空，每次从其队列中取出优先级最高的一个顶点
-   :math:`v_{i}`\ ，然后根据这个顶点的类型（split/merge/...），调用对应的处理程序。
+   :math:`v_i`\ ，然后根据这个顶点的类型（split/merge/…），调用对应的处理程序。
 
 下面就是根据每个顶点的类型，对应的相应处理。当处理每个顶点vertex的时候，有两件必须做的事情
 
 -  检查是否应该给一个vertex添加对角线。当一个vertex是split
-   vertex，或者，在替换一个edge的helper（\ :math:`helper(e_{j})`\ ），并发现前一个（旧的）helper是一个merge
+   vertex，或者，在替换一个edge的helper（\ :math:`helper(e_j)`\ ），并发现前一个（旧的）helper是一个merge
    vertex的时候，就需要添加对角线。
 -  更新status数据结构 :math:`\mathcal{T}`
    （即二叉搜索树）中的信息（通过前面提到的交叉指针）
 
-（下面几个针对不同类型vertex的处理，对应的一个例子的图在62页，页码是54）
+==（下面几个针对不同类型vertex的处理，对应的一个例子的图在62页，页码是54）==
 
 需要注意的是，本书中每个多边形vertex（下面的
 :math:`i`\ ）的起始索引是\ ``1``\ ，而不是\ ``0``\ 。
 
-算法 :math:`HandleStartVertex(v_{i})` （\ **vertex是start vertex**\ ）
+算法 :math:`HandleStartVertex(v_i)` （\ **vertex是start vertex**\ ）
 
-#. 在二叉搜索树 :math:`\mathcal{T}` 中添加edge
-   :math:`e_{i}`\ ，并且把\ :math:`helper(e_{i})`\ 设定为
-   :math:`v_{i}`\ 。
+1. 在二叉搜索树 :math:`\mathcal{T}` 中添加edge
+   :math:`e_i`\ ，并且把\ :math:`helper(e_i)`\ 设定为 :math:`v_i`\ 。
 
-算法 :math:`HandleEndVertex(v_{i})` （\ **vertex是end vertex**\ ）
+算法 :math:`HandleEndVertex(v_i)` （\ **vertex是end vertex**\ ）
 
-#. 如果\ :math:`helper(e_{i - 1})` 是merge vertex，就生成一条连接
-   :math:`v_{i}` 到 :math:`helper(e_{i - 1})`
+1. 如果\ :math:`helper(e_{i-1})` 是merge vertex，就生成一条连接
+   :math:`v_i` 到 :math:`helper(e_{i-1})`
    的对角线，并加入到doubly-connected edge list :math:`\mathcal{D}` 中。
-#. 从二叉搜索树 :math:`\mathcal{T}` 中删除vertex :math:`e_{i - 1}`\ 。
+2. 从二叉搜索树 :math:`\mathcal{T}` 中删除vertex :math:`e_{i-1}`\ 。
 
-算法 :math:`HandleSplitVertex(v_{i})` （\ **vertex是split vertex**\ ）
+算法 :math:`HandleSplitVertex(v_i)` （\ **vertex是split vertex**\ ）
 
-#. 在二叉搜索树 :math:`\mathcal{T}` 中找到这个顶点 :math:`v_{i}`
-   左边的第一个（直接）邻居edge :math:`e_{j}` 。
-#. 在doubly-connected edge list :math:`\mathcal{D}`
-   中，添加一条对角线，这条对角线用来连接 :math:`v_{i}` 和
-   :math:`helper(e_{j})` 。
-#. :math:`helper(e_{j})` :math:`\longleftarrow` :math:`v_{i}` （连接
-   :math:`v_{i}` 和 :math:`helper(e_{j})` 的意思）
-#. 在二叉搜索树 :math:`\mathcal{T}` 中插入edge :math:`e_{i}`\ ，并且把
-   :math:`helper(e_{i})` 设定为vertex :math:`v_{i}`\ 。
+1. 在二叉搜索树 :math:`\mathcal{T}` 中找到这个顶点 :math:`v_i`
+   左边的第一个（直接）邻居edge :math:`e_j` 。
+2. 在doubly-connected edge list :math:`\mathcal{D}`
+   中，添加一条对角线，这条对角线用来连接 :math:`v_i` 和
+   :math:`helper(e_j)` 。
+3. :math:`helper(e_j)` :math:`\longleftarrow` :math:`v_i` （连接
+   :math:`v_i` 和 :math:`helper(e_j)` 的意思）
+4. 在二叉搜索树 :math:`\mathcal{T}` 中插入edge :math:`e_i`\ ，并且把
+   :math:`helper(e_i)` 设定为vertex :math:`v_i`\ 。
 
-算法 :math:`HandleMergeVertex(v_{i})` （\ **vertex是Merge vertex**\ ）
+算法 :math:`HandleMergeVertex(v_i)` （\ **vertex是Merge vertex**\ ）
 
-#. 如果\ :math:`helper(e_{i - 1})` 是一个merge vertex，就生成一条连接
-   :math:`v_{i}` 到 :math:`helper(e_{i - 1})`\ ​
+1. 如果\ :math:`helper(e_{i-1})` 是一个merge vertex，就生成一条连接
+   :math:`v_i` 到 :math:`helper(e_{i-1})`\ ​
    的对角线，并加入到doubly-connected edge list :math:`\mathcal{D}` 中。
-#. 从二叉搜索树 :math:`\mathcal{T}` 中删除 vertex :math:`e_{i - 1}`\ 。
-#. 在二叉搜索树 :math:`\mathcal{T}` 中找到这个顶点 :math:`v_{i}`
-   左边的第一个（直接）邻居edge :math:`e_{j}` 。
-#. 如果\ :math:`helper(e_{j})` 是一个merge vertex，就生成一条连接
-   :math:`v_{i}` 到 :math:`helper(e_{j})`
-   的对角线，并加入到doubly-connected edge list :math:`\mathcal{D}` 中。
-#. :math:`helper(e_{j})` :math:`\longleftarrow` :math:`v_{i}` （连接
-   :math:`v_{i}` 和 :math:`helper(e_{j})` 的意思）
+2. 从二叉搜索树 :math:`\mathcal{T}` 中删除 vertex :math:`e_{i-1}`\ 。
+3. 在二叉搜索树 :math:`\mathcal{T}` 中找到这个顶点 :math:`v_i`
+   左边的第一个（直接）邻居edge :math:`e_j` 。
+4. 如果\ :math:`helper(e_j)` 是一个merge vertex，就生成一条连接
+   :math:`v_i` 到 :math:`helper(e_j)` 的对角线，并加入到doubly-connected
+   edge list :math:`\mathcal{D}` 中。
+5. :math:`helper(e_j)` :math:`\longleftarrow` :math:`v_i` （连接
+   :math:`v_i` 和 :math:`helper(e_j)` 的意思）
 
-算法 :math:`HandleRegularVertex(v_{i})` （\ **vertex是regular
-vertex**\ ）
+算法 :math:`HandleRegularVertex(v_i)` （\ **vertex是regular vertex**\ ）
 
-#. 处理这个regular vertex的前提是，多边形 :math:`\mathcal{P}`
-   的内部位于vertex :math:`v_{i}`
+1. 处理这个regular vertex的前提是，多边形 :math:`\mathcal{P}`
+   的内部位于vertex :math:`v_i`
    的右边。如果前提不成立，不用继续下面的处理。
-#. 如果\ :math:`helper(e_{i - 1})` 是一个merge vertex，就生成一条连接
-   :math:`v_{i}` 到 :math:`helper(e_{i - 1})`
+2. 如果\ :math:`helper(e_{i-1})` 是一个merge vertex，就生成一条连接
+   :math:`v_i` 到 :math:`helper(e_{i-1})`
    的对角线，并加入到doubly-connected edge list :math:`\mathcal{D}`
    中，然后从二叉搜索树 :math:`\mathcal{T}` 中删除 vertex
-   :math:`e_{i - 1}`\ ，再在二叉搜索树 :math:`\mathcal{T}` 中添加edge
-   :math:`e_{i}`\ ，并且把\ :math:`helper(e_{i})`\ 设定为
-   :math:`v_{i}`\ 。
-#. 如果\ :math:`helper(e_{i - 1})` **不是**\ 一个merge
+   :math:`e_{i-1}`\ ，再在二叉搜索树 :math:`\mathcal{T}` 中添加edge
+   :math:`e_i`\ ，并且把\ :math:`helper(e_i)`\ 设定为 :math:`v_i`\ 。
+3. 如果\ :math:`helper(e_{i-1})` **不是**\ 一个merge
    vertex，那就在二叉搜索树 :math:`\mathcal{T}` 中找到这个顶点
-   :math:`v_{i}` 左边的第一个（直接）邻居edge :math:`e_{j}`
-   。如果\ :math:`helper(e_{j})` 是一个merge vertex，就生成一条连接
-   :math:`v_{i}` 到 :math:`helper(e_{j})`
-   的对角线，并加入到doubly-connected edge list :math:`\mathcal{D}`
-   中（\ :math:`helper(e_{j})` :math:`\longleftarrow` :math:`v_{i}` ）。
+   :math:`v_i` 左边的第一个（直接）邻居edge :math:`e_j`
+   。如果\ :math:`helper(e_j)` 是一个merge vertex，就生成一条连接
+   :math:`v_i` 到 :math:`helper(e_j)` 的对角线，并加入到doubly-connected
+   edge list :math:`\mathcal{D}` 中（\ :math:`helper(e_j)`
+   :math:`\longleftarrow` :math:`v_i` ）。
 
 **引理3.5**
 通过添加一系列不相交的对角线，MakeMonotone算法可以把一个多边形
@@ -1773,7 +1752,7 @@ vertex**\ ）
    **Lemma 3.5** Algorithm MAKEMONOTONE adds a set of non-intersecting
    diagonals that partitions P into monotone subpolygons.
 
-（证明中所举例的图在63页，页码是55）
+==（证明中所举例的图在63页，页码是55）==
 
 **证明**\ ：
 
@@ -1786,32 +1765,31 @@ vertex，又根据引理3.4，那么这些子多边形就是沿着y轴单调的�
 :math:`\mathcal{P}`
 的任意一条edge相交，也不和之前已经加上的对角线相交。（为了方便讨论，假设两个顶点的y坐标不相同，而下面的讨论也可以推广到y坐标相同的普遍情况）
 
-当sweep line到底顶点 :math:`v_{i}` 时，假设添加了一条对角线
-:math:`\overset{―}{v_{i}v_{m}}`\ 。记顶点 :math:`v_{i}` 左边和水平sweep
-line相交的第一个多边形的edge是 :math:`e_{j}`\ ，右边的第一条edge是
-:math:`e_{k}` 。这样，此时有 :math:`helper(e_{j}) = v_{m}` 。
+当sweep line到底顶点 :math:`v_i` 时，假设添加了一条对角线
+:math:`\overline{v_iv_m}`\ 。记顶点 :math:`v_i` 左边和水平sweep
+line相交的第一个多边形的edge是 :math:`e_j`\ ，右边的第一条edge是
+:math:`e_k` 。这样，此时有 :math:`helper(e_j) = v_m` 。
 
-首先证明 :math:`\overset{―}{v_{i}v_{m}}` 不和多边形 :math:`\mathcal{P}`
-的任意一条edge相交。通过点 :math:`v_{i}` 和 :math:`v_{m}`
-分别作两条水平线 :math:`l_{0}` 和 :math:`l_{1}`\ ，它们和 :math:`e_{j}`
-和 :math:`e_{k}` 相交，构成了一个四边形
-:math:`Q`\ （quadrilateral）。显然，这个四边形 :math:`Q` 中不会有多边形
-:math:`\mathcal{P}` 的其他顶点，因为如果有，那就说明那个顶点比
-:math:`v_{m}` 还要低，但这就和 :math:`v_{m}` 已经是比 :math:`v_{i}`
-高的最低顶点矛盾。
+首先证明 :math:`\overline{v_iv_m}` 不和多边形 :math:`\mathcal{P}`
+的任意一条edge相交。通过点 :math:`v_i` 和 :math:`v_m` 分别作两条水平线
+:math:`l_0` 和 :math:`l_1`\ ，它们和 :math:`e_j` 和 :math:`e_k`
+相交，构成了一个四边形 :math:`Q`\ （quadrilateral）。显然，这个四边形
+:math:`Q` 中不会有多边形 :math:`\mathcal{P}`
+的其他顶点，因为如果有，那就说明那个顶点比 :math:`v_m` 还要低，但这就和
+:math:`v_m` 已经是比 :math:`v_i` 高的最低顶点矛盾。
 
-假设现在有一条多边形 :math:`\mathcal{P}` 的edge :math:`e_{x}` 和对角线
-:math:`\overset{―}{v_{i}v_{m}}` 相交。因为没有顶点在四边形 :math:`Q`
-中，所以 :math:`e_{x}` 就要同时穿过 :math:`l_{0}` （相交）和
-:math:`l_{1}` （相交），而这就说明要么 :math:`e_{x}` 是 :math:`v_{i}`
-左边的第一条edge，要么 :math:`e_{x}` 是 :math:`v_{i}`
-右边的第一条edge，但这和 :math:`v_{i}` 左右两边的第一条edge分别是
-:math:`e_{j}` 和 :math:`e_{k}`
+假设现在有一条多边形 :math:`\mathcal{P}` 的edge :math:`e_x` 和对角线
+:math:`\overline{v_iv_m}` 相交。因为没有顶点在四边形 :math:`Q` 中，所以
+:math:`e_x` 就要同时穿过 :math:`l_0` （相交）和 :math:`l_1`
+（相交），而这就说明要么 :math:`e_x` 是 :math:`v_i`
+左边的第一条edge，要么 :math:`e_x` 是 :math:`v_i`
+右边的第一条edge，但这和 :math:`v_i` 左右两边的第一条edge分别是
+:math:`e_j` 和 :math:`e_k`
 相矛盾，因此前面的假设不成立，因此不会有多边形 :math:`\mathcal{P}`
-的edge :math:`e_{x}` 和对角线 :math:`\overset{―}{v_{i}v_{m}}` 相交。
+的edge :math:`e_x` 和对角线 :math:`\overline{v_iv_m}` 相交。
 
 又因为没有多边形 :math:`\mathcal{P}` 的顶点在四边形 :math:`Q`
-中，因此前面已经加过的每条对角线的两个端点，就一定是在 :math:`v_{i}`
+中，因此前面已经加过的每条对角线的两个端点，就一定是在 :math:`v_i`
 上方（或者说是四边形 :math:`Q`
 的上方），因此当前添加的对角线，就不会和之前已经添加的对角线相交。因此命题的证。
 
@@ -1871,47 +1849,47 @@ vertex），只有最上面的vertex的内角，是小于180°（convex），而
 :math:`\mathcal{S}`
 的栈顶。哪怕在处理完下一个vertex时，这个特性仍然保持，所以这是这个算法中的一个不变项（invariant）。
 
-（图在64页，页码是56，从上向下第1个图）
+==（图在64页，页码是56，从上向下第1个图）==
 
-当处理下一个vertex :math:`v_{j}` 时，分两种情况：
+当处理下一个vertex :math:`v_j` 时，分两种情况：
 
--  情况一，\ :math:`v_{j}` 位于由单独的一条多边形 :math:`\mathcal{P}`
+-  情况一，\ :math:`v_j` 位于由单独的一条多边形 :math:`\mathcal{P}`
    的edge组成的“漏斗”（funnel）的一条边界上
--  情况二，\ :math:`v_{j}` 位于那些在栈 :math:`\mathcal{S}` 上的reflex
+-  情况二，\ :math:`v_j` 位于那些在栈 :math:`\mathcal{S}` 上的reflex
    vertices组成的“漏斗”（funnel）的一条边界上
 
-当vertex :math:`v_{j}` 是情况一时，\ :math:`v_{j}`
+当vertex :math:`v_j` 是情况一时，\ :math:`v_j`
 一定是位于那条edge的下方的端点上（endpoint）。所以，根据当前“漏斗”的形状特点，从
-:math:`v_{j}` 引出直线，和位于栈 :math:`\mathcal{S}`
+:math:`v_j` 引出直线，和位于栈 :math:`\mathcal{S}`
 上每个vertex相连接形成对角线。因为栈底的vertex就是那条edge的上方的端点，已经和
-:math:`v_{j}` 组成多边形的一条边界，所以就不再需要连接。
+:math:`v_j` 组成多边形的一条边界，所以就不再需要连接。
 
 将这些连接了对角线的栈 :math:`\mathcal{S}` 中的顶点都弹出栈之后，多边形
-:math:`\mathcal{P}` 剩下的还没有划分成三角形的部分，就是由 :math:`v_{j}`
-和原先栈顶的那个vertex（记作 :math:`v_{t}`
-）连接成的对角线，和从那个vertex :math:`v_{t}`
+:math:`\mathcal{P}` 剩下的还没有划分成三角形的部分，就是由 :math:`v_j`
+和原先栈顶的那个vertex（记作 :math:`v_t`
+）连接成的对角线，和从那个vertex :math:`v_t`
 开始向下延伸的边组成的部分。而这样部分看起依然是一个“漏斗”形状。这个vertex
-:math:`v_{t}` 和 :math:`v_{j}`
+:math:`v_t` 和 :math:`v_j`
 位于还没有三角划分的部分，因此把这两个顶点压入栈 :math:`\mathcal{S}` 。
 
-（情况一的举例的图在64页，页码是56，从上向下第2个图）
+==（情况一的举例的图在64页，页码是56，从上向下第2个图）==
 
-当vertex :math:`v_{j}` 是情况二时，我们不能直接从 :math:`v_{j}`
+当vertex :math:`v_j` 是情况二时，我们不能直接从 :math:`v_j`
 引出直线去和栈 :math:`\mathcal{S}` 上的每个vertex连接。我们每次从栈
 :math:`\mathcal{S}`
-上把栈顶的vertex弹出栈，然后检查这个vertex是否可以和vertex :math:`v_{j}`
+上把栈顶的vertex弹出栈，然后检查这个vertex是否可以和vertex :math:`v_j`
 相连形成一条对角线。如果可以，就连接这样的对角线，并且继续弹出下一个栈顶的vertex，直到弹出的vertex不能连接成对角线为止。当弹出的vertex不能连接成对角线时，把这个vertex，以及之前弹出的vertex都重新压入栈
 :math:`\mathcal{S}`
 中去。之前弹出的vertex，要么是最后一个可以连接成对角线的vertex，要么就是边界上和
-:math:`v_{j}` 相邻的vertex。当这两个vertex被重新压入栈
-:math:`\mathcal{S}` 中之后，多边形 :math:`\mathcal{P}`
+:math:`v_j` 相邻的vertex。当这两个vertex被重新压入栈 :math:`\mathcal{S}`
+中之后，多边形 :math:`\mathcal{P}`
 剩下的还没有划分成三角形的部分，依然是一个所谓的“漏斗”的形状。
 
-那么如何检查 :math:`v_{j}` 和弹出的栈顶的vertex（记作 :math:`v_{k}`
-）能否连成一条对角线？我们检查 :math:`v_{j}`\ ，\ :math:`v_{k}`
+那么如何检查 :math:`v_j` 和弹出的栈顶的vertex（记作 :math:`v_k`
+）能否连成一条对角线？我们检查 :math:`v_j`\ ，\ :math:`v_k`
 和前一个弹出栈的vertex，查看这三者之间的关系。
 
-（情况一的举例的图在65页，页码是57）
+==（情况一的举例的图在65页，页码是57）==
 
 **TriangulateMonotonePolygon**\ 算法简述
 
@@ -1925,39 +1903,39 @@ vertex），只有最上面的vertex的内角，是小于180°（convex），而
 
 **算法简述**\ ：
 
-#. 从多边形 :math:`\mathcal{P}` 的最高点到最低点有左右两条vertex
+1. 从多边形 :math:`\mathcal{P}` 的最高点到最低点有左右两条vertex
    chain，把这两条vertex
    chain的每个vertex顶点按照\ ``y``\ 坐标按降序合并（相当于排序，但时间复杂度比直接排序低）。对于有相同y坐标的顶点，有较小\ ``x``\ 坐标的顶点排在前面。记这样的排序序列为
-   :math:`u_{1},u_{2},...,u_{n}`\ 。
-#. 初始化一个空的栈 :math:`\mathcal{S}`\ ，把 :math:`u_{1}` 和
-   :math:`u_{2}` 压入栈。
-#. 从3开始，\ :math:`j` 遍历到
-   :math:`n - 1`\ （\ :math:`3 \leq j \leq n - 1`\ ），对于每个
-   :math:`u_{j}` ，检查 :math:`u_{j}` 和此时栈 :math:`\mathcal{S}`
+   :math:`u_1, u_2, ..., u_n`\ 。
+2. 初始化一个空的栈 :math:`\mathcal{S}`\ ，把 :math:`u_1` 和 :math:`u_2`
+   压入栈。
+3. 从3开始，\ :math:`j` 遍历到
+   :math:`n-1`\ （\ :math:`3 \le j \le n-1`\ ），对于每个 :math:`u_j`
+   ，检查 :math:`u_j` 和此时栈 :math:`\mathcal{S}`
    上的栈顶vertex，进行下面的处理。
-#. 如果 :math:`u_{j}` 和此时栈 :math:`\mathcal{S}` 上的栈顶vertex
+4. 如果 :math:`u_j` 和此时栈 :math:`\mathcal{S}` 上的栈顶vertex
    位于\ **不同**\ 的chain上（前述的漏斗型的两条边界），那么就弹出栈
-   :math:`\mathcal{S}` 中的所有vertex，并且连接 :math:`u_{j}`
+   :math:`\mathcal{S}` 中的所有vertex，并且连接 :math:`u_j`
    和这些vertex（除了最后一个，即栈底的vertex），构成对角线。然后把
-   :math:`u_{j - 1}` 和 :math:`u_{j}` 重新压入栈 :math:`\mathcal{S}` 。
-#. 如果 :math:`u_{j}` 和此时栈 :math:`\mathcal{S}` 上的栈顶vertex
+   :math:`u_{j-1}` 和 :math:`u_j` 重新压入栈 :math:`\mathcal{S}` 。
+5. 如果 :math:`u_j` 和此时栈 :math:`\mathcal{S}` 上的栈顶vertex
    位于\ **相同同**\ 的chain上（前述的漏斗型的两条边界中的一条），那么首先弹出栈
    :math:`\mathcal{S}` 的栈顶vertex，之后再每次弹出栈顶vertex，并且检查
-   :math:`u_{j}` 和此时弹出的vertex组成的对角线\ **是否**\ 位于多边形
+   :math:`u_j` 和此时弹出的vertex组成的对角线\ **是否**\ 位于多边形
    :math:`\mathcal{P}` 的内部。如果是就把对角线添加到doubly-connected
    edge list :math:`\mathcal{D}`
    中，并且继续弹出下一个栈顶vertex；否则就停止，然后把最后一个弹出的vertex重新压入栈，然后把
-   :math:`u_{j}` 压入栈。
-#. 最后，除了栈 :math:`\mathcal{S}` 中的第一个和最后一个vertex，从
-   :math:`u_{n}` 出发引出对角线到栈 :math:`\mathcal{S}` 中每个vertex。
+   :math:`u_j` 压入栈。
+6. 最后，除了栈 :math:`\mathcal{S}` 中的第一个和最后一个vertex，从
+   :math:`u_n` 出发引出对角线到栈 :math:`\mathcal{S}` 中每个vertex。
 
 **时间复杂度**\ 为 :math:`O(n)`\ 。
 
 步骤1中合并排序的时间复杂度是线性的
 :math:`O(n)`\ ，步骤2花费常数时间。步骤3开始的for循环，总共执行
-:math:`n - 3`
+:math:`n-3`
 次，每次执行花费线性时间。在for循环的每次执行中，至多有两个vertex被压入栈，因此连同步骤2中的入栈，总共的入栈次数是
-:math:`2n - 4`
+:math:`2n-4`
 次。而又因为出栈的次数不可能比入栈的次数还多，所以for循环执行的总的时间复杂度就是
 :math:`O(n)`\ 。最后步骤6也花费线性时间，因此，该算法的时间复杂度就是
 :math:`O(n)`\ 。
@@ -1978,7 +1956,7 @@ vertex），只有最上面的vertex的内角，是小于180°（convex），而
 :math:`O(n)` 和 :math:`O(n)`\ ，因此整个算法的时间和空间复杂度就分别是
 :math:`O(nlogn)` 和 :math:`O(n)`\ 。
 
-（带洞的多边形的三角划分的举例的图在66页，页码是58）
+==（带洞的多边形的三角划分的举例的图在66页，页码是58）==
 
 **定理3.8** 一个有\ :math:`n` 个顶点的简单多边形，可以以
 :math:`O(nlogn)` 的时间复杂度完成三角划分，其空间复杂度是 :math:`O(n)`
@@ -2003,7 +1981,7 @@ box内部，我们需要找出最多数量的对角线（连接平面细分 :mat
 :math:`\mathcal{S}` 的edge或bounding box :math:`B`
 的edge相交。而解决这个问题，同样可以使用本章的算法，即，先把平面细分分解为多个单调多边形，然后对每个单调多边形做三角划分。因此有如下定理。
 
-（平面细分的三角划分的举例的图在67页，页码是59）
+==（平面细分的三角划分的举例的图在67页，页码是59）==
 
 **定理3.9** 一个有\ :math:`n` 个顶点的平面细分，可以以 :math:`O(nlogn)`
 的时间复杂度完成三角划分，其空间复杂度是 :math:`O(n)` 。
@@ -2020,7 +1998,8 @@ box内部，我们需要找出最多数量的对角线（连接平面细分 :mat
 1973年，Victor Klee在和Vasek
 Chvatal的一场谈话中提出了“画廊问题”（\ **Art Gallery Problem**\ ）。
 
-1975年，Vasek Chvatal第一次给出了证明，说明了 :math:`\lfloor n/3\rfloor`
+1975年，Vasek Chvatal第一次给出了证明，说明了
+:math:`\lfloor n/3 \rfloor`
 台摄像机总是满足需要，并且有时候才是必须的。这个结果就是后来众所周知的\ **Art
 Gallery Theorem**\ （画廊问题）或者\ **the Watchman
 Theorem**\ （守卫问题）。
@@ -2029,7 +2008,7 @@ Chvatal给出的证明相当复杂，本章给出的大为简单的证明来自F
 Ears
 Theorem**\ ，说的是对图的三色可着色性问题就是对一个简单多边形的三角划分问题。
 
-Aggarwal，Lee和Lin说明了对一个给定的简单多边形，找到守卫最小数量的问题是NP难题。O'Rourke的书和Shermer的综述包含了对Art
+Aggarwal，Lee和Lin说明了对一个给定的简单多边形，找到守卫最小数量的问题是NP难题。O’Rourke的书和Shermer的综述包含了对Art
 Gallery Problem的详细讨论和处理，并且有画廊问题的许多变种。
 
 本章讨论的是把多边形做三角划分，但有时候也需要将其划分成其他形状，比如四边形（quadrilateral）或梯形（trapezoid），本书第6,9和14章做了讨论。
@@ -2048,21 +2027,20 @@ Toussaint 和 Chazelle提出了其他的一些算法，也可以在 :math:`O(nlo
 :math:`O(nloglogn)` 的算法。Kirkpatrick和其他人对这种算法做了简化。
 
 本书第4,6,9和11章提到的随机化（randomization）的方法，被证明是找到更快算法的一种有力工具。Clarkson等人，Devillers，Seidel展示了多种
-:math:`O(nlog^{\ast}n)` 时间复杂度的\ **iterated
+:math:`O(nlog^*n)` 时间复杂度的\ **iterated
 logarithm**\ 算法（迭代对数算法）。
 
-   Iterated logarithm or :math:`log^{\ast}(n)`, is the number of times
-   the logarithm function must be iteratively applied before the result
-   is less than or equal to 1.
+   Iterated logarithm or :math:`log^*(n)`, is the number of times the
+   logarithm function must be iteratively applied before the result is
+   less than or equal to 1.
 
-   .. container:: math math-block is-loaded
+   .. math::
 
-      .. math::
 
-         log^{\ast}(n):=\left\{ \begin{matrix}
-         {0,n \leq 1} \\
-         {1 + log^{\ast}(log(n)),n > 1} \\
-         \end{matrix} \right.
+      log^*(n) := \left\{\begin{matrix} 
+      0, n \le 1 \\ 
+      1 + log^*(log(n)) , n \gt 1
+      \end{matrix}\right.
 
 这些算法不仅比 :math:`O(nloglogn)`
 的算法稍快，而且更简单。其中Seidel的算法更和本书第6章提到的构建平面细分的梯形划分紧密相关。但这些算法仍然不是对简单多边形三角划分的线性算法。
@@ -2074,11 +2052,11 @@ of the
 polytope**\ ）。这种问题比平面上的三角划分困难许多。实际上，并不是总能不使用原先多面体上的顶点，而找到这样的四面体划分。
 
 Chazelle展示了，对一个有 :math:`n` 个顶点的简单多面体，需要
-:math:`\Theta(n^{2})`
+:math:`\Theta(n^2)`
 个额外的顶点，并且这样才能总是满足把一个多面体划分为多个四面体的要求。后来，Chazelle和Palios把这个边界优（bound）化到了
-:math:`\Theta(n + r^{2})` ，这里 :math:`r` 是多面体上反射边（reflex
+:math:`\Theta(n+ r^2)` ，这里 :math:`r` 是多面体上反射边（reflex
 edges）的个数。这个算法的时间复杂度是
-:math:`O(nr + r^{2}logr)`\ 。不使用额外的顶点，而要把一个多面体划分为多个四面体的问题是NP完全难题（NP-hard）。
+:math:`O(nr + r^2logr)`\ 。不使用额外的顶点，而要把一个多面体划分为多个四面体的问题是NP完全难题（NP-hard）。
 
 3.5 Exercises
 ~~~~~~~~~~~~~
@@ -2122,26 +2100,26 @@ facet*\ ），每一个普通平面 :math:`f` 在模具中都有和它对应的�
 
 我们需要做的是，决定多面体 :math:`\mathcal{P}`
 是否可以通过一次转换（translation）就可以从模具中移出。换句话说，我们要找出来是否存在一个向量
-:math:`\overset{\rightarrow}{d}` ，使得多面体 :math:`\mathcal{P}`
+:math:`\overrightarrow{d}` ，使得多面体 :math:`\mathcal{P}`
 沿着它可以移动到无限远而不碰到（intersecting）模具。
 
 因为 :math:`f` 是铸件的平面，同时它也是和模具平面 :math:`\hat{f}`
-贴合的平面。如果 :math:`\overset{\rightarrow}{d}` 和平面 :math:`f`
+贴合的平面。如果 :math:`\overrightarrow{d}` 和平面 :math:`f`
 向外的法向量（记作
 :math:`\eta(f)`\ ）的夹角小于90°，那么在移除是铸件就会被阻挡。所以必要的条件就是
-:math:`\overset{\rightarrow}{d}` 要和铸件 :math:`\mathcal{P}`
+:math:`\overrightarrow{d}` 要和铸件 :math:`\mathcal{P}`
 所有平面的向外的法向量夹角小于90°。下面的定理4.1也说明了这个必要条件也是充分条件（即充要条件）。
 
-**定理4.1** 如果一个向量 :math:`\overset{\rightarrow}{d}` 和多面体
+**定理4.1** 如果一个向量 :math:`\overrightarrow{d}` 和多面体
 :math:`\mathcal{P}` 所有面向外的法向量的夹角小于90°，那么这个多面体
-:math:`\mathcal{P}` 就能沿着方向 :math:`\overset{\rightarrow}{d}`
+:math:`\mathcal{P}` 就能沿着方向 :math:`\overrightarrow{d}`
 从模具中移出。
 
    Lemma 4.1 The polyhedron :math:`\mathcal{P}` can be removed from its
-   mold by a translation in direction :math:`\overset{\rightarrow}{d}`
-   if and only if :math:`\overset{\rightarrow}{d}` makes an angle of at
-   least 90° with the outward normal of all ordinary facets of
-   :math:`\mathcal{P}` .
+   mold by a translation in direction :math:`\overrightarrow{d}` if and
+   only if :math:`\overrightarrow{d}` makes an angle of at least 90°
+   with the outward normal of all ordinary facets of :math:`\mathcal{P}`
+   .
 
 证明见第72页，页码为64页。
 
@@ -2150,30 +2128,31 @@ facet*\ ），每一个普通平面 :math:`f` 在模具中都有和它对应的�
 可以通过一系列短的向量移出模具，那么它也能一次通过一个向量移出模具。
 
 为了方便叙述，显然可以把所有讨论的向量的起始点移动到三维空间的原点。因为模具的顶部平面是向上开口的，所以我们要寻找的向量
-:math:`\overset{\rightarrow}{d}` 其实是正 :math:`z`
+:math:`\overrightarrow{d}` 其实是正 :math:`z`
 轴的方向（想象一下要把铸件从开口处移除），那么可以取 :math:`z = 1`
-这个三维空间的平面，这个平面上面的任意一个点 :math:`(x,y,1)`
+这个三维空间的平面，这个平面上面的任意一个点 :math:`(x, y, 1)`
 就能表示一个起点是原点的向量。
 
 假设铸件的每个面向外的法向量是
-:math:`\overset{\rightarrow}{\eta} = ({\overset{\rightarrow}{\eta}}_{x} + {\overset{\rightarrow}{\eta}}_{y} + {\overset{\rightarrow}{\eta}}_{z})`\ ，那么一个向量
-:math:`\overset{\rightarrow}{d}`
-（\ :math:`\overset{\rightarrow}{d} = (x,y,1)`\ ）和这个法向量夹角小于90°的充要条件是，它们的点积小于等于0（非正）。因此有下面的不等式（inequality）：
+:math:`\overrightarrow\eta = ( \overrightarrow\eta_x + \overrightarrow\eta_y + \overrightarrow\eta_z )`\ ，那么一个向量
+:math:`\overrightarrow{d}`
+（\ :math:`\vec{d} = (x, y, 1)`\ ）和这个法向量夹角小于90°的充要条件是，它们的点积小于等于0（非正）。因此有下面的不等式（inequality）：
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: {\overset{\rightarrow}{\eta}}_{x}d_{x} + {\overset{\rightarrow}{\eta}}_{y}d_{y} + {\overset{\rightarrow}{\eta}}_{z} \leq 0
+
+   \overrightarrow\eta_xd_x + \overrightarrow\eta_yd_y + \overrightarrow\eta_z \le 0
 
 这个不等式实际上表示了 :math:`z = 1`
 这个平面上的半个平面，即一条直线的左边平面，或者右边平面。（当然这个叙述不严谨，因为对于铸件面是水平的面时，有
-:math:`{\overset{\rightarrow}{\eta}}_{x} = {\overset{\rightarrow}{\eta}}_{y} = 0`
+:math:`\overrightarrow\eta_x = \overrightarrow\eta_y = 0`
 。但在本章讨论的例子中，这个条件不可能满足或者一开始就永远满足，所以可以不做讨论）。
 
 换句话说，铸件的每个面代表了 :math:`z = 1`
 这个平面上的半个平面（half-plane），而这些平面相交的共同部分的任意一个点，代表了一个向量
-:math:`\overset{\rightarrow}{d}`
+:math:`\overrightarrow{d}`
 ，沿着这个向量，铸件就可以从模具中移出。这就是说，我们把这个铸造问题转化为了求解一个平面上多个半平面交集部分的几何问题。如果一个铸件有
-:math:`n` 个面，那么就需要求解 :math:`n - 1`
+:math:`n` 个面，那么就需要求解 :math:`n-1`
 个半平面交集部分（因为顶部平面不需要参与求解）。
 
    Given a set of half-planes, find a point in their common intersection
@@ -2184,13 +2163,13 @@ facet），从而再测试铸件（多面体 :math:`\mathcal{P}`
 ）是否可以从模具中移出。
 
 **定理4.2** 记 :math:`\mathcal{P}` 是有 :math:`n`
-个面的多面体（铸件），以时间复杂度\ :math:`O(n^{2})`\ 和空间复杂度\ :math:`O(n)`\ ，可以确定该多面体
+个面的多面体（铸件），以时间复杂度\ :math:`O(n^2)`\ 和空间复杂度\ :math:`O(n)`\ ，可以确定该多面体
 :math:`\mathcal{P}` 是否可铸造。此外，如果 :math:`\mathcal{P}`
 是可铸造的，那么可以以相同的时间复杂度和空间复杂度计算出一个模具和一个可以把
 :math:`\mathcal{P}` 从模具中移出的合法向量（方向）。
 
    Theorem 4.2 Let :math:`\mathcal{P}` be a polyhedron with :math:`n`
-   facets. In :math:`O(n^{2})` expected time and using :math:`O(n)`
+   facets. In :math:`O(n^2)` expected time and using :math:`O(n)`
    storage it can be decided whether :math:`\mathcal{P}` is castable.
    Moreover, if :math:`\mathcal{P}` is castable, a mold and a valid
    direction for removing :math:`\mathcal{P}` from it can be computed in
@@ -2201,23 +2180,22 @@ facet），从而再测试铸件（多面体 :math:`\mathcal{P}`
 
 本章要讨论的问题，可以看做是对（二元一次）不等式方程组的求解
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math::
 
-      \left\{ \begin{matrix}
-      {a_{1}x + b_{1}y \leq c_{1}} \\
-      {a_{2}x + b_{2}y \leq c_{2}} \\
-       \vdots \\
-      {a_{n}x + b_{n}y \leq c_{n}} \\
-      \end{matrix} \right.
+   \left\{\begin{matrix} 
+   a_1x + b_1y \le c_1 \\
+   a_2x + b_2y \le c_2 \\
+   \vdots \\
+   a_nx + b_ny \le c_n \\
+   \end{matrix}\right.
 
 方程组中每个不等式就是一个线性约束（linear constraint），记作
-:math:`h_{i}`\ ，它实际上代表了平面上的由一条直线分割的半个平面。其中
-:math:`(x,y) \in \mathbb{R}^{2}`\ ，即\ :math:`(x,y)`\ 是二维实数域上的点。
+:math:`h_i`\ ，它实际上代表了平面上的由一条直线分割的半个平面。其中
+:math:`(x,y) \in \mathbb{R}^2`\ ，即\ :math:`(x,y)`\ 是二维实数域上的点。
 
-记这样的一组线性约束为
-:math:`H = \{ h_{1},h_{2},\ldots,h_{n}\}`\ ，它代表了 :math:`n`
+记这样的一组线性约束为 :math:`H = \{h_1, h_2, \dots, h_n\}`\ ，它代表了
+:math:`n`
 个半平面的交集。我们要求解的结果，就是属于这个交集的所有的点\ :math:`(x,y)`\ 。
 
 因为每个半平面是一个convex（凸包），而convex之间的交集还是convex，所以这些半平面的交集也是平面上的一个convex（凸包）。这个交集区域边界上的点也是某个半平面边界直线上的点，交集区域的每条边也是属于某个半平面边界直线。因为是convex，所以每条半平面边界直线顶多形成交集区域的一条边，所以最后交集的边至多有
@@ -2225,30 +2203,28 @@ facet），从而再测试铸件（多面体 :math:`\mathcal{P}`
 
 下面图中展示了几种交集的情况。
 
-（举例的图在74页，页码是67）
+==（举例的图在74页，页码是67）==
 
 首先给出分治算法来计算 :math:`n` 个半平面的交集。
 
 算法：\ :math:`IntersectHalfPlanes(H)`
 
 输入：二维平面上 :math:`n` 个半平面的一组约束 :math:`H`
-（\ :math:`H = \{ h_{1},h_{2},\ldots,h_{n}\}`\ ，其中
-:math:`h_{i} = \{(x,y) \in \mathbb{R}^{2}|a_{i}x + b_{i}y \leq c_{i}\}`\ ）。
+（\ :math:`H = \{h_1, h_2, \dots, h_n\}`\ ，其中
+:math:`h_i = \{(x,y) \in \mathbb{R}^2 | a_ix + b_iy \le c_i \}`\ ）。
 
-输出：一个凸包多边形区域 :math:`C:={\bigcap\limits_{h \in H}h}`\ 。
+输出：一个凸包多边形区域 :math:`C:= \textstyle \bigcap_{h \in H} h`\ 。
 
 算法步骤
 
--  如果 :math:`H` 只包含有一个约束条件（即 :math:`n = 1`\ ），那么
+-  如果 :math:`H` 只包含有一个约束条件（即 :math:`n=1`\ ），那么
    :math:`C` 就是这唯一的一个半平面
 -  如果 :math:`H` 包含大于一个约束条件（\ :math:`n > 1`\ ），就把
-   :math:`H` 划分为两个子约束集合 :math:`H_{1}` 和
-   :math:`H_{2}`\ ，每个集合有 $\lceil n/2 \\rceil $ 个约束条件。
--  调用函数 :math:`IntersectHalfPlanes(H_{1})`\ ，得到结果
-   :math:`C_{1}`\ 。
--  调用函数 :math:`IntersectHalfPlanes(H_{2})`\ ，得到结果
-   :math:`C_{2}`\ 。
--  调用函数 :math:`IntersectConvexRegions(C_{1},C_{2})`\ ，得到结果
+   :math:`H` 划分为两个子约束集合 :math:`H_1` 和
+   :math:`H_2`\ ，每个集合有 :math:`\lceil n/2 \rceil` 个约束条件。
+-  调用函数 :math:`IntersectHalfPlanes(H_1)`\ ，得到结果 :math:`C_1`\ 。
+-  调用函数 :math:`IntersectHalfPlanes(H_2)`\ ，得到结果 :math:`C_2`\ 。
+-  调用函数 :math:`IntersectConvexRegions(C_1, C_2)`\ ，得到结果
    :math:`C`\ 。
 
 这里函数 :math:`IntersectConvexRegions`
@@ -2256,32 +2232,32 @@ facet），从而再测试铸件（多面体 :math:`\mathcal{P}`
 :math:`O(nlogn + klogn)`\ ，\ :math:`n`
 是两个polygon的顶点个数。需要注意的一点是，polygon（区域）可能退化为一条线段或者一个点，或者这个polygon（区域）就是没有边界的。
 
-假设通过递归调用已经计算出来了 :math:`C_{1}` 和
-:math:`C_{2}`\ ，因为它们各自都是由 :math:`n/2 + 1`
+假设通过递归调用已经计算出来了 :math:`C_1` 和
+:math:`C_2`\ ，因为它们各自都是由 :math:`n/2 + 1`
 个半平面计算得到，所以它们各自至多有 :math:`n/2 + 1`
 条edge，根据第二章计算overlay的算法，时间复杂度就是
-:math:`O((n + k)logn)`\ ，\ :math:`k` 是 :math:`C_{1}` 和 :math:`C_{2}`
-edge的交点个数。对于这样任意一个交点 :math:`v`\ ，它是来自于
-:math:`C_{1}` 中的一条edge :math:`e_{1}` 和 :math:`C_{2}` 中的一条edge
-:math:`e_{2}` 相交得到的交点，因此这个交点也必然属于
-:math:`C_{1}\bigcap C_{2}`\ 。而 :math:`C_{1}\bigcap C_{2}` 是 :math:`n`
+:math:`O((n+k)logn)`\ ，\ :math:`k` 是 :math:`C_1` 和 :math:`C_2`
+edge的交点个数。对于这样任意一个交点 :math:`v`\ ，它是来自于 :math:`C_1`
+中的一条edge :math:`e_1` 和 :math:`C_2` 中的一条edge :math:`e_2`
+相交得到的交点，因此这个交点也必然属于 :math:`C_1 \bigcap C_2`\ 。而
+:math:`C_1 \bigcap C_2` 是 :math:`n`
 个半平面相交得到的区域，因此它至多有 :math:`n` 条边（也至多有 :math:`n`
-个顶点），故 :math:`k \leq n` 。因此时间复杂度就是 :math:`O(nlogn)` 。
+个顶点），故 :math:`k \le n` 。因此时间复杂度就是 :math:`O(nlogn)` 。
 
-（举例的图在75页，页码是68，从上到下第一个图）
+==（举例的图在75页，页码是68，从上到下第一个图）==
 
 所以算法的复杂度可以用以下的式子表示
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math::
 
-      T(n) = \left\{ \begin{matrix}
-      {O(1),if\ \ n = 1} \\
-      {O(nlogn) + 2T(n/2),if\ \ n > 1} \\
-      \end{matrix} \right.
+   T(n) =
+   \left\{\begin{matrix}
+   O(1), if \space\space n = 1 \\
+   O(nlogn) + 2T(n/2), if \space\space n > 1
+   \end{matrix}\right.
 
-这个递归表达的最终结果就是 :math:`T(n) = O(nlog^{2}n)`\ 。
+这个递归表达的最终结果就是 :math:`T(n) = O(nlog^2n)`\ 。
 
 因为\ :math:`IntersectHalfPlanes(H)`\ 算法中用来计算两个polygon交集的程序默认两个polygon是任意的（即可以是凸的，也可以是凹的），但其实在这个算法中能保证两个polygon是凸的，这样就可以根据这个特性对算法加速。
 
@@ -2291,132 +2267,126 @@ polygonal region，可以是无边界的）。把这个凸多边形区域 :math:
 :math:`\mathcal{L}_{left}(C)`\ ，把\ **右边**\ 的边界列表记作
 :math:`\mathcal{L}_{right}(C)`\ 。这里不显式记录顶点，它们可以根据两条连续出现的边的交点而计算得出。
 
-（举例的图在75页，页码是68，从上到下第二个图）
+==（举例的图在75页，页码是68，从上到下第二个图）==
 
 下面为了简化叙述，我们假设没有水平的edge。但可以把顶部的水平的edge归到左侧的边界列表中，把底部的水平的edge归到右侧的边界列表中。
 
 经过改进的（两个convex polygon region）算法也是plane sweep
 algorithm。从上到下移动sweep line，并且维护和sweep line相交的
-:math:`C_{1}` 与 :math:`C_{2}` 中的边。因为 :math:`C_{1}` 和
-:math:`C_{2}` 都是convex，所以和sweep
-line相交的边最多只有4条，因此不需要维护一个复杂的数据结构（BST），而是直接使用4个指针指向它们，\ :math:`left\_ edge\_ C1`\ ，
-:math:`right\_ edge\_ C1`\ ，\ :math:`left\_ edge\_ C2` 和
-:math:`right\_ edge\_ C2`\ 。如果和左侧或右侧边界没有相交的edge，指针就指向空\ ``NULL``\ 。
+:math:`C_1` 与 :math:`C_2` 中的边。因为 :math:`C_1` 和 :math:`C_2`
+都是convex，所以和sweep
+line相交的边最多只有4条，因此不需要维护一个复杂的数据结构（BST），而是直接使用4个指针指向它们，\ :math:`left\_edge\_C1`\ ，
+:math:`right\_edge\_C1`\ ，\ :math:`left\_edge\_C2` 和
+:math:`right\_edge\_ C2`\ 。如果和左侧或右侧边界没有相交的edge，指针就指向空\ ``NULL``\ 。
 
-初始时，记 :math:`C_{1}` 最高的顶点的 :math:`y` 坐标值是
-:math:`y_{1}`\ （如果 :math:`C_{1}` 的上方是无边界的，就令
-:math:`y = \infty`\ ）。类似的 :math:`C_{2}` 最高的顶点的 :math:`y`
-坐标值是 :math:`y_{2}`\ 。取
-:math:`y_{start} = min(y_{1},y_{2})`\ ，所以 :math:`C_{1}` 和
-:math:`C_{2}` 所有的顶点都在 :math:`y_{start}` 下方，因此sweep line从
-:math:`y_{start}` 处开始移动，\ :math:`left\_ edge\_ C1`\ ，
-:math:`right\_ edge\_ C1`\ ，\ :math:`left\_ edge\_ C2` 和
-:math:`right\_ edge\_ C2` 的初始值就是sweep line在 :math:`y_{start}`
-处时和 :math:`C_{1}` 与 :math:`C_{2}` 相交的边。
+初始时，记 :math:`C_1` 最高的顶点的 :math:`y` 坐标值是
+:math:`y_1`\ （如果 :math:`C_1` 的上方是无边界的，就令
+:math:`y = \infty`\ ）。类似的 :math:`C_2` 最高的顶点的 :math:`y`
+坐标值是 :math:`y_2`\ 。取 :math:`y_{start} = min(y_1, y_2)`\ ，所以
+:math:`C_1` 和 :math:`C_2` 所有的顶点都在 :math:`y_{start}`
+下方，因此sweep line从 :math:`y_{start}`
+处开始移动，\ :math:`left\_edge\_C1`\ ，
+:math:`right\_edge\_C1`\ ，\ :math:`left\_edge\_C2` 和
+:math:`right\_edge\_ C2` 的初始值就是sweep line在 :math:`y_{start}`
+处时和 :math:`C_1` 与 :math:`C_2` 相交的边。
 
-（举例的图在76页，页码是69）
+==（举例的图在76页，页码是69）==
 
 根据plane sweep
-algorithm，通常需要一个queue来存储event。在本算法中，就是 :math:`C_{1}`
-和 :math:`C_{2}` 中的边和sweep
-line开始（或终止）相交的点，也就是\ :math:`left\_ edge\_ C1`\ ，
-:math:`right\_ edge\_ C1`\ ，\ :math:`left\_ edge\_ C2` 和
-:math:`right\_ edge\_ C2` 的下端的端点中 :math:`y`
+algorithm，通常需要一个queue来存储event。在本算法中，就是 :math:`C_1` 和
+:math:`C_2` 中的边和sweep
+line开始（或终止）相交的点，也就是\ :math:`left\_edge\_C1`\ ，
+:math:`right\_edge\_C1`\ ，\ :math:`left\_edge\_C2` 和
+:math:`right\_edge\_ C2` 的下端的端点中 :math:`y`
 坐标最高的那个点。（如果有两个 :math:`y`
 坐标相同的点，就按照从左向右的顺序）
 
 当sweep line到达某个event point的时候，边界上就会出现一条新的边
 :math:`e`\ 。处理的办法是，首先检查这条新的边 :math:`e` 是属于
-:math:`C_{1}` 还是 :math:`C_{2}`\ ，再检查它是 :math:`C_{1}`\ （或
-:math:`C_{2}` ）的左侧还是右侧边界，然后调用相应的处理程序。下面以这条边
-:math:`e` 是 :math:`C_{1}` 左侧边界上的一条边为例，说明处理过程。
+:math:`C_1` 还是 :math:`C_2`\ ，再检查它是 :math:`C_1`\ （或 :math:`C_2`
+）的左侧还是右侧边界，然后调用相应的处理程序。下面以这条边 :math:`e` 是
+:math:`C_1` 左侧边界上的一条边为例，说明处理过程。
 
 记端点 :math:`p` 是这条边 :math:`e` 的上方的端点，那么当sweep line移动到
-:math:`p` 时，最终的 :math:`C`
-（\ :math:`C \in C_{1}\bigcap C_{2}`\ ）在 :math:`p`
-处所在的边可能有三种情况：
+:math:`p` 时，最终的 :math:`C` （\ :math:`C \in C_1 \bigcap C_2`\ ）在
+:math:`p` 处所在的边可能有三种情况：
 
 -  这条边 :math:`e` 本身，并且 :math:`p` 是这条边上方的点
--  :math:`e\bigcap left\_ edge\_ C2` （即\ :math:`e` 和 :math:`C_{2}`
+-  :math:`e \bigcap left\_edge\_C2` （即\ :math:`e` 和 :math:`C_2`
    **左侧**\ 与sweep line相交的边的交集所形成的边），并且 :math:`p`
    是这条边上方的点。
--  :math:`e\bigcap right\_ edge\_ C2` （即\ :math:`e` 和 :math:`C_{2}`
+-  :math:`e \bigcap right\_edge\_C2` （即\ :math:`e` 和 :math:`C_2`
    **右侧**\ 与sweep line相交的边的交集所形成的边），并且 :math:`p`
    是这条边上方的点。
 
 判断情况之后，再执行以下处理：
 
--  首先检查，如果 :math:`p` 位于 :math:`left\_ edge\_ C2` 和
-   :math:`right\_ edge\_ C2` 之间，那么以 :math:`p` 点为upper
+-  首先检查，如果 :math:`p` 位于 :math:`left\_edge\_C2` 和
+   :math:`right\_edge\_C2` 之间，那么以 :math:`p` 点为upper
    point的这条edge :math:`e` 就是最终 :math:`C` 中的一条边，把包含这条
    :math:`e` 的boundary line所在的半平面（表达式）添加到
    :math:`\mathcal{L}_{left}(C)` 中。
--  其次检查，这条边 :math:`e` 是否和 :math:`right\_ edge\_ C2`
+-  其次检查，这条边 :math:`e` 是否和 :math:`right\_edge\_C2`
    相交。如果相交，那么交点就是最终 :math:`C` 中的顶点。并且有
 
-   -  如果 :math:`p` 位于 :math:`right\_ edge\_ C2`
-      **右侧**\ （沿着\ :math:`right\_ edge\_ C2` 走，\ :math:`C_{2}`
-      在其左侧，以此为参考的 :math:`p` 位于其 :math:`right\_ edge\_ C2`
-      的\ **右侧**\ ），那么 :math:`e` 和 :math:`right\_ edge\_ C2`
+   -  如果 :math:`p` 位于 :math:`right\_edge\_C2`
+      **右侧**\ （沿着\ :math:`right\_edge\_C2` 走，\ :math:`C_2`
+      在其左侧，以此为参考的 :math:`p` 位于其 :math:`right\_edge\_C2`
+      的\ **右侧**\ ），那么 :math:`e` 和 :math:`right\_edge\_C2`
       从\ **交点开始**\ 的各自边的部分，就是 :math:`C`
-      中的两条edge（或edge的一部分）。
-      这种情况下，就把 :math:`e`
-      所在的半平面（表达式）添加到\ :math:`\mathcal{L}_{left}(C)`\ 中，把\ :math:`right\_ edge\_ C2`
+      中的两条edge（或edge的一部分）。 这种情况下，就把 :math:`e`
+      所在的半平面（表达式）添加到\ :math:`\mathcal{L}_{left}(C)`\ 中，把\ :math:`right\_edge\_C2`
       所在的半平面（表达式）添加到\ :math:`\mathcal{L}_{right}(C)`\ 中。
-   -  如果 :math:`p` 位于 :math:`right\_ edge\_ C2`
-      **左侧**\ （沿着\ :math:`right\_ edge\_ C2` 走，\ :math:`C_{2}`
-      在其左侧，以此为参考的 :math:`p` 位于其 :math:`right\_ edge\_ C2`
-      的\ **左侧**\ ），那么 :math:`e` 和 :math:`right\_ edge\_ C2`
+   -  如果 :math:`p` 位于 :math:`right\_edge\_C2`
+      **左侧**\ （沿着\ :math:`right\_edge\_C2` 走，\ :math:`C_2`
+      在其左侧，以此为参考的 :math:`p` 位于其 :math:`right\_edge\_C2`
+      的\ **左侧**\ ），那么 :math:`e` 和 :math:`right\_edge\_C2`
       各自的边到\ **交点结束**\ 的部分，就是 :math:`C`
-      中的两条edge（或edge的一部分）。
-      这种情况下，不需要把 :math:`e` 或
-      :math:`right\_ edge\_ C2`\ 所在的半平面添加到\ :math:`\mathcal{L}_{left}(C)`\ 或\ :math:`\mathcal{L}_{right}(C)`\ 中，因为它们会在其他时机被添加进去。
+      中的两条edge（或edge的一部分）。 这种情况下，不需要把 :math:`e` 或
+      :math:`right\_edge\_C2`\ 所在的半平面添加到\ :math:`\mathcal{L}_{left}(C)`\ 或\ :math:`\mathcal{L}_{right}(C)`\ 中，因为它们会在其他时机被添加进去。
 
--  最后再检查，这条边 :math:`e` 是否和 :math:`left\_ edge\_ C2`
+-  最后再检查，这条边 :math:`e` 是否和 :math:`left\_edge\_C2`
    相交。如果相交，那么交点就也是最终 :math:`C` 中的顶点。并且有
 
-   -  如果 :math:`p` 位于 :math:`left\_ edge\_ C2`
-      **右侧**\ （沿着\ :math:`left\_ edge\_ C2` 走，\ :math:`C_{2}`
-      在其左侧，以此为参考的 :math:`p` 位于其 :math:`left\_ edge\_ C2`
+   -  如果 :math:`p` 位于 :math:`left\_edge\_C2`
+      **右侧**\ （沿着\ :math:`left\_edge\_C2` 走，\ :math:`C_2`
+      在其左侧，以此为参考的 :math:`p` 位于其 :math:`left\_edge\_C2`
       的\ **右侧**\ ），那么以交点开始的边 :math:`e` 的部分就是
       :math:`C` 中的边，并把对应的half-plane添加到
       :math:`\mathcal{L}_{left}(C)` 中。
-   -  如果 :math:`p` 位于 :math:`left\_ edge\_ C2`
-      **左侧**\ （沿着\ :math:`left\_ edge\_ C2` 走，\ :math:`C_{2}`
-      在其左侧，以此为参考的 :math:`p` 位于其 :math:`left\_ edge\_ C2`
-      的\ **左侧**\ ），那么以交点开始的边 :math:`left\_ edge\_ C2`
+   -  如果 :math:`p` 位于 :math:`left\_edge\_C2`
+      **左侧**\ （沿着\ :math:`left\_edge\_C2` 走，\ :math:`C_2`
+      在其左侧，以此为参考的 :math:`p` 位于其 :math:`left\_edge\_C2`
+      的\ **左侧**\ ），那么以交点开始的边 :math:`left\_edge\_C2`
       的部分就是 :math:`C` 中的边，并把对应的half-plane添加到
       :math:`\mathcal{L}_{left}(C)` 中。
 
-（上面三个处理中对应的3个图在77页，页码是70）
+==（上面三个处理中对应的3个图在77页，页码是70）==
 
 需要注意的是，我们可能向 :math:`\mathcal{L}_{left}(C)` 中添加 :math:`e`
-所在的half-plan，或 :math:`left\_ edge\_ C2` 所在的half-plane。如果以
-:math:`left\_ edge\_ C2` 和 :math:`e` 的交点开始的
-:math:`left\_ edge\_ C2` 的部分edge是最终 :math:`C` 中的edge的话，
-:math:`left\_ edge\_ C2` 才能加到 :math:`\mathcal{L}_{left}(C)`
-中。而准备添加 :math:`e` 时，要确保最终组成 :math:`C` 中的edge，要么是
-:math:`e` 从其upper endpoint开始的，要么是 :math:`e` 从它和
-:math:`right\_ edge\_ C2` 的交点开始的部分，而且这两种情况下都要先添加
-:math:`e` 。
+所在的half-plan，或 :math:`left\_edge\_C2` 所在的half-plane。如果以
+:math:`left\_edge\_C2` 和 :math:`e` 的交点开始的 :math:`left\_edge\_C2`
+的部分edge是最终 :math:`C` 中的edge的话， :math:`left\_edge\_C2`
+才能加到 :math:`\mathcal{L}_{left}(C)` 中。而准备添加 :math:`e`
+时，要确保最终组成 :math:`C` 中的edge，要么是 :math:`e` 从其upper
+endpoint开始的，要么是 :math:`e` 从它和 :math:`right\_edge\_C2`
+的交点开始的部分，而且这两种情况下都要先添加 :math:`e` 。
 
 从上可知，处理每条edge花费的是常数时间，那么计算两个convex
 polygon相交的时间复杂度就是 :math:`O(n)`\ 。
 
-| 为了证明算法是正确的，需要证明我们能找到最终 :math:`C`
-  中的所有的边（edge），并且顺序是正确的。
-| 考虑 :math:`C` 中的一条edge :math:`e_{C}`\ ，记它的upper endpoint为
-  :math:`p`\ 。
+为了证明算法是正确的，需要证明我们能找到最终 :math:`C`
+中的所有的边（edge），并且顺序是正确的。 考虑 :math:`C` 中的一条edge
+:math:`e_C`\ ，记它的upper endpoint为 :math:`p`\ 。
 
--  要么 :math:`p` 是 :math:`C_{1}` 或 :math:`C_{2}` 中某条edge的upper
-   endpoint。
-   这种情况下，当sweep line到达 :math:`p` 点的时候，我们就能找到
-   :math:`C` 中的这条edge :math:`e_{C}`\ 。
--  要么它是 :math:`C_{1}` 中的一条edge :math:`e` 和 :math:`C_{2}`
-   中的一条edge :math:`e^{\prime}` 的交点。
-   这种情况下，当sweep line到达 :math:`e` 和 :math:`e^{\prime}`
-   的两个upper endpoint的较低（lower）的那个时，我们同样也能找到
-   :math:`C` 中的这条edge :math:`e_{C}`\ 。
+-  要么 :math:`p` 是 :math:`C_1` 或 :math:`C_2` 中某条edge的upper
+   endpoint。 这种情况下，当sweep line到达 :math:`p`
+   点的时候，我们就能找到 :math:`C` 中的这条edge :math:`e_C`\ 。
+-  要么它是 :math:`C_1` 中的一条edge :math:`e` 和 :math:`C_2`
+   中的一条edge :math:`e'` 的交点。 这种情况下，当sweep line到达
+   :math:`e` 和 :math:`e'` 的两个upper
+   endpoint的较低（lower）的那个时，我们同样也能找到 :math:`C`
+   中的这条edge :math:`e_C`\ 。
 
 因此，我们就能找到最终 :math:`C`
 中的所有的边。而证明其顺序正确性不难（？？）。
@@ -2430,29 +2400,28 @@ polygon相交的时间复杂度就是 :math:`O(n)`\ 。
 根据这个结论，回到之前的算法
 :math:`IntersectHalfPlanes(H)`\ ，之前我们分析的时间复杂度是
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math::
 
-      T(n) = \left\{ \begin{matrix}
-      {O(1),if\ \ n = 1} \\
-      {O(nlogn) + 2T(n/2),if\ \ n > 1} \\
-      \end{matrix} \right.
+   T(n) =
+   \left\{\begin{matrix}
+   O(1), if \space\space  n = 1 \\
+   O(nlogn) + 2T(n/2), if \space\space  n > 1
+   \end{matrix}\right.
 
 其中 :math:`O(nlogn)`
 是计算两个任意多边形区域交集的时间复杂度。现在我们证明了计算两个凸多边形区域的交集的时间复杂度是\ :math:`O(n)`\ ，那么就有了
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math::
 
-      T(n) = \left\{ \begin{matrix}
-      {O(1),if\ \ n = 1} \\
-      {O(n) + 2T(n/2),if\ \ n > 1} \\
-      \end{matrix} \right.
+   T(n) =
+   \left\{\begin{matrix}
+   O(1), if \space\space n = 1 \\
+   O(n) + 2T(n/2), if \space\space n > 1
+   \end{matrix}\right.
 
-| 这个式子最终的结果是 :math:`T(nlogn)`\ 。
-| 所以有下面的推论：
+这个式子最终的结果是 :math:`T(nlogn)`\ 。 所以有下面的推论：
 
 **推论4.4** 计算平面上 :math:`n` 个半平面交集的时间复杂度是
 :math:`O(nlogn)`\ ，并且空间复杂度是线性的。
@@ -2480,55 +2449,52 @@ instructions to a computer）。
    This term was coined before “programming” came to mean “giving
    instructions to a computer”.
 
-| 线性规划问题，是求解一组线性约束的一个解，并且这个解使得一个线性目标函数的值最大化。下面是更精确的描述。
-| :math:`\mathbb{R}^{d}` （\ :math:`d`
-  维实数空间）上，有一个要使得其最大化的目标函数，
-| Maximize：
+线性规划问题，是求解一组线性约束的一个解，并且这个解使得一个线性目标函数的值最大化。下面是更精确的描述。
+:math:`\mathbb{R}^d` （\ :math:`d`
+维实数空间）上，有一个要使得其最大化的目标函数， Maximize：
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: c_{1}x_{1} + c_{2}x_{2} + \cdots + c_{d}x_{d}
+
+   c_1x_1 + c_2x_2 + \cdots + c_dx_d
 
 Subject to：
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math::
 
-      \left\{ \begin{matrix}
-      {a_{1,1}x_{1} + c_{1,2}x_{2} + \cdots + c_{1,d}x_{d} \leq b_{1}} \\
-      {a_{2,1}x_{1} + c_{2,2}x_{2} + \cdots + c_{2,d}x_{d} \leq b_{2}} \\
-       \vdots \\
-      {a_{n,1}x_{1} + c_{n,2}x_{2} + \cdots + c_{n,d}x_{d} \leq b_{n}} \\
-      \end{matrix} \right.
+   \left\{\begin{matrix} 
+   a_{1,1}x_1 + c_{1,2}x_2 + \cdots + c_{1,d}x_d \le b_1 \\
+   a_{2,1}x_1 + c_{2,2}x_2 + \cdots + c_{2,d}x_d \le b_2 \\
+   \vdots \\
+   a_{n,1}x_1 + c_{n,2}x_2 + \cdots + c_{n,d}x_d \le b_n
+   \end{matrix}\right.
 
-| :math:`a_{i,j}`\ ，\ :math:`b_{i}` 和 :math:`c_{i}`
-  都是实数，它们是问题的输入参数。
-| 需要最大化的函数叫做\ **目标函数**\ （\ *objective function*\ ）。
-| 目标函数和这一组线性约束一起，叫做线性程序（\ *a linear program*\ ）。
-| 变量的个数 :math:`d`\ ，是这个线性程序的维度（\ *dimension*\ ）。
-| 通过上节可知，一组线性约束可看做是\ :math:`\mathbb{R}^{d}`\ 空间上的
-  :math:`n` 个半平面，而一个线性程序的解，实际上就是这 :math:`n`
-  个半平面的交集区域（区域中的每个点都是线性程序的一个解）。我们把这个交集区域叫作
-  **feasible
-  region**\ ，这个区域里面的点（即线性程序的一个解）叫作\ **feasible**\ ，而这个区域外面的点，叫做\ **infeasible**\ 。
-| 这个交集区域可能是无界限的，也可能是空的。当这个交集区域是空时，我们把这个线性程序也叫做\ **infeasible**\ 。
-| **目标函数**\ （\ *objective
-  function*\ ）实际上可以看做是\ :math:`\mathbb{R}^{d}`\ 空间上的一个向量，所以它最大化，可以转换为求一个点
-  :math:`p` = :math:`(x_{1},x_{2},\ldots,x_{d})` 在
-  :math:`\mathbb{R}^{d}` 空间（\ :math:`d` 维实数空间）上沿方向
-  :math:`\overset{\rightarrow}{c} = (c_{1},c_{2},\ldots,c_{d})` 的极值。
-| 因此，一个线性程序的解，就是求解在feasible region上的一个点，使得其在
-  :math:`\overset{\rightarrow}{c} = (c_{1},c_{2},\ldots,c_{d})`
-  上取得极值。
-| 我们用符号\ :math:`f_{\overset{\rightarrow}{c}}` 来表示由方向
-  :math:`\overset{\rightarrow}{c}` 定义的目标函数（
-  :math:`c_{1}x_{1} + c_{2}x_{2} + \cdots + c_{d}x_{d}` ）。
+:math:`a_{i,j}`\ ，\ :math:`b_i` 和 :math:`c_i`
+都是实数，它们是问题的输入参数。
+需要最大化的函数叫做\ **目标函数**\ （\ *objective function*\ ）。
+目标函数和这一组线性约束一起，叫做线性程序（\ *a linear program*\ ）。
+变量的个数 :math:`d`\ ，是这个线性程序的维度（\ *dimension*\ ）。
+通过上节可知，一组线性约束可看做是\ :math:`\mathbb{R}^d`\ 空间上的
+:math:`n` 个半平面，而一个线性程序的解，实际上就是这 :math:`n`
+个半平面的交集区域（区域中的每个点都是线性程序的一个解）。我们把这个交集区域叫作
+**feasible
+region**\ ，这个区域里面的点（即线性程序的一个解）叫作\ **feasible**\ ，而这个区域外面的点，叫做\ **infeasible**\ 。
+这个交集区域可能是无界限的，也可能是空的。当这个交集区域是空时，我们把这个线性程序也叫做\ **infeasible**\ 。
+**目标函数**\ （\ *objective
+function*\ ）实际上可以看做是\ :math:`\mathbb{R}^d`\ 空间上的一个向量，所以它最大化，可以转换为求一个点
+:math:`p` = :math:`(x_1, x_2, \dots, x_d)` 在 :math:`\mathbb{R}^d`
+空间（\ :math:`d` 维实数空间）上沿方向
+:math:`\vec{c} = (c_1, c_2, \dots, c_d)` 的极值。
+因此，一个线性程序的解，就是求解在feasible region上的一个点，使得其在
+:math:`\vec{c} = (c_1, c_2, \dots, c_d)` 上取得极值。
+我们用符号\ :math:`f_{\vec{c}}` 来表示由方向 :math:`\vec{c}`
+定义的目标函数（ :math:`c_1x_1 + c_2x_2 + \cdots + c_dx_d` ）。
 
-   let :math:`f_{\overset{\rightarrow}{c}}` denote the objective
-   function defined by :math:`\overset{\rightarrow}{c}` .
+   let :math:`f_{\vec{c}}` denote the objective function defined by
+   :math:`\vec{c}` .
 
-（上面提到的线性程序的解的示意图在79页，页码是72，位于最上面的第一个图）
+==（上面提到的线性程序的解的示意图在79页，页码是72，位于最上面的第一个图）==
 
 运筹学（\ **Operation
 Research**\ ，\ **OR**\ ）中的许多问题可以用线性程序来描述，并由此产生了许多算法，\ **单纯形算法**\ （\ **simplex
@@ -2539,337 +2505,317 @@ algorithm**\ ）就是实际中最常用最有效的算法之一。
 个线性约束条件下目标函数的求解，运筹学中传统的线性程序方法在这种低维度的线性程序求解中并不是非常有效率，因此在计算几何中就有其他更有效的算法。
 
 我们以 :math:`H` 表示2维平面上一组线性约束，
-:math:`\overset{\rightarrow}{c} = (c_{x},c_{y})`
-表示目标函数的方向，因此目标函数就是
-:math:`f_{\overset{\rightarrow}{c}}(p) = c_{x}p_{x} + c_{y}p_{y}`
-。我们的目的就是，找到 :math:`\mathbb{R}^{2}`
-上的一个点（\ :math:`p \in \mathbb{R}^{2}`\ ），使得
+:math:`\vec{c} = (c_x, c_y)` 表示目标函数的方向，因此目标函数就是
+:math:`f_{\vec{c}} (p) = c_xp_x + c_yp_y` 。我们的目的就是，找到
+:math:`\mathbb{R}^2` 上的一个点（\ :math:`p \in \mathbb{R}^2`\ ），使得
 :math:`p \in \bigcap H` （所有半平面的交集区域），并且
-:math:`f_{\overset{\rightarrow}{c}}(p)` 取得最大值。我们用
-:math:`(H,\overset{\rightarrow}{c})` 表示这个线性程序，并用 :math:`C`
-表示feasible region。
+:math:`f_{\vec{c}} (p)` 取得最大值。我们用 :math:`(H, \vec{c})`
+表示这个线性程序，并用 :math:`C` 表示feasible region。
 
-从几何上来看，线性程序 :math:`(H,\overset{\rightarrow}{c})`
-的解有以下四种情况
+从几何上来看，线性程序 :math:`(H, \vec{c})` 的解有以下四种情况
 
 -  情况1，无解
    即所有半平面的交集是空。这种情况下，线性程序是infeasible，线性约束就没有解。
--  情况2，有解
-   交集区域是无限的。此时，feasible region沿着
-   :math:`\overset{\rightarrow}{c}` 方向是无限的，而且有一条射线
-   :math:`\rho` 是完全被包含在feasible region :math:`C`
+-  情况2，有解 交集区域是无限的。此时，feasible region沿着
+   :math:`\vec{c}` 方向是无限的，而且有一条射线 :math:`\rho`
+   是完全被包含在feasible region :math:`C`
    当中，我们要求的解，就是这样一条射线 :math:`\rho`\ 。
--  情况3，有解
-   交集区域是有限的。 此时，feasible
-   region的一条edge上的向外的法向的点，位于
-   :math:`\overset{\rightarrow}{c}`
+-  情况3，有解 交集区域是有限的。 此时，feasible
+   region的一条edge上的向外的法向的点，位于 :math:`\vec{c}`
    方向上。这时候，线性程序有解，但解不唯一，这条edge :math:`e`
    上任意一个点就是feasible
-   point，它都能使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`
-   取得最大值。
+   point，它都能使得目标函数\ :math:`f_{\vec{c}} (p)` 取得最大值。
 -  情况4，有解
    交集区域退化为一个点（属于某即个半平面边界直线共同的交点）。如果不属于之前三种情况中的一种，那么就有一个唯一解，这个解就是
    feasible region :math:`C` 中的点 :math:`v`\ ，并且使得目标函数在
-   :math:`\overset{\rightarrow}{c}` 方向上取得极值。
+   :math:`\vec{c}` 方向上取得极值。
 
-（上面提到的线性程序的解的示意图在79页，页码是72，位于中间的四个一排的图）
+==（上面提到的线性程序的解的示意图在79页，页码是72，位于中间的四个一排的图）==
 
-| 我们的2维线性程序的算法是增量式的，它逐一增加约束条件，并且维护每个中间线性程序的解。然而，我们的算法要求每个中间线性程序的解是唯一且明确定义的。换句话说，它要求每个中间线性程序的解，就是像前面提到的情况4一样，feasible
-  region上有一个唯一的\ **optimal vertex**\ 。
-| 为了满足这个要求，给线性程序添加两个额外的约束条件，以便保证交集的区域是有限的。比如，当
-  :math:`c_{x} > 0` 并且 :math:`c_{y} > 0` 时，取一足够大的值
-  :math:`M(M \in \mathbb{R})`\ ，添加两个约束条件 :math:`p_{x} \leq M`
-  和 :math:`p_{y} \leq M`\ 。这里 :math:`M`
-  的选取应该足够大，并且使得添加的两个约束条件不影响最终的最优解。
+我们的2维线性程序的算法是增量式的，它逐一增加约束条件，并且维护每个中间线性程序的解。然而，我们的算法要求每个中间线性程序的解是唯一且明确定义的。换句话说，它要求每个中间线性程序的解，就是像前面提到的情况4一样，feasible
+region上有一个唯一的\ **optimal vertex**\ 。
+为了满足这个要求，给线性程序添加两个额外的约束条件，以便保证交集的区域是有限的。比如，当
+:math:`c_x > 0` 并且 :math:`c_y > 0` 时，取一足够大的值
+:math:`M (M \in \mathbb{R})`\ ，添加两个约束条件 :math:`p_x \le M` 和
+:math:`p_y \le M`\ 。这里 :math:`M`
+的选取应该足够大，并且使得添加的两个约束条件不影响最终的最优解。
 
-对于这样额外的界定约束条件，在实际的线性程序应用场景中，都有自然的现实限制。在我们讨论的铸造问题当中，机械原理的限制，使得我们不能把多面体沿着几乎水平的方向移出模具（比如，不能以和\ :math:`xy`\ 平面小于\ :math:`1^{\circ}`\ 的方向移出）。这样，\ :math:`p_{x}`\ 和\ :math:`p_{y}`\ 的绝对值就显然有上限（即存在一个足够大的值
-:math:`M(M \in \mathbb{R})`\ ）， 满足\ :math:`p_{x} \leq M` 和
-:math:`p_{y} \leq M`\ 。
+对于这样额外的界定约束条件，在实际的线性程序应用场景中，都有自然的现实限制。在我们讨论的铸造问题当中，机械原理的限制，使得我们不能把多面体沿着几乎水平的方向移出模具（比如，不能以和\ :math:`xy`\ 平面小于\ :math:`1^{\circ}`\ 的方向移出）。这样，\ :math:`p_x`\ 和\ :math:`p_y`\ 的绝对值就显然有上限（即存在一个足够大的值
+:math:`M (M \in \mathbb{R})`\ ）， 满足\ :math:`p_x \le M` 和
+:math:`p_y \le M`\ 。
 
 在4.5节会讨论unbounded linear
 program，以及如何不使用手动添加约束来解决bounded linear program。
 
 为精确期间，把这两个额外的新约束做如下定义。
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math::
 
-      \begin{array}{r}
-      {m_{1}:=\left\{ \begin{matrix}
-      {p_{x} \leq M,\ if\ c_{x} > 1} \\
-      {- p_{x} \leq M,\ otherwise} \\
-      \end{matrix} \right.} \\
-      \end{array}
+   \begin{split}
+   m_1 := \left\{ \begin{matrix}
+   {p_x \le M, \ if\ c_x \gt 1} \\
+   {-p_x \le M, \ otherwise} \\
+   \end{matrix} \right.\end{split}
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math::
 
-      \begin{array}{r}
-      {m_{2}:=\left\{ \begin{matrix}
-      {p_{y} \leq M,\ if\ c_{y} > 1} \\
-      {- p_{y} \leq M,\ otherwise} \\
-      \end{matrix} \right.} \\
-      \end{array}
+   \begin{split}
+   m_2 := \left\{ \begin{matrix}
+   {p_y \le M, \ if\ c_y \gt 1} \\
+   {-p_y \le M, \ otherwise} \\
+   \end{matrix} \right.\end{split}
 
-| 这里 :math:`m_{1},m_{2}` 的选取只和目标函数中的参数
-  :math:`\overset{\rightarrow}{c}` 有关，和线性约束
-  :math:`H`\ （即所有的半平面）无关。而
-  :math:`C_{0} = m_{1}\bigcap m_{2}` 这个feasible
-  region是一个正交的楔形。
-| 另外如果是前面提到的情况3，有多个不唯一的解，约定俗成地，我们按照字典序，取最小的那个点（解）。概念上，这相当于把
-  :math:`\overset{\rightarrow}{c}`
-  轻微旋转了一个小角度，这样它就和任何一个半平面对应的直线就不垂直了。
-| 需要注意的是，哪怕一个有界的线性程序，按照字典序可能也找不到最小的点（解）。我们需要选择约束条件
-  :math:`m_{1}` 和 :math:`m_{2}` ，使得这样的情况不会发生。
-| 在选择了这样两个额外的约束条件之后，任意有解的线性程序就只有唯一的解，就是feasible
-  region上的一个vertex，我们把这样的vertex叫做 **optimal vertex**\ 。
+这里 :math:`m_1, m_2` 的选取只和目标函数中的参数 :math:`\vec{c}`
+有关，和线性约束 :math:`H`\ （即所有的半平面）无关。而
+:math:`C_0 = m_1 \bigcap m_2` 这个feasible region是一个正交的楔形。
+另外如果是前面提到的情况3，有多个不唯一的解，约定俗成地，我们按照字典序，取最小的那个点（解）。概念上，这相当于把
+:math:`\vec{c}`
+轻微旋转了一个小角度，这样它就和任何一个半平面对应的直线就不垂直了。
+需要注意的是，哪怕一个有界的线性程序，按照字典序可能也找不到最小的点（解）。我们需要选择约束条件
+:math:`m_1` 和 :math:`m_2` ，使得这样的情况不会发生。
+在选择了这样两个额外的约束条件之后，任意有解的线性程序就只有唯一的解，就是feasible
+region上的一个vertex，我们把这样的vertex叫做 **optimal vertex**\ 。
 
-| 记 :math:`(H,\overset{\rightarrow}{c})` 是一个线性程序，把 :math:`n`
-  个半平面依次记为 :math:`h_{1},h_{2},\ldots,h_{n}`\ 。
-| 记 :math:`H_{i}` 是前 :math:`i`
-  个线性约束和两个额外约束\ :math:`m_{1},m_{2}`\ 的组合，记
-  :math:`C_{i}` 是这样一组线性约束的feasible region。
+记 :math:`(H, \vec{c})` 是一个线性程序，把 :math:`n` 个半平面依次记为
+:math:`h_1, h_2, \dots, h_n`\ 。 记 :math:`H_i` 是前 :math:`i`
+个线性约束和两个额外约束\ :math:`m_1, m_2`\ 的组合，记 :math:`C_i`
+是这样一组线性约束的feasible region。
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: H_{i}:={m_{1},m_{2},h_{1},h_{2},\ldots,h_{n}}
 
-.. container:: math math-block is-loaded
+   H_i := {m_1, m_2, h_1, h_2, \dots, h_n}
 
-   .. math:: C_{i}:={m_{1} \cap m_{2} \cap h_{1} \cap h_{2} \cap \cdots \cap h_{n}}
+.. math::
 
-加上 :math:`C_{0}`\ ，我们的每个feasible region :math:`C_{i}`
-（\ :math:`i \leq n`\ ）都有一个唯一的optimal vertex，记作
-:math:`v_{i}`\ 。显然有
 
-.. container:: math math-block is-loaded
+   C_i := {m_1 \cap m_2 \cap h_1 \cap h_2 \cap \dots \cap h_n}
 
-   .. math:: C_{0} \supseteq C_{1} \supseteq C_{2} \supseteq \cdots \supseteq C_{n} = C
+加上 :math:`C_0`\ ，我们的每个feasible region :math:`C_i`
+（\ :math:`i \le n`\ ）都有一个唯一的optimal vertex，记作
+:math:`v_i`\ 。显然有
 
-这也就是说，对于任何一个
-:math:`i`\ （\ :math:`0 \leq i \leq n`\ ），如果
-:math:`C_{i} = \varnothing`\ ，那么对于任意一个
-:math:`j`\ （\ :math:`i \leq j \leq n`\ ），线性程序就是feasible的，我们的算法也就能提前退出。
+.. math::
+
+
+   C_0 \supseteq C_1 \supseteq C_2 \supseteq \cdots \supseteq C_n = C
+
+这也就是说，对于任何一个 :math:`i`\ （\ :math:`0 \le i \le n`\ ），如果
+:math:`C_i = \emptyset`\ ，那么对于任意一个
+:math:`j`\ （\ :math:`i \le j \le n`\ ），线性程序就是feasible的，我们的算法也就能提前退出。
 
 下面的引理4.5，说明了每当我们增加一个线性约束（半平面）时，optimal
 vertex如何改变，而这是我们算法的基础。
 
-**引理4.5** 对\ :math:`C_{i}` 和 :math:`v_{i}`
-（\ :math:`1 \leq i \leq n`\ ），有：
+**引理4.5** 对\ :math:`C_i` 和 :math:`v_i`
+（\ :math:`1 \le i \le n`\ ），有：
 
-#. 如果 :math:`v_{i - 1} \in h_{i}`\ ，那么
-   :math:`v_{i} = v_{i - 1}`\ 。
-#. 如果 :math:`v_{i - 1} \notin h_{i}`\ ，那么要么
-   :math:`C_{i} = \varnothing`\ ，要么
-   :math:`v_{i} \in \ell_{i}`\ （\ :math:`\ell_{i}` 是半平面
-   :math:`h_{i}` 的边界直线）
-   证明：
-#. 令 :math:`v_{i - 1} \in h_{i}`\ 。因为
-   :math:`C_{i} = C_{i - 1} \cap h_{i}`\ ，并且
-   :math:`v_{i - 1} \in C_{i - 1}`\ ，这就意味着
-   :math:`v_{i - 1} \in C_{i}`\ （这是显然的）。进一步，因为
-   :math:`C_{i} \subseteq C_{i - 1}`\ （即 :math:`C_{i}` 属于
-   :math:`C_{i - 1}`\ ），所以 :math:`C_{i}` 的optimal vertex不可能比
-   :math:`C_{i - 1}` 更好，所以，\ :math:`v_{i - 1}` 同样也是
-   :math:`C_{i}` 的optimal vertex。
-#. 令 :math:`v_{i - 1} \notin h_{i}`\ 。采用反证法，假设 :math:`C_{i}`
-   非空，并且 :math:`v_{i}` 不在 :math:`\ell_{i}` 上。考虑线段
-   :math:`\overset{―}{v_{i - 1}v_{i}}` ，
-   :math:`v_{i - 1} \in C_{i - 1}`\ （因为
-   :math:`v_{i - 1}`\ 是\ :math:`C_{i - 1}`\ 的optimal
-   vertex），并且因为\ :math:`C_{i} \subset C_{i - 1}`\ ，所以也有
-   :math:`v_{i} \in C_{i - 1}`\ 。又因为
-   :math:`C_{i - 1}`\ 是凸的，所以线段
-   :math:`\overset{―}{v_{i - 1}v_{i}}` 完全被包含在
-   :math:`C_{i - 1}`\ 中。因为
-   :math:`v_{i - 1}`\ 是\ :math:`C_{i - 1}`\ 的optimal
-   vertex，而且目标函数
-   :math:`f_{\overset{\rightarrow}{c}}`\ 是线性的，所以沿着线段
-   :math:`\overset{―}{v_{i - 1}v_{i}}` ，点 :math:`p` 从 :math:`v_{i}`
-   移动到
-   :math:`v_{i - 1}`\ 时，\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 是单调递增的。因为
-   :math:`v_{i - 1} \notin h_{i}`\ 并且\ :math:`C_{i} \subset C_{i - 1}`\ ，所以线段
-   :math:`\overset{―}{v_{i - 1}v_{i}}` 和
-   :math:`\ell_{i}`\ 必然有交点，记作 :math:`q`\ 。而又因为线段
-   :math:`\overset{―}{v_{i - 1}v_{i}}` 完全被包含在
-   :math:`C_{i - 1}`\ 中，所以交点 :math:`q` 也必然在
-   :math:`C_{i}`\ 中（因为\ :math:`\ell_{i}`\ 是\ :math:`C_{i}`\ 的边界）。因为
-   :math:`q` 在线段 :math:`\overset{―}{v_{i - 1}v_{i}}`
-   上，所以根据前面的结论（沿着线段 :math:`\overset{―}{v_{i - 1}v_{i}}`
-   ，点 :math:`p` 从 :math:`v_{i}` 移动到
-   :math:`v_{i - 1}`\ 时，\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 是单调递增的），就有
-   :math:`f_{\overset{\rightarrow}{c}}(q) > f_{\overset{\rightarrow}{c}}(v_{i})`\ 。这就是说在\ :math:`C_{i}`\ 中存在另外一个不同于optimal
-   vertex :math:`v_{i}` 的点
-   :math:`q`\ ，它使得\ :math:`f_{\overset{\rightarrow}{c}}`\ 的取值比
-   :math:`v_{i}`\ 还要大，但这是和\ :math:`v_{i}`\ 的定义是矛盾的，因此假设不成立。故的证。
+1. 如果 :math:`v_{i-1} \in h_i`\ ，那么 :math:`v_i = v_{i-1}`\ 。
+2. 如果 :math:`v_{i-1} \notin h_i`\ ，那么要么
+   :math:`C_i = \emptyset`\ ，要么
+   :math:`v_i \in \ell_i`\ （\ :math:`\ell_i` 是半平面 :math:`h_i`
+   的边界直线） 证明：
+3. 令 :math:`v_{i-1} \in h_i`\ 。因为
+   :math:`C_i = C_{i-1} \cap h_i`\ ，并且
+   :math:`v_{i-1} \in C_{i-1}`\ ，这就意味着
+   :math:`v_{i-1} \in C_i`\ （这是显然的）。进一步，因为
+   :math:`C_i \subseteq C_{i-1}`\ （即 :math:`C_i` 属于
+   :math:`C_{i-1}`\ ），所以 :math:`C_i` 的optimal vertex不可能比
+   :math:`C_{i-1}` 更好，所以，\ :math:`v_{i-1}` 同样也是 :math:`C_i`
+   的optimal vertex。
+4. 令 :math:`v_{i-1} \notin h_i`\ 。采用反证法，假设 :math:`C_i`
+   非空，并且 :math:`v_i` 不在 :math:`\ell_i` 上。考虑线段
+   :math:`\overline{v_{i-1}v_i}` ， :math:`v_{i-1} \in C_{i-1}`\ （因为
+   :math:`v_{i-1}`\ 是\ :math:`C_{i-1}`\ 的optimal
+   vertex），并且因为\ :math:`C_i \subset C_{i-1}`\ ，所以也有
+   :math:`v_i \in C_{i-1}`\ 。又因为 :math:`C_{i-1}`\ 是凸的，所以线段
+   :math:`\overline{v_{i-1}v_i}` 完全被包含在 :math:`C_{i-1}`\ 中。因为
+   :math:`v_{i-1}`\ 是\ :math:`C_{i-1}`\ 的optimal vertex，而且目标函数
+   :math:`f_{\vec{c}}`\ 是线性的，所以沿着线段
+   :math:`\overline{v_{i-1}v_i}` ，点 :math:`p` 从 :math:`v_i` 移动到
+   :math:`v_{i-1}`\ 时，\ :math:`f_{\vec{c}}(p)`\ 是单调递增的。因为
+   :math:`v_{i-1} \notin h_i`\ 并且\ :math:`C_i \subset C_{i-1}`\ ，所以线段
+   :math:`\overline{v_{i-1}v_i}` 和 :math:`\ell_i`\ 必然有交点，记作
+   :math:`q`\ 。而又因为线段 :math:`\overline{v_{i-1}v_i}` 完全被包含在
+   :math:`C_{i-1}`\ 中，所以交点 :math:`q` 也必然在
+   :math:`C_i`\ 中（因为\ :math:`\ell_i`\ 是\ :math:`C_i`\ 的边界）。因为
+   :math:`q` 在线段 :math:`\overline{v_{i-1}v_i}`
+   上，所以根据前面的结论（沿着线段 :math:`\overline{v_{i-1}v_i}` ，点
+   :math:`p` 从 :math:`v_i` 移动到
+   :math:`v_{i-1}`\ 时，\ :math:`f_{\vec{c}}(p)`\ 是单调递增的），就有
+   :math:`f_{\vec{c}}(q) \gt f_{\vec{c}}(v_i)`\ 。这就是说在\ :math:`C_i`\ 中存在另外一个不同于optimal
+   vertex :math:`v_i` 的点
+   :math:`q`\ ，它使得\ :math:`f_{\vec{c}}`\ 的取值比
+   :math:`v_i`\ 还要大，但这是和\ :math:`v_i`\ 的定义是矛盾的，因此假设不成立。故的证。
 
-（用来说明线段 :math:`\overset{―}{v_{i - 1}v_{i}}`
-的示意图在81页，页码是74，位于上面的一个图）
+==（用来说明线段 :math:`\overline{v_{i-1}v_i}`
+的示意图在81页，页码是74，位于上面的一个图）==
 
-| 书中接着以两个图，说明了添加了一个半平面（\ :math:`h_{k}`\ ）之后，optimal
-  vertex的变化情况。
-| （两个示意图在81页，页码是74，位于下面的两个图）
+书中接着以两个图，说明了添加了一个半平面（\ :math:`h_k`\ ）之后，optimal
+vertex的变化情况。 ==（两个示意图在81页，页码是74，位于下面的两个图）==
 
 虽然\ **引理4.5**\ 告诉了我们当添加一个新的半平面到当前的约束组时，optimal
 vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex。
 
-| 如果是\ **引理4.5**\ 中说明的第一种情况，那么下一个要求解的optimal
-  vertex :math:`v_{i}` 就是当前的optimal vertex :math:`v_{i - 1}`\ 。
-| 如果是\ **引理4.5**\ 中说明的第二种情况，那么问题就转化为：找到\ :math:`\ell_{i}`\ （\ :math:`\ell_{i}`
-  是半平面 :math:`h_{i}`
-  的边界直线）上的一个点\ :math:`p`\ ，使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化，并且点\ :math:`p \in h`\ （\ :math:`h \in H_{i - 1}`\ ），即点\ :math:`p`\ 是前\ :math:`i - 1`\ 个半平面交集上的点。
+如果是\ **引理4.5**\ 中说明的第一种情况，那么下一个要求解的optimal
+vertex :math:`v_i` 就是当前的optimal vertex :math:`v_{i-1}`\ 。
+如果是\ **引理4.5**\ 中说明的第二种情况，那么问题就转化为：找到\ :math:`\ell_i`\ （\ :math:`\ell_i`
+是半平面 :math:`h_i`
+的边界直线）上的一个点\ :math:`p`\ ，使得目标函数\ :math:`f_{\vec{c}}(p)`\ 最大化，并且点\ :math:`p \in h`\ （\ :math:`h \in H_{i-1}`\ ），即点\ :math:`p`\ 是前\ :math:`i-1`\ 个半平面交集上的点。
 
-| 为了简化术语，我们假定\ :math:`\ell_{i}`\ （\ :math:`\ell_{i}`
-  是半平面 :math:`h_{i}`
-  的边界直线）不是垂直的，这样我们就能只用\ :math:`x`\ 的坐标来参数化它。定义一个函数
-  :math:`\overset{―}{f_{\overset{\rightarrow}{c}}}:\mathbb{R} \rightarrow \mathbb{R}`\ ，使得对任意一点
-  :math:`p \in \ell_{i}`\ ，有
-  :math:`f_{\overset{\rightarrow}{c}}(p) = \overset{―}{f_{\overset{\rightarrow}{c}}(p_{x})}`
-  （还没想明白如何理解？如何找到这样的一个映射函数？好像要解微分方程？）。对一个半平面\ :math:`h(h \in H_{i - 1})`\ ，记
-  :math:`\sigma(h,\ell_{i})` 为 :math:`\ell_{i}` 和 :math:`h`
-  的边界线的交点的\ :math:`x`\ **坐标**\ 。如果没有交点，要么是\ :math:`\ell_{i}`\ 上的每个点都满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ），要么\ :math:`\ell_{i}`\ 上没有点满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
-| 根据 :math:`\ell_{i} \cap h`
-  的交集区域是被限定在左侧还是右侧，可以得到对解的\ :math:`x`\ **坐标**\ 的约束形式，即\ :math:`x \geq \sigma(h,\ell_{i})`\ 或者\ :math:`x \leq \sigma(h,\ell_{i})`\ 。因此需要求解的问题可以重新表述如下，
-| 为最大化的目标函数为
+为了简化术语，我们假定\ :math:`\ell_i`\ （\ :math:`\ell_i` 是半平面
+:math:`h_i`
+的边界直线）不是垂直的，这样我们就能只用\ :math:`x`\ 的坐标来参数化它。定义一个函数
+:math:`\overline{f_{\vec{c}}}:\mathbb{R} \to \mathbb{R}`\ ，使得对任意一点
+:math:`p \in \ell_i`\ ，有
+:math:`f_{\vec{c}}(p) = \overline{f_{\vec{c}}(p_x)}`
+（还没想明白如何理解？如何找到这样的一个映射函数？好像要解微分方程？）。对一个半平面\ :math:`h(h \in H_{i-1})`\ ，记
+:math:`\sigma(h,\ell_i)` 为 :math:`\ell_i` 和 :math:`h`
+的边界线的交点的\ :math:`x`\ **坐标**\ 。如果没有交点，要么是\ :math:`\ell_i`\ 上的每个点都满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ），要么\ :math:`\ell_i`\ 上没有点满足条件约束\ :math:`h`\ （也即半平面\ :math:`h`\ ）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
+根据 :math:`\ell_i \cap h`
+的交集区域是被限定在左侧还是右侧，可以得到对解的\ :math:`x`\ **坐标**\ 的约束形式，即\ :math:`x \ge \sigma(h, \ell_i)`\ 或者\ :math:`x \le \sigma(h, \ell_i)`\ 。因此需要求解的问题可以重新表述如下，
+为最大化的目标函数为
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: \overset{―}{f_{\overset{\rightarrow}{c}}(x)}
+
+   \overline{f_{\vec{c}}(x)}
 
 它服从于
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: x \geq \sigma(h,\ell_{i}),\ h \in H_{i - 1}\ and\ \ell_{i} \cap h\ is\ bounded\ to\ the\ left
 
-上面提到的 :math:`\ell_{i} \cap h`
-的交集区域是被限定在左侧或右侧。\ **为何有左右侧之分**\ ？因为\ :math:`h`\ 是半平面，它和\ :math:`\ell_{i}`\ 相交之后，落在\ :math:`h`\ 这个半平面这一侧的\ :math:`\ell_{i}`\ 的部分，如果只看其\ :math:`x`\ 坐标是包含\ **负无穷**\ （\ :math:`- \infty`\ ），但小于某个\ :math:`x`\ 坐标值，就相当于被限定到了左边，即有右侧上限，也就是\ **is
+   x \ge \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space left
+
+上面提到的 :math:`\ell_i \cap h`
+的交集区域是被限定在左侧或右侧。\ **为何有左右侧之分**\ ？因为\ :math:`h`\ 是半平面，它和\ :math:`\ell_i`\ 相交之后，落在\ :math:`h`\ 这个半平面这一侧的\ :math:`\ell_i`\ 的部分，如果只看其\ :math:`x`\ 坐标是包含\ **负无穷**\ （\ :math:`-\infty`\ ），但小于某个\ :math:`x`\ 坐标值，就相当于被限定到了左边，即有右侧上限，也就是\ **is
 bounded to
-right**\ 。同理，如果相交的\ :math:`\ell_{i}`\ 部分落在\ :math:`h`\ 的这个半平面这一侧的\ :math:`\ell_{i}`\ 的部分，如果只看其\ :math:`x`\ 坐标是包含\ **正无穷**\ （\ :math:`+ \infty`\ ），但大于于某个\ :math:`x`\ 坐标值，就相当于被限定到了右边边，即有左侧上限，也就是\ **is
+right**\ 。同理，如果相交的\ :math:`\ell_i`\ 部分落在\ :math:`h`\ 的这个半平面这一侧的\ :math:`\ell_i`\ 的部分，如果只看其\ :math:`x`\ 坐标是包含\ **正无穷**\ （\ :math:`+\infty`\ ），但大于于某个\ :math:`x`\ 坐标值，就相当于被限定到了右边边，即有左侧上限，也就是\ **is
 bounded to left**\ 。
 
 这个一维线性程序的解是容易的，令
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: x_{left} = \max\limits_{h \in H_{i - 1}}\ \{\sigma(h,\ell_{i}):\ell_{i} \cap h\ is\ bounded\ to\ \ the\ left\}
 
-.. container:: math math-block is-loaded
+   x_{left} = \max_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left \}
 
-   .. math:: x_{right} = \min\limits_{h \in H_{i - 1}}\ \{\sigma(h,\ell_{i}):\ell_{i} \cap h\ is\ bounded\ to\ \ the\ left\}
+.. math::
 
-| 即取\ :math:`x_{left}`\ 是所有\ :math:`h(h \in H_{i - 1})`\ 的边界线和\ :math:`\ell_{i}`\ 的交点的\ :math:`x`\ 坐标的最大值，\ :math:`x_{right}`\ 是所有\ :math:`h(h \in H_{i - 1})`\ 的边界线和\ :math:`\ell_{i}`\ 的交点的\ :math:`x`\ 坐标的最小值，那么区间\ :math:`\lbrack x_{left},x_{right}\rbrack`\ 就是这个一维线性程序的解（feasible
-  region）。因此如果
-  :math:`x_{left} > x_{right}`\ ，那就说明这个线性程序无解（infeasible），否则根据目标函数，当\ :math:`\ell_{i}`\ 上的点\ :math:`p`
-  在\ :math:`x_{left}`\ 或\ :math:`x_{right}`\ 处取得极值。
-| 需要注意的是，因为我们添加了额外的约束\ :math:`m_{1}`\ 和\ :math:`m_{2}`\ ，所以一维线性程序（的解）不会是无界的。
+
+   x_{right} = \min_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left \}
+
+即取\ :math:`x_{left}`\ 是所有\ :math:`h(h \in H_{i-1})`\ 的边界线和\ :math:`\ell_i`\ 的交点的\ :math:`x`\ 坐标的最大值，\ :math:`x_{right}`\ 是所有\ :math:`h(h \in H_{i-1})`\ 的边界线和\ :math:`\ell_i`\ 的交点的\ :math:`x`\ 坐标的最小值，那么区间\ :math:`[x_{left}, x_{right}]`\ 就是这个一维线性程序的解（feasible
+region）。因此如果
+:math:`x_{left} > x_{right}`\ ，那就说明这个线性程序无解（infeasible），否则根据目标函数，当\ :math:`\ell_i`\ 上的点\ :math:`p`
+在\ :math:`x_{left}`\ 或\ :math:`x_{right}`\ 处取得极值。
+需要注意的是，因为我们添加了额外的约束\ :math:`m_1`\ 和\ :math:`m_2`\ ，所以一维线性程序（的解）不会是无界的。
 
 **引理4.6**
 可以在线性时间里解出一维线性程序。因此，如果是\ **引理4.5**\ 中的第二种情况时，我们能以\ :math:`O(i)`\ 时间复杂度计算出来新的optimal
-vertex :math:`v_{i}`\ ，或者判定这个线性程序无解（infeasible）。
+vertex :math:`v_i`\ ，或者判定这个线性程序无解（infeasible）。
 
 下面是更详细的线性规划算法描述。
 
-| 算法：\ :math:`2DBoundedLP(H,\overset{\rightarrow}{c},m_{1},m_{2})`
-| 输入：线性程序 :math:`(H \cup {m_{1},m_{2}},\overset{\rightarrow}{c})`
-  ，\ :math:`H`\ 是\ :math:`n`\ 个半平面，向量
-  :math:`\overset{\rightarrow}{c} \in \mathbb{R}^{2}`\ （即二维实数域），\ :math:`m_{1}`\ 和\ :math:`m_{2}`\ 是解的额外限定约束条件。
-| 输出：如果线性程序
-  :math:`(H \cup {m_{1},m_{2}},\overset{\rightarrow}{c})`
-  无解（infeasible），就声明无解并退出。否则，就点\ :math:`p`\ ，它是按字典序找到的、能使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化的点。
-| 步骤：
+算法：\ :math:`2DBoundedLP(H, \vec{c}, m_1, m_2)` 输入：线性程序
+:math:`(H \cup {m_1, m_2}, \vec{c})`
+，\ :math:`H`\ 是\ :math:`n`\ 个半平面，向量
+:math:`\vec{c} \in \mathbb{R}^2`\ （即二维实数域），\ :math:`m_1`\ 和\ :math:`m_2`\ 是解的额外限定约束条件。
+输出：如果线性程序 :math:`(H \cup {m_1, m_2}, \vec{c})`
+无解（infeasible），就声明无解并退出。否则，就点\ :math:`p`\ ，它是按字典序找到的、能使得目标函数\ :math:`f_{\vec{c}}(p)`\ 最大化的点。
+步骤：
 
--  令 :math:`v_{0}` 是 :math:`C_{0}` 角落上的点。
--  令\ :math:`H`\ 是\ :math:`h_{1},h_{2},\ldots,h_{n}`\ 这n个半平面
+-  令 :math:`v_0` 是 :math:`C_0` 角落上的点。
+-  令\ :math:`H`\ 是\ :math:`h_1, h_2, \dots, h_n`\ 这n个半平面
 -  从\ :math:`1`\ 到\ :math:`n`\ ，遍历\ :math:`i`
 
-   -  如果 :math:`h_{i - 1}`\ 这个半平面的 optimal vertex
-      :math:`v_{i - 1}`\ 也在半平面
-      :math:`h_{i}`\ 上，那么\ :math:`h_{i}`\ 这个半平面的 optimal
-      vertex :math:`v_{i}`\ 也同样是\ :math:`v_{i - 1}`\ 。
-   -  如果 :math:`h_{i - 1}` 这个半平面的 optimal vertex
-      :math:`v_{i - 1}`\ 也\ **不在**\ 半平面
-      :math:`h_{i}`\ 上，那么找到\ :math:`\ell_{i}`\ （半平面\ :math:`h_{i}`\ 的边界线）上的一个点\ :math:`p`\ ，它满足前\ :math:`i - 1`\ 个线性条件约束（即\ :math:`H_{i - 1}`\ ），并且它能够使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化，此时，\ :math:`p`\ 就是要找的\ :math:`v_{i}`\ 。如果找不到这样的点\ :math:`p`\ ，就停止循环，报告这个线性程序无解，然后退出。
+   -  如果 :math:`h_{i-1}`\ 这个半平面的 optimal vertex
+      :math:`v_{i-1}`\ 也在半平面
+      :math:`h_i`\ 上，那么\ :math:`h_i`\ 这个半平面的 optimal vertex
+      :math:`v_i`\ 也同样是\ :math:`v_{i-1}`\ 。
+   -  如果 :math:`h_{i-1}` 这个半平面的 optimal vertex
+      :math:`v_{i-1}`\ 也\ **不在**\ 半平面
+      :math:`h_i`\ 上，那么找到\ :math:`\ell_i`\ （半平面\ :math:`h_i`\ 的边界线）上的一个点\ :math:`p`\ ，它满足前\ :math:`i-1`\ 个线性条件约束（即\ :math:`H_{i-1}`\ ），并且它能够使得目标函数\ :math:`f_{\vec{c}}(p)`\ 最大化，此时，\ :math:`p`\ 就是要找的\ :math:`v_i`\ 。如果找不到这样的点\ :math:`p`\ ，就停止循环，报告这个线性程序无解，然后退出。
 
--  循环到最后，报告\ :math:`v_{n}`\ ，这就是这个线性程序的解。
+-  循环到最后，报告\ :math:`v_n`\ ，这就是这个线性程序的解。
 
-| **引理4.7**
-  对一个有\ :math:`n`\ 个约束条件和\ :math:`2`\ 个变量的有界的线性程序，算法\ :math:`2DBoundedLP(H,\overset{\rightarrow}{c},m_{1},m_{2})`\ 可以用\ :math:`O(n^{2})`\ 的时间复杂度和线性的空间复杂度求得解。
-| 证明：
-| 根据前面的\ **引理4.5**\ 及其结论，证明了可以找到这样的\ :math:`v_{i}`\ 是\ :math:`C_{i}`\ 的optimal
-  vertex，因此可以得出\ **引理4.7**\ 的正确性。而且如果某个\ :math:`C_{i}`\ 是空集，那么因为
-  :math:`C = C_{n} \subseteq C_{i}`
-  ，所以最终的\ :math:`C`\ 也就是空集。
-| 易得空间复杂度是线性的。
-| 同样根据引理4.6，对于每个\ :math:`i`\ ，计算一维线性程序的时间复杂度是\ :math:`O(i)`\ ，所以最终的时间复杂度是
+**引理4.7**
+对一个有\ :math:`n`\ 个约束条件和\ :math:`2`\ 个变量的有界的线性程序，算法\ :math:`2DBoundedLP(H, \vec{c}, m_1, m_2)`\ 可以用\ :math:`O(n^2)`\ 的时间复杂度和线性的空间复杂度求得解。
+证明：
+根据前面的\ **引理4.5**\ 及其结论，证明了可以找到这样的\ :math:`v_i`\ 是\ :math:`C_i`\ 的optimal
+vertex，因此可以得出\ **引理4.7**\ 的正确性。而且如果某个\ :math:`C_i`\ 是空集，那么因为
+:math:`C = C_n \subseteq C_i` ，所以最终的\ :math:`C`\ 也就是空集。
+易得空间复杂度是线性的。
+同样根据引理4.6，对于每个\ :math:`i`\ ，计算一维线性程序的时间复杂度是\ :math:`O(i)`\ ，所以最终的时间复杂度是
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: \sum\limits_{i = 1}^{n}O(i) = O(n^{2})
 
-| 虽然这样的算法是简单并且很好的，但还是太慢了。对于每次添加第\ :math:`i`\ 个约束时计算optimal
-  vertex花费的诗句是\ :math:`O(i)`\ ，它不是紧确界（tight
-  bound），而是渐近上限（即小于等于，\ :math:`\leq`\ ）。而根据\ **引理4.5**\ ，只有当\ :math:`v_{i - 1} \notin h_{i}`\ 时，花费的时间是\ :math:`\Theta(i)`\ （渐近紧确界，即相等，\ :math:`=`\ ），而当\ :math:`v_{i - 1} \in h_{i}`\ 时，只需要花费常数时间。但我们不能保证每次都有\ :math:`v_{i - 1} \in h_{i}`\ ，书中此处举了一个例子，说明了每次第\ :math:`i`\ 个约束条件就会导致前一个的optimal
-  vertex
-  :math:`v_{i - 1}`\ 不再满足这第\ :math:`i`\ 个约束条件，而且花费的时间就是\ :math:`\Theta(n^{2})`\ 。接下来的4.3节说明了如何进行一定意义上的加速处理。
-| （举例的示意图在83页，页码是76）
+   \sum_{i=1}^{n} O(i) = O(n^2)
+
+虽然这样的算法是简单并且很好的，但还是太慢了。对于每次添加第\ :math:`i`\ 个约束时计算optimal
+vertex花费的诗句是\ :math:`O(i)`\ ，它不是紧确界（tight
+bound），而是渐近上限（即小于等于，\ :math:`\le`\ ）。而根据\ **引理4.5**\ ，只有当\ :math:`v_{i-1} \notin h_i`\ 时，花费的时间是\ :math:`\Theta(i)`\ （渐近紧确界，即相等，\ :math:`=`\ ），而当\ :math:`v_{i-1} \in h_i`\ 时，只需要花费常数时间。但我们不能保证每次都有\ :math:`v_{i-1} \in h_i`\ ，书中此处举了一个例子，说明了每次第\ :math:`i`\ 个约束条件就会导致前一个的optimal
+vertex
+:math:`v_{i-1}`\ 不再满足这第\ :math:`i`\ 个约束条件，而且花费的时间就是\ :math:`\Theta(n^2)`\ 。接下来的4.3节说明了如何进行一定意义上的加速处理。
+==（举例的示意图在83页，页码是76）==
 
 4.4 Randomized Linear Programming
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-| 在前面一节的结尾，作者举例说明了每次遍历到下一个半平面时，总是会导致optimal
-  vertex改变，这样运行时间就会是最差的情况。但如果把遍历到的半平面的顺序做下改变，比如，从原先的\ :math:`H = \{ h_{1},h_{2},\ldots,h_{n}\}`\ 变为\ :math:`H = \{ h_{n},h_{n - 1},\ldots,h_{1}\}`\ ，这样除了第一次添加半平面时需要计算一次optimal
-  vertex，之后每次添加半平面，optimal
-  vertex就不再发生变化，因此运行时间就会变成\ :math:`O(n)`\ 。
-| 但很可惜的是，这样的顺序也许存在，但是我们不太好找出来，因为我们要在整个算法开始之前就要确定好添加半平面的顺序。
-| 这就是一个引人入胜的现象了。我们不能保证\ :math:`H`\ 的顺序可以产生良好的运行时间，但是我们可以取\ :math:`H`\ 的一个随机顺序。虽然这样在运气不好的情况下仍然产生二次方的运行时间，但如果运气好，我们就能达到更快的运行时间。事实上，我们下面会证明在多数情况下，我们能取得较快的运行时间。
-| 为了完整描述起见，把带有\ :math:`H`\ 随机顺序的算法罗列如下：
+在前面一节的结尾，作者举例说明了每次遍历到下一个半平面时，总是会导致optimal
+vertex改变，这样运行时间就会是最差的情况。但如果把遍历到的半平面的顺序做下改变，比如，从原先的\ :math:`H= \{h_1, h_2, \dots, h_n\}`\ 变为\ :math:`H = \{h_n, h_{n-1}, \dots, h_1\}`\ ，这样除了第一次添加半平面时需要计算一次optimal
+vertex，之后每次添加半平面，optimal
+vertex就不再发生变化，因此运行时间就会变成\ :math:`O(n)`\ 。
+但很可惜的是，这样的顺序也许存在，但是我们不太好找出来，因为我们要在整个算法开始之前就要确定好添加半平面的顺序。
+这就是一个引人入胜的现象了。我们不能保证\ :math:`H`\ 的顺序可以产生良好的运行时间，但是我们可以取\ :math:`H`\ 的一个随机顺序。虽然这样在运气不好的情况下仍然产生二次方的运行时间，但如果运气好，我们就能达到更快的运行时间。事实上，我们下面会证明在多数情况下，我们能取得较快的运行时间。
+为了完整描述起见，把带有\ :math:`H`\ 随机顺序的算法罗列如下：
 
-| 算法：\ :math:`2DRandomizedBoundedLP(H,\overset{\rightarrow}{c},m_{1},m_{2})`
-| 输入：线性程序 :math:`(H \cup {m_{1},m_{2}},\overset{\rightarrow}{c})`
-  ，\ :math:`H`\ 是\ :math:`n`\ 个半平面，向量
-  :math:`\overset{\rightarrow}{c} \in \mathbb{R}^{2}`\ （即二维实数域），\ :math:`m_{1}`\ 和\ :math:`m_{2}`\ 是解的额外限定约束条件。
-| 输出：如果线性程序
-  :math:`(H \cup {m_{1},m_{2}},\overset{\rightarrow}{c})`
-  无解（infeasible），就声明无解并退出。否则，就点\ :math:`p`\ ，它是按字典序找到的、能使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化的点。
-| 步骤：
+算法：\ :math:`2DRandomizedBoundedLP(H, \vec{c}, m_1, m_2)`
+输入：线性程序 :math:`(H \cup {m_1, m_2}, \vec{c})`
+，\ :math:`H`\ 是\ :math:`n`\ 个半平面，向量
+:math:`\vec{c} \in \mathbb{R}^2`\ （即二维实数域），\ :math:`m_1`\ 和\ :math:`m_2`\ 是解的额外限定约束条件。
+输出：如果线性程序 :math:`(H \cup {m_1, m_2}, \vec{c})`
+无解（infeasible），就声明无解并退出。否则，就点\ :math:`p`\ ，它是按字典序找到的、能使得目标函数\ :math:`f_{\vec{c}}(p)`\ 最大化的点。
+步骤：
 
--  令 :math:`v_{0}` 是 :math:`C_{0}` 角落上的点。
--  通过调用随机排序算法\ :math:`RandomPermutation(H\lbrack 1\cdots n\rbrack)`\ ，得到\ :math:`n`\ 个半平面\ :math:`H`\ 的一个随机排序序列\ :math:`h_{1},h_{2},\ldots,h_{n}`\ 。
+-  令 :math:`v_0` 是 :math:`C_0` 角落上的点。
+-  通过调用随机排序算法\ :math:`RandomPermutation(H[1\cdots n])`\ ，得到\ :math:`n`\ 个半平面\ :math:`H`\ 的一个随机排序序列\ :math:`h_1, h_2, \dots, h_n`\ 。
 -  从\ :math:`1`\ 到\ :math:`n`\ ，遍历\ :math:`i`
 
-   -  如果 :math:`h_{i - 1}`\ 这个半平面的 optimal vertex
-      :math:`v_{i - 1}`\ 也在半平面
-      :math:`h_{i}`\ 上，那么\ :math:`h_{i}`\ 这个半平面的 optimal
-      vertex :math:`v_{i}`\ 也同样是\ :math:`v_{i - 1}`\ 。
-   -  如果 :math:`h_{i - 1}` 这个半平面的 optimal vertex
-      :math:`v_{i - 1}`\ 也\ **不在**\ 半平面
-      :math:`h_{i}`\ 上，那么找到\ :math:`\ell_{i}`\ （半平面\ :math:`h_{i}`\ 的边界线）上的一个点\ :math:`p`\ ，它满足前\ :math:`i - 1`\ 个线性条件约束（即\ :math:`H_{i - 1}`\ ），并且它能够使得目标函数\ :math:`f_{\overset{\rightarrow}{c}}(p)`\ 最大化，此时，\ :math:`p`\ 就是要找的\ :math:`v_{i}`\ 。如果找不到这样的点\ :math:`p`\ ，就停止循环，报告这个线性程序无解，然后退出。
+   -  如果 :math:`h_{i-1}`\ 这个半平面的 optimal vertex
+      :math:`v_{i-1}`\ 也在半平面
+      :math:`h_i`\ 上，那么\ :math:`h_i`\ 这个半平面的 optimal vertex
+      :math:`v_i`\ 也同样是\ :math:`v_{i-1}`\ 。
+   -  如果 :math:`h_{i-1}` 这个半平面的 optimal vertex
+      :math:`v_{i-1}`\ 也\ **不在**\ 半平面
+      :math:`h_i`\ 上，那么找到\ :math:`\ell_i`\ （半平面\ :math:`h_i`\ 的边界线）上的一个点\ :math:`p`\ ，它满足前\ :math:`i-1`\ 个线性条件约束（即\ :math:`H_{i-1}`\ ），并且它能够使得目标函数\ :math:`f_{\vec{c}}(p)`\ 最大化，此时，\ :math:`p`\ 就是要找的\ :math:`v_i`\ 。如果找不到这样的点\ :math:`p`\ ，就停止循环，报告这个线性程序无解，然后退出。
 
--  循环到最后，报告\ :math:`v_{n}`\ ，这就是这个线性程序的解。
+-  循环到最后，报告\ :math:`v_n`\ ，这就是这个线性程序的解。
 
-| 算法\ :math:`2DRandomizedBoundedLP`\ ，和算法\ :math:`2DBoundedLP`\ ，唯一的区别是，在遍历\ :math:`n`\ 个半平面之前，计算\ :math:`n`\ 个半平面的一个排序序列。
-| 我们假设有一个随机数发生器\ :math:`Random(k)`\ ，它根据输入\ :math:`k`\ 产生一个范围在\ :math:`\lbrack 1,k\rbrack`\ 之间的一个随机数，并且花费的时间复杂度是常数时间。
-| 随机排序的算法\ :math:`RandomPermutation`\ 如下。
+算法\ :math:`2DRandomizedBoundedLP`\ ，和算法\ :math:`2DBoundedLP`\ ，唯一的区别是，在遍历\ :math:`n`\ 个半平面之前，计算\ :math:`n`\ 个半平面的一个排序序列。
+我们假设有一个随机数发生器\ :math:`Random(k)`\ ，它根据输入\ :math:`k`\ 产生一个范围在\ :math:`[1,k]`\ 之间的一个随机数，并且花费的时间复杂度是常数时间。
+随机排序的算法\ :math:`RandomPermutation`\ 如下。
 
-| 算法：\ :math:`RandomPermutation(A)`
-| 输入：一个数组\ :math:`A\lbrack 1\cdots n\rbrack`
-| 输出：还是有同样元素的数组\ :math:`A\lbrack 1\cdots n\rbrack`\ ，但是是以一个随机顺序重新排序的
-| 步骤：
+算法：\ :math:`RandomPermutation(A)`
+输入：一个数组\ :math:`A[1 \cdots n]`
+输出：还是有同样元素的数组\ :math:`A[1 \cdots n]`\ ，但是是以一个随机顺序重新排序的
+步骤：
 
 -  从\ :math:`n`\ 到\ :math:`2`\ ，遍历\ :math:`k`
 -  对于每个当前的\ :math:`k`\ ，调用随机数发生器\ :math:`Random(k)`\ ，得到一个索引值\ :math:`rndindex`
--  交换元素\ :math:`A\lbrack k\rbrack`\ 和\ :math:`A\lbrack rndindex\rbrack`\ 。
+-  交换元素\ :math:`A[k]`\ 和\ :math:`A[rndindex]`\ 。
 
 这个新的线性程序的算法就是随机算法（\ **randomized
 algorithm**\ ）。它的运行时间取决于算法中每次得到的随机序列。
 
-| 那么这样的随机算法的运行时间（或者时间复杂度）是怎么样的呢？
-| 因为\ :math:`n`\ 个半平面的排列有\ :math:`n!`\ 种，所以运行时间就有\ :math:`n!`\ 种。而每种随机排列所产生的随机算法的运行时间是相互独立的（独立同分布），所以我们就需要分析它们的\ **期望运行时间**\ （\ **expected
-  running
-  time**\ ），也就是这\ :math:`n!`\ 种运行时间的数学期望。而定理4.8说明了这样的期望运行时间是\ :math:`O(n)`\ ，而且我们对\ :math:`n`\ 个半平面的输入没有做任何的假设和限定。
+那么这样的随机算法的运行时间（或者时间复杂度）是怎么样的呢？
+因为\ :math:`n`\ 个半平面的排列有\ :math:`n!`\ 种，所以运行时间就有\ :math:`n!`\ 种。而每种随机排列所产生的随机算法的运行时间是相互独立的（独立同分布），所以我们就需要分析它们的\ **期望运行时间**\ （\ **expected
+running
+time**\ ），也就是这\ :math:`n!`\ 种运行时间的数学期望。而定理4.8说明了这样的期望运行时间是\ :math:`O(n)`\ ，而且我们对\ :math:`n`\ 个半平面的输入没有做任何的假设和限定。
 
 **引理4.8**
 二维平面空间上，有\ :math:`n`\ 个约束条件的线性规划问题，可以以\ :math:`O(n)`\ 的时间复杂度和最坏情况下线性的空间复杂的解决。
@@ -2878,32 +2824,31 @@ algorithm**\ ）。它的运行时间取决于算法中每次得到的随机序�
    constraints can be solved in :math:`O(n)` randomized expected time
    using worst-case linear storage.
 
-| 证明：我们之前已经观察到，需要的空间复杂度是线性的。
-| 因为\ :math:`RANDOMPERMUTATION`\ 算法的时间复杂度是\ :math:`O(n)`\ ，所以剩下需要分析的就是添加半平面
-  :math:`h_{1},h_{2},\ldots,h_{n}`\ 的运行时间。当optimal
-  vertex不发生改变的时候，添加一个半平面需要的是常数时间（constant
-  time）。但当optimal
-  vertex发生改变的时候，我们需要解决一个1维的线性规划问题。现在来计算所有这些1维线性规划问题的时间界限。
-| 假定 :math:`X_{i}` 是一个随机变量，当 :math:`v_{i} \notin h_{i}`
-  时取值为\ :math:`1`\ ，否则当 :math:`v_{i} \in h_{i}` 时取值为
-  :math:`0`\ ，即
+证明：我们之前已经观察到，需要的空间复杂度是线性的。
+因为\ :math:`RANDOMPERMUTATION`\ 算法的时间复杂度是\ :math:`O(n)`\ ，所以剩下需要分析的就是添加半平面
+:math:`h_1, h_2, \dots, h_n`\ 的运行时间。当optimal
+vertex不发生改变的时候，添加一个半平面需要的是常数时间（constant
+time）。但当optimal
+vertex发生改变的时候，我们需要解决一个1维的线性规划问题。现在来计算所有这些1维线性规划问题的时间界限。
+假定 :math:`X_i` 是一个随机变量，当 :math:`v_i \notin h_i`
+时取值为\ :math:`1`\ ，否则当 :math:`v_i \in h_i` 时取值为
+:math:`0`\ ，即
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math::
 
-      \begin{array}{r}
-      {X_{i} = \left\{ \begin{matrix}
-      {1\ ,v_{i} \notin h_{i}} \\
-      {0\ ,v_{i} \in h_{i}} \\
-      \end{matrix} \right.} \\
-      \end{array}
+   \begin{split}
+   X_i = \left\{ \begin{matrix}
+   {1 \space , v_i \notin h_i} \\
+   {0 \space , v_i \in h_i} \\
+   \end{matrix} \right.\end{split}
 
 回忆起对于有\ :math:`i`\ 个线性约束条件的1维线性规划问题，解决它的时间复杂度是\ :math:`O(i)`\ 。据此，有\ :math:`n`\ 个半平面（线性约束条件）的线性规划问题所需的时间复杂度就是，
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: \sum\limits_{i = 1}^{n}O(i) \cdot X_{i}
+
+   \sum_{i=1}^{n} O(i) \cdot X_i
 
 使用数学期望的线性特性（\ *linearity of
 expectation*\ ），随机变量之和的数学期望，等于随机变量数学期望的和（the
@@ -2911,43 +2856,43 @@ expected value of a sum of random variables is the sum of the expected
 values of the random
 variables）。无论随机变量是否相关还是相互独立，这个线性特性都成立。所以，解决这个1维线性规划问题时间复杂度的数学期望就是，
 
-.. container:: math math-block is-loaded
+.. math::
 
-   .. math:: E\lbrack\sum\limits_{i = 1}^{n}O(i) \cdot X_{i}\rbrack = \sum\limits_{i = 1}^{n}O(i) \cdot E\lbrack X_{i}\rbrack
 
-| :math:`E\lbrack X_{i}\rbrack`\ 是什么？它实际上就是\ :math:`v_{i - 1} \notin h_{i}`\ 的概率。下面使用所谓的\ **后向分析**\ （\ *backward
-  analysis*\ ）技术来分析这个概率。
-| 假设已经完成了算法步骤，计算出来了optimum vertex
-  :math:`v_{n}`\ 。因为\ :math:`v_{n}`\ 是\ :math:`C_{n}`\ 上的一个vertex，所以它由至少两个半平面（half-plane）定义。此时我们后退一步，考察\ :math:`C_{n - 1}`\ 。注意从\ :math:`C_{n}`\ 中移除\ :math:`h_{n}`\ 就得到了\ :math:`C_{n - 1}`\ 。这种情况下，optimum
-  vertex如何变化？（即\ :math:`C_{n}`\ 中对应的\ :math:`v_{n}`\ ，在从\ :math:`C_{n}`\ 中移除了\ :math:`h_{n}`\ 之后，对应的optimum
-  vertex
-  :math:`v_{n - 1}`\ 是否发生变化）而\ :math:`v_{n - 1}`\ 和\ :math:`v_{n}`\ 不同（即发生变化）的唯一情况是，\ :math:`v_{n}`\ 不是\ :math:`C_{n}`\ 中使得目标函数沿着\ :math:`\overset{\rightarrow}{c}`\ 方向上取得极值的顶点，而这只发生于此时移除的\ :math:`h_{n}`\ 是定义出\ :math:`v_{n}`\ 的（至少）两个半平面之一的时候。因为算法中添加半平面的顺序是随机的，所以\ :math:`h_{n}`\ 实际上是\ :math:`\{ h_{1},h_{2},\ldots,h_{n}\}`\ 中之一。因此，\ :math:`h_{n}`\ 是定义\ :math:`v_{n}`\ 的概率\ **至多**\ 是\ :math:`2/n`\ 。这里说至多，原因是（一）\ :math:`v_{n}`\ 可能由多条半平面的边界直线的交点形成，因此这时候移除的\ :math:`h_{n}`\ 可能不会改变optimum
-  vertex
-  :math:`v_{n}`\ （二）\ :math:`v_{n}`\ 还可能由\ :math:`m_{1}`\ 或\ :math:`m_{2}`\ 定义，它们不在前面提到的\ :math:`\{ h_{1},h_{2},\ldots,h_{n}\}`\ 之中。因为这两个原因，所以这个概率\ **至多**\ 是\ :math:`2/n`\ 。
+   E[\sum_{i=1}^{n} O(i) \cdot X_i] = \sum_{i=1}^{n} O(i) \cdot E[X_i]
 
-（举例的示意图在85页，页码是78）
+:math:`E[X_i]`\ 是什么？它实际上就是\ :math:`v_{i-1} \notin h_i`\ 的概率。下面使用所谓的\ **后向分析**\ （\ *backward
+analysis*\ ）技术来分析这个概率。
+假设已经完成了算法步骤，计算出来了optimum vertex
+:math:`v_n`\ 。因为\ :math:`v_n`\ 是\ :math:`C_n`\ 上的一个vertex，所以它由至少两个半平面（half-plane）定义。此时我们后退一步，考察\ :math:`C_{n-1}`\ 。注意从\ :math:`C_n`\ 中移除\ :math:`h_n`\ 就得到了\ :math:`C_{n-1}`\ 。这种情况下，optimum
+vertex如何变化？（即\ :math:`C_n`\ 中对应的\ :math:`v_n`\ ，在从\ :math:`C_n`\ 中移除了\ :math:`h_n`\ 之后，对应的optimum
+vertex
+:math:`v_{n-1}`\ 是否发生变化）而\ :math:`v_{n-1}`\ 和\ :math:`v_n`\ 不同（即发生变化）的唯一情况是，\ :math:`v_n`\ 不是\ :math:`C_n`\ 中使得目标函数沿着\ :math:`\vec{c}`\ 方向上取得极值的顶点，而这只发生于此时移除的\ :math:`h_n`\ 是定义出\ :math:`v_n`\ 的（至少）两个半平面之一的时候。因为算法中添加半平面的顺序是随机的，所以\ :math:`h_n`\ 实际上是\ :math:`\{h_1, h_2, \dots, h_n\}`\ 中之一。因此，\ :math:`h_n`\ 是定义\ :math:`v_n`\ 的概率\ **至多**\ 是\ :math:`2/n`\ 。这里说至多，原因是（一）\ :math:`v_n`\ 可能由多条半平面的边界直线的交点形成，因此这时候移除的\ :math:`h_n`\ 可能不会改变optimum
+vertex
+:math:`v_n`\ （二）\ :math:`v_n`\ 还可能由\ :math:`m_1`\ 或\ :math:`m_2`\ 定义，它们不在前面提到的\ :math:`\{h_1, h_2, \dots, h_n\}`\ 之中。因为这两个原因，所以这个概率\ **至多**\ 是\ :math:`2/n`\ 。
 
-为了计算\ :math:`E\lbrack X_{i}\rbrack`\ 的上界，我们固定前\ :math:`i`\ 个半平面构成的子集，这个子集构成了\ :math:`C_{i}`\ 。根据前面的分析，添加\ :math:`h_{i}`\ 时，使用\ **后向分析**\ 。当添加\ :math:`h_{i}`\ 时需要重新计算一个新的optimal
-vertex的概率，就是我们把\ :math:`h_{i}`\ 从\ :math:`C_{i}`\ 中移除时optimal
-vertex发生改变的概率。而后者发生的概率，只有\ :math:`h_{i}`\ 是\ :math:`\{ h_{1},h_{2},\ldots,h_{i}\}`\ 中至多两个半平面之一的概率，而因为添加这些半平面的顺序是随机的，所以\ :math:`h_{i}`\ 是这两个特殊的半平面之一的概率就是\ :math:`2/i`\ 。我们推断出这个概率的条件，是基于这前\ :math:`i`\ 个半平面是\ :math:`H`\ 中的某个固定的子集的情况。但是因为这个推断出来的概率界限是对任何固定的子集适用的，所以我们就有
-:math:`E\lbrack X_{i}\rbrack \leqslant 2/i`\ 。由此，我们得到了可以确定解决1维线性规划问题的总时间上界为
+==（举例的示意图在85页，页码是78）==
 
-.. container:: math math-block is-loaded
+为了计算\ :math:`E[X_i]`\ 的上界，我们固定前\ :math:`i`\ 个半平面构成的子集，这个子集构成了\ :math:`C_i`\ 。根据前面的分析，添加\ :math:`h_i`\ 时，使用\ **后向分析**\ 。当添加\ :math:`h_i`\ 时需要重新计算一个新的optimal
+vertex的概率，就是我们把\ :math:`h_i`\ 从\ :math:`C_i`\ 中移除时optimal
+vertex发生改变的概率。而后者发生的概率，只有\ :math:`h_i`\ 是\ :math:`\{h_1, h_2, \dots, h_i\}`\ 中至多两个半平面之一的概率，而因为添加这些半平面的顺序是随机的，所以\ :math:`h_i`\ 是这两个特殊的半平面之一的概率就是\ :math:`2/i`\ 。我们推断出这个概率的条件，是基于这前\ :math:`i`\ 个半平面是\ :math:`H`\ 中的某个固定的子集的情况。但是因为这个推断出来的概率界限是对任何固定的子集适用的，所以我们就有
+:math:`E[X_i] \leqslant 2/i`\ 。由此，我们得到了可以确定解决1维线性规划问题的总时间上界为
 
-   .. math:: \sum\limits_{i = 1}^{n}O(i) \cdot \frac{2}{i} = O(n)
+.. math::
 
-| 而且，我们也注意到这个算法其余部分的时间复杂度也是\ :math:`O(n)`\ 。
-| 注意这里的数学期望只和算法的随机（顺序）选择有关。我们没有对可能的输入做平均。对任意一个有\ :math:`n`\ 个半平面的集合作为输入而言，算法运行时间的数学期望就是\ :math:`O(n)`\ ，并且没有“坏”的输入。
 
-（举例的示意图在86页，页码是79）
+   \sum_{i=1}^{n} O(i) \cdot \frac{2}{i} = O(n)
 
-射线（ray）
-:math:`\rho = \{ p + \lambda\overset{\rightarrow}{d}:\lambda > 0\}.`
+而且，我们也注意到这个算法其余部分的时间复杂度也是\ :math:`O(n)`\ 。
+注意这里的数学期望只和算法的随机（顺序）选择有关。我们没有对可能的输入做平均。对任意一个有\ :math:`n`\ 个半平面的集合作为输入而言，算法运行时间的数学期望就是\ :math:`O(n)`\ ，并且没有“坏”的输入。
 
-一个半平面 :math:`h \in H` 的法向量
-:math:`\overset{\rightarrow}{\eta}(h)` 。
+==（举例的示意图在86页，页码是79）==
 
-:math:`2{D{R{{ANDOMIZED}{B{{OUNDED}{LP}}}}}}`
+射线（ray） :math:`\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.`
+
+一个半平面 :math:`h \in H` 的法向量 :math:`\overrightarrow{\eta}(h)` 。
+
+:math:`2\small{D}\normalsize{R}\small{ANDOMIZED}\normalsize{B}\small{OUNDED}\normalsize{L}\small{P}`
 
 .. _references-2:
 
@@ -2957,25 +2902,25 @@ vertex发生改变的概率。而后者发生的概率，只有\ :math:`h_{i}`\ 
 4.10.1 Latex 数学字体示例
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-:math:`ABCDEabcde1234`
+:math:`\mathnormal{ABCDEabcde1234}`
 
-:math:`{ABCDEabcde}1234`
+:math:`\mathrm{ABCDEabcde1234}`
 
-:math:`\mathit{ABCDEabcde}1234`
+:math:`\mathit{ABCDEabcde1234}`
 
-:math:`\mathbf{ABCDEabcde}1234`
+:math:`\mathbf{ABCDEabcde1234}`
 
-:math:`\mathsf{ABCDEabcde}1234`
+:math:`\mathsf{ABCDEabcde1234}`
 
-:math:`\mathtt{ABCDEabcde}1234`
+:math:`\mathtt{ABCDEabcde1234}`
 
-:math:`\mathcal{ABCDEabcde}1234`
+:math:`\mathcal{ABCDEabcde1234}`
 
-𝒶𝒷𝒸𝒹ℯ\ :math:`\mathcal{ABCDEabcde}1234`
+:math:`\mathscr{ABCDEabcde1234}`
 
-:math:`\mathfrak{ABCDEabcde}1234`
+:math:`\mathfrak{ABCDEabcde1234}`
 
-𝕒𝕓𝕔𝕕𝕖𝟙𝟚𝟛𝟜\ :math:`\mathbb{ABCDEabcde}1234`
+:math:`\mathbb{ABCDEabcde1234}`
 
 4.10.2 渐近界
 ^^^^^^^^^^^^^
@@ -2984,16 +2929,16 @@ vertex发生改变的概率。而后者发生的概率，只有\ :math:`h_{i}`\ 
 ：渐近紧确界，表示既为上界，也为下界（tight），即相等（\ :math:`=`\ ）、准确的复杂度。
 
 :math:`O` ：渐近上界，表示渐近上界（tightness
-unknown），即小于等于（\ :math:`\leq`\ ），近似复杂度。
+unknown），即小于等于（\ :math:`\le`\ ），近似复杂度。
 
 :math:`\Omega` ：渐近下界，表示渐近上界（tightness
-unknown），即大于等于（\ :math:`\geq`\ ），近似复杂度。
+unknown），即大于等于（\ :math:`\ge`\ ），近似复杂度。
 
 :math:`o` ：非渐近紧确上界，表示上界（not
-tight），即明确小于（\ :math:`<`\ ），准确计算得出。
+tight），即明确小于（\ :math:`\lt`\ ），准确计算得出。
 
 :math:`\omega` ：非渐近紧确上界，表示下界（not
-tight），即明确大于（\ :math:`>`\ ），准确计算得出。
+tight），即明确大于（\ :math:`\gt`\ ），准确计算得出。
 
 `时间复杂度的五个记号 <https://blog.csdn.net/qq_41976613/article/details/105026946>`__
 
