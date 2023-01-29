@@ -1706,11 +1706,13 @@ $$
 
 当且仅当 $\vec{d} \cdot \vec{c} \gt 0$时，目标函数 $f_\vec{c}$ 取得任意大的值。另一方面，所有半平面（条件约束）$H$中的一个半平面$h$（$h \in H$），它的朝向有解区域（feasible region）的法向量$\vec{\eta}(h)$，有$\vec{d} \cdot \vec{\eta} \geqslant 0$。下面的推理4.9，说明了关于$\vec{d}$的两个条件，就足够判断一个线性规划问题是否有界。
 
-推理4.9 一个线性规划问题 $(H, \vec{c})$是无界的充要条件是，存在一个向量 $\vec{d}$ 且有 $\vec{d} \cdot \vec{c} \gt 0$，使得$H$中的任意一个约束条件（半平面）$h$ 朝向有解区域的法向量 $\vec{\eta}(h)$ 有 $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$，而且同时使得线性规划问题 $(H^{\prime}, \vec{c})$ 有解，这里 $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$。
+推理4.9 一个线性规划问题 $(H, \vec{c})$是无界的充要条件是，存在一个向量 $\vec{d}$ 且有 $\vec{d} \cdot \vec{c} \gt 0$，使得$H$中的任意一个约束条件（半平面）$h$ 朝向有解区域的法向量 $\vec{\eta}(h)$ 有 $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$，并且同时线性规划问题 $(H^{\prime}, \vec{c})$ 有解，这里 $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$。
 
-> A linear program $(H, \vec{c})$ is unbounded if and only if there is a vector $\vec{d}$ with $\vec{d} \cdot \vec{c} \gt 0$ such that $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$ for all $h \in H$ and the linear program $(H, \vec{c})$ is feasible, where $ $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0$.
+> Lemma 4.9 A linear program $(H, \vec{c})$ is unbounded if and only if there is a vector $\vec{d}$ with $\vec{d} \cdot \vec{c} \gt 0$ such that $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$ for all $h \in H$ and the linear program $(H, \vec{c})$ is feasible, where $ $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$.
 
+这里$H^{\prime}$实际上是半平面分界线和$\vec{d}$垂直的那些半平面（约束条件）的集合。
 
+证明：考虑线性规划问题 $(H, \vec{c})$ 和满足推理中设定条件的$\vec{d}$。因为线性规划问题 $(H^{\prime}, \vec{c})$ 有解，所以存在一个点 $p_0 \in \textstyle \bigcap_{h \in H^{\prime}} h$ （即$H^{\prime}$中所有半平面的交集中的一个点）。考虑射线 ${\rho}_0 := \{p_0 + \lambda \cdot \vec{d} : \lambda \gt 0 \}$。因为对于$H^{\prime}$中任意一个半平面$h$分界线的法向量 $\vec{\eta}(h)$ 都有 $\vec{d} \cdot \vec{\eta} = 0$（推理中的假定条件），所以$H^{\prime}$中任意一个半平面 $h$ 都完全包含射线 ${\rho}_0$。进一步，因为有$\vec{d} \cdot \vec{c} \gt 0$，所以目标函数 $f_\vec{c}$ 沿着 ${\rho}_0$ 的方向可以取得任意大的值。
 
 
 

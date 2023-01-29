@@ -2916,17 +2916,31 @@ region）的法向量\ :math:`\vec{\eta}(h)`\ ，有\ :math:`\vec{d} \cdot \vec{
 且有
 :math:`\vec{d} \cdot \vec{c} \gt 0`\ ，使得\ :math:`H`\ 中的任意一个约束条件（半平面）\ :math:`h`
 朝向有解区域的法向量 :math:`\vec{\eta}(h)` 有
-:math:`\vec{d} \cdot \vec{\eta}(h) \geqslant 0`\ ，而且同时使得线性规划问题
+:math:`\vec{d} \cdot \vec{\eta}(h) \geqslant 0`\ ，并且同时线性规划问题
 :math:`(H^{\prime}, \vec{c})` 有解，这里
 :math:`H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}`\ 。
 
-   A linear program :math:`(H, \vec{c})` is unbounded if and only if
-   there is a vector :math:`\vec{d}` with
+   Lemma 4.9 A linear program :math:`(H, \vec{c})` is unbounded if and
+   only if there is a vector :math:`\vec{d}` with
    :math:`\vec{d} \cdot \vec{c} \gt 0` such that
    :math:`\vec{d} \cdot \vec{\eta}(h) \geqslant 0` for all
    :math:`h \in H` and the linear program :math:`(H, \vec{c})` is
    feasible, where $
-   :math:`H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0`.
+   :math:`H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}`.
+
+这里\ :math:`H^{\prime}`\ 实际上是半平面分界线和\ :math:`\vec{d}`\ 垂直的那些半平面（约束条件）的集合。
+
+证明：考虑线性规划问题 :math:`(H, \vec{c})`
+和满足推理中设定条件的\ :math:`\vec{d}`\ 。因为线性规划问题
+:math:`(H^{\prime}, \vec{c})` 有解，所以存在一个点
+:math:`p_0 \in \textstyle \bigcap_{h \in H^{\prime}} h`
+（即\ :math:`H^{\prime}`\ 中所有半平面的交集中的一个点）。考虑射线
+:math:`{\rho}_0 := \{p_0 + \lambda \cdot \vec{d} : \lambda \gt 0 \}`\ 。因为对于\ :math:`H^{\prime}`\ 中任意一个半平面\ :math:`h`\ 分界线的法向量
+:math:`\vec{\eta}(h)` 都有
+:math:`\vec{d} \cdot \vec{\eta} = 0`\ （推理中的假定条件），所以\ :math:`H^{\prime}`\ 中任意一个半平面
+:math:`h` 都完全包含射线
+:math:`{\rho}_0`\ 。进一步，因为有\ :math:`\vec{d} \cdot \vec{c} \gt 0`\ ，所以目标函数
+:math:`f_\vec{c}` 沿着 :math:`{\rho}_0` 的方向可以取得任意大的值。
 
 射线（ray） :math:`\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.`
 
