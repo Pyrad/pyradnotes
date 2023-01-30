@@ -1337,8 +1337,16 @@ Obsidian不是开源软件，但个人可以免费使用它，商用用途需付
 这里发现通过Obsidian的pandoc插件生成的`.rst`文件，和通过Typora生成的`.rst`文件，有一些差别，但总体不影响生成最终的html文件（sphinx docs）。
 
 
+#### Plugin Quiet-Outline
 
+[Github of obsidian plugin quiet-outline](https://github.com/guopenghui/obsidian-quiet-outline)
 
+How to innstall
+
+Download from github
+
+-   Download the latest release.
+-   Extract and put the three files (`main.js`, `style.css`, `manifest.json`) to folder `{{obsidian_vault}}/.obsidian/plugins/obsidian-quiet-outline`.
 
 
 
