@@ -1,0 +1,16 @@
+# Latex Mathematical Symbols
+
+## Greek and Hebrew letters
+
+| name | code | name | code | name | code | name | code | name | code |
+| :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| $\alpha$ | `\alpha` | $\beta$ | `\beta` | $\gamma$ | `\gamma` | $\delta$ | `\delta` | $\epsilon$ | `\epsilon` |
+| $\zeta$ | `\zeta` | $\eta$ | `\eta` | $\theta$ | `\theta` | $\iota$ | `\iota` | $\kappa$ | `\kappa` |
+| $\lambda$ | `\lambda` | $\mu$ | `\mu` | $\nu$ | `\nu` | $\xi$ | `\xi` | $\omicron$ | `\omicron` |
+| $\pi$ | `\pi` | $\rho$ | `\rho` | $\sigma$ | `\sigma` | $\tau$ | `\tau` | $\upsilon$ | `\upsilon` |
+| $\phi$ | `\phi` | $\chi$ | `\chi` | $\psi$ | `\psi` | $\omega$ | `\omega` |  |  |
+| $A$ | `A` | $B$ | `B` | $\Gamma$ | `\Gamma` | $\Delta$ | `\Delta` | $E$ | `E` |
+| $Z$ | `Z` | $H$ | `H` | $\Theta$ | `\Theta` | $I$ | `I` | $K$ | `K` |
+| $\Lambda$ | `\Lambda` | $M$ | `M` | $N$ | `N` | $\Xi$ | `\Xi` | $O$ | `O` |
+| $\Pi$ | `\Pi` | $P$ | `P` | $\Sigma$ | `\Sigma` | $T$ | `T` | $\Upsilon$ | `\Upsilon` |
+| $\Phi$ | `\Phi` | $X$ | `X` | $\Psi$ | `\Psi` | $\Omega$ | `\Omega` |  |  |
