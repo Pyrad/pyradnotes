@@ -1710,9 +1710,22 @@ $$
 
 > Lemma 4.9 A linear program $(H, \vec{c})$ is unbounded if and only if there is a vector $\vec{d}$ with $\vec{d} \cdot \vec{c} \gt 0$ such that $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$ for all $h \in H$ and the linear program $(H, \vec{c})$ is feasible, where $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$.
 
-这里$H^{\prime}$实际上是半平面分界线和$\vec{d}$垂直的那些半平面（约束条件）的集合。
+**注意**，这里的$\vec{\eta}(h)$是半平面$h$的分界线的法向量，方向是朝向有解的（feasible region）的一侧。所以，这里$H^{\prime}$实际上是半平面分界线和$\vec{d}$平行（共线）的那些半平面（约束条件）的集合，因为 $\vec{d} \cdot \vec{\eta}(h) = 0$，所以$\vec{d}$和半平面的法向量垂直，换言之就是和半平面的分界线平行（共线）。
 
-证明：考虑线性规划问题 $(H, \vec{c})$ 和满足推理中设定条件的$\vec{d}$。因为线性规划问题 $(H^{\prime}, \vec{c})$ 有解，所以存在一个点 $p_0 \in \textstyle \bigcap_{h \in H^{\prime}} h$ （即$H^{\prime}$中所有半平面的交集中的一个点）。考虑射线 ${\rho}_0 := \{p_0 + \lambda \cdot \vec{d} : \lambda \gt 0 \}$。因为对于$H^{\prime}$中任意一个半平面$h$分界线的法向量 $\vec{\eta}(h)$ 都有 $\vec{d} \cdot \vec{\eta} = 0$（推理中的假定条件），所以$H^{\prime}$中任意一个半平面 $h$ 都完全包含射线 ${\rho}_0$。进一步，因为有$\vec{d} \cdot \vec{c} \gt 0$，所以目标函数 $f_{\vec{c}}$ 沿着 ${\rho}_0$ 的方向可以取得任意大的值。
+证明：考虑线性规划问题 $(H, \vec{c})$ 和满足推理中设定条件的$\vec{d}$。因为线性规划问题 $(H^{\prime}, \vec{c})$ 有解，所以存在一个点 $p_0 \in \textstyle \bigcap_{h \in H^{\prime}} h$ （即$H^{\prime}$中所有半平面的交集中的一个点）。考虑射线 ${\rho}_0 := \{p_0 + \lambda \cdot \vec{d} : \lambda \gt 0 \}$。因为对于$H^{\prime}$中任意一个半平面$h$分界线的法向量 $\vec{\eta}(h)$ 都有 $\vec{d} \cdot \vec{\eta}(h) = 0$（推理中的假定条件），所以$H^{\prime}$中任意一个半平面 $h$ 都完全包含射线 ${\rho}_0$。进一步，因为有$\vec{d} \cdot \vec{c} \gt 0$，所以目标函数 $f_{\vec{c}}$ 沿着 ${\rho}_0$ 的方向可以取得任意大的值。
+
+对于任意一个属于$H$但不属于$H^{\prime}$的半平面$h$（即$h \in H \backslash H^{\prime}$），有 $\vec{d} \cdot \vec{\eta}(h) > 0$（因为根据推理给定的条件，$\vec{d}$ 要么是和$H$中的任意一半平面的分界线垂直，要么是夹角为锐角，即$\vec{d} \cdot \vec{\eta} \geqslant 0$，那么除去垂直的，剩下的自然都是夹角是锐角的，即$\vec{d} \cdot \vec{\eta}(h) > 0$）。
+
+而这意味着，对于任意的一个$h$（$h \in H \backslash H^{\prime}$），存在一个$\lambda_{h}$，使得当所有的$\lambda \geqslant \lambda_{h}$时，射线（的一部分）$p_0 + \lambda \cdot \vec{d}$ 包含于半平面$h$（即有 $p_0 + \lambda \cdot \vec{d} \in h$）。令 $\lambda^{\prime} := \max_{h \in H \backslash H^{\prime}}{\lambda_{h}}$（即$\lambda^{\prime}$是所有半平面$h$中对应的$\lambda_h$最大的一个），再令 $p := p_0 + \lambda^{\prime} \cdot \vec{d}$（$\lambda^{\prime}$就是刚刚的所有$\lambda$的最大值），此时，$p$ 就一定包含于所有的半平面$h$（$h \in H \backslash H^{\prime}$）中，而这正是前面所得到的一条射线（的一部分）包含于所有半平面$h$的结论，即射线
+
+$$
+\rho = \{p + \lambda \cdot \vec{d}: \lambda \gt 0\}
+$$
+
+是完全包含于每个半平面$h$中（$h \in H$），所以线性规划问题$(H, \vec{c})$是无界的（unbounded）。
+
+
+
 
 
 
