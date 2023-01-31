@@ -7,3 +7,4 @@ Markdown
    markdown
    MarkDown.Tutorial.Obsidian.Version.2022.1.12.md
    LatexMathSymbols.md
+   LatexMathSymbolsRST.rst
