@@ -164,3 +164,54 @@ Greek letters variants & Hebrew letters
       - ``\daleth``
       - :math:`\gimel`
       - ``\gimel``
+
+
+
+
+
+
+
+Latex Math Constructs
+---------------------
+
+.. list-table:: Latex Math Constructs
+    :widths: 10 10 10 10 10 10
+    :header-rows: 1
+
+    * - Name
+      - Code
+      - Name
+      - Code
+      - Name
+      - Code
+    * - :math:`\frac{abc}{xyz}`
+      - ``\frac{abc}{xyz}``
+      - :math:`f'`
+      - ``f'``, ``f^{\prime}``
+      - :math:`\sqrt{abc}`
+      - ``\sqrt{abc}``
+    * - :math:`\sqrt[n]{abc}`
+      - ``\sqrt[n]{abc}``
+      - :math:`\overline{abc}`
+      - ``\overline{abc}``
+      - :math:`\underline{abc}`
+      - ``\underline{abc}``
+    * - :math:`\sqrt{abc}`
+      - ``\sqrt{abc}``
+      - :math:`\widehat{abc}`
+      - ``\widehat{abc}``
+      - :math:`\widetilde{abc}`
+      - ``\widetilde{abc}``
+    * - :math:`\overrightarrow{abc}`
+      - ``\overrightarrow{abc}``
+      - :math:`\overleftarrow{abc}`
+      - ``\overleftarrow{abc}``
+      - :math:`\overleftarrow{abc}`
+      - ``\overleftarrow{abc}``
+    * - :math:`\overbrace{abc}`
+      - ``\overbrace{abc}``
+      - :math:`\overbrace{abc}`
+      - ``\overbrace{abc}``
+      - :math:`\underbrace{abc}`
+      - ``\underbrace{abc}``
+
