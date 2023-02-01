@@ -160,11 +160,24 @@ latex_elements={ # The paper size ('letterpaper' or 'a4paper').
 ################################################################################
 mathjax_path = 'es5/tex-chtml.js'
 
+################################################################################
+# Added by Pyrad, 2023-02-01
+# myst_enable_extensions is the myst_parser configuration option to enable some
+# inherent plugins.
+# See doc for details: https://myst-parser.readthedocs.io/en/latest/syntax/optional.html#syntax-math
+#
+# "dollarmath" : Enable latex parsing for symbols like "$" and "$$"
+#                2023-02-01 Though I added this as the doc said, it seems the
+#                html files generated still don't render the math symbols
+#                correctly
+################################################################################
+myst_enable_extensions = ["dollarmath", ]
+myst_update_mathjax=False
 
-# source_parsers = {
-#     #'.md': 'recommonmark.parser.CommonMarkParser',
-#     '.md': 'myst_parser',
-# }
+source_parsers = {
+    #'.md': 'recommonmark.parser.CommonMarkParser',
+    '.md': 'myst_parser',
+}
 
 # source_suffix = ['.rst', '.md']
 
