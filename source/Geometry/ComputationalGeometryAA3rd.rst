@@ -2939,20 +2939,22 @@ region）的一侧。所以，这里\ :math:`H^{\prime}`\ 实际上是半平面�
 （即\ :math:`H^{\prime}`\ 中所有半平面的交集中的一个点）。考虑射线
 :math:`{\rho}_0 := \{p_0 + \lambda \cdot \vec{d} : \lambda \gt 0 \}`\ 。因为对于\ :math:`H^{\prime}`\ 中任意一个半平面\ :math:`h`\ 分界线的法向量
 :math:`\vec{\eta}(h)` 都有
-:math:`\vec{d} \cdot \vec{\eta}(h) = 0`\ （推理中的假定条件），所以\ :math:`H^{\prime}`\ 中任意一个半平面
+:math:`\vec{d} \cdot \vec{\eta}(h) = 0`\ （推理中的假定条件，即\ :math:`\vec{d}`\ 和半平面的分界线平行或共线），所以\ :math:`H^{\prime}`\ 中任意一个半平面
 :math:`h` 都完全包含射线
-:math:`{\rho}_0`\ 。进一步，因为有\ :math:`\vec{d} \cdot \vec{c} \gt 0`\ ，所以目标函数
+:math:`{\rho}_0`\ （因为\ :math:`\vec{d}`\ 和半平面的分界线平行或共线，又\ :math:`p_0`\ 在feasible
+region内，所以射线\ :math:`\rho_0`\ 就一定在每个半平面\ :math:`h`\ 中，这里\ :math:`h \in H^{\prime}`\ ）。进一步，因为有\ :math:`\vec{d} \cdot \vec{c} \gt 0`\ ，所以目标函数
 :math:`f_{\vec{c}}` 沿着 :math:`{\rho}_0` 的方向可以取得任意大的值。
 
 对于任意一个属于\ :math:`H`\ 但不属于\ :math:`H^{\prime}`\ 的半平面\ :math:`h`\ （即\ :math:`h \in H \backslash H^{\prime}`\ ），有
 :math:`\vec{d} \cdot \vec{\eta}(h) > 0`\ （因为根据推理给定的条件，\ :math:`\vec{d}`
-要么是和\ :math:`H`\ 中的任意一半平面的分界线垂直，要么是夹角为锐角，即\ :math:`\vec{d} \cdot \vec{\eta} \geqslant 0`\ ，那么除去垂直的，剩下的自然都是夹角是锐角的，即\ :math:`\vec{d} \cdot \vec{\eta}(h) > 0`\ ）。
+要么是和\ :math:`H`\ 中的任意一半平面分界线的法向量垂直，要么和它的夹角为锐角，即\ :math:`\vec{d} \cdot \vec{\eta} \geqslant 0`\ ，那么除去垂直的，剩下的自然都是夹角是锐角的，即\ :math:`\vec{d} \cdot \vec{\eta}(h) > 0`\ ）。
 
 而这意味着，对于任意的一个\ :math:`h`\ （\ :math:`h \in H \backslash H^{\prime}`\ ），存在一个\ :math:`\lambda_{h}`\ ，使得当所有的\ :math:`\lambda \geqslant \lambda_{h}`\ 时，射线（的一部分）\ :math:`p_0 + \lambda \cdot \vec{d}`
 包含于半平面\ :math:`h`\ （即有
 :math:`p_0 + \lambda \cdot \vec{d} \in h`\ ）。令
 :math:`\lambda^{\prime} := \max_{h \in H \backslash H^{\prime}}{\lambda_{h}}`\ （即\ :math:`\lambda^{\prime}`\ 是所有半平面\ :math:`h`\ 中对应的\ :math:`\lambda_h`\ 最大的一个），再令
-:math:`p := p_0 + \lambda^{\prime} \cdot \vec{d}`\ （\ :math:`\lambda^{\prime}`\ 就是刚刚的所有\ :math:`\lambda`\ 的最大值），此时，\ :math:`p`
+:math:`p := p_0 + \lambda^{\prime} \cdot \vec{d}`\ （\ :math:`\lambda^{\prime}`\ 就是刚刚的所有\ :math:`\lambda`\ 的最大值），此时，点
+:math:`p`
 就一定包含于所有的半平面\ :math:`h`\ （\ :math:`h \in H \backslash H^{\prime}`\ ）中，而这正是前面所得到的一条射线（的一部分）包含于所有半平面\ :math:`h`\ 的结论，即射线
 
 .. math::
@@ -2961,6 +2963,51 @@ region）的一侧。所以，这里\ :math:`H^{\prime}`\ 实际上是半平面�
    \rho = \{p + \lambda \cdot \vec{d}: \lambda \gt 0\}
 
 是完全包含于每个半平面\ :math:`h`\ 中（\ :math:`h \in H`\ ），所以线性规划问题\ :math:`(H, \vec{c})`\ 是无界的（unbounded）。
+
+现在就可以像4.1节中叙述的一样，以解决一个1维线性规划问题，来测试2维线性规划问题
+:math:`(H, \vec{c})` 是否无界。
+
+首先旋转坐标系，使得 :math:`\vec{c}` 的方向为垂直向上，即
+:math:`\vec{c} = (0,1)`\ 。对任意方向的\ :math:`\vec{d} = (d_x, d_y)`\ ，当
+:math:`\vec{d} \cdot \vec{c} \gt 0` 时（夹角是锐角），它可以正规化为
+:math:`\vec{d} = (d_x, 1)`\ 的形式（想象一下，把任意一个向量的起点移动到坐标原点，然后沿其方向延长，和直线
+:math:`y=1` 相交，就是点
+:math:`(d_x, 1)`\ 了，其实就是正规化），而这可以看做是 :math:`y=1`
+这条直线上坐标为 :math:`d_x` 的点。对任一半平面（分界线）\ :math:`h`
+的法向量 :math:`\vec{\eta}(h) = ({\eta}_x, {\eta}_y)`\ （这里的
+:math:`{\eta}_x, {\eta}_y` 还是旋转之前坐标系里的坐标），下面的不等式
+
+.. math::
+
+
+   \vec{d} \cdot \vec{\eta}(h) = d_x{\eta}_x + d_y{\eta}_y \geqslant 0
+
+可化为不等式 :math:`d_x{\eta}_x \geqslant -{\eta}_y`\ （注意，这里的
+:math:`{\eta}_x, {\eta}_y`
+已经是旋转之后坐标系里的坐标了，也因此这里\ :math:`d_y=1`\ 了）。这样，我们就得到了一组
+:math:`n` 个线性不等式，也就是1维线性规划程序
+:math:`\overline{H}`\ （这里说线性规划程序这个术语不严谨，因为线性规划程序要包含约束和目标函数。不过这里我们只关注它是否有解，即feasibility，所以忽略目标函数，叙述起来比较方便）。
+
+如果线性规划程序有一个解
+:math:`d_{x}^{\ast}`\ （即讨论这个固定不变的解\ :math:`d_{x}^{\ast}`\ ），我们把有严格解（\ *solution
+is
+tight*\ ，即满足\ :math:`d_{x}^{\ast}{\eta}_x + {\eta}_y = 0`\ ）的那些半平面
+:math:`h` 的集合记作 :math:`H^{\prime}`\ ，当然有
+:math:`H^{\prime} \subseteq H`\ 。我们仍然要验证 :math:`H^{\prime}`
+是有解的（因为前面说的是 :math:`\overline{H}` 有解，不是
+:math:`H^{\prime}`\ 有解）。虽然这时候我们面对的仍然是一个2为线性规划程序，但是它比较特殊，因为对任意的
+:math:`h \in H^{\prime}`\ ，\ :math:`h` 的法向量 :math:`\vec{\eta}(h)`
+是和 :math:`\vec{d} = (d_{x}^{\ast}, 1)` 垂直的（正交），也就是说，此时
+:math:`h` 的分界线是和 :math:`\vec{d}` 平行的。换句话说，就是
+:math:`H^{\prime}`
+中的所有半平面的分界线是一系列平行分界线。这些平行的分界线和 :math:`x`
+轴相交，我们就会得到一个1维的线性规划程序
+:math:`\overline{H^{\prime}}`\ 。（1）如果 :math:`\overline{H^{\prime}}`
+**有解**\ ，那么原先的线性规划程序 :math:`H`
+就是无界的（unbounded），这时按照前面的推理，就可以以 :math:`O(n)`
+的时间复杂度，在有解的区域里画出一条射线 :math:`\rho` （feasible
+ray）。（2）如果 :math:`\overline{H^{\prime}}` **无解**\ ，那么
+:math:`H^{\prime}` 无解，因此 :math:`H` 也无解。
 
 射线（ray） :math:`\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.`
 
