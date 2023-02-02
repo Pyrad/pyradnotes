@@ -1736,6 +1736,7 @@ $$
 
 如果线性规划程序有一个解 $d_{x}^{\ast}$（即讨论这个固定不变的解$d_{x}^{\ast}$），我们把有严格解（*solution is tight*，即满足$d_{x}^{\ast}{\eta}_x + {\eta}_y = 0$）的那些半平面 $h$ 的集合记作 $H^{\prime}$，当然有 $H^{\prime} \subseteq H$。我们仍然要验证 $H^{\prime}$ 是有解的（因为前面说的是 $\overline{H}$ 有解，不是 $H^{\prime}$有解）。虽然这时候我们面对的仍然是一个2为线性规划程序，但是它比较特殊，因为对任意的 $h \in H^{\prime}$，$h$ 的法向量 $\vec{\eta}(h)$ 是和 $\vec{d} = (d_{x}^{\ast}, 1)$ 垂直的（正交），也就是说，此时 $h$ 的分界线是和 $\vec{d}$ 平行的。换句话说，就是 $H^{\prime}$ 中的所有半平面的分界线是一系列平行分界线。这些平行的分界线和 $x$ 轴相交，我们就会得到一个1维的线性规划程序 $\overline{H^{\prime}}$。（1）如果 $\overline{H^{\prime}}$ **有解**，那么原先的线性规划程序 $H$ 就是无界的（unbounded），这时按照前面的推理，就可以以 $O(n)$ 的时间复杂度，在有解的区域里画出一条射线 $\rho$ （feasible ray）。（2）如果 $\overline{H^{\prime}}$ **无解**，那么  $H^{\prime}$ 无解，因此 $H$ 也无解。
 
+如果线性规划程序$\overline{H}$没有解，那么按照上面的推理，原先的线性规划程序 $(H, \vec{c})$ 就是有界的（bounded）。这种情况下能得到一些什么信息？回想1维线性规划程序的解决方案：$\overline{H}$ 无解（不可行，即infeasible）的充要条件是，半直线（*half-line*）$\overline{h_1}$ 的最大边界要比半直线（*half-line*）$\overline{h_2}$ 的最小边界要更大。（**没搞懂什么意思**？与之相关的内容在4.3节推理4.5下面，需要再研读思考）这时候两条半直线 $\overline{h_1}$ 和 $\overline{h_2}$ 没有交集。如果 $h_1$ 和 $h_2$ 分别是对应这两个约束的原始半平面（的分界线），那这就意味着 $({h_1, h_2}, \vec{c})$ 是有界的。我们就能把 $h_1$ 和 $h_2$ 称作 *certificates*：它们证明了 $(H, \vec{c})$ 确实是有界的。
 
 
 
@@ -1792,3 +1793,9 @@ $\omega$ ：非渐近紧确上界，表示下界（not tight），即明确大�
 #### 4.10.3 Latex Mathematical Symbols
 
 [A PDF Link of Latex Mathematical Symbols](https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf)
+
+#### 4.10.4 线性规划
+
+[线性规划简介（一） - 知乎](https://zhuanlan.zhihu.com/p/509030805)
+
+[线性规划简介（一） - 知乎](https://zhuanlan.zhihu.com/p/509030805)
