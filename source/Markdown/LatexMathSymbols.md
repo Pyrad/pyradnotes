@@ -42,8 +42,21 @@
 
 
 
+## Greek Letters
 
+$\alpha$, $\beta$, $\gamma$
 
+## Equations
+
+inline equation
+
+$\vec{\eta}(h) = ({\eta}_x, {\eta}_y)$
+
+Block level math
+
+$$
+E = mc^2
+$$
 
 
 

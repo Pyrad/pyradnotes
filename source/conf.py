@@ -62,8 +62,8 @@ HAS_READTHEDOCS_ENV_VAR = os.environ.get('READTHEDOCS', None) == 'True'
 if HAS_READTHEDOCS_ENV_VAR is True:
     sys.path.insert(0, os.path.abspath(os.path.join('.', 'pyextensions')))
     sys.path.insert(0, os.path.abspath('.'))
-    import sphinx_markdown_tables
-    import myst_parser
+import sphinx_markdown_tables
+import myst_parser
 
 
 # -- Project information -----------------------------------------------------
@@ -172,12 +172,13 @@ mathjax_path = 'es5/tex-chtml.js'
 #                correctly
 ################################################################################
 myst_enable_extensions = ["dollarmath", ]
-myst_update_mathjax=False
+#myst_update_mathjax=False
+myst_dmath_double_inline = True
 
-source_parsers = {
-    #'.md': 'recommonmark.parser.CommonMarkParser',
-    '.md': 'myst_parser',
-}
+# source_parsers = {
+#     #'.md': 'recommonmark.parser.CommonMarkParser',
+#     '.md': 'myst_parser',
+# }
 
 # source_suffix = ['.rst', '.md']
 
