@@ -1480,14 +1480,10 @@ $a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
 
 从几何上来看，线性程序  $(H, \vec{c})$ 的解有以下四种情况
 
-- 情况1，无解
-  即所有半平面的交集是空。这种情况下，线性程序是infeasible，线性约束就没有解。
-- 情况2，有解
-  交集区域是无限的。此时，feasible region沿着 $\vec{c}$ 方向是无限的，而且有一条射线 $\rho$ 是完全被包含在feasible region $C$ 当中，我们要求的解，就是这样一条射线 $\rho$。
-- 情况3，有解
-  交集区域是有限的。  此时，feasible region的一条edge上的向外的法向的点，位于 $\vec{c}$ 方向上。这时候，线性程序有解，但解不唯一，这条edge $e$ 上任意一个点就是feasible point，它都能使得目标函数$f_{\vec{c}} (p)$ 取得最大值。
-- 情况4，有解
-  交集区域退化为一个点（属于某即个半平面边界直线共同的交点）。如果不属于之前三种情况中的一种，那么就有一个唯一解，这个解就是 feasible region $C$ 中的点 $v$，并且使得目标函数在 $\vec{c}$ 方向上取得极值。
+- 情况1，无解。即所有半平面的交集是空。这种情况下，线性程序是infeasible（**不可行**），线性约束就没有解。
+- 情况2，有解。交集区域是无限的。此时，feasible region（**可行域**）沿着 $\vec{c}$ 方向是无限的，而且有一条射线 $\rho$ 是完全被包含在feasible region $C$ 当中，我们要求的解，就是这样一条射线 $\rho$。
+- 情况3，有解。交集区域是有限的。  此时，feasible region（**可行域**）的一条edge上的向外的法向的点，位于 $\vec{c}$ 方向上（**实际的意思是**，这条edge $e$ 是垂直于 $\vec{c}$ ）。这时候，线性程序有解，但解不唯一，这条edge $e$ 上任意一个点就是feasible point，它都能使得目标函数$f_{\vec{c}} (p)$ 取得最大值。
+- 情况4，有解。交集区域退化为一个点（属于某即个半平面边界直线共同的交点）。如果不属于之前三种情况中的一种，那么就有一个唯一解，这个解就是 feasible region $C$ 中的点 $v$，并且使得目标函数在 $\vec{c}$ 方向上取得极值。
 
 ==（上面提到的线性程序的解的示意图在79页，页码是72，位于中间的四个一排的图）==
 
@@ -1503,7 +1499,7 @@ $a_{i,j}$，$b_i$ 和 $c_i$ 都是实数，它们是问题的输入参数。
 $$
 \begin{split}
 m_1 := \left\{ \begin{matrix}
-{p_x \le M, \ if\ c_x \gt 1} \\
+{p_x \le M, \ if\ c_x \gt 0} \\
 {-p_x \le M, \ otherwise} \\
 \end{matrix} \right.\end{split}
 $$
@@ -1511,7 +1507,7 @@ $$
 $$
 \begin{split}
 m_2 := \left\{ \begin{matrix}
-{p_y \le M, \ if\ c_y \gt 1} \\
+{p_y \le M, \ if\ c_y \gt 0} \\
 {-p_y \le M, \ otherwise} \\
 \end{matrix} \right.\end{split}
 $$
@@ -1522,10 +1518,10 @@ $$
 在选择了这样两个额外的约束条件之后，任意有解的线性程序就只有唯一的解，就是feasible region上的一个vertex，我们把这样的vertex叫做 ***optimal vertex***。
 
 记 $(H, \vec{c})$ 是一个线性程序，把 $n$ 个半平面依次记为 $h_1, h_2, \dots, h_n$。
-记 $H_i$ 是前 $i$ 个线性约束和两个额外约束$m_1, m_2$的组合，记 $C_i$ 是这样一组线性约束的feasible region。
+记 $H_i$ 是前 $i$ 个线性约束和两个额外约束$m_1, m_2$的组合，记 $C_i$ 是这样一组线性约束的feasible region（可行域）。
 
 $$
-H_i := {m_1, m_2, h_1, h_2, \dots, h_n}
+H_i := \{m_1, m_2, h_1, h_2, \dots, h_n\}
 $$
 
 $$
@@ -1538,7 +1534,7 @@ $$
 C_0 \supseteq C_1 \supseteq C_2 \supseteq \cdots \supseteq C_n = C
 $$
 
-这也就是说，对于任何一个 $i$（$0 \le i \le n$），如果 $C_i = \emptyset$，那么对于任意一个 $j$（$i \le j \le n$），线性程序就是feasible的，我们的算法也就能提前退出。
+这也就是说，对于任何一个 $i$（$0 \le i \le n$），如果 $C_i = \emptyset$，那么对于任意一个 $j$（$i \le j \le n$）就有 $C_j = \emptyset$，线性程序就是**不可行**的（infeasible），我们的算法也就能提前退出。
 
 下面的引理4.5，说明了每当我们增加一个线性约束（半平面）时，optimal vertex如何改变，而这是我们算法的基础。
 
@@ -1546,9 +1542,12 @@ $$
 
 1. 如果 $v_{i-1} \in h_i$，那么 $v_i = v_{i-1}$。
 2. 如果 $v_{i-1} \notin h_i$，那么要么 $C_i = \emptyset$，要么 $v_i \in \ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）
-   证明：
-3. 令 $v_{i-1} \in h_i$。因为 $C_i = C_{i-1} \cap h_i$，并且 $v_{i-1} \in C_{i-1}$，这就意味着 $v_{i-1} \in C_i$（这是显然的）。进一步，因为 $C_i \subseteq C_{i-1}$（即 $C_i$ 属于 $C_{i-1}$），所以 $C_i$ 的optimal vertex不可能比 $C_{i-1}$ 更好，所以，$v_{i-1}$ 同样也是 $C_i$ 的optimal vertex。
-4. 令  $v_{i-1} \notin h_i$。采用反证法，假设 $C_i$ 非空，并且 $v_i$ 不在 $\ell_i$ 上。考虑线段 $\overline{v_{i-1}v_i}$ ， $v_{i-1} \in C_{i-1}$（因为 $v_{i-1}$是$C_{i-1}$的optimal vertex），并且因为$C_i \subset C_{i-1}$，所以也有 $v_i \in C_{i-1}$。又因为 $C_{i-1}$是凸的，所以线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中。因为 $v_{i-1}$是$C_{i-1}$的optimal vertex，而且目标函数 $f_{\vec{c}}$是线性的，所以沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_{\vec{c}}(p)$是单调递增的。因为 $v_{i-1} \notin h_i$并且$C_i \subset C_{i-1}$，所以线段 $\overline{v_{i-1}v_i}$ 和 $\ell_i$必然有交点，记作 $q$。而又因为线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中，所以交点 $q$ 也必然在 $C_i$中（因为$\ell_i$是$C_i$的边界）。因为 $q$ 在线段 $\overline{v_{i-1}v_i}$ 上，所以根据前面的结论（沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_{\vec{c}}(p)$是单调递增的），就有 $f_{\vec{c}}(q) \gt f_{\vec{c}}(v_i)$。这就是说在$C_i$中存在另外一个不同于optimal vertex $v_i$ 的点 $q$，它使得$f_{\vec{c}}$的取值比 $v_i$还要大，但这是和$v_i$的定义是矛盾的，因此假设不成立。故的证。
+
+证明：
+
+令 $v_{i-1} \in h_i$。（注意这里的$h_i$指的是半平面**区域**，不是半平面的分界线）。因为 $C_i = C_{i-1} \cap h_i$，并且 $v_{i-1} \in C_{i-1}$，这就意味着 $v_{i-1} \in C_i$（这是显然的）。进一步，因为 $C_i \subseteq C_{i-1}$（即 $C_i$ 属于 $C_{i-1}$），所以 $C_i$ 的optimal vertex不可能比 $C_{i-1}$ 更好，所以，$v_{i-1}$ 同样也是 $C_i$ 的optimal vertex。
+
+令  $v_{i-1} \notin h_i$。采用反证法，假设 $C_i$ 非空，并且 $v_i$ 不在 $\ell_i$ 上。考虑线段 $\overline{v_{i-1}v_i}$ ， $v_{i-1} \in C_{i-1}$（因为 $v_{i-1}$是$C_{i-1}$的optimal vertex），并且因为$C_i \subset C_{i-1}$，所以也有 $v_i \in C_{i-1}$。又因为 $C_{i-1}$是凸的，所以线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中。因为 $v_{i-1}$是$C_{i-1}$的optimal vertex，而且目标函数 $f_{\vec{c}}$是线性的，所以沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_{\vec{c}}(p)$是单调递增的。因为 $v_{i-1} \notin h_i$并且$C_i \subset C_{i-1}$，所以线段 $\overline{v_{i-1}v_i}$ 和 $\ell_i$必然有交点，记作 $q$。而又因为线段 $\overline{v_{i-1}v_i}$ 完全被包含在 $C_{i-1}$中，所以交点 $q$ 也必然在 $C_i$中（因为$\ell_i$是$C_i$的边界）。因为 $q$ 在线段 $\overline{v_{i-1}v_i}$ 上，所以根据前面的结论（沿着线段 $\overline{v_{i-1}v_i}$ ，点 $p$ 从 $v_i$ 移动到 $v_{i-1}$时，$f_{\vec{c}}(p)$是单调递增的），就有 $f_{\vec{c}}(q) \gt f_{\vec{c}}(v_i)$。这就是说在$C_i$中存在另外一个不同于optimal vertex $v_i$ 的点 $q$，它使得$f_{\vec{c}}$的取值比 $v_i$还要大，但这是和$v_i$的定义是矛盾的，因此假设不成立。故的证。
 
 ==（用来说明线段 $\overline{v_{i-1}v_i}$ 的示意图在81页，页码是74，位于上面的一个图）==
 
