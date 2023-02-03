@@ -1554,6 +1554,8 @@ $$
 书中接着以两个图，说明了添加了一个半平面（$h_k$）之后，optimal vertex的变化情况。
 ==（两个示意图在81页，页码是74，位于下面的两个图）==
 
+**通俗地讲**，**引理4.5**的意思是，如果上一个线性程序 $(H_{i-1}, \vec{c})$ 的可行域里面的optimal vertex**位于**当前半平面 $h_i$ 内部，那么当前线性程序 $(H_i, \vec{c})$ 的可行域里面的optimal vertex，就和上一个线性程序可行域里面的optimal vertex相同；如果上一个线性程序 $(H_{i-1}, \vec{c})$ 的可行域里面的optimal vertex**不在**当前半平面 $h_i$ 内部，要么当前线性程序不可行（infeasible，即 $C_i = \emptyset$），要么当前线性程序 $(H_i, \vec{c})$ 的可行域里面的optimal vertex，就在当前半平面 $h_i$ 的分界线 $\ell_i$上。
+
 虽然**引理4.5**告诉了我们当添加一个新的半平面到当前的约束组时，optimal vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex。
 
 如果是**引理4.5**中说明的第一种情况，那么下一个要求解的optimal vertex $v_i$ 就是当前的optimal vertex $v_{i-1}$。
