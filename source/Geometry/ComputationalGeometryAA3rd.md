@@ -1559,10 +1559,12 @@ $$
 虽然**引理4.5**告诉了我们当添加一个新的半平面到当前的约束组时，optimal vertex的变化情况，但它没有告诉我们如何找到这个optimal vertex。
 
 如果是**引理4.5**中说明的第一种情况，那么下一个要求解的optimal vertex $v_i$ 就是当前的optimal vertex $v_{i-1}$。
-如果是**引理4.5**中说明的第二种情况，那么问题就转化为：找到$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）上的一个点$p$，使得目标函数$f_{\vec{c}}(p)$最大化，并且点$p \in h$（$h \in H_{i-1}$），即点$p$是前$i-1$个半平面交集上的点。
 
-为了简化术语，我们假定$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）不是垂直的，这样我们就能只用$x$的坐标来参数化它。定义一个函数 $\overline{f_{\vec{c}}}:\mathbb{R} \to  \mathbb{R}$，使得对任意一点 $p \in \ell_i$，有 $f_{\vec{c}}(p) = \overline{f_{\vec{c}}(p_x)}$ （还没想明白如何理解？如何找到这样的一个映射函数？好像要解微分方程？）。对一个半平面$h(h \in H_{i-1})$，记 $\sigma(h,\ell_i)$ 为 $\ell_i$ 和 $h$ 的边界线的交点的$x$**坐标**。如果没有交点，要么是$\ell_i$上的每个点都满足条件约束$h$（也即半平面$h$），要么$\ell_i$上没有点满足条件约束$h$（也即半平面$h$）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序无解（infeasible）。
-根据 $\ell_i \cap h$ 的交集区域是被限定在左侧还是右侧，可以得到对解的$x$**坐标**的约束形式，即$x \ge \sigma(h, \ell_i)$或者$x \le \sigma(h, \ell_i)$。因此需要求解的问题可以重新表述如下，
+如果是**引理4.5**中说明的第二种情况，那么问题就转化为：找到$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）上的一个点$p$，使得目标函数$f_{\vec{c}}(p)$最大化，并且点$p \in h$（$h \in H_{i-1}$），即点$p$是前$i-1$个半平面交集（区域）上的点。
+
+为了简化术语，我们假定$\ell_i$（$\ell_i$ 是半平面 $h_i$ 的边界直线）不是垂直的，这样我们就能仅用$x$的坐标来参数化它。定义一个函数 $\overline{f_{\vec{c}}}:\mathbb{R} \mapsto  \mathbb{R}$，使得对任意一点 $p \in \ell_i$，有 $f_{\vec{c}}(p) = \overline{f_{\vec{c}}(p_x)}$ （还没想明白如何理解？如何找到这样的一个映射函数？好像要解微分方程？）。对一个半平面$h(h \in H_{i-1})$，记 $\sigma(h,\ell_i)$ 为 $\ell_i$ 和 $h$ 的边界线的交点的$x$**坐标**。如果没有交点，要么是$\ell_i$上的每个点都满足条件约束$h$（也即半平面 $h_i$的分界线 $\ell_i$ 完全包含于半平面$h$之内，这里$h \in H_{i-1}$），要么$\ell_i$上没有点满足条件约束$h$（也即半平面 $h_i$的分界线 $\ell_i$ 完全位于半平面$h$之外，这里$h \in H_{i-1}$）。对于前者，我们忽略这个条件约束，对于后者，我们就报告这个线性程序不可行（infeasible）。
+
+根据 $\ell_i \cap h$ 的交集区域是被限定在左侧还是右侧，可以得到对解的$x$**坐标**的约束形式，即$x \geqslant \sigma(h, \ell_i)$或者$x \leqslant \sigma(h, \ell_i)$。因此需要求解的问题可以重新表述如下，
 为最大化的目标函数为
 
 $$
@@ -1572,7 +1574,11 @@ $$
 它服从于
 
 $$
-x \ge \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space left
+x \geqslant \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space left
+$$
+
+$$
+x \leqslant \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space right
 $$
 
 上面提到的 $\ell_i \cap h$ 的交集区域是被限定在左侧或右侧。**为何有左右侧之分**？因为$h$是半平面，它和$\ell_i$相交之后，落在$h$这个半平面这一侧的$\ell_i$的部分，如果只看其$x$坐标是包含**负无穷**（$-\infty$），但小于某个$x$坐标值，就相当于被限定到了左边，即有右侧上限，也就是**is bounded to right**。同理，如果相交的$\ell_i$部分落在$h$的这个半平面这一侧的$\ell_i$的部分，如果只看其$x$坐标是包含**正无穷**（$+\infty$），但大于于某个$x$坐标值，就相当于被限定到了右边边，即有左侧上限，也就是**is bounded to left**。
