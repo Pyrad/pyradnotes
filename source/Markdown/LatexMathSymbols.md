@@ -87,9 +87,20 @@ Block level math
 $$
 E = mc^2
 $$
+Overline symbol test
+
+that is to say $\overline{H}$ is good.
+
+that is to say$\overline{H}$is good.
+
+that is to say$\overline{H}$is good.
 
 
+$\overline{f_{\vec{c}}(x)}$
 
 
+$$
+\overline{f_{\vec{c}}(x)}
+$$
 
 

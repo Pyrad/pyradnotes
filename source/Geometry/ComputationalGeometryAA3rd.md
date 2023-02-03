@@ -1577,11 +1577,13 @@ $$
 x \geqslant \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space left
 $$
 
+以及
+
 $$
 x \leqslant \sigma(h, \ell_i), \space h \in H_{i-1} \space and \space \ell_i \cap h \space is \space bounded \space to \space the \space right
 $$
 
-上面提到的 $\ell_i \cap h$ 的交集区域是被限定在左侧或右侧。**为何有左右侧之分**？因为$h$是半平面，它和$\ell_i$相交之后，落在$h$这个半平面这一侧的$\ell_i$的部分，如果只看其$x$坐标是包含**负无穷**（$-\infty$），但小于某个$x$坐标值，就相当于被限定到了左边，即有右侧上限，也就是**is bounded to right**。同理，如果相交的$\ell_i$部分落在$h$的这个半平面这一侧的$\ell_i$的部分，如果只看其$x$坐标是包含**正无穷**（$+\infty$），但大于于某个$x$坐标值，就相当于被限定到了右边边，即有左侧上限，也就是**is bounded to left**。
+上面两个约束条件的意思是，在$H_{i-1}$（前$i-1$个半平面）中，（1）有一部分半平面和第$i$个半平面的分界线相交之后，$\ell_i$与这些半平面相交的部分位于这些半平面的**右侧**，所以它是有**左侧下限**（bounded to the left）的；（2）而剩下的另一部分半平面和第$i$个半平面的分界线相交之后，$\ell_i$与这些半平面相交的部分位于这些半平面的**左侧**，所以它是有**右侧上限**（bounded to the right）的。那么，这个1维线性程序的可行域就是这两者的交集。
 
 这个一维线性程序的解是容易的，令
 
@@ -1592,6 +1594,7 @@ $$
 $$
 x_{right} = \min_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left \}
 $$
+这里 $x_{left}$的意思是，$H_{i-1}$中的那些半平面和 $\ell_i$ 相交之后的部分位于这些半平面的**右侧**，那么它们就在 $\ell_i$ 上有**左侧下限**的$x$坐标，取这些$x$坐标值中的最大值，就是 $x_{left}$。而 $x_{right}$的意思是，$H_{i-1}$中的那些半平面和 $\ell_i$ 相交之后的部分位于这些半平面的**左侧**，那么它们就在 $\ell_i$ 上有**右侧上限**的$x$坐标，取这些$x$坐标值中的最小值，就是 $x_{right}$。
 
 即取$x_{left}$是所有$h(h \in H_{i-1})$的边界线和$\ell_i$的交点的$x$坐标的最大值，$x_{right}$是所有$h(h \in H_{i-1})$的边界线和$\ell_i$的交点的$x$坐标的最小值，那么区间$[x_{left}, x_{right}]$就是这个一维线性程序的解（feasible region）。因此如果 $x_{left} > x_{right}$，那就说明这个线性程序无解（infeasible），否则根据目标函数，当$\ell_i$上的点$p$ 在$x_{left}$或$x_{right}$处取得极值。
 需要注意的是，因为我们添加了额外的约束$m_1$和$m_2$，所以一维线性程序（的解）不会是无界的。
@@ -1761,6 +1764,8 @@ $$
 一个半平面 $h \in H$ 的法向量 $\overrightarrow{\eta}(h)$ 。
 
 $2\small{D}\normalsize{R}\small{ANDOMIZED}\normalsize{B}\small{OUNDED}\normalsize{L}\small{P}$
+
+$\overline{H}$
 
 
 
