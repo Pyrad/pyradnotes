@@ -1314,13 +1314,13 @@ $$
 
 首先给出分治算法来计算 $n$ 个半平面的交集。
 
-算法：$IntersectHalfPlanes(H)$
+**算法**：$IntersectHalfPlanes(H)$
 
-输入：二维平面上 $n$ 个半平面的一组约束 $H$ （$H = \{h_1, h_2, \dots, h_n\}$，其中 $h_i = \{(x,y) \in \mathbb{R}^2 | a_ix + b_iy  \le c_i \}$）。
+**输入**：二维平面上 $n$ 个半平面的一组约束 $H$ （$H = \{h_1, h_2, \dots, h_n\}$，其中 $h_i = \{(x,y) \in \mathbb{R}^2 | a_ix + b_iy  \le c_i \}$）。
 
-输出：一个凸包多边形区域 $C:= \textstyle \bigcap_{h \in H} h$。
+**输出**：一个凸包多边形区域 $C:= \textstyle \bigcap_{h \in H} h$。
 
-算法步骤
+**算法步骤**：
 
 - 如果 $H$ 只包含有一个约束条件（即 $n=1$），那么 $C$ 就是这唯一的一个半平面
 - 如果 $H$ 包含大于一个约束条件（$n > 1$），就把 $H$ 划分为两个子约束集合 $H_1$ 和 $H_2$，每个集合有  $\lceil n/2 \rceil$ 个约束条件。
@@ -1760,20 +1760,20 @@ $$
 f_{\vec{c}}(x) > c_x \cdot q_x + c_y \cdot q_y
 $$
 
-显然不等式右边是一个有限的数（因为$c_x, c_y$是固定的参数，$q_x, q_y$也是某个固定点的坐标），这就意味着此时 $f_{\vec{c}}(x)$ 可以是一个无限大的值，而这正是通过沿着射线 $\rho$ 上的点而取得的值。
+显然不等式右边是一个有限的数（因为$c_x, c_y$是固定的参数，$q_x, q_y$也是某个固定点的坐标），这就意味着此时 $f_{\vec{c}}(x)$ 可以是一个**无限大**的值，而这正是通过沿着射线 $\rho$ 上的点而取得的值。
 
 
-**推理4.9** 一个线性规划问题 $(H, \vec{c})$是无界的充要条件是，存在一个向量 $\vec{d}$ 且有 $\vec{d} \cdot \vec{c} \gt 0$，使得$H$中的任意一个约束条件（半平面）$h$ 朝向有解区域的法向量 $\vec{\eta}(h)$ 有 $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$，并且同时线性规划问题 $(H^{\prime}, \vec{c})$ 有解，这里 $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$。
+**推理4.9** 一个线性规划问题 $(H, \vec{c})$是无界的充要条件是，存在一个满足 $\vec{d} \cdot \vec{c} \gt 0$ 的向量 $\vec{d}$ ，使得$H$中的任意一个约束条件（半平面）$h$ 朝向可行区域的法向量 $\vec{\eta}(h)$ 有 $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$，并且同时线性规划问题 $(H^{\prime}, \vec{c})$ 有解，这里 $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$。
 
 > Lemma 4.9 A linear program $(H, \vec{c})$ is unbounded if and only if there is a vector $\vec{d}$ with $\vec{d} \cdot \vec{c} \gt 0$ such that $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$ for all $h \in H$ and the linear program $(H, \vec{c})$ is feasible, where $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$.
 
-**注意**，这里的$\vec{\eta}(h)$是半平面$h$的分界线的法向量，方向是朝向有解的（feasible region）的一侧。所以，这里$H^{\prime}$实际上是半平面分界线和$\vec{d}$平行（共线）的那些半平面（约束条件）的集合，因为 $\vec{d} \cdot \vec{\eta}(h) = 0$，所以$\vec{d}$和半平面的法向量垂直，换言之就是和半平面的分界线平行（共线）。
+**注意**，这里的$\vec{\eta}(h)$是半平面$h$的分界线的法向量，方向是朝向有可行域（feasible region）的一侧。所以，这里$H^{\prime}$实际上是半平面分界线和$\vec{d}$平行（共线）的那些半平面（约束条件）的集合，因为 $\vec{d} \cdot \vec{\eta}(h) = 0$，所以$\vec{d}$和半平面的法向量垂直，换言之就是和半平面的分界线平行（共线）。
 
 证明：考虑线性规划问题 $(H, \vec{c})$ 和满足推理中设定条件的$\vec{d}$。因为线性规划问题 $(H^{\prime}, \vec{c})$ 有解，所以存在一个点 $p_0 \in \textstyle \bigcap_{h \in H^{\prime}} h$ （即$H^{\prime}$中所有半平面的交集中的一个点）。考虑射线 ${\rho}_0 := \{p_0 + \lambda \cdot \vec{d} : \lambda \gt 0 \}$。因为对于$H^{\prime}$中任意一个半平面$h$分界线的法向量 $\vec{\eta}(h)$ 都有 $\vec{d} \cdot \vec{\eta}(h) = 0$（推理中的假定条件，即$\vec{d}$和半平面的分界线平行或共线），所以$H^{\prime}$中任意一个半平面 $h$ 都完全包含射线 ${\rho}_0$（因为$\vec{d}$和半平面的分界线平行或共线，又$p_0$在feasible region内，所以射线$\rho_0$就一定在每个半平面$h$中，这里$h \in H^{\prime}$）。进一步，因为有$\vec{d} \cdot \vec{c} \gt 0$，所以目标函数 $f_{\vec{c}}$ 沿着 ${\rho}_0$ 的方向可以取得任意大的值。
 
 对于任意一个属于$H$但不属于$H^{\prime}$的半平面$h$（即$h \in H \backslash H^{\prime}$），有 $\vec{d} \cdot \vec{\eta}(h) > 0$（因为根据推理给定的条件，$\vec{d}$ 要么是和$H$中的任意一半平面分界线的法向量垂直，要么和它的夹角为锐角，即$\vec{d} \cdot \vec{\eta} \geqslant 0$，那么除去垂直的，剩下的自然都是夹角是锐角的，即$\vec{d} \cdot \vec{\eta}(h) > 0$）。
 
-而这意味着，对于任意的一个$h$（$h \in H \backslash H^{\prime}$），存在一个$\lambda_{h}$，使得当所有的$\lambda \geqslant \lambda_{h}$时，射线（的一部分）$p_0 + \lambda \cdot \vec{d}$ 包含于半平面$h$（即有 $p_0 + \lambda \cdot \vec{d} \in h$）。令 $\lambda^{\prime} := \max_{h \in H \backslash H^{\prime}}{\lambda_{h}}$（即$\lambda^{\prime}$是所有半平面$h$中对应的$\lambda_h$最大的一个），再令 $p := p_0 + \lambda^{\prime} \cdot \vec{d}$（$\lambda^{\prime}$就是刚刚的所有$\lambda$的最大值），此时，点 $p$ 就一定包含于所有的半平面$h$（$h \in H \backslash H^{\prime}$）中，而这正是前面所得到的一条射线（的一部分）包含于所有半平面$h$的结论，即射线
+而这意味着，对于任意的一个$h$（$h \in H \backslash H^{\prime}$），存在一个$\lambda_{h}$，使得当所有的$\lambda \geqslant \lambda_{h}$时，射线$p_0 + \lambda \cdot \vec{d}$ （的一部分）包含于半平面$h$（即有 $p_0 + \lambda \cdot \vec{d} \in h$）（**为什么**？还没想明白）。令 $\lambda^{\prime} := \max_{h \in H \backslash H^{\prime}}{\lambda_{h}}$（即$\lambda^{\prime}$是所有半平面$h$中对应的$\lambda_h$最大的一个），再令 $p := p_0 + \lambda^{\prime} \cdot \vec{d}$（$\lambda^{\prime}$就是刚刚的所有$\lambda$的最大值），此时，点 $p$ 就一定包含于所有的半平面$h$（$h \in H \backslash H^{\prime}$）中，而这正是前面所得到的一条射线（的一部分）包含于所有半平面$h$的结论，即射线
 
 $$
 \rho = \{p + \lambda \cdot \vec{d}: \lambda \gt 0\}
@@ -1789,22 +1789,54 @@ $$
 \vec{d} \cdot \vec{\eta}(h) = d_x{\eta}_x + d_y{\eta}_y \geqslant 0
 $$
 
-可化为不等式 $d_x{\eta}_x \geqslant -{\eta}_y$（注意，这里的 ${\eta}_x, {\eta}_y$ 已经是旋转之后坐标系里的坐标了，也因此这里$d_y=1$了）。这样，我们就得到了一组 $n$ 个线性不等式，也就是1维线性规划程序 $\overline{H}$（这里说线性规划程序这个术语不严谨，因为线性规划程序要包含约束和目标函数。不过这里我们只关注它是否有解，即feasibility，所以忽略目标函数，叙述起来比较方便）。
+可化为不等式 $d_x{\eta}_x \geqslant -{\eta}_y$（注意，这里的 ${\eta}_x, {\eta}_y$ 已经是旋转之后坐标系里的坐标了，也因此这里$d_y=1$了）。这样，我们就得到了一组 $n$ 个线性不等式，也就是1维线性规划程序 $\overline{H}$（这里说线性规划程序这个术语不严谨，因为线性规划程序要包含约束和目标函数。不过这里我们只关注它是否可行，即feasibility，所以忽略目标函数，叙述起来比较方便）。
 
-如果线性规划程序有一个解 $d_{x}^{\ast}$（即讨论这个固定不变的解$d_{x}^{\ast}$），我们把有严格解（*solution is tight*，即满足$d_{x}^{\ast}{\eta}_x + {\eta}_y = 0$）的那些半平面 $h$ 的集合记作 $H^{\prime}$，当然有 $H^{\prime} \subseteq H$。我们仍然要验证 $H^{\prime}$ 是有解的（因为前面说的是 $\overline{H}$ 有解，不是 $H^{\prime}$有解）。虽然这时候我们面对的仍然是一个2为线性规划程序，但是它比较特殊，因为对任意的 $h \in H^{\prime}$，$h$ 的法向量 $\vec{\eta}(h)$ 是和 $\vec{d} = (d_{x}^{\ast}, 1)$ 垂直的（正交），也就是说，此时 $h$ 的分界线是和 $\vec{d}$ 平行的。换句话说，就是 $H^{\prime}$ 中的所有半平面的分界线是一系列平行分界线。这些平行的分界线和 $x$ 轴相交，我们就会得到一个1维的线性规划程序 $\overline{H^{\prime}}$。（1）如果 $\overline{H^{\prime}}$ **有解**，那么原先的线性规划程序 $H$ 就是无界的（unbounded），这时按照前面的推理，就可以以 $O(n)$ 的时间复杂度，在有解的区域里画出一条射线 $\rho$ （feasible ray）。（2）如果 $\overline{H^{\prime}}$ **无解**，那么  $H^{\prime}$ 无解，因此 $H$ 也无解。
+如果线性规划程序 $\overline{H}$ 有一个解 $d_{x}^{\ast}$（即讨论这个固定不变的解$d_{x}^{\ast}$），我们把有严格解（*solution is tight*，即满足$d_{x}^{\ast}{\eta}_x + {\eta}_y = 0$）的那些半平面 $h$ 的集合记作 $H^{\prime}$，当然有 $H^{\prime} \subseteq H$。我们仍然要验证 $H^{\prime}$ 是有解的（因为前面说的是 $\overline{H}$ 有解，不是 $H^{\prime}$有解）。虽然这时候我们面对的仍然是一个2为线性规划程序，但是它比较特殊，因为对任意的 $h \in H^{\prime}$，$h$ 的法向量 $\vec{\eta}(h)$ 是和 $\vec{d} = (d_{x}^{\ast}, 1)$ 垂直的（正交），也就是说，此时 $h$ 的分界线是和 $\vec{d}$ 平行的。换句话说，就是 $H^{\prime}$ 中的所有半平面的分界线是一系列平行分界线。这些平行的分界线和 $x$ 轴相交，我们就会得到一个1维的线性规划程序 $\overline{H^{\prime}}$。（1）如果 $\overline{H^{\prime}}$ **可行**，那么就意味着 $H^{\prime}$ 可行（因为 $\overline{H^{\prime}}$ 是 $H^{\prime}$ 在1维上的表示，所以$\overline{H^{\prime}}$可行就是$H^{\prime}$可行），那么（根据前面的推理4.9）原先的线性规划程序 $H$ 就是无界的（unbounded），这时按照前面的推理，就可以以 $O(n)$ 的时间复杂度，在可行域（feasible region）里画出一条射线 $\rho$ （feasible ray）。（2）如果 $\overline{H^{\prime}}$ **不可行**，那么  $H^{\prime}$ 不可行，因此 $H$ 也不可行。
 
-如果线性规划程序$\overline{H}$没有解，那么按照上面的推理，原先的线性规划程序 $(H, \vec{c})$ 就是有界的（bounded）。这种情况下能得到一些什么信息？回想1维线性规划程序的解决方案：$\overline{H}$ 无解（不可行，即infeasible）的充要条件是，半直线（*half-line*）$\overline{h_1}$ 的最大边界要比半直线（*half-line*）$\overline{h_2}$ 的最小边界要更大。（**没搞懂什么意思**？与之相关的内容在4.3节推理4.5下面，需要再研读思考）这时候两条半直线 $\overline{h_1}$ 和 $\overline{h_2}$ 没有交集。如果 $h_1$ 和 $h_2$ 分别是对应这两个约束的原始半平面（的分界线），那这就意味着 $({h_1, h_2}, \vec{c})$ 是有界的。我们就能把 $h_1$ 和 $h_2$ 称作 *certificates*：它们证明了 $(H, \vec{c})$ 确实是有界的。
+如果线性规划程序 $\overline{H}$ 没有解，那么按照上面的推理，原先的线性规划程序 $(H, \vec{c})$ 就是有界的（bounded）。这种情况下能得到一些什么信息？回想1维线性规划程序的解决方案：$\overline{H}$ 无解（不可行，即infeasible）的充要条件是，半直线（*half-line*）$\overline{h_1}$ 的最大边界要比半直线（*half-line*）$\overline{h_2}$ 的最小边界要更大（**分析见下一段**）。这时候两条半直线 $\overline{h_1}$ 和 $\overline{h_2}$ 没有交集。如果 $h_1$ 和 $h_2$ 分别是对应这两个约束的原始半平面（的分界线），那这就意味着 $(\{h_1, h_2\}, \vec{c})$ 是有界的。我们就能把 $h_1$ 和 $h_2$ 称作 *certificates*：它们证明了 $(H, \vec{c})$ 确实是有界的。
+
+> $\overline{H}$ 无解（不可行，即infeasible）的充要条件是，半直线（*half-line*）$\overline{h_1}$ 的最大边界要比半直线（*half-line*）$\overline{h_2}$ 的最小边界要更大。
+
+**没搞懂什么意思**？与之相关的内容在4.3节推理4.5下面，需要再研读思考。
+
+（2023-02-04）想明白了。参考4.3解推理4.5下面的图，说的是1维的线性规划程序，就可以想象成位于 $x$ 坐标轴上的区间。如果一个约束条件（对应这里的一个半平面 $\overline{h_1}$），得到的可行区域是半开区间 $A = [a, +\infty)$，而另一个约束条件（对应这里的另一个半平面 $\overline{h_2}$），得到的可行区域是半开区间 $B = (-\infty, b]$。那么 $A$ 就是有**左侧下限**，而 $B$ 就有**右侧上限**。又因为是一组约束条件（线性规划程序由一组多个约束条件组成），那么就可能有多个约束条件得到可行域是**左闭右开**的半区间，即有这样的多个$A$，那么这些左闭右开的半区间的**左侧下限**就有一个最大值。类似地，可能有多个约束条件得到可行域是**左开右闭**的半区间，即有这样的多个$B$，那么这些左开右闭的半区间的**右侧上限**就有一个最小值。这两个最值分别代表了一组约束条件中的两个条件，如果此时这个最大值比这个最小值还要大，这就意味着这两个约束条件的可行域（即1维坐标轴上的开区间）没有交集。
+
+前面提到的 $h_1, h_2$ 这样的两个certificates的用处是，在找到了它们之后，把它们当做算法`2DRANDOMIZEDBOUNDEDLP`中的两个约束$m_1$和$m_2$，而这意味着我们不需要再手动制造出约束来，使得解落于我们所允许的区间（区域）。
+
+同时也要注意，有可能 $(\{h_1, h_2\}, \vec{c})$ 是有界的（bounded），但是没有按字典序的最小解。这种情况发生在，当1维线性规划程序由于有一个约束 $h_1$ 的朝向其半平面内的法向量 $\vec{\eta}(h_1)$和目标函数的方向相反（即 $\vec{\eta}(h_1) = -\vec{c} = (0, -1)$），从而导致该1维线性规划程序不可行的时候。这种情况下，我们从剩下的约束条件（半平面）中找到一个满足法向量的$x$坐标满足 $\eta_x(h_2) > 0$ 的半平面（约束条件）$h_2$。如果能找到这样的$h_2$，那么 $h_1, h_2$ 就是certificates，能保证找到唯一的按字典序的最小解。如果找不到这样的$h_2$，要么线性规划程序不可行，要么就是找不到唯一的按字典序的最小解。要求解它，就要求解由一组满足$\eta_x(h)=0$的所有半平面$h$（即条件约束）组成的1维线性规划程序。而且如果它是可行的，我们就返回一条方向是$(-1,0)$的射线$\rho$，这条射线$\rho$上的所有点都是可行的最优解（feasible optimal solution）。
+
+现在可以给出2维线性规划程序的一般通用算法。
+
+**算法**：$2DRANDOMIZEDLP(H, \vec{c})$
+
+**输入**：一个线性规划程序$(H, \vec{c})$，$H$是由$n$个半平面（条件约束）组成，并且$\vec{c} \in \mathbb{R}^2$（即目标函数的方向是2维实数域上的一个向量）。
+
+**输出**：如果$(H, \vec{c})$是无界的（unbounded），报告一条（包含于其可行域）的射线。如果$(H, \vec{c})$是不可行的（infeasible），报告2个或3个certificate half-planes。否则就找到使得目标函数$f_\vec{c}(p)$最大化的并且按字典序的最小点$p$。
+
+**算法步骤**：
+
+- 确定是否存在满足$\vec{d}\cdot\vec{c}>0$的这样一个向量$\vec{d}$，使得$H$中的所有$h(h \in H)$有$\vec{d}\cdot\vec{\eta}(h) \geqslant 0$。
+- 如果这样的$\vec{d}$存在
+	- 计算线性规划程序$H^{\prime}$（即任意的$h \in H'$有$\vec{d}\cdot\vec{\eta}(h) = 0$），并确定其是否可行。
+	- 如果$H^{\prime}$可行，报告一条射线$\rho$证明$(H, \vec{c})$是无界的（unbounded），然后退出
+	- 如果$H^{\prime}$不可行，报告$(H, \vec{c})$不可行，然后退出
+- （如果这样的$d$不存在）找到两个半平面（约束条件）$h_1, h_2 \in H$是certificates，以证明$(H, \vec{c})$是有界的（bounded），并且有一个唯一的按字典序的最小解。
+- 令$v_2$是这两个半平面$h_1, h_2$分界线$\ell_1$和$\ell_2$的交点
+- 令$h_3, h_4, \dots, h_n$是$H$中剩余半平面的一个随机排序序列
+- 令变量 $i$从$3$遍历到$n$
+	- 如果上一次的optimal vertex $v_{i-1}$包含于当前的半平面$h_i$
+		- 那么当前的optimal vertex $v_i$就是$v_{i-1}$，即有$v_i = v_{i-1}$
+	- 如果上一次的optimal vertex $v_{i-1}$不在当前的半平面$h_i$之内
+		- 那么找到$\ell_i$（半平面$h_i$的边界线）上的一个点$p$，它满足前$i-1$个线性条件约束（即$H_{i-1}$），并且它能够使得目标函数$f_{\vec{c}}(p)$最大化，此时，$p$就是要找的当前的optimal vertex $v_i$
+		- 如果找不到这样的点$p$，令$h_j, h_k$是满足 $h_j \bigcap h_k \bigcap \ell_i = \emptyset$的certificates（这里$j,k<0$）。然后停止循环，报告这个线性程序无解，并且$h_i, h_j, h_k$是certificate，然后退出。
+- 变量$i$遍历至$n$结束，返回最终的optimal vertex $v_n$。
+
+**定理4.10** 一个有$n$个约束的2维线性规划程序，可以以$O(n)$的随机平均时间复杂度解决，而且最坏情况下的空间复杂度是线性的。
+
+> **Theorem** **4.10** A 2-dimensional linear programming problem with $n$ constraints can be solved in $O(n)$ randomized expected time using worst-case linear storage.
 
 
 
-
-射线（ray） $\rho = \{ p + \lambda \vec{d} : \lambda \gt 0 \}.$
-
-一个半平面 $h \in H$ 的法向量 $\overrightarrow{\eta}(h)$ 。
-
-$2\small{D}\normalsize{R}\small{ANDOMIZED}\normalsize{B}\small{OUNDED}\normalsize{L}\small{P}$
-
-$\overline{H}$
 
 
 
