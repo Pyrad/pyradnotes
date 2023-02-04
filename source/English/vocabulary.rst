@@ -78,3 +78,11 @@ Vocabulary  (reStructuredtext)
     * - **egregious**
       - /ɪˈɡriːdʒiəs/
       - *adj.* 惊人的；过分的；恶名昭彰的
+
+
+I have a bridge to sell you（表示相信一个人是非常容易被欺骗）
+
+Used to indicate that one believes someone is especially gullible. A reference to the con man George C. Parker, best known for "selling" property that he did not own, most famously the Brooklyn Bridge.
+
+  If you believe that, I have a bridge in Brooklyn to sell to you
+
