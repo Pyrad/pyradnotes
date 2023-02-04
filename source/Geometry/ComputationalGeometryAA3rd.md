@@ -1594,12 +1594,13 @@ $$
 $$
 x_{right} = \min_{h \in H_{i-1} } \space \{ \sigma(h,\ell_i) : \ell_i \cap h \space is \space bounded \space to \space \space the \space left \}
 $$
-这里 $x_{left}$的意思是，$H_{i-1}$中的那些半平面和 $\ell_i$ 相交之后的部分位于这些半平面的**右侧**，那么它们就在 $\ell_i$ 上有**左侧下限**的$x$坐标，取这些$x$坐标值中的最大值，就是 $x_{left}$。而 $x_{right}$的意思是，$H_{i-1}$中的那些半平面和 $\ell_i$ 相交之后的部分位于这些半平面的**左侧**，那么它们就在 $\ell_i$ 上有**右侧上限**的$x$坐标，取这些$x$坐标值中的最小值，就是 $x_{right}$。
+这里 $x_{left}$的意思是，$H_{i-1}$中的有些半平面和 $\ell_i$ 相交之后的部分位于这些半平面的**右侧**，那么它们就在 $\ell_i$ 上有**左侧下限**的$x$坐标，取这些$x$坐标值中的最大值，就是 $x_{left}$。而 $x_{right}$的意思是，$H_{i-1}$中的有些半平面和 $\ell_i$ 相交之后的部分位于这些半平面的**左侧**，那么它们就在 $\ell_i$ 上有**右侧上限**的$x$坐标，取这些$x$坐标值中的最小值，就是 $x_{right}$。
 
-即取$x_{left}$是所有$h(h \in H_{i-1})$的边界线和$\ell_i$的交点的$x$坐标的最大值，$x_{right}$是所有$h(h \in H_{i-1})$的边界线和$\ell_i$的交点的$x$坐标的最小值，那么区间$[x_{left}, x_{right}]$就是这个一维线性程序的解（feasible region）。因此如果 $x_{left} > x_{right}$，那就说明这个线性程序无解（infeasible），否则根据目标函数，当$\ell_i$上的点$p$ 在$x_{left}$或$x_{right}$处取得极值。
+这样，区间$[x_{left}, x_{right}]$就是这个一维线性程序的解（feasible region）。因此如果 $x_{left} > x_{right}$，那就说明这个线性程序无解（不可行，infeasible），否则根据目标函数，当$\ell_i$上的点$p$ 在$x_{left}$或$x_{right}$处取得极值。
+
 需要注意的是，因为我们添加了额外的约束$m_1$和$m_2$，所以一维线性程序（的解）不会是无界的。
 
-**引理4.6** 可以在线性时间里解出一维线性程序。因此，如果是**引理4.5**中的第二种情况时，我们能以$O(i)$时间复杂度计算出来新的optimal vertex $v_i$，或者判定这个线性程序无解（infeasible）。
+**引理4.6** 可以在线性时间里解出一维线性程序。因此，如果是**引理4.5**中的第二种情况时，我们能以$O(i)$时间复杂度计算出来新的optimal vertex $v_i$，或者判定这个线性程序无解（不可行，infeasible）。
 
 下面是更详细的线性规划算法描述。
 
@@ -1625,7 +1626,7 @@ $$
 \sum_{i=1}^{n} O(i) = O(n^2)
 $$
 
-虽然这样的算法是简单并且很好的，但还是太慢了。对于每次添加第$i$个约束时计算optimal vertex花费的诗句是$O(i)$，它不是紧确界（tight bound），而是渐近上限（即小于等于，$\le$）。而根据**引理4.5**，只有当$v_{i-1} \notin h_i$时，花费的时间是$\Theta(i)$（渐近紧确界，即相等，$=$），而当$v_{i-1} \in h_i$时，只需要花费常数时间。但我们不能保证每次都有$v_{i-1} \in h_i$，书中此处举了一个例子，说明了每次第$i$个约束条件就会导致前一个的optimal vertex $v_{i-1}$不再满足这第$i$个约束条件，而且花费的时间就是$\Theta(n^2)$。接下来的4.3节说明了如何进行一定意义上的加速处理。
+虽然这样的算法是简单并且很好的，但还是太慢了。对于每次添加第$i$个约束时计算optimal vertex花费的诗句是$O(i)$，它不是紧确界（tight bound），而是渐近上限（即小于等于，$\leqslant$）。而根据**引理4.5**，只有当$v_{i-1} \notin h_i$时，花费的时间是$\Theta(i)$（渐近紧确界，即相等，$=$），而当$v_{i-1} \in h_i$时，只需要花费常数时间。但我们不能保证每次都有$v_{i-1} \in h_i$，书中此处举了一个例子，说明了每次第$i$个约束条件就会导致前一个的optimal vertex $v_{i-1}$不再满足这第$i$个约束条件，而且花费的时间就是$\Theta(n^2)$。接下来的4.3节说明了如何进行一定意义上的加速处理。
 ==（举例的示意图在83页，页码是76）==
 
 ### 4.4 Randomized Linear Programming
@@ -1714,7 +1715,7 @@ $$
 
 在前面的一节里，我们通过手动添加两个额外的条件约束，避免处理无界的线性规划问题。但这种办法并不总是合适的。甚至有时候线性规划问题本身是有界的（bounded），但我们也不知道一个足够大的上界$M$。更进一步，在实际情况中，无界的线性规划问题是存在的，所以我们需要正确地解决它。
 
-首先研究如何确定一个线性规划问题$(H, \vec{c})$是无界的。正如我们前面提到的，一个无界的线性规划问题，意味着有一条射线 $\rho$ 完全包含于解区域（feasible region）$C$中，这样沿着射线 $\rho$ 的方向，目标函数 $f_{\vec{c}}$ 可以取得任意大的值。
+首先研究如何确定一个线性规划问题$(H, \vec{c})$是无界的。正如我们前面提到的，一个无界的线性规划问题，意味着有一条射线 $\rho$ 完全包含于可行区域（feasible region）$C$中，这样沿着射线 $\rho$ 的方向，目标函数 $f_{\vec{c}}$ 可以取得任意大的值。
 
 如果我们以$p$表示射线的起点，以$\vec{d}$表示它的方向，那么就得到了射线 $\rho$ 的参数化表达
 
@@ -1722,9 +1723,47 @@ $$
 \rho = \{p + \lambda \cdot \vec{d} : \lambda \gt 0 \}
 $$
 
-当且仅当 $\vec{d} \cdot \vec{c} \gt 0$时，目标函数 $f_{\vec{c}}$ 取得任意大的值。另一方面，所有半平面（条件约束）$H$中的一个半平面$h$（$h \in H$），它的朝向有解区域（feasible region）的法向量$\vec{\eta}(h)$，有$\vec{d} \cdot \vec{\eta} \geqslant 0$。下面的推理4.9，说明了关于$\vec{d}$的两个条件，就足够判断一个线性规划问题是否有界。
+当且仅当 $\vec{d} \cdot \vec{c} \gt 0$时，目标函数 $f_{\vec{c}}$ 取得任意大的值（**为什么**？下面是一个简单的证明）。另一方面，所有半平面（条件约束）$H$中的一个半平面$h$（$h \in H$），它的朝向有解区域（feasible region）的法向量$\vec{\eta}(h)$，有$\vec{d} \cdot \vec{\eta} \geqslant 0$。下面的推理4.9，说明了关于$\vec{d}$的两个条件，就足够判断一个线性规划问题是否有界。
 
-推理4.9 一个线性规划问题 $(H, \vec{c})$是无界的充要条件是，存在一个向量 $\vec{d}$ 且有 $\vec{d} \cdot \vec{c} \gt 0$，使得$H$中的任意一个约束条件（半平面）$h$ 朝向有解区域的法向量 $\vec{\eta}(h)$ 有 $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$，并且同时线性规划问题 $(H^{\prime}, \vec{c})$ 有解，这里 $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$。
+这里首先简单地证明一下，为何当 $\vec{d} \cdot \vec{c} \gt 0$时，目标函数 $f_{\vec{c}}$ （沿着射线 $\rho$ 的方向）取得任意大的值。
+
+首先 $f_{\vec{c}}(x)$ 的定义如下，
+
+$$
+f_{\vec{c}}(x) = c_x \cdot p_x + c_y \cdot p_y
+$$
+
+这里 $(p_x, p_y)$ 取射线 $\rho$ 上的点。为了消除歧义，把前面射线参数的表达式改写为如下（即射线起点为 $q$），
+
+$$
+
+\rho = \{q + \lambda \cdot \vec{d} : \lambda \gt 0 \}
+$$
+
+这样射线上的任意一点的坐标可以写作 $P = (p_x, p_y) = (q_x + \lambda d_x, q_y + \lambda d_y)$。
+
+那么 $f_{\vec{c}}(x)$ 就可以写成
+
+$$
+f_{\vec{c}}(x) = c_x \cdot p_x + c_y \cdot p_y = c_x \cdot (q_x + \lambda d_x) + c_y \cdot (q_y + \lambda d_y)
+$$
+
+化简得到
+
+$$
+f_{\vec{c}}(x) = c_x \cdot q_x + c_y \cdot q_y + \lambda \cdot (c_x d_x + c_y d_y)
+$$
+
+而根据条件 $\vec{d} \cdot \vec{c} \gt 0$，以及 $\lambda \gt 0$，那么 $f_{\vec{c}}(x)$ 可以进一步写成
+
+$$
+f_{\vec{c}}(x) > c_x \cdot q_x + c_y \cdot q_y
+$$
+
+显然不等式右边是一个有限的数（因为$c_x, c_y$是固定的参数，$q_x, q_y$也是某个固定点的坐标），这就意味着此时 $f_{\vec{c}}(x)$ 可以是一个无限大的值，而这正是通过沿着射线 $\rho$ 上的点而取得的值。
+
+
+**推理4.9** 一个线性规划问题 $(H, \vec{c})$是无界的充要条件是，存在一个向量 $\vec{d}$ 且有 $\vec{d} \cdot \vec{c} \gt 0$，使得$H$中的任意一个约束条件（半平面）$h$ 朝向有解区域的法向量 $\vec{\eta}(h)$ 有 $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$，并且同时线性规划问题 $(H^{\prime}, \vec{c})$ 有解，这里 $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$。
 
 > Lemma 4.9 A linear program $(H, \vec{c})$ is unbounded if and only if there is a vector $\vec{d}$ with $\vec{d} \cdot \vec{c} \gt 0$ such that $\vec{d} \cdot \vec{\eta}(h) \geqslant 0$ for all $h \in H$ and the linear program $(H, \vec{c})$ is feasible, where $H^{\prime} = \{h \in H : \vec{\eta}(h) \cdot \vec{d} = 0\}$.
 
