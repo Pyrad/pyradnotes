@@ -43,33 +43,33 @@
 $$
 \begin{array}{llll|llll}
 \hline
-Upper & Lower & UpperCode & LowerCode &
-Upper & Lower & UpperCode & LowerCode \\
+\mathrm{Upper} & \mathrm{Lower} & \mathrm{UpperCode} & \mathrm{LowerCode} &
+\mathrm{Upper} & \mathrm{Lower} & \mathrm{UpperCode} & \mathrm{LowerCode} \\
 \hline
-A & \alpha & A & \backslash{alpha} &
-B & \beta & B & \backslash{beta} \\
-\Gamma & \gamma & \backslash{Gamma} & \backslash{gamma} &
-\Delta & \delta & \backslash{Delta} & \backslash{delta} \\
-E & \epsilon & E & \backslash{epsilon} &
-Z & \zeta& Z & \backslash{zeta} \\
-H & \eta & H & \backslash{eta} &
-\Theta & \theta & \backslash{Theta} & \backslash{theta} \\
-I & \iota & I & \backslash{iota} &
-K & \kappa & K &\backslash{kappa}\\
-\Lambda & \lambda & \backslash{Lambda} & \backslash{lambda} &
-M & \mu & M & \backslash{mu} \\
-N & \nu & N & \backslash{nu} &
-\Xi & \xi & \backslash{Xi} & \backslash{xi} \\
-O & \omicron & O & \backslash{omicron} &
-\Pi & \pi&  \backslash{Pi} & \backslash{pi} \\
-P & \rho & P & \backslash{rho} &
-\Sigma & \sigma &  \backslash{Sigma} & \backslash{sigma} \\
-T & \tau & T & \backslash{tau} &
-\Upsilon & \upsilon &  \backslash{Upsilon} & \backslash{upsilon } \\
-\Phi & \phi & \backslash{Phi} & \backslash{phi} &
-X & \chi &  X & \backslash{chi } \\
-\Psi & \psi & \backslash{Psi} & \backslash{psi} &
-\Omega & \omega &   \backslash{Omega} & \backslash{omega} \\
+A & \alpha & \mathtt{A} & \mathtt{\backslash{alpha}} &
+B & \beta & \mathtt{B} & \mathtt{\backslash{beta}} \\
+\Gamma & \gamma & \mathtt{\backslash{Gamma}} & \mathtt{\backslash{gamma}} &
+\Delta & \delta & \mathtt{\backslash{Delta}} & \mathtt{\backslash{delta}} \\
+E & \epsilon & \mathtt{E} & \mathtt{\backslash{epsilon}} &
+Z & \zeta& \mathtt{Z} & \mathtt{\backslash{zeta}} \\
+H & \eta & \mathtt{H} & \mathtt{\backslash{eta}} &
+\Theta & \theta & \mathtt{\backslash{Theta}} & \mathtt{\backslash{theta}} \\
+I & \iota & \mathtt{I} & \mathtt{\backslash{iota}} &
+K & \kappa & \mathtt{K} &\mathtt{\backslash{kappa}} \\
+\Lambda & \lambda & \mathtt{\backslash{Lambda}} & \mathtt{\backslash{lambda}} &
+M & \mu & \mathtt{M} & \mathtt{\backslash{mu}} \\
+N & \nu & \mathtt{N} & \mathtt{\backslash{nu}} &
+\Xi & \xi & \mathtt{\backslash{Xi}} & \mathtt{\backslash{xi}} \\
+O & \omicron & \mathtt{O} & \mathtt{\backslash{omicron}} &
+\Pi & \pi&  \mathtt{\backslash{Pi}} & \mathtt{\backslash{pi}} \\
+P & \rho & \mathtt{P} & \mathtt{\backslash{rho}} &
+\Sigma & \sigma &  \mathtt{\backslash{Sigma}} & \mathtt{\backslash{sigma}} \\
+T & \tau & \mathtt{T} & \mathtt{\backslash{tau}} &
+\Upsilon & \upsilon &  \mathtt{\backslash{Upsilon}} & \mathtt{\backslash{upsilon }} \\
+\Phi & \phi & \mathtt{\backslash{Phi}} & \mathtt{\backslash{phi}} &
+X & \chi & \mathtt{X} & \mathtt{\backslash{chi}} \\
+\Psi & \psi & \mathtt{\backslash{Psi}} & \mathtt{\backslash{psi}} &
+\Omega & \omega & \mathtt{\backslash{Omega}} & \mathtt{\backslash{omega}} \\
 \hline
 \end{array}
 $$
@@ -77,7 +77,8 @@ $$
 $$
 \begin{array}{llll|llll}
 \hline
-Name & Code & Name & Code & Name & Code & Name & Code \\
+\mathrm{Name} & \mathrm{Code} & \mathrm{Name} & \mathrm{Code} &
+\mathrm{Name} & \mathrm{Code} & \mathrm{Name} & \mathrm{Code} \\
 \hline
 \varepsilon & \backslash{varepsilon} & \varkappa & \backslash{varkappa} &
 \varphi & \backslash{varphi} & \varpi & \backslash{varpi} \\
