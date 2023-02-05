@@ -1844,6 +1844,35 @@ $$
 
 和前面提到的二维平面上（解决方案）的版本一样，我们通过增量式地逐次增加约束条件，同时计算每次出现的optimal vertex。为此，我们需要确保每次的最优解（optimal solution）都是唯一的。像前面小节一样，我们首先确定线性规划程序是否无界。如果是有界的，求得一组$d$个certificates $h_1, h_2, \dots, h_d \in H$，确保解是有界的，并且有一个唯一的按字典序的最小解。我们暂时先关注该算法的主要部分，之后再讨论如何找到这$d$个certificates：$h_1, h_2, \dots, h_d \in H$。
 
+通过检查线性规划程序是有界的，令$h_1, h_2, \dots, h_d$是$d$个certificate半空间（half-space），令$h_{d+1}, h_{d+2}, \dots, h_n$是$H$中剩余半空间的一个随机排序序列。进一步，令$C_i$是前$i$个半空间加入之后（形成一组约束条件）的可行域（可行空间），这里$d \geqslant i \geqslant n$：
+
+$$
+C_i := h_1 \cap h_2 \cap \cdots \cap h_i
+$$
+
+令$v_i$表示可行域$C_i$的optimal vertex，即$v_i$使得目标函数$f_\vec{c}$（在前$i$个约束条件下）的值最大。推理4.5告诉了我们在二维平面上一种计算optimal vertex的简易方法：即当（增量式地）加入第$i$个半平面$h_i$（条件约束）的时候，当前的optimal vertex要么不变（和加入$h_i$之前的optimal vertex相同），要么新的optimal vertex就位于新加入的半平面$h_i$的分界线上。下面的推理4.11把这个结果推广到了更高维的情况下，并且它的证明也是推理4.5的一个直观的一般化推广。
+
+**推理4.11** 令$1 \leqslant i \leqslant n$，令$C_i$是前$i$个约束条件的可行域，$v_i$是$C_i$的optimal vertex。这样就有
+- 如果$v_{i-1} \in h_i$，那么$v_i = v_{i-1}$
+- 如果$v_{i-1} \notin h_i$，那要么$C_i = \emptyset$，要么$v_i \in g_i$。这里$g_i$是$h_i$的分界面（hyperplane，超平面）。
+
+如果我们用$g_i$表示半空间$h_i$的分界面，那么在$g_i \cap C_{i-1}$这个交集上找到的optimal vertex就是$C_i$的optimal vertex。
+
+但如何找到$g_i \cap C_{i-1}$这个交集上找到的optimal vertex？在二维平面上这容易做到，因为所有的可能被限定到了一条直线上。首先看在三维空间上的情况。在三维空间里$g_i$是一个平面，并且$g_i \cap C_{i-1}$是一个二维平面上的凸多边形区域。在$g_i \cap C_{i-1}$上需要如何找到optimal vertex？答案是求解一个二维线性规划程序。定义在三维实数空间$\mathbb{R}^3$上的一个线性（目标）函数$f_\vec{c}$，在二维平面$g_i$上引出一个（对应的）线性函数，我们要做的就是在$g_i \cap C_{i-1}$上找到使得这个函数取得极值的点。如果目标函数的方向$\vec{c}$是和二维平面$g_i$垂直，那么$g_i$上所有的点都是同样的好（使目标函数取得同样大的极值），而按照我们的规则，我们需要找到的是按字典序的最小的点。通过正确选择目标函数可以达到这样的目的，比如，当平面$g_i$不是和$x$轴垂直的话，通过把向量$(-1, 0, 0)$向平面$g_i$做投影而得到向量$\vec{c}$。
+
+因此，在三维空间里，我们通过这样的方式找到$g_i \cap C_{i-1}$上的optimal vertex：计算所有$i-1$个半空间和$g_i$的交集，并且把下面四个向量向$g_i$做投影，选择第一个投影不为0的向量。
+
+$$
+\vec{c}, \space
+\begin{pmatrix} -1 \\ 0 \\ 0 \end{pmatrix},  \space
+\begin{pmatrix} 0 \\ -1 \\ 0 \end{pmatrix},  \space
+\begin{pmatrix} 0 \\ 0 \\ -1 \end{pmatrix}
+$$
+
+而这会产生一个二维线性规划程序，我们可以用前面的`2DRANDOMIZEDLP`算法解决。
+
+
+
 
 
 
