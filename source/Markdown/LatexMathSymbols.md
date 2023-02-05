@@ -95,38 +95,24 @@ $$
 \end{array}
 $$
 
-
-
-
-## Greek Letters
-
-$\alpha$, $\beta$, $\gamma$
-
-## Equations
-
-inline equation
-
-$\vec{\eta}(h) = ({\eta}_x, {\eta}_y)$
-
-Block level math
+## Variable-sized symbols (displayed formulae show larger version)
 
 $$
-E = mc^2
+\begin{array}{ll|ll|ll}
+\hline
+\mathrm{Name} & \mathrm{Code} & \mathrm{Name} & \mathrm{Code} &
+\mathrm{Name} & \mathrm{Code} \\
+\hline 
+\sum & \mathtt{\backslash{sum}} & \int & \mathtt{\backslash{int}} & \biguplus & \mathtt{\backslash{biguplus}} \\
+\prod & \mathtt{\backslash{prod}} & \oint & \mathtt{\backslash{oint}} & \bigcap & \mathtt{\backslash{bigcap}} \\
+\coprod & \mathtt{\backslash{coprod}} & \iint & \mathtt{\backslash{iint}} & \bigcup & \mathtt{\backslash{bigcup}} \\
+\bigoplus & \mathtt{\backslash{bigoplus}} & \bigvee & \mathtt{\backslash{bigvee}} & \bigodot & \mathtt{\backslash{bigodot}} \\
+\bigotimes & \mathtt{\backslash{bigotimes}} & \bigwedge & \mathtt{\backslash{bigwedge}} & \bigsqcup & \mathtt{\backslash{bigsqcup}} \\
+\hline 
+\end{array}
 $$
-Overline symbol test
-
-that is to say $\overline{H}$ is good.
-
-that is to say$\overline{H}$is good.
-
-that is to say$\overline{H}$is good.
 
 
-$\overline{f_{\vec{c}}(x)}$
 
-
-$$
-\overline{f_{\vec{c}}(x)}
-$$
 
 
