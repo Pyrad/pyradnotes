@@ -147,5 +147,79 @@ $$
 $$
 
 
+## Binary Operation/Relation Symbols
+
+$$
+\begin{array}{ll|ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} &
+\mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\ast & \mathtt{\backslash{ast}} &
+\pm & \mathtt{\backslash{pm}} &
+\cap & \mathtt{\backslash{cap}} \\
+\star & \mathtt{\backslash{star}} &
+\mp & \mathtt{\backslash{mp}} &
+\cup & \mathtt{\backslash{cup}} \\
+\cdot & \mathtt{\backslash{cdot}} &
+\amalg & \mathtt{\backslash{amalg}} &
+\uplus & \mathtt{\backslash{uplus}} \\
+\circ & \mathtt{\backslash{circ}} &
+\odot & \mathtt{\backslash{odot}} &
+\sqcap & \mathtt{\backslash{sqcap}} \\
+\bullet & \mathtt{\backslash{bullet}} &
+\ominus & \mathtt{\backslash{ominus}} &
+\sqcup & \mathtt{\backslash{sqcup}} \\
+\bigcirc & \mathtt{\backslash{bigcirc}} &
+\oplus & \mathtt{\backslash{oplus}} &
+\wedge & \mathtt{\backslash{wedge}} \\
+\diamond & \mathtt{\backslash{diamond}} &
+\oslash & \mathtt{\backslash{oslash}} &
+\vee & \mathtt{\backslash{vee}} \\
+\times & \mathtt{\backslash{times}} &
+\otimes & \mathtt{\backslash{otimes}} &
+\dagger & \mathtt{\backslash{dagger}} \\
+\div & \mathtt{\backslash{div}} &
+\wr & \mathtt{\backslash{wr}} &
+\ddagger & \mathtt{\backslash{ddagger}} \\
+\centerdot & \mathtt{\backslash{centerdot}} &
+\Box & \mathtt{\backslash{Box}} &
+\barwedge & \mathtt{\backslash{barwedge}} \\
+\circledast & \mathtt{\backslash{circledast}} &
+\boxplus & \mathtt{\backslash{boxplus}} &
+\curlywedge & \mathtt{\backslash{curlywedge}} \\
+\circledcirc & \mathtt{\backslash{circledcirc}} &
+\boxminus & \mathtt{\backslash{boxminus}} &
+\Cap & \mathtt{\backslash{Cap}} \\
+\circleddash & \mathtt{\backslash{circleddash}} &
+\boxtimes & \mathtt{\backslash{boxtimes}} &
+\bot & \mathtt{\backslash{bot}} \\
+\dotplus & \mathtt{\backslash{dotplus}} &
+\boxdot & \mathtt{\backslash{boxdot}} &
+\intercal & \mathtt{\backslash{intercal}} \\
+\divideontimes & \mathtt{\backslash{divideontimes}} &
+\square & \mathtt{\backslash{square}} &
+\doublebarwedge & \mathtt{\backslash{doublebarwedge}} \\
+\lhd & \mathtt{\backslash{lhd}} &
+\rhd & \mathtt{\backslash{rhd}} &
+\triangleleft & \mathtt{\backslash{triangleleft}} \\
+\triangleright & \mathtt{\backslash{triangleright}} &
+\unlhd & \mathtt{\backslash{unlhd}} &
+\unrhd & \mathtt{\backslash{unrhd}} \\
+\bigtriangledown & \mathtt{\backslash{bigtriangledown}} &
+\bigtriangleup & \mathtt{\backslash{bigtriangleup}} &
+\setminus & \mathtt{\backslash{setminus}} \\
+\veebar & \mathtt{\backslash{veebar}} &
+\curlyvee & \mathtt{\backslash{curlyvee}} &
+\Cup & \mathtt{\backslash{Cup}} \\
+\top & \mathtt{\backslash{top}} &
+\rightthreetimes & \mathtt{\backslash{rightthreetimes}} &
+\leftthreetimes & \mathtt{\backslash{leftthreetimes}} \\
+\hline
+\end{array}
+$$
+
+
+
 
 
