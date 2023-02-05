@@ -1836,6 +1836,14 @@ $$
 > **Theorem** **4.10** A 2-dimensional linear programming problem with $n$ constraints can be solved in $O(n)$ randomized expected time using worst-case linear storage.
 
 
+### 4.6* Linear Programming in Higher Dimensions
+
+前面小节所呈现的线性规划算法，可以推广到更一般的高维度上去。当维度不是太高的时候，和传统的算法相比，使用前面小节提到的算法更有利。
+
+令$H$是$d$维实数域$\mathbb{R}^d$上$n$个闭合半空间的集合。给定向量$\vec{c} = (c_1, c_2, \dots, c_d)$，要求找到$d$维实数域$\mathbb{R}^d$上的一个点$p=(p_1, p_2, \dots, p_n)$，使得目标函数$f_\vec{c}(p) := c_1p_1 + \cdots + c_dp_d$取得最大值，同时要满足点$p$位于$H$中的任意一个半空间$h$中（$h \in H$）。当线性规划程序是有界的时候，为了确保解是唯一的，我们寻找的是按字典序的、使得目标函数$f_\vec{c}(p)$最大的最小点$p$。
+
+和前面提到的二维平面上（解决方案）的版本一样，我们通过增量式地逐次增加约束条件，同时计算每次出现的optimal vertex。为此，我们需要确保每次的最优解（optimal solution）都是唯一的。像前面小节一样，我们首先确定线性规划程序是否无界。如果是有界的，求得一组$d$个certificates $h_1, h_2, \dots, h_d \in H$，确保解是有界的，并且有一个唯一的按字典序的最小解。我们暂时先关注该算法的主要部分，之后再讨论如何找到这$d$个certificates：$h_1, h_2, \dots, h_d \in H$。
+
 
 
 
