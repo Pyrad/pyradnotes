@@ -112,6 +112,39 @@ $$
 \end{array}
 $$
 
+## Standard Function Names
+
+Function names should appear in Roman, not Italic, e.g.,
+
+Correct $\surd$ : $\mathtt{\backslash{tan(at-n\backslash{pi})}}$ $\longrightarrow$ $\tan(at - n\pi)$
+
+Incorrect $\times$ : $\mathtt{tan(at-n\backslash{pi})}$ $\longrightarrow$ $tan(at - n\pi)$
+
+$$
+\begin{array}{ll|ll|ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} &
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\arccos & \mathtt{\backslash{arccos}} & \arcsin & \mathtt{\backslash{arcsin}} &
+\arctan & \mathtt{\backslash{arctan}} & \arg & \mathtt{\backslash{arg}} \\
+\cos & \mathtt{\backslash{cos}} & \cosh & \mathtt{\backslash{cosh}} &
+\cot & \mathtt{\backslash{cot}} & \coth & \mathtt{\backslash{coth}} \\
+\csc & \mathtt{\backslash{csc}} & \deg & \mathtt{\backslash{deg}} &
+\det & \mathtt{\backslash{det}} & \dim & \mathtt{\backslash{dim}} \\
+\exp & \mathtt{\backslash{exp}} & \gcd & \mathtt{\backslash{gcd}} &
+\hom & \mathtt{\backslash{hom}} & \inf & \mathtt{\backslash{inf}} \\
+\ker & \mathtt{\backslash{ker}} & \lg & \mathtt{\backslash{lg}} &
+\lim & \mathtt{\backslash{lim}} & \liminf & \mathtt{\backslash{liminf}} \\
+\limsup & \mathtt{\backslash{limsup}} & \ln & \mathtt{\backslash{ln}} &
+\log & \mathtt{\backslash{log}} & \max & \mathtt{\backslash{max}} \\
+\min & \mathtt{\backslash{min}} & \Pr & \mathtt{\backslash{Pr}} &
+\sec & \mathtt{\backslash{sec}} & \sin & \mathtt{\backslash{sin}} \\
+\sinh & \mathtt{\backslash{sinh}} & \sup & \mathtt{\backslash{sup}} &
+\tan & \mathtt{\backslash{tan}} & \tanh & \mathtt{\backslash{tanh}} \\
+\hline
+\end{array}
+$$
 
 
 
