@@ -88,7 +88,7 @@ $$
 || & \mathtt{||} & \langle & \mathtt{\backslash{langle}} & \lceil & \mathtt{\backslash{lceil}} \\
 \Vert & \mathtt{\backslash{Vert}} & \rangle & \mathtt{\backslash{rangle}} & \rceil & \mathtt{\backslash{rceil}} \\
 / & \mathtt{/} & \Uparrow & \mathtt{\backslash{Uparrow}} & \llcorner & \mathtt{\backslash{llcorner}} \\
-\backslash & \mathtt{\backslash} & \uparrow & \mathtt{\backslash{uparrow}} & \lrcorner & \mathtt{\backslash{lrcorner}} \\
+\backslash & \mathtt{\backslash{backslash}} & \uparrow & \mathtt{\backslash{uparrow}} & \lrcorner & \mathtt{\backslash{lrcorner}} \\
 [ & \mathtt{[} & \Downarrow & \mathtt{\backslash{Downarrow}} & \ulcorner & \mathtt{\backslash{ulcorner}} \\
 ] & \mathtt{]} & \downarrow & \mathtt{\backslash{downarrow}} & \urcorner & \mathtt{\backslash{urcorner}} \\
 \hline 
