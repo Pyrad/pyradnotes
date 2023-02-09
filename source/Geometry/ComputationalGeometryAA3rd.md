@@ -2014,12 +2014,15 @@ $$
 
 
 **推理4.14** 令$P$是平面上一个点的集合，令$R$是另一个点的集合（可能为空），它$P$没有交集（即$P \cap R = \emptyset$），令点$p$是集合$P$中的一个点。那么就有以下结论成立：
-- 如果有一个圆包含$P$中所有的点，并且$R$中所有的点都位于这个圆的边界线上，那么这样的最小的圆是唯一的，我们把它记作$md(P, R)$
-- 如果点$p$位于除去它的$P$和$R$的上述最小圆的**内**部（即$p \in md(P\backslash{\{p\}, R})$），那么$md(P, R)$就是$md(P\backslash{\{p\}, R})$，即$md(P, R) = md(P\backslash{\{p\}, R})$
-- 如果点$p$位于除去它的$P$和$R$的上述最小圆的**外**部（即$p \notin md(P\backslash{\{p\}, R})$），那么$md(P, R)$就是$md(P\backslash{\{p\}, R \cup \backslash{\{p\}}})$，即$md(P, R) = md(P\backslash{\{p\}, R \cup \backslash{\{p\}}})$
+- (i) 如果有一个圆包含$P$中所有的点，并且$R$中所有的点都位于这个圆的边界线上，那么这样的最小的圆是唯一的，我们把它记作$md(P, R)$
+- (ii) 如果点$p$位于除去它的$P$和$R$的上述最小圆的**内**部（即$p \in md(P\backslash{\{p\}, R})$），那么$md(P, R)$就是$md(P\backslash{\{p\}, R})$，即$md(P, R) = md(P\backslash{\{p\}, R})$
+- (iii) 如果点$p$位于除去它的$P$和$R$的上述最小圆的**外**部（即$p \notin md(P\backslash{\{p\}, R})$），那么$md(P, R)$就是$md(P\backslash{\{p\}, R \cup \backslash{\{p\}}})$，即$md(P, R) = md(P\backslash{\{p\}, R \cup \backslash{\{p\}}})$
 
+==(图在第95页，页码是88)==
 
+证明：
 
+(i) 
 
 
 
