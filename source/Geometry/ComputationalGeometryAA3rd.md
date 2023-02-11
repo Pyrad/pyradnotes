@@ -2033,6 +2033,37 @@ $$
 
 (iii) **这条结论因为书中描述的关系**，**我认为书中的描述证明并不正确**，**故按照自己的叙述证明如下**。假设$MD(P\backslash{\{p\}}) = md(P\backslash{\{p\}}, R)$的圆心为$x$，半径为$r$（即包含点集$P\backslash{\{p\}}$的最小圆覆盖圆心为$x$，半径为$r$），做$x$和点$p$之间的连线$\overline{xp}$，取$y$为连线$\overline{xp}$上任意一点，即$y = y(\lambda) = (1-\lambda)x + \lambda{p}$，其中$(0 \leqslant \lambda \leqslant 1)$。以$y(\lambda)$为圆心，$r + \overline{xy(\lambda)}$为半径做圆，显然当圆心是$y(0)$，半径是$r + \overline{xy(0)}$时，就是之前的最小圆，$p$位于这个圆的外面。而当圆心是$y(1)$，半径是$r + \overline{xy(1)}$时，这个圆一定包含点$p$（因为圆心就是$p$）。由于连续性，中间必然存在一个值${\lambda}^{\ast}$，使得以$y({\lambda}^{\ast})$为圆心，$r + \overline{xy({\lambda}^{\ast})}$为半径的圆经过点$p$（即点$p$就位于该圆的边界线上）。而这个圆必然包含$P\backslash{\{p\}}$中所有的点，因为该圆的半径是$r + \overline{xy({\lambda}^{\ast})}$，大于$r$。因此当加入点$p$到$P\backslash{\{p\}}$中时，如果$p$位于原先最小圆覆盖的外面，那么新的最小圆覆盖就一定经过$p$，即$MD(P) = md(P, R')$就是$MD(P\backslash{\{p\}}) = md(P\backslash{\{p\}}, \{R \backslash \Delta\} \cup \{p\})$。
 
+**定理4.15** 可以用$O(n)$的时间复杂度和最坏情况下线性的空间复杂度，求解平面上有$n$个点的最小圆覆盖。
+
+> **Theorem** **4.15** The smallest enclosing disc for a set of $n$ points in the plane can be computed in $O(n)$ expected time using worst-case linear storage.
+
+
+证明：
+
+算法$MINIDISCWITH2POINTS$的时间复杂度是$O(n)$，因为循环中的每个步骤都花费的是常数时间，并且是线性空间复杂度。而算法$MINIDISCWITHPOINT$和$MINIDISC$也都花费线性空间复杂度，所以剩下的就是如何确定它们花费的时间复杂度。
+
+对于算法$MINIDISCWITHPOINT$，如果不考虑调用$MINIDISCWITH2POINTS$，那么时间复杂度就是$O(n)$。那么调用$MINIDISCWITH2POINTS$的概率是多少？我们依然使用后验概率来分析。假如固定一个点集$\{p_1, p_2, \dots, p_i\}$，令$D_i$是这个点集$\{p_1, p_2, \dots, p_i\}$的最小圆覆盖，并且有额外的一个点$q$位于其边界线上。如果我们从点集$\{p_1, p_2, \dots, p_i\}$中移除一个点，那么最小圆覆盖如何变化？答案是，如果移除的点是位于最小圆覆盖边界上的**三个点之一**时，最小圆覆盖就会发生变化。
+
+为什么是**三个点**，不是四个点或更多或更少？原因是，三个点就可以确定一个圆的圆心，使得这个圆就能同时经过这三个点，所以不是更少。而如果是四个或更多，那么移除这些点中的任意一个，最小圆覆盖不会发生变化，因为当前的最小圆覆盖依然经过这些点。
+
+因为边界线上已经有一个点是$q$，那么从点集$\{p_1, p_2, \dots, p_i\}$中移除这个点是剩下的两个点的概率就是$2/i$，所以算法$MINIDISCWITHPOINT$的期望运行时间就是
+
+$$
+O(n) + \sum_{i=2}^{n} O(i) \cdot \frac{2}{i} = O(n)
+$$
+
+而使用同样的办法分析，得到算法$MINIDISC$的时间复杂度也是$O(n)$。
+
+
+实际上有不同的方法来提高算法$MINIDISC$的性能。首先，不必在算法$MINIDISCWITHPOINT$中每次都使用一个新的随机排序序列。可以在算法$MINIDISC$的开头，计算出一个随机排序序列，然后把这个随机排序序列当做参数传递给$MINIDISCWITHPOINT$。进一步，可以用一个单一的算法$MINIDISCWITHPOINTS(P, R)$来取代三个不同的算法的结合，就像推理4.14中叙述的那样。
+
+
+
+
+
+
+
+
 
 
 
