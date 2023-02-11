@@ -163,6 +163,9 @@ Published by Springer
 
 **intriguing** /ɪnˈtriːɡɪŋ/ adj.非常有趣的，引人入胜的（intrigue现在分词）
 
+**mishap** /ˈmɪshæp/ *n.* 灾祸；不幸事故；晦气
+
+
 ## Usage
 
 thought experiment
@@ -195,6 +198,9 @@ dot product 点积（注意，不是production）
 
 inequality 不相等
 
+subexponential /sʌbˌekspəˈnenʃl/ *adj.*（增长）越来越快的；指数的，含有指数的
+
+
 > Define the *y*-interval of a segment to be its orthogonal projection onto the *y*-axis.
 > 
 > 把一条线段在 *y* 轴上的正交投影，叫做它的 *y*-interval
@@ -211,19 +217,30 @@ inequality 不相等
 > 
 > 这条横向的扫描线翘起来一点点
 
-> We need an operation that removes the next event that will occur from Q, and returns it so that **it can be treated**.
+> We need an operation that removes the next event that will occur from Q, and returns it so that ***it can be treated***.
 > 
 > 需要一个从队列Q里面删除下个event（point）的操作，并且返回它，以便（对它进行）处理。
 
-> Therefore we model a gallery as a **polygonal region** in the plane.
+> Therefore we model a gallery as a ***polygonal region*** in the plane.
 > 
 > 我们把画廊当做一个二维平面上的多边形
 
-> different orientations of the object **give rise to** different molds.
+> different orientations of the object ***give rise to*** different molds.
 
 > Take the plane spanned by the vectors (we assume both vectors are rooted at the origin)
 > 
 > 由两个向量展开的平面，假设这两个向量从原点出发。
+
+**is/are dual to** 对偶于，对应于，相当于
+
+> The problem ***is dual to*** the computation of the convex hull of points in the plane.
+> 
+> 这个问题**相当于**在平面上计算凸包的点。 
+
+
+**intensive care station** 重症监护站
+
+
 
 ## Names
 
@@ -1240,6 +1257,8 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 
 [MathJax的基本使用](https://www.cnblogs.com/mqingqing123/p/12711372.html)
 
+
+
 ## 4 Linear Programming - Manufacturing with Molds
 
 本章引言部分通过塑料或铁器（合金）的铸造，引出了本章需要探讨的话题：对一个给定的铸件（casting），是否存在这样的模具（mold）使得铸件能够从中移出？
@@ -2058,11 +2077,32 @@ $$
 实际上有不同的方法来提高算法$MINIDISC$的性能。首先，不必在算法$MINIDISCWITHPOINT$中每次都使用一个新的随机排序序列。可以在算法$MINIDISC$的开头，计算出一个随机排序序列，然后把这个随机排序序列当做参数传递给$MINIDISCWITHPOINT$。进一步，可以用一个单一的算法$MINIDISCWITHPOINTS(P, R)$来取代三个不同的算法的结合，就像推理4.14中叙述的那样。
 
 
+### 4.8 Notes and Comments
+
+本章通过引出一个铸造问题而学习了一种对应的算法难题。而制造过程中的其他问题也引出了其他各类算法难题。在过去的几十年里，计算几何对这些问题进行了研究。著有书籍的有Dutta等人。Janardan & Woo和Bose & Toussaint进行了相应的调研。
+
+计算半平面相交的问题是一个由来已久又被充分研究的问题。在第11章中会讲到，这个问题**相当于**在平面上计算凸包的点。在计算几何领域里，这个问题有很长的历史，Preparata & Shamos列出了许多的解决方案。在第一章里，讲述了更多关于在二维平面上计算凸包的内容。
+
+在二维平面上或三维空间里，计算半平面或半空间的可以在时间复杂度$O(nlogn)$内完成。但当维数变高之后，这就变成了一个需要算力的问题。原因是，一般情况下，（低维）多面体之间产生的交（集）的面（faces）可能高达$\Theta(n^{\lfloor{d/2}\rfloor})$。所以，如果目标仅仅是只寻找一个可行点（feasible point），那么显式地计算（多面体的）交（集）就不是很有吸引力的办法了。
+
+线性规划是数值分析和组合分析中的基本问题，而调研这一领域的内容就超过了本章的范围，我们在本章也只提到了单纯形算法（simplex algorithm）和它的变种，以及Khachiyan和Karmarkar给出的多项式时间复杂度的解法。关于线性规划，更多的内容可以参考Chvatal和Schrijver的书籍。
+
+Megiddo是第一个把线性规划当做是计算几何中问题来对待的，他说明了检查半空间的交集是否为空，要比计算交集要简单很多。对于线性规划，他给出了第一个确定性的算法，时间复杂度是$O(C_dn)$，$C_d$是一个只和维度有关的因子。他的这个算法对于任意给定的维度，都是$n$的线性复杂度。实际上，在他算法中$C_d = 2^{2^d}$，后来有改进到$C_d = 3^{d^2}$。最近出现了一些更简单实际的随机算法。有许多随机算法的时间复杂度是**亚指数增长的**（***subexponential***），但依旧不是关于维度的多项式时间。寻找一个严格的多项式时间的算法（组合多项式复杂度的），仍旧是线性规划领域中一个主要的待解决的开放课题。
+
+本章给出的二维或更高维度的简单随机增量式算法，源自Seidel。和本章中讲述的不同的是，他在处理无界的线性规划程序时，用符号代替了本章中的因子$M$。这也许更有效和优雅，而且可以显示无界的$d$维线性规划程序和$d-1$维的可行线性规划程序之间的关系。在Seidel的版本中，因子$C_d$是$O(d!)$。
 
 
+计算最小圆覆盖的一般化算法源自Welzl。他同时也说明了如何在高维空间里找到一个点集的最小覆盖球（smallest enclosing ball），或者最小覆盖椭圆（ellipse），或者最小覆盖椭圆体（ellipsoid）。
 
 
+进一步，Sharir和Welzl总结了相关的技术，并提出了$LP-type$问题，这些问题可以使用【189】和【354】中提到的算法解决。一般来说，这种技术适用于这样的优化问题：当一个新的约束加入时，解决方案不变，或者新的约束部分定义了解决方案而使得算法的维度有所降低。同时，也显示$LP-type$问题的某些特性，引出了所谓的$Helly-type$定理。
 
+随机化通常是一种使得算法能够变简单和有效的技术。后面的章节里会遇到更多。（使用了这种技术后）我们付出的代价是运行时间就是一个期望值，就像我们观察到的一样，某些情况下，算法的运行时间会更长。由于这个原因，有些人认为随机算法是不可靠的，并且不应该被使用。比如在核电站中或重症监护站（intensive care station）中使用的计算机。
+
+另一方面，确定性的算法只有在理论上是完美的。在实际当中，任何稍微复杂一点的程序都可能包含bug，哪怕我们忽略这一点，也会有硬件故障或软件错误的风险，比如核心内存中单个比特在$\alpha$射线的影响下发生翻转错误。而由于随机化算法通常更简单，并且代码更少，那么产生这种不幸情况的可能就更少。因此，在要求的时间里，随机化算法无法计算出正确答案的概率，通常不比确定性算法失败的可能性更大。此外，通常我们允许一个较大的期望运行时间，以此来降低随机化算法的运行时间超过运行时间的概率。
+
+
+### 4.9 Exercises
 
 
 
