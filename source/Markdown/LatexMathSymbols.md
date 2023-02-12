@@ -409,3 +409,103 @@ $$
 \end{array}
 $$
 
+## Arrow symbols
+
+$$
+\begin{array}{ll|ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} &
+\mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\leftarrow & \mathtt{\backslash{leftarrow}} &
+\longleftarrow & \mathtt{\backslash{longleftarrow}} &
+\uparrow & \mathtt{\backslash{uparrow}} \\
+\Leftarrow & \mathtt{\backslash{Leftarrow}} &
+\Longleftarrow & \mathtt{\backslash{Longleftarrow}} &
+\Uparrow & \mathtt{\backslash{Uparrow}} \\
+\rightarrow & \mathtt{\backslash{rightarrow}} &
+\longrightarrow & \mathtt{\backslash{longrightarrow}} &
+\downarrow & \mathtt{\backslash{downarrow}} \\
+\Rightarrow & \mathtt{\backslash{Rightarrow}} &
+\Longrightarrow & \mathtt{\backslash{Longrightarrow}} &
+\Downarrow & \mathtt{\backslash{Downarrow}} \\
+\leftrightarrow & \mathtt{\backslash{leftrightarrow}} &
+\longleftrightarrow & \mathtt{\backslash{longleftrightarrow}} &
+\updownarrow & \mathtt{\backslash{updownarrow}} \\
+\Leftrightarrow & \mathtt{\backslash{Leftrightarrow}} &
+\Longleftrightarrow & \mathtt{\backslash{Longleftrightarrow}} &
+\Updownarrow & \mathtt{\backslash{Updownarrow}} \\
+\hline
+\end{array}
+$$
+
+$$
+\begin{array}{ll|ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} &
+\mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\mapsto & \mathtt{\backslash{mapsto}} &
+\longmapsto & \mathtt{\backslash{longmapsto}} &
+\nearrow & \mathtt{\backslash{nearrow}} \\
+\hookleftarrow & \mathtt{\backslash{hookleftarrow}} &
+\hookrightarrow & \mathtt{\backslash{hookrightarrow}} &
+\searrow & \mathtt{\backslash{searrow}} \\
+\leftharpoonup & \mathtt{\backslash{leftharpoonup}} &
+\rightharpoonup & \mathtt{\backslash{rightharpoonup}} &
+\swarrow & \mathtt{\backslash{swarrow}} \\
+\leftharpoondown & \mathtt{\backslash{leftharpoondown}} &
+\rightharpoondown & \mathtt{\backslash{rightharpoondown}} &
+\nwarrow & \mathtt{\backslash{nwarrow}} \\
+\rightleftharpoons & \mathtt{\backslash{rightleftharpoons}} &
+\leadsto & \mathtt{\backslash{leadsto}} \\
+\hline
+\end{array}
+$$
+
+$$
+\begin{array}{ll|ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} &
+\mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\dashrightarrow & \mathtt{\backslash{dashrightarrow}} &
+\dashleftarrow & \mathtt{\backslash{dashleftarrow}} &
+\leftleftarrows & \mathtt{\backslash{leftleftarrows}} \\
+\leftrightarrows & \mathtt{\backslash{leftrightarrows}} &
+\Lleftarrow & \mathtt{\backslash{Lleftarrow}} &
+\twoheadleftarrow & \mathtt{\backslash{twoheadleftarrow}} \\
+\leftarrowtail & \mathtt{\backslash{leftarrowtail}} &
+\looparrowleft & \mathtt{\backslash{looparrowleft}} &
+\leftrightharpoons & \mathtt{\backslash{leftrightharpoons}} \\
+\curvearrowleft & \mathtt{\backslash{curvearrowleft}} &
+\circlearrowleft & \mathtt{\backslash{circlearrowleft}} &
+\Lsh & \mathtt{\backslash{Lsh}} \\
+\upuparrows & \mathtt{\backslash{upuparrows}} &
+\upharpoonleft & \mathtt{\backslash{upharpoonleft}} &
+\downharpoonleft & \mathtt{\backslash{downharpoonleft}} \\
+\multimap & \mathtt{\backslash{multimap}} &
+\leftrightsquigarrow & \mathtt{\backslash{leftrightsquigarrow}} &
+\rightrightarrows & \mathtt{\backslash{rightrightarrows}} \\
+\rightleftarrows & \mathtt{\backslash{rightleftarrows}} &
+\rightrightarrows & \mathtt{\backslash{rightrightarrows}} &
+\rightleftarrows & \mathtt{\backslash{rightleftarrows}} \\
+\twoheadrightarrow & \mathtt{\backslash{twoheadrightarrow}} &
+\rightarrowtail & \mathtt{\backslash{rightarrowtail}} &
+\looparrowright & \mathtt{\backslash{looparrowright}} \\
+\rightleftharpoons & \mathtt{\backslash{rightleftharpoons}} &
+\curvearrowright & \mathtt{\backslash{curvearrowright}} &
+\circlearrowright & \mathtt{\backslash{circlearrowright}} \\
+\Rsh & \mathtt{\backslash{Rsh}} &
+\downdownarrows & \mathtt{\backslash{downdownarrows}} &
+\upharpoonright & \mathtt{\backslash{upharpoonright}} \\
+\downharpoonright & \mathtt{\backslash{downharpoonright}} &
+\rightsquigarrow & \mathtt{\backslash{rightsquigarrow}} \\
+\hline
+\end{array}
+$$
+
+
+
+
+
