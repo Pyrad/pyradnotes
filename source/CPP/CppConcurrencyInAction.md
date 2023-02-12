@@ -1,0 +1,6 @@
+# C++ Concurrency in Action
+
+PRACTICAL MULTITHREADING
+
+ANTHONY WILLIAMS
+

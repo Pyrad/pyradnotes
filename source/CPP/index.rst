@@ -9,3 +9,4 @@ C/C++
     SmartPointers.md
     LvalueRvalue
     ReadingMinutesEffectiveModernCPP
+    CppConcurrencyInAction.md
