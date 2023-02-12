@@ -219,7 +219,193 @@ $$
 \end{array}
 $$
 
+$$
+\begin{array}{ll|ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} &
+\mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\equiv & \mathtt{\backslash{equiv}} &
+\leq & \mathtt{\backslash{leq}} &
+\geq & \mathtt{\backslash{geq}} \\
+\cong & \mathtt{\backslash{cong}} &
+\prec & \mathtt{\backslash{prec}} &
+\succ & \mathtt{\backslash{succ}} \\
+\neq & \mathtt{\backslash{neq}} &
+\preceq & \mathtt{\backslash{preceq}} &
+\succeq & \mathtt{\backslash{succeq}} \\
+\sim & \mathtt{\backslash{sim}} &
+\ll & \mathtt{\backslash{ll}} &
+\gg & \mathtt{\backslash{gg}} \\
+\simeq & \mathtt{\backslash{simeq}} &
+\subset & \mathtt{\backslash{subset}} &
+\supset & \mathtt{\backslash{supset}} \\
+\approx & \mathtt{\backslash{approx}} &
+\subseteq & \mathtt{\backslash{subseteq}} &
+\supseteq & \mathtt{\backslash{supseteq}} \\
+\asymp & \mathtt{\backslash{asymp}} &
+\sqsubset & \mathtt{\backslash{sqsubset}} &
+\sqsupset & \mathtt{\backslash{sqsupset}} \\
+\doteq & \mathtt{\backslash{doteq}} &
+\sqsubseteq & \mathtt{\backslash{sqsubseteq}} &
+\sqsupseteq & \mathtt{\backslash{sqsupseteq}} \\
+\propto & \mathtt{\backslash{propto}} &
+\dashv & \mathtt{\backslash{dashv}} &
+\vdash & \mathtt{\backslash{vdash}} \\
+\models & \mathtt{\backslash{models}} &
+\in & \mathtt{\backslash{in}} &
+\ni & \mathtt{\backslash{ni}} \\
+\perp & \mathtt{\backslash{perp}} &
+\mid & \mathtt{\backslash{mid}} &
+\parallel & \mathtt{\backslash{parallel}} \\
+\bowtie & \mathtt{\backslash{bowtie}} &
+\Join & \mathtt{\backslash{Join}} &
+\ltimes & \mathtt{\backslash{ltimes}} \\
+\rtimes & \mathtt{\backslash{rtimes}} &
+\smile & \mathtt{\backslash{smile}} &
+\frown & \mathtt{\backslash{frown}} \\
+\notin & \mathtt{\backslash{notin}} \\
+\hline
+\end{array}
 
+$$
 
+$$
+\begin{array}{ll|ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} &
+\mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\approxeq & \mathtt{\backslash{approxeq}} &
+\leqq & \mathtt{\backslash{leqq}} &
+\geqq & \mathtt{\backslash{geqq}} \\
+\thicksim & \mathtt{\backslash{thicksim}} &
+\leqslant & \mathtt{\backslash{leqslant}} &
+\geqslant & \mathtt{\backslash{geqslant}} \\
+\backsim & \mathtt{\backslash{backsim}} &
+\lessapprox & \mathtt{\backslash{lessapprox}} &
+\gtrapprox & \mathtt{\backslash{gtrapprox}} \\
+\backsimeq & \mathtt{\backslash{backsimeq}} &
+\lll & \mathtt{\backslash{lll}} &
+\ggg & \mathtt{\backslash{ggg}} \\
+\triangleq & \mathtt{\backslash{triangleq}} &
+\lessdot & \mathtt{\backslash{lessdot}} &
+\gtrdot & \mathtt{\backslash{gtrdot}} \\
+\circeq & \mathtt{\backslash{circeq}} &
+\lesssim & \mathtt{\backslash{lesssim}} &
+\gtrsim & \mathtt{\backslash{gtrsim}} \\
+\bumpeq & \mathtt{\backslash{bumpeq}} &
+\eqslantless & \mathtt{\backslash{eqslantless}} &
+\eqslantgtr & \mathtt{\backslash{eqslantgtr}} \\
+\Bumpeq & \mathtt{\backslash{Bumpeq}} &
+\precsim & \mathtt{\backslash{precsim}} &
+\succsim & \mathtt{\backslash{succsim}} \\
+\doteqdot & \mathtt{\backslash{doteqdot}} &
+\precapprox & \mathtt{\backslash{precapprox}} &
+\succapprox & \mathtt{\backslash{succapprox}} \\
+\thickapprox & \mathtt{\backslash{thickapprox}} &
+\Subset & \mathtt{\backslash{Subset}} &
+\Supset & \mathtt{\backslash{Supset}} \\
+\fallingdotseq & \mathtt{\backslash{fallingdotseq}} &
+\subseteqq & \mathtt{\backslash{subseteqq}} &
+\supseteqq & \mathtt{\backslash{supseteqq}} \\
+\risingdotseq & \mathtt{\backslash{risingdotseq}} &
+\sqsubset & \mathtt{\backslash{sqsubset}} &
+\sqsupset & \mathtt{\backslash{sqsupset}} \\
+\varpropto & \mathtt{\backslash{varpropto}} &
+\preccurlyeq & \mathtt{\backslash{preccurlyeq}} &
+\succcurlyeq & \mathtt{\backslash{succcurlyeq}} \\
+\therefore & \mathtt{\backslash{therefore}} &
+\curlyeqprec & \mathtt{\backslash{curlyeqprec}} &
+\curlyeqsucc & \mathtt{\backslash{curlyeqsucc}} \\
+\because & \mathtt{\backslash{because}} &
+\blacktriangleleft & \mathtt{\backslash{blacktriangleleft}} &
+\blacktriangleright & \mathtt{\backslash{blacktriangleright}} \\
+\eqcirc & \mathtt{\backslash{eqcirc}} &
+\trianglelefteq & \mathtt{\backslash{trianglelefteq}} &
+\trianglerighteq & \mathtt{\backslash{trianglerighteq}} \\
+\neq & \mathtt{\backslash{neq}} &
+\vartriangleleft & \mathtt{\backslash{vartriangleleft}} &
+\vartriangleright & \mathtt{\backslash{vartriangleright}} \\
+\lessgtr & \mathtt{\backslash{lessgtr}} &
+\lesseqgtr & \mathtt{\backslash{lesseqgtr}} &
+\lesseqqgtr & \mathtt{\backslash{lesseqqgtr}} \\
+\gtreqqless & \mathtt{\backslash{gtreqqless}} &
+\gtreqless & \mathtt{\backslash{gtreqless}} &
+\gtrless & \mathtt{\backslash{gtrless}} \\
+\backepsilon & \mathtt{\backslash{backepsilon}} &
+\between & \mathtt{\backslash{between}} &
+\pitchfork & \mathtt{\backslash{pitchfork}} \\
+\shortmid & \mathtt{\backslash{shortmid}} &
+\smallfrown & \mathtt{\backslash{smallfrown}} &
+\smallsmile & \mathtt{\backslash{smallsmile}} \\
+\Vdash & \mathtt{\backslash{Vdash}} &
+\vDash & \mathtt{\backslash{vDash}} &
+\Vvdash & \mathtt{\backslash{Vvdash}} \\
+\shortparallel & \mathtt{\backslash{shortparallel}} &
+\nshortparallel & \mathtt{\backslash{nshortparallel}} \\
+\hline
+\end{array}
+$$
 
+$$
+\begin{array}{ll|ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} &
+\mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\ncong & \mathtt{\backslash{ncong}} &
+\nleq & \mathtt{\backslash{nleq}} &
+\ngeq & \mathtt{\backslash{ngeq}} \\
+\nsubseteq & \mathtt{\backslash{nsubseteq}} &
+\nmid & \mathtt{\backslash{nmid}} &
+\nleqq & \mathtt{\backslash{nleqq}} \\
+\ngeqq & \mathtt{\backslash{ngeqq}} &
+\nsupseteq & \mathtt{\backslash{nsupseteq}} &
+\nparallel & \mathtt{\backslash{nparallel}} \\
+\nleqslant & \mathtt{\backslash{nleqslant}} &
+\ngeqslant & \mathtt{\backslash{ngeqslant}} &
+\nsubseteqq & \mathtt{\backslash{nsubseteqq}} \\
+\nshortmid & \mathtt{\backslash{nshortmid}} &
+\nless & \mathtt{\backslash{nless}} &
+\ngtr & \mathtt{\backslash{ngtr}} \\
+\nsupseteqq & \mathtt{\backslash{nsupseteqq}} &
+\nshortparallel & \mathtt{\backslash{nshortparallel}} &
+\nprec & \mathtt{\backslash{nprec}} \\
+\nsucc & \mathtt{\backslash{nsucc}} &
+\subsetneq & \mathtt{\backslash{subsetneq}} &
+\nsim & \mathtt{\backslash{nsim}} \\
+\npreceq & \mathtt{\backslash{npreceq}} &
+\nsucceq & \mathtt{\backslash{nsucceq}} &
+\supsetneq & \mathtt{\backslash{supsetneq}} \\
+\nVDash & \mathtt{\backslash{nVDash}} &
+\precnapprox & \mathtt{\backslash{precnapprox}} &
+\succnapprox & \mathtt{\backslash{succnapprox}} \\
+\subsetneqq & \mathtt{\backslash{subsetneqq}} &
+\nvDash & \mathtt{\backslash{nvDash}} &
+\precnsim & \mathtt{\backslash{precnsim}} \\
+\succnsim & \mathtt{\backslash{succnsim}} &
+\supsetneqq & \mathtt{\backslash{supsetneqq}} &
+\nvdash & \mathtt{\backslash{nvdash}} \\
+\lnapprox & \mathtt{\backslash{lnapprox}} &
+\gnapprox & \mathtt{\backslash{gnapprox}} &
+\varsubsetneq & \mathtt{\backslash{varsubsetneq}} \\
+\ntriangleleft & \mathtt{\backslash{ntriangleleft}} &
+\lneq & \mathtt{\backslash{lneq}} &
+\gneq & \mathtt{\backslash{gneq}} \\
+\varsupsetneq & \mathtt{\backslash{varsupsetneq}} &
+\ntrianglelefteq & \mathtt{\backslash{ntrianglelefteq}} &
+\lneqq & \mathtt{\backslash{lneqq}} \\
+\gneqq & \mathtt{\backslash{gneqq}} &
+\varsubsetneqq & \mathtt{\backslash{varsubsetneqq}} &
+\ntriangleright & \mathtt{\backslash{ntriangleright}} \\
+\lnsim & \mathtt{\backslash{lnsim}} &
+\gnsim & \mathtt{\backslash{gnsim}} &
+\varsupsetneqq & \mathtt{\backslash{varsupsetneqq}} \\
+\ntrianglerighteq & \mathtt{\backslash{ntrianglerighteq}} &
+\lvertneqq & \mathtt{\backslash{lvertneqq}} &
+\gvertneqq & \mathtt{\backslash{gvertneqq}} \\
+\hline
+\end{array}
+$$
 
