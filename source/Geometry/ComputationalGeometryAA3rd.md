@@ -165,6 +165,8 @@ Published by Springer
 
 **mishap** /ˈmɪshæp/ *n.* 灾祸；不幸事故；晦气
 
+**formulate** /ˈfɔːmjuleɪt/ *v.* 制定，规划；确切表达，认真阐述；用公式表示
+
 
 ## Usage
 
@@ -241,6 +243,10 @@ subexponential /sʌbˌekspəˈnenʃl/ *adj.*（增长）越来越快的；指数
 **intensive care station** 重症监护站
 
 
+**an axis-parallel rectangle** 和坐标轴平行的矩形
+
+> We want to report all the points inside **an axis-parallel query rectangle**
+
 
 ## Names
 
@@ -259,14 +265,19 @@ subexponential /sʌbˌekspəˈnenʃl/ *adj.*（增长）越来越快的；指数
   - Monotone polygon
 
 - Chapter 4
-  
-  - Linear optimization (linear programming，就是线性规划)
-  - Simplex Algorithm (运筹学中的单纯形算法，in operations research area)
-  - Low-dimensional linear programming problems
-  - expected running time 期望运行时间（即n个运行时间的数学期望）
-  - Linearity of expectation
-  - Backward analysis
-  - Smallest Enclosing Disc 最小圆覆盖（最小包围圆）
+	- Linear optimization (linear programming，就是线性规划)
+	- Simplex Algorithm (运筹学中的单纯形算法，in operations research area)
+	- Low-dimensional linear programming problems
+	- expected running time 期望运行时间（即n个运行时间的数学期望）
+	- Linearity of expectation
+	- Backward analysis
+	- Smallest Enclosing Disc 最小圆覆盖（最小包围圆）
+
+- Chapter 5
+	- Rectangular Range Query （Orthogonal Range Query）矩形区域查询，或正交区域查询
+
+
+
 
 ## Maths
 
