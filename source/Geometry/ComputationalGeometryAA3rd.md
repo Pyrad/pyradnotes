@@ -2157,3 +2157,23 @@ $\omega$ ：非渐近紧确上界，表示下界（not tight），即明确大�
 [线性规划简介（一） - 知乎](https://zhuanlan.zhihu.com/p/509030805)
 
 [线性规划简介（一） - 知乎](https://zhuanlan.zhihu.com/p/509030805)
+
+
+
+
+## 5 Orthogonal Range Searching - Querying a Database
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
