@@ -396,3 +396,10 @@ endif
 
 [Detect OS in Vimscript](https://vi.stackexchange.com/questions/2572/detect-os-in-vimscript)
 
+
+## Copy/Yank a single character
+
+拷贝单个字符的操作：`yl`
+
+
+
