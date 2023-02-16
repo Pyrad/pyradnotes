@@ -55,6 +55,9 @@ Published by Springer
 
 [*Handbook of Discrete and Computational Geometry, 3rd Edition, Online Page*](https://www.csun.edu/~ctoth/Handbook/HDCG3.html)
 
+[计算几何有何经典书籍? - 王boy的回答 - 知乎](https://www.zhihu.com/question/54096120/answer/224461459)
+
+
 ## Words
 
 **asymptote** */ˈæsɪmˌtoʊt/* *n.* [数] 渐近线
