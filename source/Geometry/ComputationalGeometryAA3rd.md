@@ -2300,7 +2300,7 @@ $\omega$ ：非渐近紧确上界，表示下界（not tight），即明确大�
 ## 5 Orthogonal Range Searching - Querying a Database
 
 
-
+参考文章：[范围搜索 (Range Query)](https://blog.csdn.net/wjl84945979/article/details/65441869)
 
 
 
