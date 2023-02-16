@@ -2302,6 +2302,9 @@ $\omega$ ：非渐近紧确上界，表示下界（not tight），即明确大�
 
 参考文章：[范围搜索 (Range Query)](https://blog.csdn.net/wjl84945979/article/details/65441869)
 
+[邓俊辉主页](https://dsa.cs.tsinghua.edu.cn/~deng/cg/index.htm#TOP)
+
+
 
 
 
