@@ -78,6 +78,9 @@ Vocabulary  (reStructuredtext)
     * - **egregious**
       - /ɪˈɡriːdʒiəs/
       - *adj.* 惊人的；过分的；恶名昭彰的
+    * - **outskirts**
+      - ˈaʊtskɜːts/
+      - *n.* 市郊，郊区（outskirt的复数形式）
 
 
 I have a bridge to sell you（表示相信一个人是非常容易被欺骗）
