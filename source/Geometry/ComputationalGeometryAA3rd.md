@@ -170,6 +170,12 @@ Published by Springer
 
 **formulate** /ˈfɔːmjuleɪt/ *v.* 制定，规划；确切表达，认真阐述；用公式表示
 
+**subsume** /səbˈsjuːm/ *vt.* 把……归入；把……包括在内
+
+
+
+
+
 
 ## Usage
 
@@ -1371,11 +1377,11 @@ Aggarwal，Lee和Lin说明了对一个给定的简单多边形，找到守卫最
 > Iterated logarithm or $log^*(n)$, is the number of times the logarithm function must be iteratively applied before the result is less than or equal to 1.
 > 
 > $$
-> log^*(n) := \left\{\begin{matrix} 
+log^*(n) := \left\{\begin{matrix} 
 0, n \le 1 \\ 
 1 + log^*(log(n)) , n \gt 1
 \end{matrix}\right.
-> $$
+$$
 
 这些算法不仅比 $O(nloglogn)$ 的算法稍快，而且更简单。其中Seidel的算法更和本书第6章提到的构建平面细分的梯形划分紧密相关。但这些算法仍然不是对简单多边形三角划分的线性算法。
 
@@ -2443,10 +2449,25 @@ $$
 - 返回节点$\nu$。
 
 
-这里的约定是，如果一个点位于垂直或水平分割线上，就把它归于垂直分割线的左边，或水平分割线的下方。垂直或水平分割线实际上就是$x$或$y$坐标的中间值（median）。所以$n$个数的中间数是就是第$\lceil n/2 \rceil$小的数，即向下取整。
+这里的约定是，如果一个点位于垂直或水平分割线上，就把它归于垂直分割线的左边，或水平分割线的下方。垂直或水平分割线实际上就是$x$或$y$坐标的中间值（median）。所以$n$个数的中间数是就是第$\lceil n/2 \rceil$小的数，即**向下取整**。
 
+在建造KD-tree的过程中，最耗时的步骤是用来寻找分割线的递归调用。它根据`depth`的值是偶数还是奇数，从而决定分割线应该是垂直还是水平，进而决定寻找的是$x$坐标的中间数（median）还是$y$坐标的中间数。寻找这样中间数的线性时间算法比较复杂，而把点集按照$x$坐标和$y$坐标分别排序，然后把这两个列表当做两个参数传递，就是更好的办法。这样不仅容易查找$x$或$y$坐标的中间数，还能以线性时间，基于给定的两个点的列表再构建排序列表，继而给递归调用使用。
 
+所以构建树的时间复杂度是
 
+$$
+T(n) = \left\{ \begin{array}{lcl}
+O(1), & \mathrm{if} & n = 1 \\
+O(n) + 2 T(\lceil n/2 \rceil), & \mathrm{if} & n > 1 \\
+\end{array}\right.
+$$
+所以时间复杂度最终是$O(n\log{n})$，它也包含了把点按$x$和$y$坐标预排序所花费的时间。
+
+对于空间复杂度，KD-tree的每个叶子节点存储的是独一无二的点，所以共有$n$个叶子。而KD-tree也是二叉树，所以中间节点和叶子节点也花费同样的存储空间。所以最终的空间复杂度就是$O(n)$。
+
+**引理5.3** 对$n$个点的点集构建一个KD-tree，时间复杂度是$O(n\log{n})$，空间复杂度是$O(n)$。
+
+> Lemma 5.3 A kd-tree for a set of n points uses $O(n)$ storage and can be constructed in $O(n\log{n})$ time.
 
 
 
