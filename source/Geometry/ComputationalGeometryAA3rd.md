@@ -1376,7 +1376,8 @@ Aggarwal，Lee和Lin说明了对一个给定的简单多边形，找到守卫最
 
 > Iterated logarithm or $log^*(n)$, is the number of times the logarithm function must be iteratively applied before the result is less than or equal to 1.
 > 
-> $$
+
+$$
 log^*(n) := \left\{\begin{matrix} 
 0, n \le 1 \\ 
 1 + log^*(log(n)) , n \gt 1
