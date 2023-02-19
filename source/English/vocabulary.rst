@@ -79,8 +79,21 @@ Vocabulary  (reStructuredtext)
       - /ɪˈɡriːdʒiəs/
       - *adj.* 惊人的；过分的；恶名昭彰的
     * - **outskirts**
-      - ˈaʊtskɜːts/
+      - /ˈaʊtskɜːts/
       - *n.* 市郊，郊区（outskirt的复数形式）
+    * - **outhouse**
+      - /ˈaʊthaʊs/
+      - *n.* 屋外厕所；附属建筑物；外屋
+    * - **tap water**
+      - n/a
+      - *n.* 自来水
+    * - **endure hardship**
+      - n/a
+      - *n.* 忍受困难
+    * - **unfazed**
+      - /ʌnˈfeɪzd/
+      - *adj.* 不苦恼的
+
 
 
 I have a bridge to sell you（表示相信一个人是非常容易被欺骗）
