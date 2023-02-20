@@ -172,7 +172,7 @@ Published by Springer
 
 **subsume** /səbˈsjuːm/ *vt.* 把……归入；把……包括在内
 
-
+**canonical** /kəˈnɒnɪk(ə)l/ *adj.* 根据教规的，标准的，典范的；（canonical subset 正则子集）
 
 
 
@@ -286,6 +286,7 @@ subexponential /sʌbˌekspəˈnenʃl/ *adj.*（增长）越来越快的；指数
 
 - Chapter 5
 	- **Rectangular Range Query** （**Orthogonal Range Query**）矩形区域查询，或正交区域查询
+	- **Canonical subset** 正则子集
 
 
 
