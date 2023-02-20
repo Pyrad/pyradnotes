@@ -419,7 +419,35 @@ ps --no-headers -eo user,rss | grep longc | \
 ```
 
 
+## Linux rename multiple files
 
+Use command `rename`
+
+For example, if there a few files below,
+
+```shell
+myDbgFile_a.txt
+myDbgFile_b.txt
+myDbgFile_c.txt
+```
+
+If I'd like to change the name from "my" to "myTest" in each file name, I can use the following
+
+```shell
+rename my myTest *.txt
+```
+
+Here the 1st option `my` is the pattern I'd like to replace, and the 2nd option `myTest` is the string after replacement.
+
+The 3rd option specifies the files waiting for replacement.
+
+So after replacement, file names are,
+
+```shell
+myTestDbgFile_a.txt
+myTestDbgFile_b.txt
+myTestDbgFile_c.txt
+```
 
 
 
