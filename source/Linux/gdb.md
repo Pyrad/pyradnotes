@@ -192,3 +192,33 @@ gdb -q
 gdb <program_name> <core_dump_file>
 ```
 
+## GDB uses a file as interactive input
+
+If a program asks for user's input after launched, the user's input can be written into a file, and let `gdb` read that file as user's input, thus interactive input in `gdb` can be avoided.
+
+For example, when running `corexec`, it might ask for user's confirmation and then continue,
+
+```shell
+If you wish to ignore this warning, type Y.
+Typing anything else will terminate.
+>
+```
+
+
+In this circumstances, you can type `Y`, and then hit `Enter` key to let it continue.
+
+```shell
+If you wish to ignore this warning, type Y.
+Typing anything else will terminate.
+> Y
+```
+
+But if the binary is attached into `gdb`, and then it asks for user's input. But there's no way to type that as `gdb` session doesn't know how to read it from `stdin`.
+
+So write `Y` to a file (for example, `gdbStdin.in`), and start `gdb` as below,
+
+```shell
+corexec simp1_PBCSIMPLE_NDF.pjx 331 331 -color 1 -no_output < ./gdbStdin.in
+```
+
+
