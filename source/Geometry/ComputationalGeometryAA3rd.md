@@ -287,6 +287,7 @@ subexponential /sʌbˌekspəˈnenʃl/ *adj.*（增长）越来越快的；指数
 - Chapter 5
 	- **Rectangular Range Query** （**Orthogonal Range Query**）矩形区域查询，或正交区域查询
 	- **Canonical subset** 正则子集
+	- **Fractional cascading** **分散层叠**
 
 
 
@@ -2611,6 +2612,8 @@ $$
 
 只有通往一个叶子节点$p$（$p$也是集合$P$中的点）路径上的每个节点，才会在对应的联合结构里面存储点$p$。所以树$\mathcal{T}$中每层上的所有节点中，只会有一个节点对应的联合结构中存储了点$p$。而由于一维区域树使用的是线性空间，所以树树$\mathcal{T}$中任意深度上一层所有节点，空间复杂度都是$O(n)$。整个树的深度是$O(\log{n})$，所以二者相乘是$O(n\log{n})$。因此整个树$\mathcal{T}$的空间复杂度就是$O(n\log{n})$。
 
+==（总共有$O(n\log{n})$个联合结构存储了$p$的示意图在114页，页码是108）==
+
 上述算法的描述，并不能得到构建树的最优时间复杂度是$O(n\log{n})$（但实际可以达到）。为了证明这一点，要小心研究。如果以未排序的$n$个点的键值来构建二叉搜索树，时间复杂度就已经是$O(n\log{n})$了，那么算法中仅每次递归调用中构建二叉搜索树$\mathcal{T}_{assoc}$就占用了$O(n\log{n})$的时间。但如果$P$中的点已经是按照其$y$坐标预先排序的，那么按照自底向上的办法构建就只会花费线性时间。所以构建过程中，维护两个列表，分别是基于$x$坐标和$y$左边的$P$中点的排序。这样的话，花费在主树$\mathcal{T}$中的每个节点上的时间，就是线性正比于其正则子集的规模。这说明总的构造时间复杂度就和空间复杂度相同，即$O(n\log{n})$。由于预排序也花费$O(n\log{n})$的时间，所以最终总的构建时间就是$O(n\log{n})$。
 
 对于查询算法，首先会选择到$O(\log{n})$个正则子集（原因就是沿着通往查询下限$x$或上限$x'$的路径上有$O(n\log{n})$个节点），它们的$x$坐标位于$[x:x']$区间中。然后，再在这些子集中，报告$y$坐标位于$[y:y']$区间中的点。之后，再在每个存储了正则子集的联合结构（也是二叉搜索树）上，应用之前的一维查询算法$1DRangeQuery$。唯一不同的是，子函数$ReportSubtree$被替换为$1DRangeQuery$。
@@ -2648,10 +2651,29 @@ $$
 	- （此时$\nu$是叶子节点了）检查$\nu$对应的点是否应该被报告
 
 
+**引理5.7** 对存有$n$个点的二维区域树，按照和坐标轴平行的矩形区域查询，时间复杂度是$O(\log^2n + k)$，这里$k$是最终报告的点的个数。
 
+> A query with an axis-parallel rectangle in a range tree storing $n$ points takes $O(\log^2n + k)$ time, where $k$ is the number of reported points.
 
+证明：
 
+树中每层花费常数时间判断搜索路径的走向，然后有可能调用$1DRangeQuery$。根据引理5.2，这个单独的递归调用时间复杂度就是$O(\log{n} + k_{\nu})$，$k_{\nu}$是对应路径上某个节点的正则子集中所报告的点的个数。所以最终花费的时间是搜索路径上每个节点$\nu$花费的时间的总和：
 
+$$
+\sum_{\nu}O(\log{n} + k_{\nu})
+$$
+
+这里显然有$\sum_{\nu}k_{\nu}$就是$k$（因为就报告的点的总个数，就等于在那些节点$\nu$中报告的点的个数之和）。而通向$x$或$x'$的路径深度就是$O(\log{n})$，所以$\sum_{\nu}O(\log{n})$就是$O(\log{n}) \times O(\log{n})$，即$O(\log^2n)$。
+
+所以最终的查询时间复杂度就是$O(\log^2n + k)$。
+
+综上所述，有如下定理。
+
+**定理5.8** 记$P$是二维平面上有$n$个点的集合，它对应的区域树，可以用$O(n\log{n})$的时间复杂度和$O(n\log{n})$的空间复杂度构建出来。以一个矩形区域查询该区域树，时间复杂度是$O(\log^2n + k)$，这里$k$是最终报告的点的个数。
+
+> Theorem 5.8 Let $P$ be a set of $n$ points in the plane. A range tree for $P$ uses $O(n\log{n})$ storage and can be constructed in $O(n\log{n})$ time. By querying this range tree one can report the points in $P$ that lie in a rectangular query range in $O(\log2 n+k)$ time, where $k$ is the number of reported points.
+
+实际上在5.6节中，通过一种叫做**分散层叠**（**fractional cascading**）的技术，可以把查询时间复杂度降低到$O(\log{n} + k)$。
 
 
 
