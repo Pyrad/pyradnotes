@@ -2676,6 +2676,10 @@ $$
 实际上在5.6节中，通过一种叫做**分散层叠**（**fractional cascading**）的技术，可以把查询时间复杂度降低到$O(\log{n} + k)$。
 
 
+### 5.4 Higher-Dimensional Range Trees
+
+
+
 
 ### 5.9 References
 
