@@ -2678,6 +2678,8 @@ $$
 
 ### 5.4 Higher-Dimensional Range Trees
 
+从二维区域树可以很直观地推广到高维区域树。
+
 
 
 
