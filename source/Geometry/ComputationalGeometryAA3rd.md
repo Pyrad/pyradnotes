@@ -2688,7 +2688,30 @@ $$
 
 > **Theorem** **5.9** Let $P$ be a set of $n$ points in $d$-dimensional space, where $d \geqslant 2$. A range tree for $P$ uses $O(n\log^{d−1} n)$ storage and it can be constructed in $O(n\log^{d−1} n)$ time. One can report the points in $P$ that lie in a rectangular query range in $O(log^d n+k)$ time, where $k$ is the number of reported points.
 
+证明：
 
+记$T_d(n)$是在$d$维空间上构建$n$个点对应的区域树的时间复杂度。根据定理5.8有$T_2(n) = O(n\log{n})$。而构建一棵区域树分为两个部分，一个是构建一个平衡二叉搜索树，时间复杂度是$O(n\log{n})$，二是构建联合数据结构。在第一层次（first-level）的树的任意深度上，$P$中的任意一个点，最多只会在联合数据结构里面存储一次。在某个深度上，构建所有节点对应的联合数据结构的时间复杂度是$O(T_{d-1}(n))$，这也是构造对应于根节点的联合数据结构所需的时间复杂度，而且时间复杂度至少是线性的（因为有可能更慢）。因此，总的构建时间是
+
+$$
+T_d(n) = O(n\log{n}) + O(\log{n}) \cdot T_{d-1}(n)
+$$
+
+由于$T_2(n) = O(n\log{n})$，所以最终有
+
+$$
+T_d(n) = O(n\log^{d−1} n)
+$$
+
+使用和上面类似的分析，可以得到空间复杂度也是$O(n\log^{d−1} n)$。
+
+记$Q_d(n)$是在$d$维空间上，查询有$n$个点的一棵区域树的时间复杂度（不包括报告点的时间）。而查询一棵$d$维空间上的区域树的步骤，分为：一、搜索第一层次的树，这花费的时间是$O(\log{n})$；二、对对数级的$(d-1)$维的树进行搜索，因此有
+
+$$
+Q_d(n) = O(n\log{n}) + O(\log{n}) \cdot Q_{d-1}(n)
+$$
+而$Q_2(n) = O(\log^2n)$，因此有$Q_d(n) = O(\log^dn)$，再加上报告点的时间，即$O(k)$，那么最终的时间就是$O(log^d n+k)$。
+
+而同样地，和二维空间上的情况类似，也可以使用一个对数因子来实现性能的提高。
 
 
 
