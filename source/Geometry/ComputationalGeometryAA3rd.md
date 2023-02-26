@@ -2736,7 +2736,19 @@ $$
 \hat{R} := [(x|-\infty):(x'|+\infty)] \times [(y|-\infty):(y'|+\infty)]
 $$
 
+剩下需要证明的就是，在$\hat{R}$中最终报告出来的点，是否就对应于应该在$R$中报告出来的点。下面的引理证明了这一点。
 
+引理5.10 记$p$是矩形$R$中的一个点，那么$p$位于$R$中的充要条件就是$\hat{p}$位于$\hat{R}$，即
+
+$$
+p \in R \Leftrightarrow \hat{p} \in \hat{R}
+$$
+
+证明：
+
+令$p := (p_x, p_y)$，$R := [x,x'] \times [y:y']$。根据定义，$p$位于$R$中的充要条件就是$x \leqslant p_x \leqslant x'$，并且$y \leqslant p_y \leqslant y'$。而又根据合成数的定义以及合成数比较的定义，充要条件可以写作$(x|-\infty) \leqslant (p_x|p_y) \leqslant (x'|+\infty)$，并且$(y|-\infty) \leqslant (p_y|p_x) \leqslant (y'|+\infty)$，而这正是$\hat{p} \in \hat{R}$的定义，因此命题得证。
+
+实际上，在实际操作过程中，完全没有必要存储一个新的合成数，而是直接用对应的合成数的定义去比较、去排序，而存储的点仍然是原先的点，从它上就可以立即得到对应的合成数。
 
 
 
