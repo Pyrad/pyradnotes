@@ -285,9 +285,11 @@ subexponential /sʌbˌekspəˈnenʃl/ *adj.*（增长）越来越快的；指数
 	- Smallest Enclosing Disc 最小圆覆盖（最小包围圆）
 
 - Chapter 5
-	- **Rectangular Range Query** （**Orthogonal Range Query**）矩形区域查询，或正交区域查询
-	- **Canonical subset** 正则子集
+	- **Rectangular Range Query** （**Orthogonal Range Query**）**矩形区域查询**，或正交区域查询
+	- **Canonical subset** **正则子集**
 	- **Fractional cascading** **分散层叠**
+	- General Sets of Points **一般性点集**
+	- 
 
 
 
@@ -2712,6 +2714,29 @@ $$
 而$Q_2(n) = O(\log^2n)$，因此有$Q_d(n) = O(\log^dn)$，再加上报告点的时间，即$O(k)$，那么最终的时间就是$O(log^d n+k)$。
 
 而同样地，和二维空间上的情况类似，也可以使用一个对数因子来实现性能的提高。
+
+
+### 5.5 General Sets of Points
+
+前面讨论的情况里，都假设每两个点的$x$和$y$坐标不相同（二维情况下，高维情况类似），但这不现实。为了解决这个问题，引入了一个叫做**合成数**（composite-number）的概念。这是因为前面的讨论里，并没有假设坐标都是实数（即可以是其他类型），我们只需要它们都是有序的。
+
+所以，使用所谓**合成数空间**（composite-number space）中的**元素**来替换每个坐标（坐标原先是实数）。这种**合成数元素**实际上是一对实数，可以用$(a|b)$表示，这里$a$和$b$都是实数。我们使用字典序来定义合成数空间的顺序，对任意两个合成数$(a|b)$和$(a'|b')$，如果有$(a|b) < (a'|b')$，那么它的充要条件是
+
+$$
+(a|b) < (a'|b') \Leftrightarrow a < a', or \space (b < b' \space if \space a = a')
+$$
+
+这样就能允许$P$中的任意两个点可以有相同的$x$坐标或$y$坐标。把每个点的坐标首先做替换，$p := (p_x, p_y)$替换为$\hat{p} := ((p_x | p_y), (p_y | p_x))$，这样任意两个点的$x$或$y$坐标即不会相同了。（前提是没有两个点的$x$和$y$坐标同时相等，即没有重复的点）。这样可以想象一下，如果原先有两个点的$x$坐标相同，但它们的$y$坐标不同，那么对应的前面提到的替换后的合成数的$x$坐标也是不同的。
+
+这样，替换之后就得到一个新的点集$\hat{P}$，该点集中任意两个点的$x$坐标不同，任意两个点的$y$坐标不同。然后将它们排序，再构建对应于$\hat{P}$的KD-tree和二维空间上的区域树。
+
+现在假设要查询的矩形范围是$[x:x'] \times [y:y']$，但我们已经把$P$映射到了$\hat{P}$上了，因此查询的实际上是合成数空间对应的区域树（或KD-tree）。所以也要把查询范围转换为合成数查询范围。即，
+
+$$
+\hat{R} := [(x|-\infty):(x'|+\infty)] \times [(y|-\infty):(y'|+\infty)]
+$$
+
+
 
 
 
