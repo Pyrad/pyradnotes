@@ -445,3 +445,7 @@ git stash pop
 This saves the modifications, then reapplies that patch after resetting.
 
 You could get merge conflicts, if you've modified things which were changed since the commit you reset to.
+
+## Git cheat-sheet from GitLab
+
+[git-cheat-sheet.pdf](https://about.gitlab.com/images/press/git-cheat-sheet.pdf)
