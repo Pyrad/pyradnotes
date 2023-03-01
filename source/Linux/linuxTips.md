@@ -449,7 +449,42 @@ myTestDbgFile_b.txt
 myTestDbgFile_c.txt
 ```
 
+## 重定向标准错误到/dev/null
 
+重定向执行一个命令的标准错误（stderr）到`/dev/null`，并且把改命令的标准输出（stdout）返回到一个变量。
+
+```shell
+function test_redirect_to_dev_null() {
+    errmsg=`which vim`
+    echo "$? | $errmsg"
+
+    errmsg=$(which vim)
+    echo "$? | $errmsg"
+
+    errmsg=`which vim 2>/dev/null`
+    echo "$? | $errmsg"
+
+    errmsg=$(which vim 2>/dev/null)
+    echo "$? | $errmsg"
+
+    errmsg=`which vimk 2>/dev/null`
+    echo "$? | $errmsg"
+
+    errmsg=$(which vimk 2>/dev/null)
+    echo "$? | $errmsg"
+}
+```
+
+这个函数的执行结果如下
+
+```shell
+0 | /usr/bin/vim
+0 | /usr/bin/vim
+0 | /usr/bin/vim
+0 | /usr/bin/vim
+1 |
+1 |
+```
 
 
 ```shell
