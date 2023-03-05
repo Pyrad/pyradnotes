@@ -176,6 +176,8 @@ Published by Springer
 
 **disjoint union** 不相交并集
 
+**such and such** 某某；如此这般的
+
 
 ## Usage
 
@@ -288,8 +290,9 @@ subexponential /sʌbˌekspəˈnenʃl/ *adj.*（增长）越来越快的；指数
 	- **Rectangular Range Query** （**Orthogonal Range Query**）**矩形区域查询**，或正交区域查询
 	- **Canonical subset** **正则子集**
 	- **Fractional cascading** **分散层叠**
-	- General Sets of Points **一般性点集**
-	- 
+	- **General Sets of Points** **一般性点集**
+	- **exact match queries** **完全匹配查询**
+	- **partial match queries** **部分匹配查询**
 
 
 
@@ -2796,8 +2799,23 @@ $$
 > Theorem 5.11 Let $P$ be a set of $n$ points in $d$-dimensional space, with $d \geqslant 2$. A layered range tree for $P$ uses $O(n\log^{d−1}n)$ storage and it can be constructed in $O(n\log^{d−1}n)$ time. With this range tree one can report the points in $P$ that lie in a rectangular query range in $O(\log^{d−1} + k)$  time, where $k$ is the number of reported points.
 
 
+### 5.7 Notes and Comments
 
+二十世纪七十年代（1970s)，计算几何发展早期，正交区域搜索是该领域最重要的研究课题之一，有许多人致力于该领域。这产生了许多研究成果，下面讨论其中一些。
 
+在第14章的meshing这部分，讨论了正交区域搜索最早的数据结构，**quadtree**。不幸的是，在最坏情况下quadtree的表现比较差。1975年Bentley首先提出了KD-tree，它是对quadtree的优化和提升。Samet的书中详细介绍了quadtree，KD-tree以及它们的应用。一些年以后，一些研究者各自独立发现了range tree（区域树）。Lueker和Willard使用分散层叠技术把区域树的查询时间复杂度提升到了$O(\log{n} + k)$。而分散层叠技术不仅仅用于区域树，还用于其他对同一个建进行多次查询的场景。Chazelle和Guibas讨论了这种技术的广泛应用。除此之外，分散层叠技术还用于dynamic setting。Chazelle描述了，二维区域搜索最有效的数据结构是分层区域树（layered range tree）的一个变种，他在保持查询时间复杂度是$O(\log{n} + k)$的情况下，把空间复杂度降低到了$O(n\log{n}/\log{\log{n}})$，并且证明了是最优解。如果搜索区域有一侧是没有边界的，比如$[x:x'] \times [y:+\infty]$，那么利用第10章讨论的priority search tree，就能达到线性空间的复杂度以及$O(\log{n})$的时间复杂度。Chazelle也研究了高维空间里正交区域搜索的最好结果：他给出了用多重对数时间的（polylogarithmic）复杂度和$O(n(\log{n}/\log{\log{n}})^{d-1})$的空间复杂度实现对$d$维空间的搜索，而且证明了是最优解。当然，空间和时间的平衡调整，也是可能的。
+
+只有基于某些模型的计算情况下，lower-bound的结果才是合理的，这就运行在特定的一些情况下来优化结果。Overmars描述了当点位于$U \times U$这样的格子中时，一种更加高效的区域搜索数据结构。这种数据结构根据所允许的预处理时间，最终得到查询时间复杂度是$O(\log{\log{U}} + k)$或$O(\sqrt{U} + k)$。这些结果使用了Willard早前描述的数据结构。和一般普通的情况相比较，一旦对象的坐标点被限定位于格点上时，在计算几何中许多问题就可以得到更好的时间上下限，例如nearest neighbor searching problem，point location和line segment intersection。
+
+在数据库中，区域搜索（range query）是多重查询中被认为最基本的三种类型之一。其他两种分别是**完全匹配查询**（exact match queries）和**部分匹配查询**partial match queries。完全匹配查询是这样一种查询：一个有特定属性（坐标）的对象（点）是否位于数据库中？或诸如此类的查询（such and such）。对于完全匹配查询，显而易见的数据结构就是对坐标使用字典序比较的平衡二叉树，利用它可以得到$O(\log{n})$的查询时间复杂度。如果维数增加（即属性个数增加），那么用来表示查询性能的表达式不仅仅使用$n$，还要使用维数$d$。比如，一个用来做完全匹配查询的二叉树，查询时间复杂度就是$O(d\log{n})$，因为它要花费$O(d)$的时间来比较两个点，而这个时间复杂度可以很容易地降低到$O(d + \log{n})$，而且它是最优的。部分匹配查询只指定了坐标中的一个或几个维度上的值，然后要求查询所有点中和所指定的值相同的点。比如，在平面上，部分匹配查询只指定$x$坐标或$y$坐标的值。用几何语言描述的话，平面上的部分匹配查询就是查询在位于一条水平或垂直直线上的点。利用$d$维的KD-tree，指定$s (s \lt d)$个坐标值，部分匹配查询的时间复杂度就是$O(n^{1-s/d} + k)$，这里$k$是最终报告的点的个数。
+
+在许多应用领域当中，我们的输入数据不是点的集合，而是某些对象（比如多边形）的集合。如果要查询一个对象（多边形）是否完全包含在搜索区域$[x:x'] \times [y:y']$中，那么就可以把原始查询转化为查询更高维度下的点的查询操作（见Exercise 5.13）。有时候，也要查询一个多边形是否是部分位于搜索区域里，这种问题就是第10章要讨论的截窗问题（windowing problem）。
+
+区域搜索的变种包括当搜索区域的类型是其他的样子的时候，比如圆或三角形。这变种中的许多类型可以**划分树**（partition trees）解决，它在第16章讨论。
+
+### 5.8 Exercises
+
+（Omitted）
 
 
 ### 5.9 References
