@@ -7,3 +7,4 @@ Linux
    linuxall.md
    linuxTips.md
    gdb.md
+   LinuxELF.md
