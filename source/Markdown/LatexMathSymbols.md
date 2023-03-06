@@ -521,4 +521,22 @@ $$
 
 
 
+## Miscellaneous symbols
 
+
+$$
+\begin{array}{ll|ll}
+\hline
+\mathrm{Symbol} & \mathrm{Code} & \mathrm{Symbol} & \mathrm{Code} \\
+\hline
+\infty & \mathtt{\backslash{infty}} &
+\forall & \mathtt{\backslash{forall}} \\
+\nabla & \mathtt{\backslash{nabla}} &
+\exists & \mathtt{\backslash{exists}} \\
+\eth & \mathtt{\backslash{eth}} &
+\emptyset & \mathtt{\backslash{emptyset}} \\
+\clubsuit & \mathtt{\backslash{clubsuit}} &
+\varnothing & \mathtt{\backslash{varnothing}} \\
+\hline
+\end{array}
+$$
