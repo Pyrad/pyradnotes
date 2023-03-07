@@ -537,6 +537,8 @@ $$
 \emptyset & \mathtt{\backslash{emptyset}} \\
 \clubsuit & \mathtt{\backslash{clubsuit}} &
 \varnothing & \mathtt{\backslash{varnothing}} \\
+\diamondsuit & \mathtt{\backslash{diamondsuit}} &
+\imath & \mathtt{\backslash{imath}} \\
 \hline
 \end{array}
 $$
