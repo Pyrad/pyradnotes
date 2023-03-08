@@ -307,7 +307,7 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 
 ## Contents
 
-- Preface
+- [Preface](#preface)
 - 1 Computational Geometry (Introduction)
 - 2 Line Segment Intersection (Thematic Map Overlay)
 - 3 Polygon Triangulation (Guarding an Art Gallery)
