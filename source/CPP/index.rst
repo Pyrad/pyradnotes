@@ -10,3 +10,4 @@ C/C++
     LvalueRvalue
     ReadingMinutesEffectiveModernCPP
     CppConcurrencyInAction.md
+    clang.md
