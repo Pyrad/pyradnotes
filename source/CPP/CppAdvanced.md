@@ -83,3 +83,9 @@ This file shows some advanced usages of C/C++
 - [Buildbench](https://build-bench.com/)
 - [Compiler Explorer](https://godbolt.org)
 - [C++ insights](https://cppinsights.io/)
+
+
+### C++ Open Source Frameworks
+
+[有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？ - 觅新笑话中的回答 - 知乎](https://www.zhihu.com/question/20201738/answer/2928936881)
+
