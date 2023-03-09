@@ -1,5 +1,22 @@
 ## How to use clang-tidy
 
+- Configure clang-tidy
+  
+  - One way is to use `.clang-tidy` (YAML/JSON format) in project directory
+    
+    - An example of `.clang-tidy` file
+      
+      ```yaml
+      Checks: '-*,bugprone-*'
+      CheckOptions:
+          - key: bugprone-argument-comment.StricMode
+          - value: 1
+          - key: bugprone-exception-escape.FunctionsThatShouldNotThrow
+          - value: WinMain,SDL_main
+      ```
+  
+  - Another way is to use `-checks=*` to run all checks or `-checks=modernize-*` to run checks on only modern features.
+
 - Make sure you have `compile_commands.json`
   
   - In CMake, use `-DCMAKE_EXPORT_COMPILE_COMMANDS=ON`
