@@ -539,6 +539,8 @@ $$
 \varnothing & \mathtt{\backslash{varnothing}} \\
 \diamondsuit & \mathtt{\backslash{diamondsuit}} &
 \imath & \mathtt{\backslash{imath}} \\
+\heartsuit & \mathtt{\backslash{heartsuit}} &
+\jmath & \mathtt{\backslash{jmath}} \\
 \hline
 \end{array}
 $$
