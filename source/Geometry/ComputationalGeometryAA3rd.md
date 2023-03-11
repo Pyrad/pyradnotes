@@ -178,6 +178,10 @@ Published by Springer
 
 **such and such** 某某；如此这般的
 
+**chronometer** /krəˈnɒmɪtə(r)/ *n.* 精密记时表；高度精确的钟表；航海经线仪
+
+**thematic** /θɪˈmætɪk/ *adj.* 主题的，主旋律的；题目的；语干的
+
 
 ## Usage
 
