@@ -312,7 +312,7 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 ## Contents
 
 - [Preface](#preface)
-- 1 Computational Geometry (Introduction)
+- [1 Computational Geometry (Introduction)](#computational-geometry-introduction)
 - 2 Line Segment Intersection (Thematic Map Overlay)
 - 3 Polygon Triangulation (Guarding an Art Gallery)
 - 4 Linear Programming (Manufacturing with Molds)
@@ -464,7 +464,7 @@ $\hat{f}$ ：$f$ hat（或者 $f$ roof），caret符号更多的用于音调符�
 - 不需要应用领域的知识，只需要基本的数据结构和算法知识储备。
 - 有网页可以找到[Errata Page](http://www.cs.uu.nl/geobook/)以及其他可用资源。
 
-## 1 Computational Geometry - Introduction
+## 1 Computational Geometry Introduction
 
 校园中寻找最近电话亭（*Voronoi diagram*，第7章）
 
@@ -645,7 +645,7 @@ symbolic perturbation schemes指在设计和实现阶段忽略了special case，
 
 还有其他的一些算法，时间复杂度也是$O(nlogn)$。
 
-## 2 Line Segment Intersection - Thematic Map Overlay
+## 2 Line Segment Intersection Thematic Map Overlay
 
 引言部分，以旅游为例，讲述了在实际当中，可能需要查看包含不同信息类型的地图，从而找到所需的信息。
 
@@ -1033,7 +1033,7 @@ problem，第7章用它来计算Voronoi diagram（维诺图） of a set of point
 - [可平面图（planar graph）](https://baike.baidu.com/item/%E5%8F%AF%E5%B9%B3%E9%9D%A2%E5%9B%BE/19138688?fr=aladdin)
 - [Geometry Symbol Names](https://www.rapidtables.com/math/symbols/Geometry_Symbols.html)
 
-## 3 Polygon Triangulation - Guarding an Art Gallery
+## 3 Polygon Triangulation Guarding an Art Gallery
 
 作者通过前言，引出了所谓的 ***Art Gallery Problem***，即我们需要多少台摄像机才能监控画廊？并且我们需要在什么位置摆放它们？
 
@@ -1415,7 +1415,7 @@ Chazelle展示了，对一个有 $n$ 个顶点的简单多面体，需要 $\Thet
 
 
 
-## 4 Linear Programming - Manufacturing with Molds
+## 4 Linear Programming Manufacturing with Molds
 
 本章引言部分通过塑料或铁器（合金）的铸造，引出了本章需要探讨的话题：对一个给定的铸件（casting），是否存在这样的模具（mold）使得铸件能够从中移出？
 
@@ -2317,7 +2317,7 @@ $\omega$ ：非渐近紧确上界，表示下界（not tight），即明确大�
 
 
 
-## 5 Orthogonal Range Searching - Querying a Database
+## 5 Orthogonal Range Searching Querying a Database
 
 本章引言部分，以个人数据管理为例子，说明了数据库（database）和几何之间存在某种意义上的联系。在所举例子中，对个人数据中两项类别（field）数据的联合查询，相当于在二维平面上对代表个人数据的点集的查询（query）。进一步，如果查询的是三项类别的数据，那么就相当于在三维空间里对代表个人数据的点集的查询。
 
@@ -2829,6 +2829,8 @@ $$
 [邓俊辉主页](https://dsa.cs.tsinghua.edu.cn/~deng/cg/index.htm#TOP)
 
 
+
+## 6 Point Location Knowing Where You Are
 
 
 
