@@ -2833,7 +2833,7 @@ $$
 ## 6 Point Location Knowing Where You Are
 
 
-
+引言部分，通过经纬度的说明，引出了**点的位置查询**（point location query）的概念：给定一个地图以及一个点的坐标，在地图中找到包含该点的区域。这里的地图，就是平面上的细分。
 
 
 
