@@ -93,6 +93,9 @@ Vocabulary  (reStructuredtext)
     * - **unfazed**
       - /ʌnˈfeɪzd/
       - *adj.* 不苦恼的
+    * - **contagion**
+      - /kənˈteɪdʒən/
+      - *n.* 传染病；传播; 蔓延; 扩散
 
 
 
