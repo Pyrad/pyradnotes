@@ -449,3 +449,31 @@ You could get merge conflicts, if you've modified things which were changed sinc
 ## Git cheat-sheet from GitLab
 
 [git-cheat-sheet.pdf](https://about.gitlab.com/images/press/git-cheat-sheet.pdf)
+
+## Git Reset Soft
+
+Going back to HEAD
+
+```shell
+git reset --soft HEAD
+```
+
+Going back to the commit before HEAD
+
+```shell
+git reset --soft HEAD^
+```
+
+or equivalent
+
+```shell
+git reset --soft HEAD~1
+```
+
+Going back to 2 commits before HEAD
+
+```shell
+git reset --soft HEAD~2
+```
+
+
