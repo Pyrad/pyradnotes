@@ -96,6 +96,12 @@ Vocabulary  (reStructuredtext)
     * - **contagion**
       - /kənˈteɪdʒən/
       - *n.* 传染病；传播; 蔓延; 扩散
+    * - **asylum**
+      - /əˈsaɪləm/
+      - *n.* 政治避难，政治庇护；<旧>精神病院
+
+
+
 
 
 
