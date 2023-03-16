@@ -105,3 +105,10 @@ Used to indicate that one believes someone is especially gullible. A reference t
 
   If you believe that, I have a bridge in Brooklyn to sell to you
 
+policy stance on US 对美国的zz立场
+
+
+
+
+
+
