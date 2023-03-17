@@ -486,6 +486,36 @@ function test_redirect_to_dev_null() {
 1 |
 ```
 
+## Start X-services from cygwin on Windows
+
+When to start a GUI program in a Cygwin shell on Windows, `gitg` for instance, it will raise the following error,
+
+```shell
+Unable to init server: Could not connect to 127.0.0.1: Connection refused
+
+(gedit:8196): Gtk-WARNING **: cannot open display:
+```
+
+To fix this,
+
+1.  [install Cygwin/X](http://x.cygwin.com/docs/ug/setup.html#setup-cygwin-x-installing)
+2. open cygwin and start x11 server by typing
+```shell
+startxwin >/dev/null 2>&1 &
+```
+3.  set `DISPLAY` environment variable as explained [here](http://x.cygwin.com/docs/ug/using-local-apps.html) by typing
+```shell
+export DISPLAY=:0.0
+```
+
+Start gitg normally
+
+The steps here come from this [answer](https://stackoverflow.com/questions/36209671/im-trying-to-run-gedit-in-cygwin-but-receiving-error)
+
+
+
+
+
 
 ```shell
 Originally created in Pyrad Blog
