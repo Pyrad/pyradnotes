@@ -25,6 +25,16 @@
 <font face="楷体" size=6 color=black>斗鸡走犬过一生，天地安危两不知。</font>
 
 
+## 题西太一宫壁二首
 
+<font face="楷体" size=6 color=black>北宋 王安石</font>
 
+<font face="楷体" size=6 color=black>柳叶鸣蜩绿暗，荷花落日红酣。</font>
 
+<font face="楷体" size=6 color=black>三十六陂春水，白头想见江南。</font>
+
+<font face="楷体" size=6 color=black>三十年前此地，父兄持我东西。</font>
+
+<font face="楷体" size=6 color=black>今日重来白首，欲寻陈迹都迷。</font>
+
+蜩（tiáo）
