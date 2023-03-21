@@ -477,3 +477,20 @@ git reset --soft HEAD~2
 ```
 
 
+## Git show untracked files as a list
+
+```shell
+git ls-files --others --exclude-standard
+```
+
+This will output a list of files that are not tracked by Git and are not ignored by .gitignore or other exclude files.
+
+You can also use the -z option to separate the file names with null characters instead of newlines.
+
+This can be useful if you want to pipe the output to xargs or other commands that can handle null-delimited input. For example:
+
+```shell
+git ls-files -z --others --exclude-standard | xargs -0 rm
+```
+
+This will delete all untracked files that are not ignored by Git.
