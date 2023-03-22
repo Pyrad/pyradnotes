@@ -51,6 +51,8 @@
 
 [查询楼盘交易信息](https://www.zhihu.com/question/460961867/answer/1940828455)
 
+[房产相关英文术语 - 知乎](https://zhuanlan.zhihu.com/p/557361125)
+
 
 ## 重点城市二手房数量统计
 
