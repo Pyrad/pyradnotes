@@ -114,6 +114,14 @@ Used to indicate that one believes someone is especially gullible. A reference t
 policy stance on US 对美国的zz立场
 
 
+[It's not all sunshine and roses](https://grammarhow.com/its-not-all-sunshine-and-roses-idiom-meaning/)
+
+表示事情不像表明看上去那么完美，还是有缺陷和不足
+
+The idiom “It’s not all sunshine and roses” is used to convey the idea that a seemingly good or positive situation isn’t entirely so,
+and that it has its own drawbacks or negative factors as well.
+It can be used to talk about many different seemingly positive situations.
+
 
 
 
