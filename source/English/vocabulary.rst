@@ -99,6 +99,12 @@ Vocabulary  (reStructuredtext)
     * - **asylum**
       - /əˈsaɪləm/
       - *n.* 政治避难，政治庇护；<旧>精神病院
+    * - **nifty**
+      - /ˈnɪfti/
+      - *adj.* 俏皮的；漂亮的 *n.* 俏皮话
+    * - **ventune off into**
+      - N/A
+      - 冒险进入
 
 
 
@@ -123,6 +129,8 @@ and that it has its own drawbacks or negative factors as well.
 It can be used to talk about many different seemingly positive situations.
 
 
+ventune off into
 
+  Here are a few details to keep in mind as you venture off into this brave new world.
 
 
