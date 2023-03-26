@@ -6,3 +6,4 @@ Python
 
     numpybasics
     NumpyVisualIntro
+    pythonstring.md
