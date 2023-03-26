@@ -129,4 +129,24 @@ $$
 \end{array}
 $$
 
+$\text{2023 }\text{March }\text{26}$
+$2023-03-26$
+
+$$
+\begin{array}{ll|ll|ll|ll}
+\hline
+\mathrm{城市} & \mathrm{数量} & \mathrm{城市} & \mathrm{数量} &
+\mathrm{城市} & \mathrm{数量} & \mathrm{城市} & \mathrm{数量} \\
+\hline
+北京 & 108,832 & 上海 & - & 深圳 & - & 广州 & 135,609 \\
+苏州 & 154,178 & 杭州 & 116,994 & 南京 & 159,229 & 西安 & 112,768 \\
+成都 & 185,166 & 重庆 & 198,166 & 天津 & 158,161 & - & -\\
+\hline
+\end{array}
+$$
+
+
+
+
+
 
