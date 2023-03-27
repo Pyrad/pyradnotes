@@ -48,6 +48,12 @@
 - 【略】[建发城建·文源府](https://bj.fang.ke.com/loupan/p_jfcjwyfbmxzy/)，总价600-830万，一/二居已售罄（一居360万，二居470-520万）。
 - 【略】[东方蓝海中心](https://bj.fang.ke.com/loupan/p_dflhzxbkycc/)，总价500万，性质为商业住宅。
 
+
+昌平新楼盘 越秀星樾项目探访 2023-03-27
+[https://www.163.com/dy/article/I03T1CI10553LFBG.html](https://www.163.com/dy/article/I03T1CI10553LFBG.html)
+
+
+
 ### 大兴
 
 |名称 |别名 |单价 |总价 |开盘 |面积 |在售 |位置 |
