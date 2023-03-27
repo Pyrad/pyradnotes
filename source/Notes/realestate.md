@@ -262,8 +262,20 @@ $$
 \end{array}
 $$
 
+$\text{2023 }\text{March }\text{27}$
+$2023-03-27$
 
-
-
+$$
+\begin{array}{ll|ll|ll|ll}
+\hline
+\mathrm{城市} & \mathrm{数量} & \mathrm{城市} & \mathrm{数量} &
+\mathrm{城市} & \mathrm{数量} & \mathrm{城市} & \mathrm{数量} \\
+\hline
+北京 &  108844  & 上海 & - & 深圳 & - & 广州 &  135516  \\
+苏州 &  154328  & 杭州 &  117050  & 南京 &  159332  & 西安 &  112105  \\
+成都 &  185116  & 重庆 &  198913  & 天津 &  158535  & - & -\\
+\hline
+\end{array}
+$$
 
 
