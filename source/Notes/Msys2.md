@@ -100,7 +100,7 @@ boost_1_79_0_system/
 	|		|---boost/
 	|			  |---<all *.hpp headers>
 	|			  |---<all_header_filer_folders>
-	|			  
+	|
 	|---lib/
 		 |---cmake/
 		 |---<all *.dll.a files>

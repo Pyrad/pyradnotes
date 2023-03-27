@@ -539,8 +539,84 @@ Remember that I made some changes to file `D:\procs\msys64\mingw64\share\cmake\M
 
 
 
+#### Github updated RSA SSH host key
 
+[Explanation Page Link](https://github.blog/2023-03-23-we-updated-oour-rsa-ssh-host-key/)
 
+Error occurs when to `git pull`
+
+```shell
+Pyrad@Pyrad MINGW64 /d/Pyrad/GitHub/all_notes
+$ gp
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+SHA256:uNiVztksCsDhcc0u9e8BujQXVUpKZIDTMczCvj3tD2s.
+Please contact your system administrator.
+Add correct host key in /home/Pyrad/.ssh/known_hosts to get rid of this message.
+Offending RSA key in /home/Pyrad/.ssh/known_hosts:1
+Host key for github.com has changed and you have requested strict checking.
+Host key verification failed.
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+
+To fix this,
+- Remove old key
+```shell
+ssh-keygen -R github.com
+```
+- Update GitHub.com's RSA SSH key in `/.ssh/known_hosts`
+```shell
+curl -L https:/api.github.com/meta | jq -r '.ssh_keys | .[]' | sed -e 's/^/github.com/' >> ~/.ssh/known_hosts
+```
+
+Note, `jq` is a json parser which needs to be installed first by `pacman`.
+Search package,
+```shell
+Pyrad@Pyrad MINGW64 /d/Pyrad/GitHub/all_notes
+$ pacman -Ss jq
+mingw32/mingw-w64-i686-jq 1.6-5
+    Command-line JSON processor (mingw-w64)
+mingw64/mingw-w64-x86_64-jq 1.6-5
+    Command-line JSON processor (mingw-w64)
+ucrt64/mingw-w64-ucrt-x86_64-jq 1.6-5
+    Command-line JSON processor (mingw-w64)
+clang32/mingw-w64-clang-i686-jq 1.6-5
+    Command-line JSON processor (mingw-w64)
+clang64/mingw-w64-clang-x86_64-jq 1.6-5
+    Command-line JSON processor (mingw-w64)
+```
+Install package,
+```shell
+Pyrad@Pyrad MINGW64 /d/Pyrad/GitHub/all_notes
+$ pacman -S mingw64/mingw-w64-x86_64-jq
+resolving dependencies...
+looking for conflicting packages...
+...
+
+Pyrad@Pyrad MINGW64 /d/Pyrad/GitHub/all_notes
+$ which jq
+/mingw64/bin/jq
+
+```
+
+After RSA SSH key was updated, type `yes` to add `github.com` to know hosts
+
+```shell
+Pyrad@Pyrad MINGW64 /d/Pyrad/GitHub/all_notes
+$ gp
+The authenticity of host 'github.com (20.205.243.166)' can't be established.
+ED25519 key fingerprint is SHA256:+DiY3wvvV6TuJJhbpZisF/zLDA0zPMSvHdkr4UvCOqU.
+This key is not known by any other names
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+```
 
 
 ## Tabby
