@@ -619,6 +619,17 @@ Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
 ```
 
 
+#### Scrapy no module named 'attrs'
+
+[https://github.com/returntocorp/seggrep/issues/4794](https://github.com/returntocorp/seggrep/issues/4794)
+
+简单而言，就是`attrs`这个python module比较老，哪怕已经安装了，但scrapy可能也认为找不到，所以使用`pip install --upgrade attrs`做一次升级就行。
+
+```shell
+pip install --upgrade attrs
+```
+
+
 ## Tabby
 
 官网链接：[https://github.com/Eugeny/tabby](https://github.com/Eugeny/tabby)
