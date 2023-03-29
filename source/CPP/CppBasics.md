@@ -31,7 +31,32 @@ class Foo {
 ```
 
 
+# static constexpr in class template
 
+How to initialize a `static constexpr const` member of a class template in a **header** file?
+
+```cpp
+#include <numeric>
+
+// Template class definition here
+template<typename T>
+class Foo {
+public:
+	// constexpr must have an initializer
+	static constexpr const int VAL_MAX = std::numeric_limits<T>::max();
+
+public:
+	Foo(int val) : m_val(val) {}
+	~Foo() {}
+
+private:
+	int m_val = 0;
+};
+
+// Since static member needs definition, define it here
+template<typename T> const int Foo<T>::VAL_MAX;
+
+```
 
 
 
