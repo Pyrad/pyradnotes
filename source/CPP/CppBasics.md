@@ -31,7 +31,7 @@ class Foo {
 ```
 
 
-# static constexpr in class template
+## static constexpr in class template
 
 How to initialize a `static constexpr const` member of a class template in a **header** file?
 
