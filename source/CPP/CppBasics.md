@@ -59,4 +59,11 @@ template<typename T> const int Foo<T>::VAL_MAX;
 ```
 
 
+## Why using `typename`？
+
+[C++ typedef & typename知识点总结 - 腾讯技术工程的文章 - 知乎](https://zhuanlan.zhihu.com/p/617664673)
+
+
+
+
 
