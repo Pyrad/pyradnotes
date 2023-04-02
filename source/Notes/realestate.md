@@ -83,10 +83,10 @@
 |[中海寰宇时代](https://bj.fang.ke.com/loupan/p_zhhysdbksho/)|瀛洲嘉园|57694|900|2020-05-29|49-112|一/二/三/四居已全部售罄|  |
 |[住总如院](https://bj.fang.ke.com/loupan/p_zzrybkwcr/)|璞景如苑 |31136|**280**-475|2019-12-21|98-233|二/三居在售，四居和部分三居售罄 |  |
 |[和悦春风](https://bj.fang.ke.com/loupan/p_hycfbkzcf/)|和春雅苑|38000|**270**-420|2020-05-20|98-233|二/三/四居在售|  |
-|[电建·洺悦湾](https://bj.fang.ke.com/loupan/p_jngdjmywbletx/)|京能丨电建·洺悦湾,洺悦华庭佳苑, 京能电建洺悦湾|60186|1000|2020-06-06|75-133|二/三/四居在售|  |
+|[电建·洺悦湾](https://bj.fang.ke.com/loupan/p_jngdjmywbletx/)|京能丨电建·洺悦湾|60186|1000|2020-06-06|75-133|二/三/四居在售|  |
 |[路劲·御合院](https://bj.fang.ke.com/loupan/p_ljyhyblhkw/)|路劲御合院|29000|260|2020-09-29|89|三居在售|  |
 |[住总兴创如遇](https://bj.fang.ke.com/loupan/p_zzxcryblkcb/)|住星嘉园|28000|178-380|2020-11-10|53-115|一/二/三/四居在售|  |
-|[航城壹号](https://bj.fang.ke.com/loupan/p_hcyhblndu/)|航城一号, 隆盛北园,隆盛园二期|32000 |320-550|2021-10-30|100-175|二/三居在售|  |
+|[航城壹号](https://bj.fang.ke.com/loupan/p_hcyhblndu/)|隆盛北园|32000 |320-550|2021-10-30|100-175|二/三居在售|  |
 |[合生me悦](https://bj.fang.ke.com/loupan/p_hsmeybmbls/)|me悦|65000|490-760|2021-07-25|72-120|二/三/四居在售，一居售罄|  |
 |[和悦璞云](https://bj.fang.ke.com/loupan/p_hypybmggd/)|--待定--|30000|150-341|2022-04-21|52-100|一/二/三居在售 |  |
 |[德贤华府](https://bj.fang.ke.com/loupan/p_dxhfbmgka/)|中冶德贤华府|52000|380-828|2021-11-06|70-127|二/三/四居在售|  |
