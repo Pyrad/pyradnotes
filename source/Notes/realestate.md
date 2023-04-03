@@ -264,6 +264,12 @@
 
 [房产相关英文术语 - 知乎](https://zhuanlan.zhihu.com/p/557361125)
 
+[2022年北京购房攻略一 (常识篇)](https://blog.csdn.net/xihuanyuye/article/details/123766085)
+
+[2022年北京购房攻略二 (城区交通篇)](http://t.csdn.cn/YSYqG)
+
+[2022年北京购房攻略三 (政策篇)](http://t.csdn.cn/DKiRA)
+
 
 ## 北京普宅认定标准
 
