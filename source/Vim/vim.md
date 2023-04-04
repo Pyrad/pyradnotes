@@ -436,3 +436,11 @@ Just use `:e`
 If using `[[ ]]` for if-condition, then `-eq`, `-ne` and etc should be used, `==`, `!=` and etc are not valid in `[[]]`.
 
 If trying to use `<`, `>`, ... arithematic operators, using `(())` for if-condition
+
+## Vim get current file name and path
+
+Symbol `%` is a register in Vim, which stores the current file name
+
+In normal mode, use `"%p` to paste the current file name to current cursor's position (or use `"%P` to paste before the cursor)
+
+[Get the name of the current file](https://vim.fandom.com/wiki/Get_the_name_of_the_current_file#:~:text=In%20insert%20mode%2C%20type%20Ctrl,to%20create%20a%20similar%20name.)
