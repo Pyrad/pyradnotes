@@ -405,7 +405,7 @@ endif
 
 
 
-# What's Vim paste mode?
+## What's Vim paste mode?
 
 [https://techexplorations.com/blog/kicad/blog-how-to-copy-text-into-vim/](https://techexplorations.com/blog/kicad/blog-how-to-copy-text-into-vim/)
 
@@ -418,3 +418,9 @@ In Vim, ensure you are command mode by hitting the Esc key.
 - Type `i` to enter paste mode. Notice the `– INSERT (paste) –` at the bottom of the Vim window.
 - Paste your Python code into Vim. Indentation should be as in the original
 - To exit paste mode, type `:set nopaste`. Notice the `– INSERT –` at the bottom of the Vim window. This means you are back to normal insert mode.
+
+
+## Vim remove color codes from terminal
+
+[Removing ANSI Color Codes from a text file in VI](https://superuser.com/questions/1445805/removing-ansi-color-codes-from-a-text-file-in-vi)
+
