@@ -424,3 +424,8 @@ In Vim, ensure you are command mode by hitting the Esc key.
 
 [Removing ANSI Color Codes from a text file in VI](https://superuser.com/questions/1445805/removing-ansi-color-codes-from-a-text-file-in-vi)
 
+
+## Vim Reload current file
+
+Just use `:e`
+
