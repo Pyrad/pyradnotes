@@ -242,7 +242,7 @@
 - [北京城建北京合院](https://bj.fang.ke.com/loupan/p_bjcjbjhyabncn/)（别名：平悦园）
 	- 单价：46000，总价：556-570，开盘：2017-12-03
 	- 面积：95-130，户型：三/四居在售，位置：[15号线顺义站东南3.5公里](https://j.map.baidu.com/f4/7uUJ)
--  [公园十七区](https://bj.fang.ke.com/loupan/p_gysqqbjuhu/)（别名：庆峪嘉园）
+- [公园十七区](https://bj.fang.ke.com/loupan/p_gysqqbjuhu/)（别名：庆峪嘉园）
 	- 单价：42000，总价：750-1200，开盘：2019-07-07
 	- 面积：144-290，户型：三/四居在售（90平三居售罄），位置：[15号线后沙峪东北2.5公里](https://j.map.baidu.com/38/EEZ)
 - [建邦·顺颐府](https://bj.fang.ke.com/loupan/p_jbyfbjyij/)（别名：顺颐名苑）
@@ -250,9 +250,34 @@
 	- 面积：147，户型：四居在售（89平三居售罄），位置：[15号线后沙峪站东北3公里](https://j.map.baidu.com/ae/2cS)
 - [合景泰富天汇](https://bj.fang.ke.com/loupan/p_hjthbkleh/)（别名：天汇梧桐苑,天汇青竹苑,合景天汇）
 	- 单价：30000，总价：230-430，开盘：2019-09-15
-	- 面积：70-117，户型：二/三/四居在售，位置：[15号线后顺义站以北9公里](https://j.map.baidu.com/cd/o9u)
+	- 面积：70-117，户型：二/三/四居在售，位置：[15号线顺义站以北9公里](https://j.map.baidu.com/cd/o9u)
+- [路劲御和府](https://bj.fang.ke.com/loupan/p_ljyhfblrdz/)（别名：和仁景苑）
+	- 单价：42000，总价：270-530，开盘： 2021-01-30
+	- 面积：68-125，户型：一/三/四居在售，位置：[15号线顺义站东南6公里](https://j.map.baidu.com/3c/oeDJ)
+- [公园都会](https://bj.fang.ke.com/loupan/p_gydhblvih/)（别名：安林嘉苑）
+	- 单价：39000，总价：400-500，开盘： 2021-07-23
+	- 面积：95-127，户型：三/四居在售（二居和一种三居售罄），位置：[15号线顺义站东南6公里](https://j.map.baidu.com/72/lGJJ)
+- [金茂北京国际社区](https://bj.fang.ke.com/loupan/p_jmbjgjsqbkveo/)（别名：青年金色佳苑）
+	- 单价：31000，总价：160-370，开盘： 2021-09-07
+	- 面积：50-118，户型：一/二/三居在售，位置：[15号线顺义站东北11公里](https://j.map.baidu.com/f7/eJt)
+- [公园和御](https://bj.fang.ke.com/loupan/p_gyhybmqmj/)（别名：锦岚家园）
+	- 单价：39000，总价：275-440，开盘： 2022-06
+	- 面积：72-115，户型：二/三居在售，位置：[15号线顺义站东南4公里](https://j.map.baidu.com/f6/ViTg)
+- [中建宸庐](https://bj.fang.ke.com/loupan/p_zjclbmblw/)（别名：琼华观园）
+	- 单价：42000，总价：500，开盘： 2021-06-28
+	- 面积：120，户型：二/三居在售（其他户型售罄），位置：[15号线顺义站以北4公里](https://j.map.baidu.com/7e/Tjyf)
+- [招商中建顺义臻珑府](https://bj.fang.ke.com/loupan/p_zszjsyzlfbmflz/)（别名：锦堂佳苑）
+	- 单价：39000，总价：290-530，开盘： 2022-01-28
+	- 面积：78-134，户型：二/三/四居在售（其他户型售罄），位置：[15号线顺义站北偏东3.5公里](https://j.map.baidu.com/52/_5EJ)
+- [北辰墅院1900](https://bj.fang.ke.com/loupan/p_bcsyabdxn/)（别名：望尊园）
+	- 单价：36000，总价：335-490，开盘： 2015-09
+	- 面积：83-135，户型：二/三居在售（其他户型售罄），位置：[15号线顺义站以北6.5公里](https://j.map.baidu.com/38/b-iJ)
 
 
+- 【略】[尚峯壹號](https://bj.fang.ke.com/loupan/p_syaapoe/)，性质为底商。
+- 【略】[尚峯壹號 峯镜](https://bj.fang.ke.com/loupan/p_syabjij/)，性质为写字楼。
+- 【略】[艾迪公园](https://bj.fang.ke.com/loupan/p_adgybmahm/)，性质为商业。
+- 【略】[国门智慧城](https://bj.fang.ke.com/loupan/p_gmzhcaarrx/)，性质为商业。
 
 
 ### 石景山
