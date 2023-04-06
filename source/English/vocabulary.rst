@@ -105,6 +105,9 @@ Vocabulary  (reStructuredtext)
     * - **ventune off into**
       - N/A
       - 冒险进入
+    * - **hush money**
+      - [ˈhʌʃ mʌni]
+      - *n.* 封嘴钱(用于防止某人透露令人尴尬或有损害的消息);
 
 
 
