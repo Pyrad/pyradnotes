@@ -139,3 +139,6 @@ ventune off into
   Here are a few details to keep in mind as you venture off into this brave new world.
 
 
+倒数第二
+
+  last but one, next to last, penultimate
