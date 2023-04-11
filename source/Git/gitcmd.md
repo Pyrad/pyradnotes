@@ -494,3 +494,50 @@ git ls-files -z --others --exclude-standard | xargs -0 rm
 ```
 
 This will delete all untracked files that are not ignored by Git.
+
+
+## Resolve conflicts when merging from another branch
+
+once conflict occurs after `git merge $branch_name`, it will show what file has conflicts, and it needs to be resolved before merged.
+
+Just open that file using `vi` or other text editor, and find conflict marker `<<<<<<<<`. Then fix the conflicts.
+
+After conflicts are resolved, just add that file(s) by using
+
+```shell
+git add .
+```
+
+Then commit it by using
+
+```shell
+git commit
+```
+
+Now it seems like below,
+
+```shell
+ 1 Merge branch 'master' into dev
+ 2                                                                                 
+ 3 # Conflicts:                                                                    
+ 4 #       src/array.cpp
+ 5 #                                                                               
+ 6 # It looks like you may be committing a merge.                                  
+ 7 # If this is not correct, please remove the file                                
+ 8 #       .git/MERGE_HEAD                                                         
+ 9 # and try again.                                                                
+10                                                                                 
+11                                                                                 
+12 # Please enter the commit message for your changes. Lines starting              
+13 # with '#' will be ignored, and an empty message aborts the commit.             
+14 #                                                                               
+15 # On branch allangle                                                            
+16 # All conflicts fixed but you are still merging.                                
+17 #                                                                               
+18 # Changes to be committed:                                                      
+19 #       modified:   src/array.hpp
+```
+
+It reminds you that current you are committing a merge.
+
+Save and commit, then it's done.
