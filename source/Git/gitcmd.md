@@ -541,3 +541,11 @@ Now it seems like below,
 It reminds you that current you are committing a merge.
 
 Save and commit, then it's done.
+
+## The simplest way to list conflicted files in Git
+
+[What's the simplest way to list conflicted files in Git?](https://stackoverflow.com/questions/3065650/whats-the-simplest-way-to-list-conflicted-files-in-git)
+
+```shell
+git diff --name-only --diff-filter=U --relative
+```
