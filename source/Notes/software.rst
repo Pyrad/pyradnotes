@@ -44,3 +44,6 @@ This is to keep down some software programs of daily use or which might be very 
     * - **Kate**
       - Get an Edge in Editing.
       - `Kate <https://kate-editor.org/>`_ (`Nightly <https://binary-factory.kde.org/view/Windows%2064-bit/job/Kate_Nightly_win64/>`_, `Source <https://invent.kde.org/utilities/kate>`_)
+    * - **布丁扫描**
+      - 免费专业的扫描APP
+      - `布丁扫描 <http://www.budingscan.com/#/>`_
