@@ -259,7 +259,34 @@ alias cgdb='/home/Pyrad/procs/cgdb/bin/cgdb'
 $ pacman -S mingw-w64-clang-x86_64-toolchain
 ```
 
+#### 安装MSYS2版本的`bc`
 
+这里的`bc`是指Basic Calculator。
+
+首先搜索`bc`
+
+```shell
+pacman -Ss bc
+```
+
+在搜索结果中找到`mingw64`的版本，如下
+
+```shell
+... ...
+
+mingw64/mingw-w64-x86_64-avr-libc 2.0.0-3 (mingw-w64-x86_64-avr-toolchain)
+    The C runtime library for the AVR family of microcontrollers (mingw-w64)
+mingw64/mingw-w64-x86_64-bc 1.07.1-1
+    bc is an arbitrary precision numeric processing language (mingw-w64)
+
+... ...
+```
+
+然后安装即可
+
+```shell
+pacman -Ss mingw64/mingw-w64-x86_64-bc
+```
 
 
 
