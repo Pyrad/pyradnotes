@@ -285,7 +285,7 @@ mingw64/mingw-w64-x86_64-bc 1.07.1-1
 然后安装即可
 
 ```shell
-pacman -Ss mingw64/mingw-w64-x86_64-bc
+pacman -S mingw64/mingw-w64-x86_64-bc
 ```
 
 
