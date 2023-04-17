@@ -444,3 +444,9 @@ Symbol `%` is a register in Vim, which stores the current file name
 In normal mode, use `"%p` to paste the current file name to current cursor's position (or use `"%P` to paste before the cursor)
 
 [Get the name of the current file](https://vim.fandom.com/wiki/Get_the_name_of_the_current_file#:~:text=In%20insert%20mode%2C%20type%20Ctrl,to%20create%20a%20similar%20name.)
+
+
+## Vim Repeat finding next character in this line
+
+Use `f` + `<char>` to move the the 1st occurrence of this line, then press `;` (semicolon) to jump to the 2nd occurrence, again for the next until none.
+
