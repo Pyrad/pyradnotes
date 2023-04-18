@@ -513,6 +513,34 @@ Start gitg normally
 The steps here come from this [answer](https://stackoverflow.com/questions/36209671/im-trying-to-run-gedit-in-cygwin-but-receiving-error)
 
 
+## How to find zombie process?
+
+https://askubuntu.com/questions/111422/how-to-find-zombie-process
+
+```bash
+$ ps aux | grep 'Z'
+```
+
+What you get is Zombies and anything else with a Z in it, so you will also get the grep:
+
+```bash
+USER       PID     %CPU %MEM  VSZ    RSS TTY      STAT START   TIME COMMAND
+usera      13572   0.0  0.0   7628   992 pts/2    S+   19:40   0:00 grep --color=auto Z
+usera      93572   0.0  0.0   0      0   ??       Z    19:40   0:00 something
+```
+
+Find the zombie's parent:
+
+```bash
+$ pstree -p -s 93572
+```
+
+Will give you:
+
+```bash
+init(1)---cnid_metad(1311)---cnid_dbd(5145)
+```
+
 
 
 
