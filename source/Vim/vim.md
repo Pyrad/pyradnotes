@@ -429,14 +429,6 @@ In Vim, ensure you are command mode by hitting the Esc key.
 
 Just use `:e`
 
-## Bash multiple conditions and `[[` and `((` in if-condition
-
-[Bash Multiple Conditions](https://stackoverflow.com/a/20263097)
-
-If using `[[ ]]` for if-condition, then `-eq`, `-ne` and etc should be used, `==`, `!=` and etc are not valid in `[[]]`.
-
-If trying to use `<`, `>`, ... arithematic operators, using `(())` for if-condition
-
 ## Vim get current file name and path
 
 Symbol `%` is a register in Vim, which stores the current file name

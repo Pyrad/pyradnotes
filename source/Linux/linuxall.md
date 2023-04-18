@@ -109,3 +109,13 @@ fc-match -v "FontName"
 ## What is tty?
 
 tty = **t**ele**ty**pewriter，中文翻译一般叫**电传打字机**。
+
+
+## Bash multiple conditions and `[[` and `((` in if-condition
+
+[Bash Multiple Conditions](https://stackoverflow.com/a/20263097)
+
+If using `[[ ]]` for if-condition, then `-eq`, `-ne` and etc should be used, `==`, `!=` and etc are not valid in `[[]]`.
+
+If trying to use `<`, `>`, ... arithematic operators, using `(())` for if-condition
+
