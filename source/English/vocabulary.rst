@@ -142,3 +142,12 @@ ventune off into
 倒数第二
 
   last but one, next to last, penultimate
+
+
+
+be there or be square
+go big or go home
+talk the talk
+walk the walk
+forgive and forget
+put up or shut up
