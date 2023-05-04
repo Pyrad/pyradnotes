@@ -7,3 +7,4 @@ Python
     numpybasics
     NumpyVisualIntro
     pythonstring.md
+    pythonbasic.md
