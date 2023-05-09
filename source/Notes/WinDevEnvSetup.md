@@ -52,6 +52,13 @@ function Prompt
 ```
 
 
+### 显示文件内容
+
+类似linux中`cat`命令的powershell命令是`type`
+
+```powershell
+type filename.txt
+```
 
 
 
