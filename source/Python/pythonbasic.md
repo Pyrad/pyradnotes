@@ -48,3 +48,5 @@ if __name__ == "__main__":
     print(f"Current machine's CPU is {get_cpu_type()}")
     print(f"Current machine's CPU name {get_cpu_name()}")
 ```
+
+另，可查看[cpuinfo.py](https://github.com/pydata/numexpr/blob/master/numexpr/cpuinfo.py)来查看相关的获取方法。
