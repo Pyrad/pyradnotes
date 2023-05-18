@@ -356,6 +356,23 @@
 [Python爬虫——上海市链家二手房数据爬取及可视化分析](https://www.cnblogs.com/ovo9jie/p/17001929.html)
 
 
+
+
+## 北京市规划和自然资源委员会
+
+### 链接
+
+[http://ghzrzyw.beijing.gov.cn/](http://ghzrzyw.beijing.gov.cn/)
+
+### 关于土地项目招拍和拟供应的链接
+
+**土地招拍挂项目**： [首页](http://ghzrzyw.beijing.gov.cn/) > [自然资源管理](http://yewu.ghzrzyw.beijing.gov.cn/gwxxfb/tdsc/tdzpgxm.html) > [土地市场](http://yewu.ghzrzyw.beijing.gov.cn/gwxxfb/tdsc/tdzpgxm.html) > 土地招拍挂项目
+
+**拟供应商品住宅用地清单**：[首页](http://ghzrzyw.beijing.gov.cn/) > [自然资源管理](http://yewu.ghzrzyw.beijing.gov.cn/gwxxfb/tdsc/tdzpgxm.html) > [土地市场](http://yewu.ghzrzyw.beijing.gov.cn/gwxxfb/tdsc/tdzpgxm.html) > 拟供应商品住宅用地清单
+
+**土地成交一览表**： [首页](http://ghzrzyw.beijing.gov.cn/) > [自然资源管理](http://yewu.ghzrzyw.beijing.gov.cn/gwxxfb/tdsc/tdzpgxm.html) > [土地市场](http://yewu.ghzrzyw.beijing.gov.cn/gwxxfb/tdsc/tdzpgxm.html) > 土地成交一览表
+
+
 ## 北京普宅认定标准
 
 **单价与总价满足其一即可**
