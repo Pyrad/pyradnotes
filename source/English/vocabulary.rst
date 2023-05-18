@@ -111,6 +111,9 @@ Vocabulary  (reStructuredtext)
     * - **mounting tension**
       - [ˈmaʊntɪŋ ˈtenʃn]
       - *n.* 日益增加的紧张氛围
+    * - **RSVP**
+      - n/a
+      - 敬请回复
 
 
 
