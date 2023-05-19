@@ -373,6 +373,16 @@
 **土地成交一览表**： [首页](http://ghzrzyw.beijing.gov.cn/) > [自然资源管理](http://yewu.ghzrzyw.beijing.gov.cn/gwxxfb/tdsc/tdzpgxm.html) > [土地市场](http://yewu.ghzrzyw.beijing.gov.cn/gwxxfb/tdsc/tdzpgxm.html) > 土地成交一览表
 
 
+## 北京市住房和城乡建设委员会
+
+[官网网站链接 - http://zjw.beijing.gov.cn](http://zjw.beijing.gov.cn/)
+
+已办理预售许可项目公示：
+
+[首页](http://zjw.beijing.gov.cn/ "首页") > 房屋管理 > 房地产交易 > 房地产交易信息公示 > [项目信息公示](http://bjjs.zjw.beijing.gov.cn/eportal/ui?pageId=307670 "项目信息公示")
+
+
+
 ## 北京普宅认定标准
 
 **单价与总价满足其一即可**
