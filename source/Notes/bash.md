@@ -145,3 +145,51 @@ else
 	echo "No"
 fi
 ```
+
+
+## String starts with a value
+
+需要注意的是，下面第4个条件测试中的`"Fly*"`，因为`*`在双引号里面，所以指的是`Fly*`这个字符串，`*`就不再被解释为任意字符的匹配，但如果`*`在双引号外面，那么`*`就会被解释为任意字符的匹配。
+
+```bash
+test="Fly001"
+prefix="Fly"
+
+# Output is: Starts with Fly
+if [[ $test == "$prefix"* ]]; then
+	echo "Starts with Fly"
+else
+	echo "Doesn't starts with Fly"
+fi
+
+# Output is: Starts with Fly
+if [[ $test == "Fly"* ]]; then
+	echo "Starts with Fly"
+else
+	echo "Doesn't starts with Fly"
+fi
+
+# Output is: Starts with Fly
+if [[ $test == Fly* ]]; then
+	echo "Starts with Fly"
+else
+	echo "Doesn't starts with Fly"
+fi
+
+# Output is: Doesn't starts with Fly
+if [[ $test == "Fly*" ]]; then
+	echo "Starts with Fly"
+else
+	echo "Doesn't starts with Fly"
+fi
+
+```
+
+Outputs of the above 4 conditional tests are,
+
+```bash
+Output is: Starts with Fly
+Output is: Starts with Fly
+Output is: Starts with Fly
+Output is: Doesn\'t starts with Fly
+```
