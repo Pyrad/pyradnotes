@@ -193,3 +193,13 @@ Output is: Starts with Fly
 Output is: Starts with Fly
 Output is: Doesn\'t starts with Fly
 ```
+
+
+## `SECONDS` variable
+
+[Advanced Bash-Scripting Guide - 9.1. Internal Variables](https://tldp.org/LDP/abs/html/internalvariables.html)
+
+> `SECONDS` : The number of seconds the script has been running.
+
+注意，`SECONDS`变量指的是脚本从开始运行到现在经过的时间，所以如果要求解某个耗时命令的elapsed time，就需要在该命令的前后各自记录当时的`SECONDS`，然后做两个值相减得到elapsed time。
+
