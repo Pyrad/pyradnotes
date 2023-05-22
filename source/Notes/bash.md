@@ -122,3 +122,26 @@ All function parameters or arguments can be accessed via `$1, $2, $3,..., $N`.
 
 `$#` holds the number of positional parameters passed to the function.
 
+
+## Bash logical and, or
+
+多个条件逻辑**与**
+
+```bash
+if [[ $test == "Monday" ]] && [[ $test == "Tuesday" ]]; then
+	echo "Yes"
+else
+	echo "No"
+fi
+```
+
+
+多个条件逻辑**或**
+
+```bash
+if [[ $test == "Monday" ]] || [[ $test == "Tuesday" ]]; then
+	echo "Yes"
+else
+	echo "No"
+fi
+```
