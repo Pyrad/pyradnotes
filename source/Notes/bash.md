@@ -146,6 +146,15 @@ else
 fi
 ```
 
+混合逻辑使用
+
+```bash
+if ([[ $test == "Monday" ]] || [[ $test == "Tuesday" ]]) &&  [[ $test2 ==  "AI" ]]; then
+	echo "Yes"
+else
+	echo "No"
+fi
+```
 
 ## String starts with a value
 
