@@ -549,3 +549,19 @@ Save and commit, then it's done.
 ```shell
 git diff --name-only --diff-filter=U --relative
 ```
+
+
+## Get rid of '... does not point to a valid object' for an old git branch
+
+[Stack Overflow - Get rid of ...](https://stackoverflow.com/questions/6265502/getting-rid-of-does-not-point-to-a-valid-object-for-an-old-git-branch)
+
+
+Clean up all of the missing refs by using the following commands (bash)
+
+```shell
+git for-each-ref --format="%(refname)" | while read ref; do
+    git show-ref --quiet --verify $ref 2>/dev/null || git update-ref -d $ref
+done
+```
+
+Refer to [git-for-each-ref](https://git-scm.com/docs/git-for-each-ref) and [git-show-ref](https://git-scm.com/docs/git-show-ref) for more details.
