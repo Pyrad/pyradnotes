@@ -25,7 +25,7 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`Chinese </ChinesePoetry/index>`
     * - :doc:`Golang </Go/index>`
       - :doc:`FAL </FightAgainstLeviathan/index>`
-      - 
+      - :doc:`Real Estate </RealEstate/index>`
       -
       -
 
@@ -51,6 +51,12 @@ A Tour of Life (Pyrad's Notes!)
    :caption: Geometry:
 
    Geometry/index
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Real Estate:
+
+   RealEstate/index
 
 .. toctree::
    :maxdepth: 1
