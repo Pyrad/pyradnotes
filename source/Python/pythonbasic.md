@@ -50,3 +50,24 @@ if __name__ == "__main__":
 ```
 
 另，可查看[cpuinfo.py](https://github.com/pydata/numexpr/blob/master/numexpr/cpuinfo.py)来查看相关的获取方法。
+
+## Python时间
+
+Python module：`from datetime import datetime`
+
+当前时间：`cur_time = datetime.now()`
+
+格式化当前时间为字符串：`cur_time_string = cur_time.strftime(%Y-%m-%d %H:%M:%S %A %U)`
+
+三个module，`date`，`datetime`和`time`都支持使用函数`strftime`来获取格式化的时间字符串，`strftime()` and `strptime()` Behavior（详见Python doc）
+
+|Directive|Meaning|Sample|
+|:-----|:-----|:-----|
+|`%Y` |年，以四位数表示|2013，2023 |
+|`%m`|月，带`0`填充|01，02，12|
+|`%d`|日，带`0`填充 |01，05，16，31|
+|`%A`|星期 |Monday，Sunday|
+|`%U`|本年第几周，带`0`填充，星期日为每周第一天 |02，04， 52，53|
+|`%H`|小时，24小时计数|01，02，12，23|
+|`%M`|分钟，带`0`填充 |02，15，33|
+|`%S`|秒，带`0`填充|01，22，45|
