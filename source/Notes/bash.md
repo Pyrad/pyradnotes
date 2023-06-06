@@ -212,3 +212,7 @@ Output is: Doesn\'t starts with Fly
 
 注意，`SECONDS`变量指的是脚本从开始运行到现在经过的时间，所以如果要求解某个耗时命令的elapsed time，就需要在该命令的前后各自记录当时的`SECONDS`，然后做两个值相减得到elapsed time。
 
+
+## Spinner waiting for a process
+
+等待一个进程的progress bar，参见文件 [Gitee/Pyrad - scripts/script_bash/wait_spinner.sh](https://gitee.com/pyrad/scripts/blob/master/script_bash/wait_spinner.sh)
