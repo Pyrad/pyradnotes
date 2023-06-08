@@ -446,6 +446,7 @@ $$
 ### Week 23
 
 $\text{Year 2023 Week 23}$
+
 $$
 \begin{array}{l|r|r|r|r|r|r|r}
 \hline
