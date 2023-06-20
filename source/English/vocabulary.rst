@@ -114,6 +114,10 @@ Vocabulary  (reStructuredtext)
     * - **RSVP**
       - n/a
       - 敬请回复
+    * - **A hell of a job/time/...**
+      - n/a
+      - Very difficult or bad
+
 
 
 
