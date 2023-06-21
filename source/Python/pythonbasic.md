@@ -71,3 +71,9 @@ Python module：`from datetime import datetime`
 |`%H`|小时，24小时计数|01，02，12，23|
 |`%M`|分钟，带`0`填充 |02，15，33|
 |`%S`|秒，带`0`填充|01，22，45|
+
+
+## Python Boost-Python How-to
+
+Refer to [How to expose...](https://wiki.python.org/moin/boost.python/HowTo)
+
