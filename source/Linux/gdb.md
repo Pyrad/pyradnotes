@@ -222,3 +222,28 @@ corexec simp1_PBCSIMPLE_NDF.pjx 331 331 -color 1 -no_output < ./gdbStdin.in
 ```
 
 
+
+## Print C++ macro in gdb
+
+Links
+
+[How do I print a #define constant in GDB](https://stackoverflow.com/questions/2934006/how-do-i-print-a-defined-constant-in-gdb)
+
+[How to print #define value in gdb](https://stackoverflow.com/questions/26881742/how-to-print-define-value-in-gdb)
+
+
+首先，需要在编译时使用 `-g3` 编译选项。
+
+其次，才能在 `gdb` 中使用如下命令查看宏
+
+```gdb
+info macro <MACRO>
+```
+
+或者使用如下命令
+
+```gdb
+macro expand <MACRO>
+```
+
+最后，可以在`gdb`中使用命令 `help macro` 来查看和宏相关的信息。
