@@ -77,3 +77,28 @@ Python module：`from datetime import datetime`
 
 Refer to [How to expose...](https://wiki.python.org/moin/boost.python/HowTo)
 
+
+## WeakValueDictionary
+
+为什么WeakValueDictionary里面的对象在被`del`之后，有时候再去查询，发现它还在？
+
+[WeakValueDictionary retaining reference to object with no more strong references](https://stackoverflow.com/questions/12023717/weakvaluedictionary-retaining-reference-to-object-with-no-more-strong-references)
+
+简而言之，就是它只是标记了对象是可以被垃圾回收机制所回收的，但具体在什么时候回收，取决于垃圾回收机制。上面的回答里面，提到了如下的用法，它在interactive shell和作为script运行时，会得到不同的打印结果。
+
+```python
+from weakref import WeakValueDictionary
+
+class Foo(object):
+	pass
+
+f = Foo()
+d = WeakValueDictionary()
+d['f'] = f
+
+print dict(d)
+del f
+print dict(d)
+```
+
+在interactive shell的环境中运行时，实际上两次打印都会打印出来对象的信息，而在作为script运行时，第一次打印有对象的信息，而第二次打印`d`就是一个空的字典结构了（`f`被垃圾回收机制在某个时间点回收了）
