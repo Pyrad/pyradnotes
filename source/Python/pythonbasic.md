@@ -102,3 +102,7 @@ print dict(d)
 ```
 
 在interactive shell的环境中运行时，实际上两次打印都会打印出来对象的信息，而在作为script运行时，第一次打印有对象的信息，而第二次打印`d`就是一个空的字典结构了（`f`被垃圾回收机制在某个时间点回收了）
+
+## Python Get Memory Usage
+
+[Python equivalent of PHP's memory_get_usage()?](https://stackoverflow.com/questions/897941/python-equivalent-of-phps-memory-get-usage)
