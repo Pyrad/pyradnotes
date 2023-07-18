@@ -247,4 +247,7 @@ MSYS is an variable of CMake - [link](https://cmake.org/cmake/help/latest/manual
 Remember that I made some changes to file `D:\procs\msys64\mingw64\share\cmake\Modules\FindPackageHandleStandardArgs.cmake`,  remember to restore it by the backup file in a same folder.
 
 
+## CMake with shared library
+
+[C++动态链接库的创建与调用(Windows 10 + VSCode + CMake)](https://zhuanlan.zhihu.com/p/380045878)
 
