@@ -109,3 +109,22 @@ bool Foo2<T>::set_ok(int32_t k) {
 [What uses are there for "placement new"?](https://stackoverflow.com/questions/222557/what-uses-are-there-for-placement-new)
 
 简而言之，就是先分配一块"raw"内存，然后在这个内存上构造一个object，这样就把内存分配和对象构造这两步分开了，比如有时候只需要先分配一大块内存，然后在需要的时候再构造，这样就可以提高性能，memory pool中可以用到这项技术。
+
+
+## Locate the path of STL headers used by g++
+
+
+You can display the full search paths with
+
+```shell
+g++ -print-search-dirs
+```
+
+or you can find a specific header without writing a source file with something along the lines of
+
+```shell
+echo '#include <vector>' | g++ -x c++ -E - | grep '/vector'
+```
+
+
+Link: [Locate the path of STL headers used by g++](https://stackoverflow.com/questions/21110693/locate-the-path-of-stl-headers-used-by-g)
