@@ -115,3 +115,14 @@ print dict(d)
 简而言之，一般情况下，`sys.getrefcount(obj)`返回当前`obj`的引用数量，但它的值比我们在代码中看到的要多，因为它内部也会创建对它的引用，一般这个返回的数值比我们看到的要多`3`。
 
 但如果计算的是类似如`2`，`1`这类很常见的数字的时候，返回值可能会很大，因为Python内部就有很多对它们的引用。
+
+
+## 脚本文件的名字和当前的行号
+
+```python
+from inspect import currentframe, getframeinfo
+
+frameinfo = getframeinfo(currentframe())
+
+print(frameinfo.filename, frameinfo.lineno)
+```
