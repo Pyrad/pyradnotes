@@ -128,3 +128,10 @@ echo '#include <vector>' | g++ -x c++ -E - | grep '/vector'
 
 
 Link: [Locate the path of STL headers used by g++](https://stackoverflow.com/questions/21110693/locate-the-path-of-stl-headers-used-by-g)
+
+
+## C++ unordered_map under the hood
+
+[C++ Unordered Map Under the Hood](https://jbseg.medium.com/c-unordered-map-under-the-hood-9540cec4553a)
+
+
