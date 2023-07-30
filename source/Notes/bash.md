@@ -216,3 +216,15 @@ Output is: Doesn\'t starts with Fly
 ## Spinner waiting for a process
 
 等待一个进程的progress bar，参见文件 [Gitee/Pyrad - scripts/script_bash/wait_spinner.sh](https://gitee.com/pyrad/scripts/blob/master/script_bash/wait_spinner.sh)
+
+
+## Separate a string and then print
+
+看起来使用 `awk` 是比较简洁的办法
+
+```shell
+echo $PATH | awk -F: '{for (i = 1; i <= NF; ++i) print i, $i}'
+```
+
+
+
