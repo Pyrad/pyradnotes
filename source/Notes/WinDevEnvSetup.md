@@ -99,6 +99,49 @@ if __name__ == "__main__":
 ```
 
 
+## 查看环境变量
+
+使用 `Get-ChildItem` 列出所有的环境变量
+
+```powershell
+Get-ChildItem env:
+```
+
+由于`ls`，`dir` 和 `gci` 都是 `Get-ChildItem` 的别名，因此使用它们具有同样的效果
+
+```powershell
+Get-Alias -Definition Get-ChildItem
+```
+
+结果
+
+```powershell
+PS D:\Pyrad\Gitee\webcrawler\housecrawler> Get-Alias -Definition Get-ChildItem
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Alias           dir -> Get-ChildItem
+Alias           gci -> Get-ChildItem
+Alias           ls -> Get-ChildItem
+```
+
+
+查看单个环境变量
+
+比如，查看`PATH`变量。
+
+```powershell
+$env:PATH
+Get-Item Env:PATH
+```
+
+因为 `PATH` 变量是由分号 `;` 分隔开来，也可以使用如下命令来做字符串分割，
+
+```powershell
+$Env:Path.Split(';')
+```
+
+
 ## Visual Studio Code
 
 [Do colorization of inactive preprocessor blocks](https://github.com/Microsoft/vscode-cpptools/issues/1466)
