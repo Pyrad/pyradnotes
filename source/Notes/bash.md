@@ -227,4 +227,8 @@ echo $PATH | awk -F: '{for (i = 1; i <= NF; ++i) print i, $i}'
 ```
 
 
+## Bash variable expansion/substitution
+
+[3.5.3 Shell Parameter Expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
+
 
