@@ -262,6 +262,22 @@ fi
 reference page：[如何让 cygwin终端中显示的中文改成英文](https://blog.csdn.net/wb121010/article/details/53894901)
 
 
+#### 如何检查当前运行的是Windows Terminal环境？
+
+直接检查环境变量 `WT_SESSION`，或者 `WT_PROFILE_ID`是否为空，如果非空，就说明是运行在Windows Terminal环境下。
+
+```shell
+echo $WT_SESSION
+echo $WT_PROFILE_ID
+```
+
+上面两条命令的结果类似如下，
+
+```shell
+4fd166dd-afc3-4b91-87ba-c74485dd8e67
+{4fd166dd-afc3-4b91-87ba-c74485dd8e67}
+```
+
 
 #### 查看可以安装的工具套件
 
