@@ -126,3 +126,21 @@ frameinfo = getframeinfo(currentframe())
 
 print(frameinfo.filename, frameinfo.lineno)
 ```
+
+
+## 长字符串多行表示
+
+```python
+msg = ( "Good "
+	    "day "
+	    "today")
+print(msg)
+print(type(msg))
+```
+
+上面打印的结果是
+
+```python
+<class 'str'>
+Good day today
+```
