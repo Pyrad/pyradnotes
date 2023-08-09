@@ -8,3 +8,4 @@ Python
     NumpyVisualIntro
     pythonstring.md
     pythonbasic.md
+    ExtendingAndEmbeddingThePythonInterpreter.md
