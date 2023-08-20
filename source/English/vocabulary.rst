@@ -117,7 +117,12 @@ Vocabulary  (reStructuredtext)
     * - **A hell of a job/time/...**
       - n/a
       - Very difficult or bad
-
+    * - **intermezzo**
+      - /ˌɪntəˈmetsəʊ/
+      - *n.* 间奏曲；插曲；幕间剧；芭蕾舞表演atheist
+    * - **atheist**
+      - /ˈeɪθiɪst/
+      - *n.* 无神论者
 
 
 
