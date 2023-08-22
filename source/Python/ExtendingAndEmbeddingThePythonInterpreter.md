@@ -71,5 +71,11 @@
 
 ## 1. Extending Python with C or C++
 
+如果懂得如何使用C语言编程，那么很容易在Python中添加新的内置模块（built-in module）。这种扩展模块可以做到在Python中做不到的两件事（1）它们可以实现新的内置对象类型（built-in object type）（2）它们可以调用C的库函数和系统调用。
 
+为了支持这样的扩展模块，Python应用程序接口（API，Application Programmers Interface）定义了一系列的函数、宏以及变量，它们被用来访问Python运行系统的各个方面。Python的这些API在C源文件中以`include "Python.h"`的方式被包含进来。
+
+一个扩展模块的编译，不仅依赖于它的用途，而且也依赖于系统设置，后面的章节会给出更多的细节。
+
+注意：C的扩展接口（函数）是CPython特有的，这样的扩展模块在其他实现方式的Python上是不工作的。在大多数情况下，可以避免撰写C的扩展，并且可以保留对其他实现方式的Python的可移植性。比如，如果使用场景是调用C的库函数或者调用系统函数，那么就可以考虑使用 `ctype` 这个Python模块，或者 `cffi` library，而不是编写自己的C代码。这些模块能够使你通过写Python代码的方式和（对应的）C代码打交道，并且在各个不同的Python实现上，比起自己撰写C代码和编译，更具有移植特性。
 
