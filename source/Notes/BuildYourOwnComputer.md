@@ -19,3 +19,7 @@ ASUS：DOCP (Direct OverClock Profile)
 Gigabyte：EOCP (Extended OverClock Profile)
 
 
+
+## 组件价格估计
+
+AMD 5700G 盒装 ￥1149
