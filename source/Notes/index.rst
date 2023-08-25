@@ -20,3 +20,4 @@ Notes
    geometry
    ReadTheDoc
    ResourcesLink
+   BuildYourOwnComputer.md
