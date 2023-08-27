@@ -8,6 +8,12 @@
 
 本文档假定读者具备Python的基本知识。关于Python这门语言的非正式的介绍，可以查看[The python Tutorial](https://docs.python.org/3/tutorial/index.html#tutorial-index)，而[The Python Language Reference](https://docs.python.org/3/reference/index.html#reference-index)给出了Python更正式的定义[The Python Standard Library](https://docs.python.org/3/library/index.html#library-index)描述了现有的对象类型（object types)，函数（functions)和模块 (modules)，它们都是使用Python编写，并且内置的，它们都有着广泛的应用范围关开完整的Python/C API接体文档，可以查看单独的[Python/C API Reference Manual](https://docs.python.org/3/c-api/index.html#c-api-index)
 
+
+## Words
+
+exercise caution 谨慎行事
+
+
 ### 推荐的第三方工具
 
 本指南只介绍了在此版本的CPython下，利用其提供的基本工具，创建扩展模块。其他第三方程序，如 [Cython](https://cython.org/), [cffi](https://cffi.readthedocs.io/), [SWIG](https://www.swig.org/) 以及 [Numba](https://numba.pydata.org/) 都提供了更简单便捷和更复杂功能多样的方法，用来创建Python的C和C++的扩展。
@@ -249,6 +255,100 @@ return Py_None;
 
 这里的 `Py_None` 是Python中特殊对象 `None` 在C中的名字，它是一个标准的Python对象，而不是一个 `NULL` 指针，它一般在上下文中代表发生了错误，就像我们之前见到的一样。
 
+### 1.4. The Module’s Method Table and Initialization Function
+
+之前承诺提到要展示 `spam_system()` 这个C函数是如何在Python程序中调用的。首先，我们要把它的名字和（函数）地址在一个叫做“方法表”（method table）的数据结构（其实就是一个C中的静态数组）中列出：
+
+```cpp
+static PyMethodDef SpamMethods[] = {
+    ...
+    {"system", spam_system, METH_VARARGS, "Execute a shell command."},
+    ...
+    {NULL, NULL, 0, NULL}        /* Sentinel */
+};
+```
+
+注意，第三项 `METH_VARARGS`，它是一个标记，用来告知Python解释器如何调用对应C函数的一种约定。通常情况下，它应该总是 `METH_VARARGS` 或者 `METH_VARARGS | METH_KEYWORDS`；值 `0` 表示使用了一个废弃的变种函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple")。
+
+当仅使用 `METH_VARARGS` 的时候，函数应该只接收Python层面的参数，并将其当做一个元组，以供函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 进行解析，下面是该函数详细的分析。
+
+如果是以关键字参数的形式传参给函数，那么就可以在第三项上设置 `METH_KEYWORDS` 这一位（bit）。这种情况下，对应的C函数应该有第三个参数，这第三个参数是一个关键字的字典（keyword dictionary），而且应该使用函数 [`PyArg_ParseTupleAndKeywords()`](../c-api/arg.html#c.PyArg_ParseTupleAndKeywords "PyArg_ParseTupleAndKeywords") 去解析传递进来的参数。
+
+在模块定义结构中，必须引用前面提到的函数表（方法表，method table）：
+
+```cpp
+static struct PyModuleDef spammodule = {
+    PyModuleDef_HEAD_INIT,
+    "spam",   /* name of module */
+    spam_doc, /* module documentation, may be NULL */
+    -1,       /* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */
+    SpamMethods
+};
+```
+
+进一步，这个（模块定义）结构，必须在模块初始化函数中传递给解释器。初始化函数的名字结构形式必须是 `PyInit_name()`，这里 `name` 就是这个模块的名称，并且这个初始化函数必须是模块文件中定义的唯一一个非静态函数（only non-`static`）。
+
+```cpp
+PyMODINIT_FUNC
+PyInit_spam(void)
+{
+    return PyModule_Create(&spammodule);
+}
+```
+
+注意，`PyMODINIT_FUNC` 声明了这个函数是以 `PyObject *`的类型作为返回值类型，但这个函数也可以被声明为按照系统平台要求的其他特殊链接类型的返回值类型，也可以按照 `extern "C"` 的方式在C++中声明。
+
+当Python程序第一次导入模块（import module）时，`PyInit_spam()` 就会被调用。（下面的代码片段中有注释说明）它又调用了函数 [`PyModule_Create()`](../c-api/module.html#c.PyModule_Create "PyModule_Create")，这个函数返回一个模块对象，并且会根据模块定义中的表（table，一个 [`PyMethodDef`](../c-api/structures.html#c.PyMethodDef "PyMethodDef") 结构的数组），把一些内置函数对象插入到这个新创建的模块中去。函数 [`PyModule_Create()`](../c-api/module.html#c.PyModule_Create "PyModule_Create") 返回一个指向新创建的模块对象的指针。它可能因为某些错误而中止执行并退出，也有可能因为这个模块不能顺利地被初始化而返回 `NULL`。这个初始化函数必须给它的调用者返回一个模块对象，以便它能够被插入到 `sys.modules` 中去。
+
+当嵌入到Python中去的时候，函数 `PyInit_spam()` 不会被自动调用，除非在 `PyImport_Inittab` 表中有这一项。为了在初始化表中添加这个模块（即把这个自定义的模块当做一个内置模块来对待），使用 [`PyImport_AppendInittab()`](../c-api/import.html#c.PyImport_AppendInittab "PyImport_AppendInittab")，后面可以选择性地跟上一个导入模块语句：
+
+```cpp
+int
+main(int argc, char *argv[])
+{
+    wchar_t *program = Py_DecodeLocale(argv[0], NULL);
+    if (program == NULL) {
+        fprintf(stderr, "Fatal error: cannot decode argv[0]\n");
+        exit(1);
+    }
+
+    /* Add a built-in module, before Py_Initialize */
+    if (PyImport_AppendInittab("spam", PyInit_spam) == -1) {
+        fprintf(stderr, "Error: could not extend in-built modules table\n");
+        exit(1);
+    }
+
+    /* Pass argv[0] to the Python interpreter */
+    Py_SetProgramName(program);
+
+    /* Initialize the Python interpreter.  Required.
+       If this step fails, it will be a fatal error. */
+    Py_Initialize();
+
+    /* Optionally import the module; alternatively,
+       import can be deferred until the embedded script
+       imports it. */
+    PyObject *pmodule = PyImport_ImportModule("spam");
+    if (!pmodule) {
+        PyErr_Print();
+        fprintf(stderr, "Error: could not import module 'spam'\n");
+    }
+
+    ...
+
+    PyMem_RawFree(program);
+    return 0;
+}
+```
+
+（这里可以看到，`PyImport_AppendInittab()` 函数是为了将我们自定义的模块Python的模块初始化表中去，而且要在调用 `Py_Initialize()` 之前执行），而导入模块并不一定要在此时完成，而是可以等到在Python脚本中需要导入该模块的时候再做。
+
+注意，删除 `sys.modules` 中的某些项，或者在同一个进程中（或者还有后面跟上 `fork()` ，但没有函数 `exec()` 介入），把编译好的模块导入到多个Python解释器中，都会导致某些扩展模块产生问题。扩展模块的作者应该在初始化内部数据结构的时候谨慎行事。
+
+一个更加实际的模块例子是 `Modules/xxmodule.c`，它包含在Python的源代码文件中，这个文件可以当做（创建模块的）模板，或者当做一个例子来阅读。
+
+注意，和本文中 `spam` 例子不同的是，`xxmodule` 模块使用了*多步初始化*（Python 3.5中引入）。如果使用这个办法，那么本文例子中 `PyInit_spam()` 返回的就是一个 `PyModuleDef` 结构，并且模块的创建工作就会交给导入机制完成。关于多步初始化更详细的内容，参考 [**PEP 489**](https://peps.python.org/pep-0489/)。
 
 
 
