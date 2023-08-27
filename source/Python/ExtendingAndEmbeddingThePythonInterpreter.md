@@ -109,7 +109,7 @@ status = spam.system("ls -l")
 
 接下来，要给我们的模块文件加入一个C函数，这个函数在Python解释器执行到 `spam.system(string)` 语句的时候被调用到（稍后我们会看到它是如何被调用的）,
 
-```python
+```cpp
 static PyObject *
 spam_system(PyObject *self, PyObject *args)
 {
@@ -127,11 +127,92 @@ spam_system(PyObject *self, PyObject *args)
 
 `self` 指针参数指向的是模块对象，为的是访问模块层级的函数；对于一个Python method，它指向的是一个对象实例。
 
-`args` 指针参数指向的是包含有参数的Python元组（tuple）。这个元组中的每一项对应的就是调用参数列表中的一个参数。因为参数是Python对象，为了在我们的C函数中使用，就需要将其转换为C的值。Python API中的函数 `PyArg_ParseTuple()` 就是用来检查参数类型，并将其转换为C值。它使用一个字符串模板来决定所需的参数类型，以及用来存储转换后的C值的C变量。
+`args` 指针参数指向的是包含有参数的Python元组（tuple）。这个元组中的每一项对应的就是调用参数列表中的一个参数。因为参数是Python对象，为了在我们的C函数中使用，就需要将其转换为C的值。Python API中的函数 [`PyArg_ParseTuple()`](file:///D:/procs/python-3.11.4-docs-html/c-api/arg.html#c.PyArg_ParseTuple) 就是用来检查参数类型，并将其转换为C值。它使用一个字符串模板来决定所需的参数类型，以及用来存储转换后的C值的C变量。
 
-如果所有参数的类型正确，并且其对应的C值存入到了传入的地址（对应的内存）中，函数 `PyArg_ParseTuple()` 返回 `true` （非零）。如果传入的是一个不正确的参数列表，那么函数 `PyArg_ParseTuple()` 返回 `false` （零）。在后者的情况中，它同时会抛出一个合适的异常，据此调用它的函数就能立即返回 `NULL`。
+如果所有参数的类型正确，并且其对应的C值存入到了传入的地址（对应的内存）中，函数 [`PyArg_ParseTuple()`](file:///D:/procs/python-3.11.4-docs-html/c-api/arg.html#c.PyArg_ParseTuple) 返回 `true` （非零）。如果传入的是一个不正确的参数列表，那么函数 [`PyArg_ParseTuple()`](file:///D:/procs/python-3.11.4-docs-html/c-api/arg.html#c.PyArg_ParseTuple) 返回 `false` （零）。在后者的情况中，它同时会抛出一个合适的异常，据此调用它的函数就能立即返回 `NULL`。
 
+### 1.2. Intermezzo: Errors and Exceptions
 
+贯穿于Python解释器中一个约定是，当一个函数执行失败时，它应该设置一个异常条件，并且返回一个错误值（通常是 `-1` 或 `NULL` 指针）。异常信息则被存储在了Python解释器的三个线程安全的变量中。当没有异常的时候，它们都是 `NULL`。当存在异常的时候，它们是和 [`sys.exc_info()`](file:///D:/procs/python-3.11.4-docs-html/library/sys.html#sys.exc_info) 返回的Python元组对应的三个C变量。了解它们对于理解错误（信息）是如何传递的很重要。
+
+Python API定义了一系列的函数，用来设定各种类型的异常。
+
+最常用的函数是 is [`PyErr_SetString()`](file:///D:/procs/python-3.11.4-docs-html/c-api/exceptions.html#c.PyErr_SetString)。它的参数一个异常对象和一个C字符串。这个异常对象通常是预定义的对象，比如 `PyExc_ZeroDivisionError`。这C字符串描述了错误发生的原因，并且它会被转换为Python字符串对象，然后存储在和异常关联的值上。
+
+另一个有用的函数是 [`PyErr_SetFromErrno()`](../c-api/exceptions.html#c.PyErr_SetFromErrno "PyErr_SetFromErrno")，它只接收一个异常参数，然后根据这个查询一个全局变量 `errno` 来构造对应的关联值。最一般化的函数是 [`PyErr_SetObject()`](../c-api/exceptions.html#c.PyErr_SetObject "PyErr_SetObject")，它接收两个对象参数，一个异常，一个和这个异常关联的值。你不需要对传入这些函数的对象调用 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF")。
+
+你可以通过非侵入式的测试，来检查一个异常是否由 [`PyErr_Occurred()`](../c-api/exceptions.html#c.PyErr_Occurred "PyErr_Occurred") 设定。它返回当前的异常对象，当没有异常时则返回 `NULL`。一般情况下，你不需要通过调用[`PyErr_Occurred()`](../c-api/exceptions.html#c.PyErr_Occurred "PyErr_Occurred") 来确定在函数调用中是否发生了错误，因为你能够从函数的返回值中就可以得知。
+
+当一个函数 $f$ 调用另一个函数 $g$，并且后者失败了，那么函数 $f$ 本身就应该返回一个错误值（通常是 `NULL` 或 `-1`）。它**不应该**调用那些 `PyErr_*` 函数，因为这些函数通常已经在 $g$ 中被调用过了。同样的，调用 $f$ 的函数也不需要调用那些 `PyErr_*` 函数，它也只需返回一个错误指示给调用它的函数，以此类推，因为关于错误最详细的发生原因，已经由第一个检测到它的函数报告过了。一旦这个错误到达Python解释器的主循环，它就会中断执行当前的Python代码，然后试图找到一个由Python编程者指定的异常处理机制。
+
+（确实有一些情况下，模块实际上可以通过调用些 `PyErr_*` 函数来给出关于错误的更详细的信息， 那么在这种情况下，这样做是合适的。然而，按照一般原则，这不是必需的，而且有可能造成关于错误信息丢失的情况，因为大部分操作有可能因为各种各样的问题而失败）
+
+为了忽略一个由函数调用失败引起的异常，那么异常条件就必须显式地使用 [`PyErr_Clear()`](../c-api/exceptions.html#c.PyErr_Clear "PyErr_Clear") 来清除掉。在C代码中，显式调用 [`PyErr_Clear()`](../c-api/exceptions.html#c.PyErr_Clear "PyErr_Clear") 的唯一情况是，它不想把这个错误传递给Python解释器，而是想独自完全处理它（比如很可能尝试其他操作，或者装作无事发生）。
+
+每次调用 `malloc()` 就必须抛异常，当直接调用 `malloc()` 或 `realloc()` 失败时必须调用 [`PyErr_NoMemory()`](../c-api/exceptions.html#c.PyErr_NoMemory "PyErr_NoMemory")，然后返回一个错误指示。所有创建了对象的函数（比如 [`PyLong_FromLong()`](../c-api/long.html#c.PyLong_FromLong "PyLong_FromLong")）已经做了这样的事情，所以这是给那些直接调用 `malloc()` 相关的代码的提示。
+
+同样要注意，除了 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 这个重要的例外，对于返回一个整型值表示状态的函数，应该返回一个正值或 `0` 表示成功，`-1`表示失败，就像Unix系统调用一样。
+
+最后，当返回一个错误指示的时候，如果要清理“垃圾”时要小心，比如对已经创建的对象调用[`Py_XDECREF()`](../c-api/refcounting.html#c.Py_XDECREF "Py_XDECREF") 或 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF")。
+
+选择抛出什么样的异常完全由调用者自己决定。对于Python内置的异常，都有对应的预定义好的C对象，比如 `PyExc_ZeroDivisionError`，而这些是可以直接使用的。当然，应该合理地选择要抛出的异常，比如，如果要表示一个文件无法打开，就不应该使用 `PyExc_TypeError`，而应该使用 `PyExc_OSError`。如果有参数列表错误，函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 通常抛出异常 `PyExc_TypeError`。如果有一个参数的值不符合想要的范围，或没有满足某些条件，那么抛出异常 `PyExc_ValueError` 是合适的。
+
+当然也可以在模块中定义一个新的异常，这个异常就是对这个模块独有的。为了定义这个异常，通常在（模块）文件的开始声明一个 `static` 静态变量（指针）：
+
+```cpp
+static PyObject *SpamError;
+```
+
+然后在该模块的初始化函数（本文的例子里就是 `PyInit_spam()`）里去初始化它：
+
+```cpp
+PyMODINIT_FUNC
+PyInit_spam(void)
+{
+    PyObject *m;
+
+    m = PyModule_Create(&spammodule);
+    if (m == NULL)
+        return NULL;
+
+    SpamError = PyErr_NewException("spam.error", NULL, NULL);
+    Py_XINCREF(SpamError);
+    if (PyModule_AddObject(m, "error", SpamError) < 0) {
+        Py_XDECREF(SpamError);
+        Py_CLEAR(SpamError);
+        Py_DECREF(m);
+        return NULL;
+    }
+
+    return m;
+}
+```
+
+注意，这里给出的异常名称，在Python中是 `spam.error`。函数 [`PyErr_NewException()`](../c-api/exceptions.html#c.PyErr_NewException "PyErr_NewException") 创建的class的基类是 [`Exception`](../library/exceptions.html#Exception "Exception")（除法传入的参数不是 `NULL` 而是其他class），它在中 [Built-in Exceptions](../library/exceptions.html#bltin-exceptions) 有描述。
+
+还要注意，`SpamError` 变量保留了一个指向新创建的异常类的引用，而这是故意如此！因为这个异常可以被该模块以外的代码删除，所以为了防止 `SpamError` 变成一个dangling指针，一个指向这个类的owned reference就应该被保留。如果它变成了一个dangling指针，那么要抛出这个异常的C代码就可能产生core dump，或者其他非预期的副作用。
+
+关于 `PyMODINIT_FUNC` 被当做一个函数返回值来使用的细节，我们后面再讨论。
+
+这个定义好的 `spam.error` 异常，就可以在扩展模块中使用 [`PyErr_SetString()`](../c-api/exceptions.html#c.PyErr_SetString "PyErr_SetString") 函数来抛出，如下：
+
+```cpp
+static PyObject *
+spam_system(PyObject *self, PyObject *args)
+{
+    const char *command;
+    int sts;
+
+    if (!PyArg_ParseTuple(args, "s", &command))
+        return NULL;
+    sts = system(command);
+    if (sts < 0) {
+        PyErr_SetString(SpamError, "System command failed");
+        return NULL;
+    }
+    return PyLong_FromLong(sts);
+}
+```
 
 
 
