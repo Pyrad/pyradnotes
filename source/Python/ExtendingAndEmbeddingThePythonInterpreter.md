@@ -105,5 +105,33 @@ status = spam.system("ls -l")
 
 同时，也建议在  `#include <Python.h>` 之前，总是定义宏 `PY_SSIZE_T_CLEAN`，关于该宏的描述，参考 [Extracting Parameters in Extension Functions](https://docs.python.org/3/extending/extending.html#extracting-parameters-in-extension-functions)。
 
-在 `Python.h` 中，所有用户可见的标识符，都有前缀 `Py` 或 `PY`，只有在标准库中定义的变量是例外。这是由于它们（标准库中的这些标识符）被Python解释器大量地使用，`Python.h` 包含的一些标准库的文件比如：`<stdio.h>`， `<string.h>`， `<errno.h>` 和 `<stdlib.h>`。
+在 `Python.h` 中，所有用户可见的标识符，都有前缀 `Py` 或 `PY`，只有在标准库中定义的变量是例外。这是由于它们（标准库中的这些标识符）被Python解释器大量地使用，`Python.h` 包含的一些标准库的文件比如：`<stdio.h>`， `<string.h>`， `<errno.h>` 和 `<stdlib.h>`。如果这些头文件在系统中不存在，那么它就会直接声明函数 `malloc()`, `free()` 和 `realloc()`。
+
+接下来，要给我们的模块文件加入一个C函数，这个函数在Python解释器执行到 `spam.system(string)` 语句的时候被调用到（稍后我们会看到它是如何被调用的）,
+
+```python
+static PyObject *
+spam_system(PyObject *self, PyObject *args)
+{
+    const char *command;
+    int sts;
+
+    if (!PyArg_ParseTuple(args, "s", &command))
+        return NULL;
+    sts = system(command);
+    return PyLong_FromLong(sts);
+}
+```
+
+这里从Python参数列表到传入C函数的参数列表，是一个直观的转换，比如这里的参数 `ls -l`。按照约定俗成，这里的C函数的两个参数名称分别是 `self` 和 `args`。
+
+`self` 指针参数指向的是模块对象，为的是访问模块层级的函数；对于一个Python method，它指向的是一个对象实例。
+
+`args` 指针参数指向的是包含有参数的Python元组（tuple）。这个元组中的每一项对应的就是调用参数列表中的一个参数。因为参数是Python对象，为了在我们的C函数中使用，就需要将其转换为C的值。Python API中的函数 `PyArg_ParseTuple()` 就是用来检查参数类型，并将其转换为C值。它使用一个字符串模板来决定所需的参数类型，以及用来存储转换后的C值的C变量。
+
+如果所有参数的类型正确，并且其对应的C值存入到了传入的地址（对应的内存）中，函数 `PyArg_ParseTuple()` 返回 `true` （非零）。如果传入的是一个不正确的参数列表，那么函数 `PyArg_ParseTuple()` 返回 `false` （零）。在后者的情况中，它同时会抛出一个合适的异常，据此调用它的函数就能立即返回 `NULL`。
+
+
+
+
 
