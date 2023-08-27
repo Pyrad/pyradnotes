@@ -215,4 +215,44 @@ spam_system(PyObject *self, PyObject *args)
 ```
 
 
+### 1.3. Back to the Example
+
+现在回到我们之前的例子，现在应该就能理解下面的语句：
+
+```cpp
+if (!PyArg_ParseTuple(args, "s", &command))
+    return NULL;
+```
+
+当检测到参数列表中有错误出现时，它就会返回 `NULL`。这个错误是根据 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 内部的异常所设置的，这里的 `NULL` 是错误指示器，用在那些返回值是对象指针的函数里。如果参数列表正常，字符串里的值就被拷贝到局部变量 `command` 中去。这是一个指针赋值，而且不应该修改这个指针指向的字符串（因此在标准C中，变量 `command` 应该被声明为 `const char *command`，这样更合适）。
+
+下面的语句就是调用Unix函数 `system()`，把从  [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 得到的字符串作为参数传入：
+
+```cpp
+sts = system(command);
+```
+
+因为我们的 `spanm.system()` 必须将 `sts` 以Python对象的形式返回，所以使用函数 [`PyLong_FromLong()`](../c-api/long.html#c.PyLong_FromLong "PyLong_FromLong") 然后返回：
+
+```cpp
+return PyLong_FromLong(sts);
+```
+
+这种情况下，函数返回一个整型对象（是的，在Python里面，整型数实际上也是位于堆上的对象！）。
+
+如果你的C函数返回一个没有什么用的参数（即函数返回 `void`），那么对应的Python函数就应该返回 `None`，你就需要使用如下语句习惯来实现：
+
+```cpp
+Py_INCREF(Py_None);
+return Py_None;
+```
+
+这里的 `Py_None` 是Python中特殊对象 `None` 在C中的名字，它是一个标准的Python对象，而不是一个 `NULL` 指针，它一般在上下文中代表发生了错误，就像我们之前见到的一样。
+
+
+
+
+
+
+
 
