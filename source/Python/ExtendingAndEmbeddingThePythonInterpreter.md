@@ -350,9 +350,22 @@ main(int argc, char *argv[])
 
 注意，和本文中 `spam` 例子不同的是，`xxmodule` 模块使用了*多步初始化*（Python 3.5中引入）。如果使用这个办法，那么本文例子中 `PyInit_spam()` 返回的就是一个 `PyModuleDef` 结构，并且模块的创建工作就会交给导入机制完成。关于多步初始化更详细的内容，参考 [**PEP 489**](https://peps.python.org/pep-0489/)。
 
+### 1.5. Compilation and Linkage
 
+在使用新的扩展模块之前，还有两件事情要做：编译，并且链接到Python系统上去。如果使用的是动态链接，那么（实现）细节就依赖于所使用的系统的动态链接方式；可以参考有关构建扩展模块的章节（[Building C and C++ Extensions](building.html#building)），以及只适用于在Windows平台上构建方法的更多细节。
 
+如果不能使用动态链接，或者就想使扩展模块成为Python解释器永久的一部分，那么就需要改变设定，并且重新编译Python解释器。幸运的是，这在Unix平台上实现起来十分简单：只需要把（扩展模块）文件（比如本文中的 `spammodule.c`）放到Python源分发包的 `Modules/`目录中，然后在 `Modules/Setup.local` 加入如下一行来描述你的文件即可。
 
+```python
+spam spammodule.o
+```
 
+然后在最上层的目录中，使用 `make` 重新编译Python解释器。当然，也可以就只在 `Modules/` 这个字目录中直接执行 `make` 来编译，但是，之后就必须在这个目录中，通过执行 `make Makefile` 来重新构建 `Makefile`，而且这个步骤在每次修改完 `Setup` 文件之后必须执行。
+
+如果你的扩展模块需要链接额外的库，那么就需要在配置文件中同样列出来，如下。
+
+```python
+spam spammodule.o -lX11
+```
 
 
