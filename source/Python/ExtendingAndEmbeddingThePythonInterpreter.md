@@ -369,3 +369,109 @@ spam spammodule.o -lX11
 ```
 
 
+### 1.6. Calling Python Functions from C
+
+直接目前，我们关注的是如何在Python中调用C的函数，反之，在C（函数中）调用Python代码，也同样有用。对于支持所谓的“回调”函数（callback function）的库中，作用更加突出。如果C的接口利用了回调，那么等价的Python代码通常也需要给Python编程者提供回调机制。这样的实现通常要求从C的回调函数中调用Python的回调函数。此外，（这种在C中调用Python代码的方法）在其他方面的用途也是可以想象的。
+
+幸运的是，Python解释器可以容易地进行递归调用。首先，Python程序必须以某种方式把Python函数对象（Python function object）传入。通常你需要提供一个函数来做这件事情。当这个函数被调用的时候，在一个全局变量中存储一个指向这个Python函数对象的指针，或者在其他适当的非全局范围内存储。如下的函数，是某个模块定义的一部分。
+
+```cpp
+static PyObject *my_callback = NULL;
+
+static PyObject *
+my_set_callback(PyObject *dummy, PyObject *args)
+{
+    PyObject *result = NULL;
+    PyObject *temp;
+
+    if (PyArg_ParseTuple(args, "O:set_callback", &temp)) {
+        if (!PyCallable_Check(temp)) {
+            PyErr_SetString(PyExc_TypeError, "parameter must be callable");
+            return NULL;
+        }
+        Py_XINCREF(temp);         /* Add a reference to new callback */
+        Py_XDECREF(my_callback);  /* Dispose of previous callback */
+        my_callback = temp;       /* Remember new callback */
+        /* Boilerplate to return "None" */
+        Py_INCREF(Py_None);
+        result = Py_None;
+    }
+    return result;
+}
+```
+
+这个函数必须通过Python解释器，使用 [`METH_VARARGS`](../c-api/structures.html#c.METH_VARARGS "METH_VARARGS") 这个标记注册（1.4 The Module’s Method Table and Initialization Function 描述了这种办法）。函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 以及它的参数在下一节 [Extracting Parameters in Extension Functions](#parsetuple) 中讨论。
+
+宏 [`Py_XINCREF()`](../c-api/refcounting.html#c.Py_XINCREF "Py_XINCREF") 和 [`Py_XDECREF()`](../c-api/refcounting.html#c.Py_XDECREF "Py_XDECREF") 用来增加/减小一个对象的引用计数，并且可以使用在 `NULL` 指针上。更多讨论参考 [Reference Counts](#refcounts) 这一节。
+
+之后，当需要调用这个函数的时候，可以通过调用C函数 [`PyObject_CallObject()`](../c-api/call.html#c.PyObject_CallObject "PyObject_CallObject") 来实现。这个函数接受两个参数，都是指向专用的Python对象：一个是Python函数，另一个是对于的参数列表。这个参数列表必须总是一个元组对象（tuple object），它的长度就是参数的个数。如果要调用没有参数的Python函数，就传入一个 `NULL` 指针，或者一个空的元组对象；如果调用的函数只接受一个参数，那么就传入一个只有一个元素的元组对象。在函数 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue") 中，使用带圆括号的格式化字符串，就可以返回一个对应的空的元组，或者有一个或多个元素的元组。例如：
+
+```cpp
+int arg;
+PyObject *arglist;
+PyObject *result;
+...
+arg = 123;
+...
+/* Time to call the callback */
+arglist = Py_BuildValue("(i)", arg);
+result = PyObject_CallObject(my_callback, arglist);
+Py_DECREF(arglist);
+```
+
+函数 [`PyObject_CallObject()`](../c-api/call.html#c.PyObject_CallObject "PyObject_CallObject") 返回一个指向Python对象的指针，这个返回值就是Python函数的返回值。[`PyObject_CallObject()`](../c-api/call.html#c.PyObject_CallObject "PyObject_CallObject") 并不增减传入它参数的引用计数。在上面的例子中，创建了一个新的元组，作为参数列表，然后在 函数 [`PyObject_CallObject()`](../c-api/call.html#c.PyObject_CallObject "PyObject_CallObject") 调用之后，就立即使用  [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF") 来减少（这个元组对象的）引用计数。
+
+函数 [`PyObject_CallObject()`](../c-api/call.html#c.PyObject_CallObject "PyObject_CallObject") 的返回值是新的，它要么是一个全新的对象，要么是一个已经存在的对象，但对应的引用计数已经加一。所以，除非你想把它存储在一个全局变量中，否则你就应该使用  [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF") 来把它的引用计数减一，尤其是当你不再需要这个变量的时候。
+
+然而，在做这件事情（减少引用计数）之前，检查返回值是否是 `NULL` 很重要。如果是（`NULL`），（就说明）所调用的Python函数通过抛异常而被中止了。如果调用 [`PyObject_CallObject()`](../c-api/call.html#c.PyObject_CallObject "PyObject_CallObject") 函数的C代码是在Python中被调用的，那么就应该在此时给Python的调用者返回一个错误指示，这样Python解释器就能打印函数堆栈，或者调用这个Python函数的代码就能处理这个异常。如果这样的错误异常无关紧要，那么这个异常就需要调用 [`PyErr_Clear()`](../c-api/exceptions.html#c.PyErr_Clear "PyErr_Clear")来清理，比如：
+
+```cpp
+if (result == NULL)
+    return NULL; /* Pass error back */
+...use result...
+Py_DECREF(result);
+```
+
+根据（在C中）想要调用的Python函数的接口信息，你可能还要给函数 [`PyObject_CallObject()`](../c-api/call.html#c.PyObject_CallObject "PyObject_CallObject") 提供一个参数列表。在一些情况下，这个参数列表同样也是Python程序所提供的，即通过指定了回调函数的同样的接口。然后它就可以被保存起来，并以使用函数对象同样的方式来使用。在例外一些情况下，你可能需要构造一个新的元组来传递参数列表，最简单的办法是调用函数 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue") 。比如，如果想传入一个整型的事件代码（integral event code），可以使用如下代码：
+
+```cpp
+PyObject *arglist;
+...
+arglist = Py_BuildValue("(l)", eventcode);
+result = PyObject_CallObject(my_callback, arglist);
+Py_DECREF(arglist);
+if (result == NULL)
+    return NULL; /* Pass error back */
+/* Here maybe use the result */
+Py_DECREF(result);
+```
+
+注意，在调用函数（[`PyObject_CallObject()`](../c-api/call.html#c.PyObject_CallObject "PyObject_CallObject")）之后，做错误检查之前，调用 `Py_DECREF(arglist)` 。同样也要注意到，这个代码（的检查）是不完整的，因为函数 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue") 也可能会耗尽内存，而这同样需要检查。
+
+同样，你也可以使用**关键字-值**的方式来调用一个函数，这就需要用到函数 [`PyObject_Call()`](../c-api/call.html#c.PyObject_Call "PyObject_Call")，这个函数支持以**关键字-值**的方式传入参数列表。比如在前面的例子中，可以通过函数 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue") 来构造一个字典。
+
+```cpp
+PyObject *dict;
+...
+dict = Py_BuildValue("{s:i}", "name", val);
+result = PyObject_Call(my_callback, NULL, dict);
+Py_DECREF(dict);
+if (result == NULL)
+    return NULL; /* Pass error back */
+/* Here maybe use the result */
+Py_DECREF(result);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
