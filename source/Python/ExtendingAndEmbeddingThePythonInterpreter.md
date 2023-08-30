@@ -546,3 +546,99 @@ ok = PyArg_ParseTuple(args, "(ii)s#", &i, &j, &s, &size);
 ```
 
 
+### 1.8. Keyword Parameters for Extension Functions
+
+[`PyArg_ParseTupleAndKeywords()`](../c-api/arg.html#c.PyArg_ParseTupleAndKeywords "PyArg_ParseTupleAndKeywords") 的函数原型如下：
+
+```cpp
+int PyArg_ParseTupleAndKeywords(PyObject *arg, PyObject *kwdict,
+                                const char *format, char *kwlist[], ...);
+```
+
+参数 `arg` 和 `format` 和函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 中的含义相同。`kwdict` 参数是一个关键字的字典（dictionary of keywords），它作为Python运行时候的第三个参数传入。`kwlist` 参数是一个字符串列表，它的最后一个字符串必须是 `NULL`，这个字符串列表用来标识各个参数，而且名字和类型信息是按照 `format` 字符串中的格式，从左向右依次对应。如果解析参数成功，函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 返回 `true`，如果失败，就返回 `false`，并且会抛出一个对应的异常。
+
+注意，但使用关键字参数（keyword argument）的时候，嵌套的元组不能被解析；传入的关键字实参如果在 `kwlist` 中不存在，就会抛出一个 `TypeError` 的异常。
+
+下面的模块例子中，使用了关键字。该例子的作者是Geoff Philbrick。
+
+```cpp
+
+#define PY_SSIZE_T_CLEAN  /* Make "s#" use Py_ssize_t rather than int. */
+#include <Python.h>
+
+static PyObject *
+keywdarg_parrot(PyObject *self, PyObject *args, PyObject *keywds)
+{
+    int voltage;
+    const char *state = "a stiff";
+    const char *action = "voom";
+    const char *type = "Norwegian Blue";
+
+    static char *kwlist[] = {"voltage", "state", "action", "type", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, keywds, "i|sss", kwlist,
+                                     &voltage, &state, &action, &type))
+        return NULL;
+
+    printf("-- This parrot wouldn't %s if you put %i Volts through it.\n",
+           action, voltage);
+    printf("-- Lovely plumage, the %s -- It's %s!\n", type, state);
+
+    Py_RETURN_NONE;
+}
+
+static PyMethodDef keywdarg_methods[] = {
+    /* The cast of the function is necessary since PyCFunction values
+     * only take two PyObject* parameters, and keywdarg_parrot() takes
+     * three.
+     */
+    {"parrot", (PyCFunction)(void(*)(void))keywdarg_parrot, METH_VARARGS | METH_KEYWORDS,
+     "Print a lovely skit to standard output."},
+    {NULL, NULL, 0, NULL}   /* sentinel */
+};
+
+static struct PyModuleDef keywdargmodule = {
+    PyModuleDef_HEAD_INIT,
+    "keywdarg",
+    NULL,
+    -1,
+    keywdarg_methods
+};
+
+PyMODINIT_FUNC
+PyInit_keywdarg(void)
+{
+    return PyModule_Create(&keywdargmodule);
+}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
