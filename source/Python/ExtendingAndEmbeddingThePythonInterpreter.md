@@ -463,15 +463,86 @@ Py_DECREF(result);
 ```
 
 
+### 1.7. Extracting Parameters in Extension Functions
 
+ [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 的函数原型如下：
+ 
+```cpp
+int PyArg_ParseTuple(PyObject *arg, const char *format, ...);
+```
 
+其中参数 `arg` 必须是一个元组对象，它包含的是从Python传递到C函数的参数列表；参数 `format` 必须是一个格式化的字符串，关于它的语法，可以参考Python/C API参考手册的 [Parsing arguments and building values](../c-api/arg.html#arg-parsing)；剩余的参数必须是和格式化字符串中对应类型的变量的地址。 
 
+需要注意的是，尽管函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 检查从Python传入的参数是否是这里所要求类型，但它并不检查传入这个函数的C变量的地址是否合法。换句话说，如果在这里犯了错误，那么程序很可能崩溃或者在内存的随机地址上写入（非法的）值。所以要小心！
 
+需要注意的另一点是，提供给调用者的Python对象的引用计数是*borrowed* reference，所以不需要将它们的引用计数减一。
 
+下面是一些调用示例。
 
+```cpp
+#define PY_SSIZE_T_CLEAN  /* Make "s#" use Py_ssize_t rather than int. */
+#include <Python.h>
+```
 
+```cpp
+int ok;
+int i, j;
+long k, l;
+const char *s;
+Py_ssize_t size;
 
+ok = PyArg_ParseTuple(args, ""); /* No arguments */
+    /* Python call: f() */
+```
 
+```cpp
+ok = PyArg_ParseTuple(args, "s", &s); /* A string */
+    /* Possible Python call: f('whoops!') */
+```
 
+```cpp
+ok = PyArg_ParseTuple(args, "lls", &k, &l, &s); /* Two longs and a string */
+    /* Possible Python call: f(1, 2, 'three') */
+```
+
+```cpp
+ok = PyArg_ParseTuple(args, "(ii)s#", &i, &j, &s, &size);
+    /* A pair of ints and a string, whose size is also returned */
+    /* Possible Python call: f((1, 2), 'three') */
+```
+
+```cpp
+{
+    const char *file;
+    const char *mode = "r";
+    int bufsize = 0;
+    ok = PyArg_ParseTuple(args, "s|si", &file, &mode, &bufsize);
+    /* A string, and optionally another string and an integer */
+    /* Possible Python calls:
+       f('spam')
+       f('spam', 'w')
+       f('spam', 'wb', 100000) */
+}
+```
+
+```cpp
+{
+    int left, top, right, bottom, h, v;
+    ok = PyArg_ParseTuple(args, "((ii)(ii))(ii)",
+             &left, &top, &right, &bottom, &h, &v);
+    /* A rectangle and a point */
+    /* Possible Python call:
+       f(((0, 0), (400, 300)), (10, 10)) */
+}
+```
+
+```cpp
+{
+    Py_complex c;
+    ok = PyArg_ParseTuple(args, "D:myfunction", &c);
+    /* a complex, also providing a function name for errors */
+    /* Possible Python call: myfunction(1+2j) */
+}
+```
 
 
