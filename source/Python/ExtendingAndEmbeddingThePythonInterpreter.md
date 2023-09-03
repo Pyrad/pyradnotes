@@ -687,6 +687,19 @@ Py_BuildValue("((ii)(ii)) (ii)",
 
 一个借用引用，可以通过调用 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF") 转换为一个拥有引用（*owned reference*），这并不会影响被借用者（引用拥有者）的状态，因为它创建了一个新的引用，并且赋予了拥有者的责任。和之前的拥有者一样，新的拥有者必须合理地释放所拥有的引用（所占用的内存）。
 
+### 1.10.2. Ownership Rules
+
+当一个对象引用传入或传出一个函数的时候，它的所有权是否被转移，是这个函数接口说明的一部分。大多数返回一个对象引用的函数，都会传递（转移）这个引用的所有权。特别地，所有用来创建一个新的对象的函数，都会把（引用的）所有权转移给（函数返回值的）接收者，比如函数 [`PyLong_FromLong()`](../c-api/long.html#c.PyLong_FromLong "PyLong_FromLong") 和 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue")。甚至当这个对象实际上不是新创建的时候，接受的仍然是对这个对象的一个新的引用。比如，函数 [`PyLong_FromLong()`](../c-api/long.html#c.PyLong_FromLong "PyLong_FromLong")，它维护了一些常用的值的缓存（cache），并且能够返回一个指向其中一个缓存项的引用。
+
+从另一些对象中抽取（*extract*）一些对象的函数，通常都会转移引用的所有权，比如函数 [`PyObject_GetAttrString()`](../c-api/object.html#c.PyObject_GetAttrString "PyObject_GetAttrString")。然而，这里有一些模糊的场景，因为有一些常见的函数是例外，比如: [`PyTuple_GetItem()`](../c-api/tuple.html#c.PyTuple_GetItem "PyTuple_GetItem")， [`PyList_GetItem()`](../c-api/list.html#c.PyList_GetItem "PyList_GetItem")， [`PyDict_GetItem()`](../c-api/dict.html#c.PyDict_GetItem "PyDict_GetItem") 和 [`PyDict_GetItemString()`](../c-api/dict.html#c.PyDict_GetItemString "PyDict_GetItemString") 它们返回的都是从元组，列表，或者字典中借用的引用（*borrowed reference*）。
+
+函数  [`PyImport_AddModule()`](../c-api/import.html#c.PyImport_AddModule "PyImport_AddModule") 返回的也是一个借用引用（*borrowed reference*），甚至有时候它可能创建一个对象，然后返回，（但不需要担心），因为它会把需要返回的对象的owned reference存储在 `sys.modules` 下面。
+
+当你把一个对象引用传递给另一个函数的时候，一般来说，函数使用的是借用引用（*borrowed reference*），如果它需要存储这个引用，它就会使用宏 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF") 来变成这个引用的（另一个）单独的拥有者。但这条规则，有两个重要的例外：[`PyTuple_SetItem()`](../c-api/tuple.html#c.PyTuple_SetItem "PyTuple_SetItem") 和 [`PyList_SetItem()`](../c-api/list.html#c.PyList_SetItem "PyList_SetItem") 函数。这两个函数会接管传入的对象的所有权，甚至当函数执行失败的时候也是（接管所有权）。注意，函数 [`PyDict_SetItem()`](../c-api/dict.html#c.PyDict_SetItem "PyDict_SetItem") 和类似的函数并不接管对象的所有权，它们就是使用一般的借用引用。
+
+在Python中调用一个C函数的时候，它借用了调用者的参数的引用，即borrowed reference。调用者拥有一个指向对象的引用，所以借用引用的生命周期会在函数返回的同时终止。只有当这样的borrowed reference需要被存储或传递下去的时候，它才需要通过调用宏 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF") 将其转变为一个owned reference来获得这个对象引用的所有权。
+
+在Python中调用的一个C函数的返回对象引用，必须是一个owned reference，即具有拥有权的对象引用，这就是说，所有权从这个函数转移到了它的调用者上。
 
 
 
