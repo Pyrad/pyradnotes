@@ -701,6 +701,28 @@ Py_BuildValue("((ii)(ii)) (ii)",
 
 在Python中调用的一个C函数的返回对象引用，必须是一个owned reference，即具有拥有权的对象引用，这就是说，所有权从这个函数转移到了它的调用者上。
 
+### 1.10.3. Thin Ice
+
+有一些看起来对borrowed reference正常无害的使用，可能会导致一些问题。这些都是和Python解释器的一些隐式的调用有关，而这会导致引用的所有者释放它。
+
+第一个需要知道的案例，并且也是最重要的一个，就是当借用一个list类型对象的引用的时候，对一个不相关的对象使用宏 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF")。比如，
+
+```cpp
+void
+bug(PyObject *list)
+{
+    PyObject *item = PyList_GetItem(list, 0);
+
+    PyList_SetItem(list, 1, PyLong_FromLong(0L));
+    PyObject_Print(item, stdout, 0); /* BUG! */
+}
+```
+
+首先这个函数借用了`list[0]`的一个引用，然后使用`0`替换了`list[1]`对应的值，最后打印了那个borrowed reference。看起来没有对吧？然而事实上并不是！
+
+我们来跟踪函数 [`PyList_SetItem()`](../c-api/list.html#c.PyList_SetItem "PyList_SetItem") 中的控制流。列表对其中每一项的引用都是owned reference，因此当第一项（即第二个元素）被替换时，它就要释放原先的第一项。我们假设原先的第一项元素是一个用户自定义的类，并且我们进一步假设这个类有一个 `__del__()` 方法。如果这个类的实例对象有一个引用计数是1，那么释放它的时候就会调用它的 `__del__()` 方法。
+
+因为它是在Python中定义编写的，所以 `__del__()` 方法执行的是纯粹的Python代码。那么有没有可能它会做一些事情，使得函数 `bug()` 中对 `item` 的引用失效？答案是肯定的。
 
 
 
