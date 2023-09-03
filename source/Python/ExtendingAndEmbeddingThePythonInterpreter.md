@@ -675,6 +675,18 @@ Py_BuildValue("((ii)(ii)) (ii)",
 这种循环检测器能够检查垃圾循环，并且回收它们所占用的对象的内存。 [`gc`](../library/gc.html#module-gc "gc: Interface to the cycle-detecting garbage collector.") 模块提供了可以运行检测器的方法（即函数 [`collect()`](../library/gc.html#gc.collect "gc.collect")），以及进行接口配置、在运行期间关闭循环检查的方法。
 
 
+### 1.10.1. Reference Counting in Python
+
+`Py_INCREF(x)` 和 `Py_DECREF(x)` 这两个宏，是分别用来处理引用计数的增减。如果引用计数减为0，宏 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF") 还用来释放对应对象所占用的内存。为了灵活起见，它不直接调用 `free()` 函数，相反，它调用的是这个对象所包含的一个类型对象（*type object*）中的一个函数指针。因为这个缘故（还有其他），每个对象都包含一个它的类型对象的指针。
+
+现在就有一个重要的问题：什么时候调用 `Py_INCREF(x)` 和 `Py_DECREF(x)`？我们首先介绍一些术语。没有人“拥有”一个对象（Nobody “owns” an object），然后你可以拥有一个指向对象的引用（reference to an object）。因此一个对象的引用计数，就是指向它的引用的个数。一个引用的拥有者（owner），在这个引用不再需要的时候，就负责调用宏 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF") 。引用的拥有权可以被转移，有三种方式释放引用的所有权，它们分别是：传递，存储，以及调用宏 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF")。忘记释放一个被拥有的引用（*owned reference*），就可能造成内存泄露。
+
+也可以**借用**（*borrow*）一个指向对象的引用，借用这个引用的借用者，就不应该调用宏  [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF")。这个借用者“借用”这个对象的时间不应该超过这个对象引用拥有者（的生命周期）。当引用的拥有者释放了该引用（所对应的内存）之后，继续使用**借用引用**（*borrowed reference*），就会产生非法访问内存（using freed memory）的风险，而这是应该完全避免的。
+
+和拥有一个引用相比，使用借用引用的优点是，不用关心在任何的代码路径（*code path*）上何时释放这个引用（对应的内存）。换句话说，使用一个借用引用（*borrowed reference*），在可能的提前退出的时候，就不用承担内存泄露的风险。另一方面，缺点是，在一些微妙的情况下，一些看起正确的代码，有可能在引用的拥有者已经释放了它的情况下，仍然使用这个借用来的引用。
+
+一个借用引用，可以通过调用 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF") 转换为一个拥有引用（*owned reference*），这并不会影响被借用者（引用拥有者）的状态，因为它创建了一个新的引用，并且赋予了拥有者的责任。和之前的拥有者一样，新的拥有者必须合理地释放所拥有的引用（所占用的内存）。
+
 
 
 
