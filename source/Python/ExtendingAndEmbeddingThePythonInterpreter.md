@@ -613,6 +613,39 @@ PyInit_keywdarg(void)
 ```
 
 
+### 1.9. Building Arbitrary Values
+
+这个函数（`Py_BuildValue`）和函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 是相对应的关系，它的声明是：
+
+```cpp
+PyObject *Py_BuildValue(const char *format, ...);
+```
+
+和函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 类似，它识别相同的一系列格式化的单元，但这个函数的参数必须不能是指针，而必须是值。这里的不能是指针的参数指的是作为函数输入的变量，就是 `const char *format` 后面的那些值，而 `format` 本身就是输出结果，可以是指针。这个函数返回一个新的Python对象，适合从Python中调用一个C函数作为返回。
+
+和函数  [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 不同的一点是，函数  [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 的第一个参数（`PyObject *args`）必须是一个元组，因为Python的参数列表总是特意以元组的方式来表示，而函数 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue") 就不总是构建一个元组。只有当它的字符串包含两个或更多的格式单元时，它才构造为一个元组。如果格式化字符串是空的，那么它就返回 `None`；如果它只包含一个格式化单元，那么它返回的就是那个格式化单元对应的对象的类型。当元组的格式为0或1时，为了特意返回一个元组，就需要给格式化字符串加上圆括号。
+
+下面是一些例子，左侧是函数调用，右侧是返回的Python结果。
+
+```cpp
+Py_BuildValue("")                        None
+Py_BuildValue("i", 123)                  123
+Py_BuildValue("iii", 123, 456, 789)      (123, 456, 789)
+Py_BuildValue("s", "hello")              'hello'
+Py_BuildValue("y", "hello")              b'hello'
+Py_BuildValue("ss", "hello", "world")    ('hello', 'world')
+Py_BuildValue("s#", "hello", 4)          'hell'
+Py_BuildValue("y#", "hello", 4)          b'hell'
+Py_BuildValue("()")                      ()
+Py_BuildValue("(i)", 123)                (123,)
+Py_BuildValue("(ii)", 123, 456)          (123, 456)
+Py_BuildValue("(i,i)", 123, 456)         (123, 456)
+Py_BuildValue("[i,i]", 123, 456)         [123, 456]
+Py_BuildValue("{s:i,s:i}",
+              "abc", 123, "def", 456)    {'abc': 123, 'def': 456}
+Py_BuildValue("((ii)(ii)) (ii)",
+              1, 2, 3, 4, 5, 6)          (((1, 2), (3, 4)), (5, 6))
+```
 
 
 
