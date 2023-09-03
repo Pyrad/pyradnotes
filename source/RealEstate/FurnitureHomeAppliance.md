@@ -23,3 +23,18 @@
 
 
 
+## 建筑辅助设计软件
+
+1. SketchUp
+2. Revit
+3. 3dsMax
+4. Cedreo
+5. AutoCAD
+6. V-Ray
+7. Photoshop
+8. In Design
+9. Maya
+10. Grasshopper
+11. Fusion 360
+12. Dynamo
+13. 
