@@ -15,6 +15,12 @@ exercise caution 谨慎行事
 
 ## Links
 
+[Python 3.x.x documentation](https://docs.python.org/3/index.html)
+
+[Extending and Embedding the Python Interpreter](https://docs.python.org/3/extending/index.html)
+
+[The Python Tutorial](https://docs.python.org/3/tutorial/index.html#tutorial-index)
+
 [浅谈Python C扩展](https://blog.csdn.net/fitzzhang/article/details/79212411)
 
 
