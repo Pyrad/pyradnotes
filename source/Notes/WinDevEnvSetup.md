@@ -1527,6 +1527,8 @@ Obsidian不是开源软件，但个人可以免费使用它，商用用途需付
 
 [Obsidian Official Site](https://obsidian.md/)
 
+[两年后，我还在用的 Obsidian 插件](https://zhuanlan.zhihu.com/p/570867991?utm_id=0)
+
 ### Releases
 
 [Obsidian Releases on Github](https://github.com/obsidianmd/obsidian-releases)
@@ -1565,6 +1567,14 @@ Download from github
 -   Download the latest release.
 -   Extract and put the three files (`main.js`, `style.css`, `manifest.json`) to folder `{{obsidian_vault}}/.obsidian/plugins/obsidian-quiet-outline`.
 
+
+#### [Stardusten / ob-table-enhancer](https://github.com/Stardusten/ob-table-enhancer)
+
+Manipulate markdown tables without touching the source code in Obsidian.
+
+#### [Quorafind / Obsidian-Table-Generator](https://github.com/Quorafind/Obsidian-Table-Generator)
+
+A plugin for generate markdown table quickly like Typora.
 
 
 ## MathJax
