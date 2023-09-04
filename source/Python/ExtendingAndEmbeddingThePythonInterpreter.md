@@ -693,6 +693,15 @@ Py_BuildValue("((ii)(ii)) (ii)",
 
 从另一些对象中抽取（*extract*）一些对象的函数，通常都会转移引用的所有权，比如函数 [`PyObject_GetAttrString()`](../c-api/object.html#c.PyObject_GetAttrString "PyObject_GetAttrString")。然而，这里有一些模糊的场景，因为有一些常见的函数是例外，比如: [`PyTuple_GetItem()`](../c-api/tuple.html#c.PyTuple_GetItem "PyTuple_GetItem")， [`PyList_GetItem()`](../c-api/list.html#c.PyList_GetItem "PyList_GetItem")， [`PyDict_GetItem()`](../c-api/dict.html#c.PyDict_GetItem "PyDict_GetItem") 和 [`PyDict_GetItemString()`](../c-api/dict.html#c.PyDict_GetItemString "PyDict_GetItemString") 它们返回的都是从元组，列表，或者字典中借用的引用（*borrowed reference*）。
 
+即，返回的是borrowed reference的抽取函数是：
+
+- `PyTuple_GetItem()`
+- `PyList_GetItem()`
+- `PyDict_GetItem()`
+- `PyDict_GetItemString()`
+
+除此之外，大多数抽取函数返回了对象，也转移了对象引用的所有权（*owned reference*）。
+
 函数  [`PyImport_AddModule()`](../c-api/import.html#c.PyImport_AddModule "PyImport_AddModule") 返回的也是一个借用引用（*borrowed reference*），甚至有时候它可能创建一个对象，然后返回，（但不需要担心），因为它会把需要返回的对象的owned reference存储在 `sys.modules` 下面。
 
 当你把一个对象引用传递给另一个函数的时候，一般来说，函数使用的是借用引用（*borrowed reference*），如果它需要存储这个引用，它就会使用宏 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF") 来变成这个引用的（另一个）单独的拥有者。但这条规则，有两个重要的例外：[`PyTuple_SetItem()`](../c-api/tuple.html#c.PyTuple_SetItem "PyTuple_SetItem") 和 [`PyList_SetItem()`](../c-api/list.html#c.PyList_SetItem "PyList_SetItem") 函数。这两个函数会接管传入的对象的所有权，甚至当函数执行失败的时候也是（接管所有权）。注意，函数 [`PyDict_SetItem()`](../c-api/dict.html#c.PyDict_SetItem "PyDict_SetItem") 和类似的函数并不接管对象的所有权，它们就是使用一般的借用引用。
@@ -722,9 +731,38 @@ bug(PyObject *list)
 
 我们来跟踪函数 [`PyList_SetItem()`](../c-api/list.html#c.PyList_SetItem "PyList_SetItem") 中的控制流。列表对其中每一项的引用都是owned reference，因此当第一项（即第二个元素）被替换时，它就要释放原先的第一项。我们假设原先的第一项元素是一个用户自定义的类，并且我们进一步假设这个类有一个 `__del__()` 方法。如果这个类的实例对象有一个引用计数是1，那么释放它的时候就会调用它的 `__del__()` 方法。
 
-因为它是在Python中定义编写的，所以 `__del__()` 方法执行的是纯粹的Python代码。那么有没有可能它会做一些事情，使得函数 `bug()` 中对 `item` 的引用失效？答案是肯定的。
+因为它是在Python中定义编写的，所以 `__del__()` 方法执行的是纯粹的Python代码。那么有没有可能它会做一些事情，使得函数 `bug()` 中对 `item` 的引用失效？答案是肯定的。假设传入这里这个函数 `bug()` 的参数 `list` 可以访问 `__del__()` 方法，那么它就有可能执行到可能造成`list[0]`被释放的语句，比如 `del list[0]`，又假设引用计数在该语句之前是1，那么在执行这个语句之后，它对应的内存会被释放，从而导致 `item` 这个对象不再合法（invalid）。
 
+一旦你知道了问题的来龙去脉，那么解决方案也很简单：临时增加引用计数。下面是这个函数的正确版本：
 
+```cpp
+void
+no_bug(PyObject *list)
+{
+    PyObject *item = PyList_GetItem(list, 0);
+
+    Py_INCREF(item);
+    PyList_SetItem(list, 1, PyLong_FromLong(0L));
+    PyObject_Print(item, stdout, 0);
+    Py_DECREF(item);
+}
+```
+
+这是一个真实的（悲伤的）故事，一个旧版本的Python中存在这样类型bug的一个变种，并且有人花了想当可观的时间使用C调试器调试，试图找到为什么它的 `__del__()` 方法会失效...
+
+第二个和borrowed reference相关的案例，是和线程有关一个变种（代码缺陷）。正常情况下，Python解释器中的不同线程不会户型干扰，因为有一个全局锁来保护Python的整个对象空间。然而，使用宏 [`Py_BEGIN_ALLOW_THREADS`](../c-api/init.html#c.Py_BEGIN_ALLOW_THREADS "Py_BEGIN_ALLOW_THREADS") 能暂时释放这个线程锁，而使用宏 [`Py_END_ALLOW_THREADS`](../c-api/init.html#c.Py_END_ALLOW_THREADS "Py_END_ALLOW_THREADS") 又能够重新加锁。这在阻塞I/O调用的时候很常见，目的是为了让其他线程使用处理器，并且等等I/O完成。下面的这个例子，显然就有和上面的一个例子相同的问题。
+
+```cpp
+void
+bug(PyObject *list)
+{
+    PyObject *item = PyList_GetItem(list, 0);
+    Py_BEGIN_ALLOW_THREADS
+    ...some blocking I/O call...
+    Py_END_ALLOW_THREADS
+    PyObject_Print(item, stdout, 0); /* BUG! */
+}
+```
 
 
 
