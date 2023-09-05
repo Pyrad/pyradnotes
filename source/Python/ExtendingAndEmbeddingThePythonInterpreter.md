@@ -791,8 +791,33 @@ C函数的调用机制，保证了传递到C函数中的参数列表（比如例
 
 因此，可移植性不能对标识符的可见性做任何的前提假设。这意味着扩展模块中所有的标识符都应该声明为 `static`，除了那些模块初始化函数，这样是为了避免和其他模块中函数的名字发生冲突。同时，这也意味着，应该能被其他扩展模块访问到的标识符，都必须使用不同的办法导出（exported in a different way）。
 
+Python提供了一种特殊的机制，用来把C-level的信息（即指针）从一个扩展模块传递到另一个扩展模块，这种机制叫做Capsule。Capsule是一种包含了指针（`void*`）的Python数据类型。Capsule只能通过对应的C API来创建和访问，但它们同时也可以想其他Python对象一样，相互传递。特别地，可以在一个扩展模块的namespace中，赋予它一个名字。其他的扩展模块可以导入这个模块，获取这个名字，然后再从Capsule里面获取对应的指针。
 
+有许多办法来使用Capsule，用它将一个扩展模块中的C API导出（export）。每个函数都能够获取它自己的Capsule，或者所有的C API的指针都可以存储在一个指针数组中，然后有一个Capsule来包含它。在不同的扩展模块之间，可以以提供代码和客户模块（client module）的方式，用不同的方法，完成各种存储和获取指针任务的分发。
 
+不管你选择了哪种办法，最重要的是合理地命名你的Capsule。函数 [`PyCapsule_New()`](../c-api/capsule.html#c.PyCapsule_New "PyCapsule_New") 接收一个名字（`const char*`）作为参数，虽然它也允许传入一个 `NULL` 指针，但最好还是指定一个（正常的）名字。取名合理的Capsule提供了一种运行期间类型安全的程度（degree？）。没有办法区分两个没有名字的Capsule。
+
+特别地，用来导出C API的Capsule，应该以下面这种方式命名：
+
+```cpp
+modulename.attributename
+```
+
+便捷函数 [`PyCapsule_Import()`](../c-api/capsule.html#c.PyCapsule_Import "PyCapsule_Import") 能够方便地加载一个Capsule包含的C API，但这种加载方式加载的C API的Capsule必须以这种方式进行命名。这种方式可以很大程度上给予C API的使用者以确认，保证他们加载的是正确的C API。
+
+下面的例子展示了一种办法，这种办法将大部分繁重的任务留给了需要导出模块的作者，这也是常用库模块导出的合理办法。它把所有的C API的指针（本例中只有一个）存储到了一个 `void*` 指针数组中，而这个数组就成为了Capsule的值。这个模块的头文件提供了一个宏，它负责导入模块并获取它的C API的指针。客户模块（client module）只需要在访问C API之前调用这个宏即可。
+
+下面要导出的模块是 [A Simple Example](#extending-simpleexample) 这一节中 `spam` 模块的一个修改版本。函数 `spam.system()` 没有直接调用C的库函数 `system()`，相反它调用了一个叫做 `PySpam_System()` 的函数，当然，这个函数在实际应用中肯定要做更复杂的事情。这个叫做 `PySpam_System()` 的函数也会被导出到其他各个扩展模块中。
+
+`PySpam_System()` 函数是一个普通的C函数，和其他函数一样，被声明为 `static`：
+
+```cpp
+static int
+PySpam_System(const char *command)
+{
+    return system(command);
+}
+```
 
 
 
