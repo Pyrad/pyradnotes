@@ -675,7 +675,7 @@ Py_BuildValue("((ii)(ii)) (ii)",
 这种循环检测器能够检查垃圾循环，并且回收它们所占用的对象的内存。 [`gc`](../library/gc.html#module-gc "gc: Interface to the cycle-detecting garbage collector.") 模块提供了可以运行检测器的方法（即函数 [`collect()`](../library/gc.html#gc.collect "gc.collect")），以及进行接口配置、在运行期间关闭循环检查的方法。
 
 
-### 1.10.1. Reference Counting in Python
+#### 1.10.1. Reference Counting in Python
 
 `Py_INCREF(x)` 和 `Py_DECREF(x)` 这两个宏，是分别用来处理引用计数的增减。如果引用计数减为0，宏 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF") 还用来释放对应对象所占用的内存。为了灵活起见，它不直接调用 `free()` 函数，相反，它调用的是这个对象所包含的一个类型对象（*type object*）中的一个函数指针。因为这个缘故（还有其他），每个对象都包含一个它的类型对象的指针。
 
@@ -687,7 +687,7 @@ Py_BuildValue("((ii)(ii)) (ii)",
 
 一个借用引用，可以通过调用 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF") 转换为一个拥有引用（*owned reference*），这并不会影响被借用者（引用拥有者）的状态，因为它创建了一个新的引用，并且赋予了拥有者的责任。和之前的拥有者一样，新的拥有者必须合理地释放所拥有的引用（所占用的内存）。
 
-### 1.10.2. Ownership Rules
+#### 1.10.2. Ownership Rules
 
 当一个对象引用传入或传出一个函数的时候，它的所有权是否被转移，是这个函数接口说明的一部分。大多数返回一个对象引用的函数，都会传递（转移）这个引用的所有权。特别地，所有用来创建一个新的对象的函数，都会把（引用的）所有权转移给（函数返回值的）接收者，比如函数 [`PyLong_FromLong()`](../c-api/long.html#c.PyLong_FromLong "PyLong_FromLong") 和 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue")。甚至当这个对象实际上不是新创建的时候，接受的仍然是对这个对象的一个新的引用。比如，函数 [`PyLong_FromLong()`](../c-api/long.html#c.PyLong_FromLong "PyLong_FromLong")，它维护了一些常用的值的缓存（cache），并且能够返回一个指向其中一个缓存项的引用。
 
@@ -710,7 +710,7 @@ Py_BuildValue("((ii)(ii)) (ii)",
 
 在Python中调用的一个C函数的返回对象引用，必须是一个owned reference，即具有拥有权的对象引用，这就是说，所有权从这个函数转移到了它的调用者上。
 
-### 1.10.3. Thin Ice
+#### 1.10.3. Thin Ice
 
 有一些看起来对borrowed reference正常无害的使用，可能会导致一些问题。这些都是和Python解释器的一些隐式的调用有关，而这会导致引用的所有者释放它。
 
@@ -763,6 +763,21 @@ bug(PyObject *list)
     PyObject_Print(item, stdout, 0); /* BUG! */
 }
 ```
+
+#### 1.10.4. Writing Extensions in C++
+
+一般而言，接收对象引用作为参数的函数，一般不希望你传递给它们 `NULL` 空指针，如果这么做了，就会导致core dump（或者之后产生core dump）。也是一般情况下，如果一个返回对象引用的函数返回了 `NULL`，它指示用来表示有异常产生。之所以不检查参数是否为 `NULL`，原因是函数接收到对象之后往往会继续将其传递给其他函数。如果每个函数都检查参数是否为 `NULL`，那将产生很多冗余的代码，并且代码会运行的更慢。
+
+所以，最后是在“源头”检查（参数释放为 `NULL`），这个源头就是有可能接收到一个空指针 `NULL` 的地方，比如，接收到 `malloc()` 返回值，或接收到一个函数的对象，但这个函数可能会抛异常。
+
+宏 [`Py_INCREF()`](../c-api/refcounting.html#c.Py_INCREF "Py_INCREF") 和 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF") 不检查空指针 `NULL` ，但它们的两个变种会检查：[`Py_XINCREF()`](../c-api/refcounting.html#c.Py_XINCREF "Py_XINCREF") and [`Py_XDECREF()`](../c-api/refcounting.html#c.Py_XDECREF "Py_XDECREF")。
+
+用来检查对象特定类型的宏 `Pytype_Check()` 不检查空指针 `NULL`，同样是因为，太多的代码在同一行里面调用它，用来检查不同的所预期的类型，而这样就产生了很多的冗余。这个宏没有对应的检查空指针 `NULL` 的变种宏。
+
+C函数的调用机制，保证了传递到C函数中的参数列表（比如例子中的 `args`），永远不会是空指针 `NULL`，实际上它保证了这个参数永远是一个元组（tuple）。
+
+任何时候，如果让一个空指针 `NULL` “逃逸”到了Python使用者那里，将是一个严重的错误。
+
 
 ### 1.11. Writing Extensions in C++
 
