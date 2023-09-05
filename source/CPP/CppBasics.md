@@ -138,3 +138,31 @@ Link: [Locate the path of STL headers used by g++](https://stackoverflow.com/que
 ## C++ Variadic Macros
 
 See page on [3.6 Variadic Macros](https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html)
+
+下面的两个例子来自 [StackOverflow - Empty function macros](https://stackoverflow.com/questions/9187628/empty-function-macros)
+
+
+第一个例子
+
+```cpp
+#define UNUSED(x)
+
+int foo(int UNUSED(x)) {
+	return 42;
+}
+```
+
+
+第二个例子（有我自己的修改）
+
+```cpp
+#ifdef LOGGING_ENABLED
+	#define DBG_MSG_PRINTF(...) fprintf(stdout, __VA_ARGS__)
+	#define DBG_ERR_PRINTF(...) fprintf(stderr, __VA_ARGS__)
+#else
+	#define DBG_MSG_PRINTF(...)
+	#define DBG_ERR_PRINTF(...)
+#endif // LOGGING_ENABLED
+```
+
+
