@@ -123,7 +123,9 @@ Vocabulary  (reStructuredtext)
     * - **atheist**
       - /ˈeɪθiɪst/
       - *n.* 无神论者
-
+    * - **Unices**
+      - n/a
+      - *n.* Plural of Unix
 
 
 
