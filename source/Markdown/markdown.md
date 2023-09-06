@@ -1,5 +1,7 @@
 # Simple Markdown Syntax
 
+[A website for reference - Basic Syntax](https://www.markdownguide.org/basic-syntax)
+
 ## Headings
 
 ```markdown
