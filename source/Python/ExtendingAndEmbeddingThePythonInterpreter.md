@@ -97,7 +97,7 @@ exercise caution 谨慎行事
 
 ### 1.1. [A Simple Example](https://docs.python.org/3/extending/extending.html#a-simple-example)
 
-下面举例，创建一个叫做 `spam` 的扩展模块，并假设要生成一个Python的接口，用来调用C的库函数 `system()`。这个函数接受一个以 `\0` 结尾的字符串作为参数，并且返回一个整型值。假设如下在Python中调用这个函数。
+下面举例，创建一个叫做 `spam` 的扩展模块，并假设要生成一个Python的接口，用来调用C的库函数 `system()` 【1】。这个函数接受一个以 `\0` 结尾的字符串作为参数，并且返回一个整型值。假设如下在Python中调用这个函数。
 
 ```python
 import spam
@@ -681,7 +681,7 @@ Py_BuildValue("((ii)(ii)) (ii)",
 
 现在就有一个重要的问题：什么时候调用 `Py_INCREF(x)` 和 `Py_DECREF(x)`？我们首先介绍一些术语。没有人“拥有”一个对象（Nobody “owns” an object），然后你可以拥有一个指向对象的引用（reference to an object）。因此一个对象的引用计数，就是指向它的引用的个数。一个引用的拥有者（owner），在这个引用不再需要的时候，就负责调用宏 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF") 。引用的拥有权可以被转移，有三种方式释放引用的所有权，它们分别是：传递，存储，以及调用宏 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF")。忘记释放一个被拥有的引用（*owned reference*），就可能造成内存泄露。
 
-也可以**借用**（*borrow*）一个指向对象的引用，借用这个引用的借用者，就不应该调用宏  [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF")。这个借用者“借用”这个对象的时间不应该超过这个对象引用拥有者（的生命周期）。当引用的拥有者释放了该引用（所对应的内存）之后，继续使用**借用引用**（*borrowed reference*），就会产生非法访问内存（using freed memory）的风险，而这是应该完全避免的。
+也可以**借用**（*borrow*）【2】一个指向对象的引用，借用这个引用的借用者，就不应该调用宏  [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF")。这个借用者“借用”这个对象的时间不应该超过这个对象引用拥有者（的生命周期）。当引用的拥有者释放了该引用（所对应的内存）之后，继续使用**借用引用**（*borrowed reference*），就会产生非法访问内存（using freed memory）的风险，而这是应该完全避免的【3】。
 
 和拥有一个引用相比，使用借用引用的优点是，不用关心在任何的代码路径（*code path*）上何时释放这个引用（对应的内存）。换句话说，使用一个借用引用（*borrowed reference*），在可能的提前退出的时候，就不用承担内存泄露的风险。另一方面，缺点是，在一些微妙的情况下，一些看起正确的代码，有可能在引用的拥有者已经释放了它的情况下，仍然使用这个借用来的引用。
 
@@ -774,7 +774,7 @@ bug(PyObject *list)
 
 用来检查对象特定类型的宏 `Pytype_Check()` 不检查空指针 `NULL`，同样是因为，太多的代码在同一行里面调用它，用来检查不同的所预期的类型，而这样就产生了很多的冗余。这个宏没有对应的检查空指针 `NULL` 的变种宏。
 
-C函数的调用机制，保证了传递到C函数中的参数列表（比如例子中的 `args`），永远不会是空指针 `NULL`，实际上它保证了这个参数永远是一个元组（tuple）。
+C函数的调用机制，保证了传递到C函数中的参数列表（比如例子中的 `args`），永远不会是空指针 `NULL`，实际上它保证了这个参数永远是一个元组（tuple）【4】。
 
 任何时候，如果让一个空指针 `NULL` “逃逸”到了Python使用者那里，将是一个严重的错误。
 
@@ -819,16 +819,149 @@ PySpam_System(const char *command)
 }
 ```
 
+函数 `spam_system()` 只有轻微的改动：
 
+```cpp
+static PyObject *
+spam_system(PyObject *self, PyObject *args)
+{
+    const char *command;
+    int sts;
 
+    if (!PyArg_ParseTuple(args, "s", &command))
+        return NULL;
+    sts = PySpam_System(command);
+    return PyLong_FromLong(sts);
+}
+```
 
+下面的语句是模块文件的第一行：
 
+```cpp
+#include <Python.h>
+```
 
+在第一行后面，必须加入下面两行：
 
+```cpp
+#define SPAM_MODULE
+#include "spammodule.h"
+```
 
+这里的 `#define` 预编译指令，是用来告诉头文件，它是包含于正在被导出的模块（exporting module）中，而不是客户模块（client module）。最后，模块的初始化函数必须负责完成对C API指针数组的初始化工作：
 
+```cpp
+PyMODINIT_FUNC
+PyInit_spam(void)
+{
+    PyObject *m;
+    static void *PySpam_API[PySpam_API_pointers];
+    PyObject *c_api_object;
 
+    m = PyModule_Create(&spammodule);
+    if (m == NULL)
+        return NULL;
 
+    /* Initialize the C API pointer array */
+    PySpam_API[PySpam_System_NUM] = (void *)PySpam_System;
+
+    /* Create a Capsule containing the API pointer array's address */
+    c_api_object = PyCapsule_New((void *)PySpam_API, "spam._C_API", NULL);
+
+    if (PyModule_AddObject(m, "_C_API", c_api_object) < 0) {
+        Py_XDECREF(c_api_object);
+        Py_DECREF(m);
+        return NULL;
+    }
+
+    return m;
+}
+```
+
+注意，这里的C API指针数组的声明带有静态标识 `static`，如果不带 `static`，那么当函数 `PyInit_spam()` 结束的时候，这个指针数组就会消失（因为到了生命周期的结束的时候）。
+
+下面就是头文件 `spammodule.h` 中代码的样子：
+
+```cpp
+#ifndef Py_SPAMMODULE_H
+#define Py_SPAMMODULE_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Header file for spammodule */
+
+/* C API functions */
+#define PySpam_System_NUM 0
+#define PySpam_System_RETURN int
+#define PySpam_System_PROTO (const char *command)
+
+/* Total number of C API pointers */
+#define PySpam_API_pointers 1
+
+#ifdef SPAM_MODULE
+/* This section is used when compiling spammodule.c */
+
+static PySpam_System_RETURN PySpam_System PySpam_System_PROTO;
+
+#else
+/* This section is used in modules that use spammodule's API */
+
+static void **PySpam_API;
+
+#define PySpam_System \
+ (*(PySpam_System_RETURN (*)PySpam_System_PROTO) PySpam_API[PySpam_System_NUM])
+
+/* Return -1 on error, 0 on success.
+ * PyCapsule_Import will set an exception if there's an error.
+ */
+static int
+import_spam(void)
+{
+    PySpam_API = (void **)PyCapsule_Import("spam._C_API", 0);
+    return (PySpam_API != NULL) ? 0 : -1;
+}
+
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* !defined(Py_SPAMMODULE_H) */
+```
+
+一个客户模块（client module），为了访问函数 `PySpam_System()`，它所需要做的全部工作，就仅仅是在它直接的初始化函数中，调用函数（甚至是宏） `import_spam()`。
+
+```cpp
+PyMODINIT_FUNC
+PyInit_client(void)
+{
+    PyObject *m;
+
+    m = PyModule_Create(&clientmodule);
+    if (m == NULL)
+        return NULL;
+    if (import_spam() < 0)
+        return NULL;
+    /* additional initialization can happen here */
+    return m;
+}
+```
+
+这种办法的主要缺点是，文件 `spammodule.h` 会相对复杂。但是，对每一个需要导出的函数来说，基本的结构是一样的，所以这样的情况只需要学习一次即可。
+
+最后，需要提及的是，Capsule提供了额外的一些功能，这些功能对保存在一个Capsule中的指针的内存分配和释放，尤其有用。在Python/C API 参考手册的 [Capsules](../c-api/capsule.html#capsules) 这一节对这部分内容做了详细描述，同时也可以参数Capsule的代码实现：代码文件位于Python 分发包的 `Include/pycapsule.h` 和 `Objects/pycapsule.c` 中。
+
+### 1.13 Footnotes
+
+【1】 An interface for this function already exists in the standard module [`os`](../library/os.html#module-os "os: Miscellaneous operating system interfaces.") — it was chosen as a simple and straightforward example.
+
+【2】The metaphor of “borrowing” a reference is not completely correct: the owner still has a copy of the reference.
+
+【3】Checking that the reference count is at least 1 **does not work** — the reference count itself could be in freed memory and may thus be reused for another object!
+
+【4】These guarantees don’t hold when you use the “old” style calling convention — this is still found in much existing code.
 
 
 
