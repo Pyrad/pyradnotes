@@ -6,6 +6,7 @@ C/C++
 
     CppBasics
     CppAdvanced
+    CMakeBasics.md
     SmartPointers.md
     LvalueRvalue
     ReadingMinutesEffectiveModernCPP

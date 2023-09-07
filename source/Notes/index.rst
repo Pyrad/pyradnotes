@@ -7,7 +7,6 @@ Notes
    reStructuredtext
    sphinxbasics
    rstExample
-   CMakeBasics
    CMakeTutorialNotes
    software.rst
    InstallOhMyPosh
