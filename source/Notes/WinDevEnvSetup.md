@@ -739,7 +739,7 @@ $ which jq
 
 After RSA SSH key was updated, type `yes` to add `github.com` to know hosts
 
-```shell
+```
 Pyrad@Pyrad MINGW64 /d/Pyrad/GitHub/all_notes
 $ gp
 The authenticity of host 'github.com (20.205.243.166)' can't be established.
