@@ -204,7 +204,7 @@ PyInit_spam(void)
 }
 ```
 
-注意，这里给出的异常名称，在Python中是 `spam.error`。函数 [`PyErr_NewException()`](https://docs.python.org/3/c-api/exceptions.html#c.PyErr_NewException) 创建的class的基类是 [`Exception`](../library/exceptions.html#Exception "Exception")（除法传入的参数不是 `NULL` 而是其他class），它在中 [Built-in Exceptions](../library/exceptions.html#bltin-exceptions) 有描述。
+注意，这里给出的异常名称，在Python中是 `spam.error`。函数 [`PyErr_NewException()`](https://docs.python.org/3/c-api/exceptions.html#c.PyErr_NewException) 创建的class的基类是 [`Exception`](https://docs.python.org/3/library/exceptions.html#Exception)（除法传入的参数不是 `NULL` 而是其他class），它在中 [Built-in Exceptions](https://docs.python.org/3/library/exceptions.html#bltin-exceptions) 有描述。
 
 还要注意，`SpamError` 变量保留了一个指向新创建的异常类的引用，而这是故意如此！因为这个异常可以被该模块以外的代码删除，所以为了防止 `SpamError` 变成一个dangling指针，一个指向这个类的owned reference就应该被保留。如果它变成了一个dangling指针，那么要抛出这个异常的C代码就可能产生core dump，或者其他非预期的副作用。
 
@@ -362,7 +362,7 @@ main(int argc, char *argv[])
 
 ### 1.5. Compilation and Linkage
 
-在使用新的扩展模块之前，还有两件事情要做：编译，并且链接到Python系统上去。如果使用的是动态链接，那么（实现）细节就依赖于所使用的系统的动态链接方式；可以参考有关构建扩展模块的章节（[Building C and C++ Extensions](building.html#building)），以及只适用于在Windows平台上构建方法的更多细节。
+在使用新的扩展模块之前，还有两件事情要做：编译，并且链接到Python系统上去。如果使用的是动态链接，那么（实现）细节就依赖于所使用的系统的动态链接方式；可以参考有关构建扩展模块的章节（[Building C and C++ Extensions](https://docs.python.org/3/extending/building.html#building)），以及只适用于在Windows平台上构建方法的更多细节。
 
 如果不能使用动态链接，或者就想使扩展模块成为Python解释器永久的一部分，那么就需要改变设定，并且重新编译Python解释器。幸运的是，这在Unix平台上实现起来十分简单：只需要把（扩展模块）文件（比如本文中的 `spammodule.c`）放到Python源分发包的 `Modules/`目录中，然后在 `Modules/Setup.local` 加入如下一行来描述你的文件即可。
 
@@ -410,9 +410,9 @@ my_set_callback(PyObject *dummy, PyObject *args)
 }
 ```
 
-这个函数必须通过Python解释器，使用 [`METH_VARARGS`](https://docs.python.org/3/c-api/structures.html#c.METH_VARARGS "METH_VARARGS") 这个标记注册（1.4 The Module’s Method Table and Initialization Function 描述了这种办法）。函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 以及它的参数在下一节 [Extracting Parameters in Extension Functions](#parsetuple) 中讨论。
+这个函数必须通过Python解释器，使用 [`METH_VARARGS`](https://docs.python.org/3/c-api/structures.html#c.METH_VARARGS "METH_VARARGS") 这个标记注册（1.4 The Module’s Method Table and Initialization Function 描述了这种办法）。函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 以及它的参数在下一节 [Extracting Parameters in Extension Functions](https://docs.python.org/3/extending/extending.html#parsetuple) 中讨论。
 
-宏 [`Py_XINCREF()`](https://docs.python.org/3/c-api/refcounting.html#c.Py_XINCREF) 和 [`Py_XDECREF()`](https://docs.python.org/3/c-api/refcounting.html#c.Py_XDECREF) 用来增加/减小一个对象的引用计数，并且可以使用在 `NULL` 指针上。更多讨论参考 [Reference Counts](#refcounts) 这一节。
+宏 [`Py_XINCREF()`](https://docs.python.org/3/c-api/refcounting.html#c.Py_XINCREF) 和 [`Py_XDECREF()`](https://docs.python.org/3/c-api/refcounting.html#c.Py_XDECREF) 用来增加/减小一个对象的引用计数，并且可以使用在 `NULL` 指针上。更多讨论参考 [Reference Counts](https://docs.python.org/3/extending/extending.html#refcounts) 这一节。
 
 之后，当需要调用这个函数的时候，可以通过调用C函数 [`PyObject_CallObject()`](https://docs.python.org/3/c-api/call.html#c.PyObject_CallObject) 来实现。这个函数接受两个参数，都是指向专用的Python对象：一个是Python函数，另一个是对于的参数列表。这个参数列表必须总是一个元组对象（tuple object），它的长度就是参数的个数。如果要调用没有参数的Python函数，就传入一个 `NULL` 指针，或者一个空的元组对象；如果调用的函数只接受一个参数，那么就传入一个只有一个元素的元组对象。在函数 [`Py_BuildValue()`](https://docs.python.org/3/c-api/arg.html#c.Py_BuildValue) 中，使用带圆括号的格式化字符串，就可以返回一个对应的空的元组，或者有一个或多个元素的元组。例如：
 
@@ -638,23 +638,23 @@ PyObject *Py_BuildValue(const char *format, ...);
 下面是一些例子，左侧是函数调用，右侧是返回的Python结果。
 
 ```cpp
-Py_BuildValue("")                        None
-Py_BuildValue("i", 123)                  123
-Py_BuildValue("iii", 123, 456, 789)      (123, 456, 789)
-Py_BuildValue("s", "hello")              'hello'
-Py_BuildValue("y", "hello")              b'hello'
-Py_BuildValue("ss", "hello", "world")    ('hello', 'world')
-Py_BuildValue("s#", "hello", 4)          'hell'
-Py_BuildValue("y#", "hello", 4)          b'hell'
-Py_BuildValue("()")                      ()
-Py_BuildValue("(i)", 123)                (123,)
-Py_BuildValue("(ii)", 123, 456)          (123, 456)
-Py_BuildValue("(i,i)", 123, 456)         (123, 456)
-Py_BuildValue("[i,i]", 123, 456)         [123, 456]
+Py_BuildValue("")                        // None
+Py_BuildValue("i", 123)                  // 123
+Py_BuildValue("iii", 123, 456, 789)      // (123, 456, 789)
+Py_BuildValue("s", "hello")              // 'hello'
+Py_BuildValue("y", "hello")              // b'hello'
+Py_BuildValue("ss", "hello", "world")    // ('hello', 'world')
+Py_BuildValue("s#", "hello", 4)          // 'hell'
+Py_BuildValue("y#", "hello", 4)          // b'hell'
+Py_BuildValue("()")                      // ()
+Py_BuildValue("(i)", 123)                // (123,)
+Py_BuildValue("(ii)", 123, 456)          // (123, 456)
+Py_BuildValue("(i,i)", 123, 456)         // (123, 456)
+Py_BuildValue("[i,i]", 123, 456)         // [123, 456]
 Py_BuildValue("{s:i,s:i}",
-              "abc", 123, "def", 456)    {'abc': 123, 'def': 456}
+              "abc", 123, "def", 456)    // {'abc': 123, 'def': 456}
 Py_BuildValue("((ii)(ii)) (ii)",
-              1, 2, 3, 4, 5, 6)          (((1, 2), (3, 4)), (5, 6))
+              1, 2, 3, 4, 5, 6)          // (((1, 2), (3, 4)), (5, 6))
 ```
 
 
@@ -672,7 +672,7 @@ Py_BuildValue("((ii)(ii)) (ii)",
 
 尽管Python使用的是传统的引用计数的实现，它提供了一共循环引用检测器，用来检查循环引用。这就使得应用程序可以不用担心创建出来有向或无向的循环引用，而这些是只使用引用计数的垃圾回收机制的缺陷。循环引用的对象，直接或间接包含了指向它们直接的引用，那么这就造成循环引用中的每个对象的引用计数总也不为0。典型的引用计数的实现是无法回收循环引用中的对象的内存，或者无法回收被循环引用中的对象所引用的对象的内存（哪怕没有进一步引用这个循环）。
 
-这种循环检测器能够检查垃圾循环，并且回收它们所占用的对象的内存。 [`gc`](../library/gc.html#module-gc "gc: Interface to the cycle-detecting garbage collector.") 模块提供了可以运行检测器的方法（即函数 [`collect()`](../library/gc.html#gc.collect "gc.collect")），以及进行接口配置、在运行期间关闭循环检查的方法。
+这种循环检测器能够检查垃圾循环，并且回收它们所占用的对象的内存。 [`gc`](https://docs.python.org/3/library/gc.html#module-gc) 模块提供了可以运行检测器的方法（即函数 [`collect()`](https://docs.python.org/3/library/gc.html#gc.collect)），以及进行接口配置、在运行期间关闭循环检查的方法。
 
 
 #### 1.10.1. Reference Counting in Python
@@ -807,7 +807,7 @@ modulename.attributename
 
 下面的例子展示了一种办法，这种办法将大部分繁重的任务留给了需要导出模块的作者，这也是常用库模块导出的合理办法。它把所有的C API的指针（本例中只有一个）存储到了一个 `void*` 指针数组中，而这个数组就成为了Capsule的值。这个模块的头文件提供了一个宏，它负责导入模块并获取它的C API的指针。客户模块（client module）只需要在访问C API之前调用这个宏即可。
 
-下面要导出的模块是 [A Simple Example](#extending-simpleexample) 这一节中 `spam` 模块的一个修改版本。函数 `spam.system()` 没有直接调用C的库函数 `system()`，相反它调用了一个叫做 `PySpam_System()` 的函数，当然，这个函数在实际应用中肯定要做更复杂的事情。这个叫做 `PySpam_System()` 的函数也会被导出到其他各个扩展模块中。
+下面要导出的模块是 [A Simple Example](https://docs.python.org/3/extending/extending.html#extending-simpleexample) 这一节中 `spam` 模块的一个修改版本。函数 `spam.system()` 没有直接调用C的库函数 `system()`，相反它调用了一个叫做 `PySpam_System()` 的函数，当然，这个函数在实际应用中肯定要做更复杂的事情。这个叫做 `PySpam_System()` 的函数也会被导出到其他各个扩展模块中。
 
 `PySpam_System()` 函数是一个普通的C函数，和其他函数一样，被声明为 `static`：
 
@@ -955,7 +955,7 @@ PyInit_client(void)
 
 ### 1.13 Footnotes
 
-【1】 An interface for this function already exists in the standard module [`os`](../library/os.html#module-os "os: Miscellaneous operating system interfaces.") — it was chosen as a simple and straightforward example.
+【1】 An interface for this function already exists in the standard module [`os`](https://docs.python.org/3/library/os.html#module-os) — it was chosen as a simple and straightforward example.
 
 【2】The metaphor of “borrowing” a reference is not completely correct: the owner still has a copy of the reference.
 
