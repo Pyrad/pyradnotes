@@ -6,6 +6,12 @@
 
 [cmake：target_** 中的 PUBLIC，PRIVATE，INTERFACE](https://zhuanlan.zhihu.com/p/82244559)
 
+## 查询系统相关信息
+
+[cmake_host_system_information](https://cmake.org/cmake/help/latest/command/cmake_host_system_information.html)
+
+
+
 
 ## 只拷贝文件到binary目录
 
