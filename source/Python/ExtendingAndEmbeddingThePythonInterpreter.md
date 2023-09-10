@@ -143,9 +143,9 @@ spam_system(PyObject *self, PyObject *args)
 
 `self` 指针参数指向的是模块对象，为的是访问模块层级的函数；对于一个Python method，它指向的是一个对象实例。
 
-`args` 指针参数指向的是包含有参数的Python元组（tuple）。这个元组中的每一项对应的就是调用参数列表中的一个参数。因为参数是Python对象，为了在我们的C函数中使用，就需要将其转换为C的值。Python API中的函数 [`PyArg_ParseTuple()`](file:///D:/procs/python-3.11.4-docs-html/c-api/arg.html#c.PyArg_ParseTuple) 就是用来检查参数类型，并将其转换为C值。它使用一个字符串模板来决定所需的参数类型，以及用来存储转换后的C值的C变量。
+`args` 指针参数指向的是包含有参数的Python元组（tuple）。这个元组中的每一项对应的就是调用参数列表中的一个参数。因为参数是Python对象，为了在我们的C函数中使用，就需要将其转换为C的值。Python API中的函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 就是用来检查参数类型，并将其转换为C值。它使用一个字符串模板来决定所需的参数类型，以及用来存储转换后的C值的C变量。
 
-如果所有参数的类型正确，并且其对应的C值存入到了传入的地址（对应的内存）中，函数 [`PyArg_ParseTuple()`](file:///D:/procs/python-3.11.4-docs-html/c-api/arg.html#c.PyArg_ParseTuple) 返回 `true` （非零）。如果传入的是一个不正确的参数列表，那么函数 [`PyArg_ParseTuple()`](file:///D:/procs/python-3.11.4-docs-html/c-api/arg.html#c.PyArg_ParseTuple) 返回 `false` （零）。在后者的情况中，它同时会抛出一个合适的异常，据此调用它的函数就能立即返回 `NULL`。
+如果所有参数的类型正确，并且其对应的C值存入到了传入的地址（对应的内存）中，函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 返回 `false` （零）。在后者的情况中，它同时会抛出一个合适的异常，据此调用它的函数就能立即返回 `NULL`。
 
 ### 1.2. Intermezzo: Errors and Exceptions
 
@@ -167,11 +167,11 @@ Python API定义了一系列的函数，用来设定各种类型的异常。
 
 每次调用 `malloc()` 就必须抛异常，当直接调用 `malloc()` 或 `realloc()` 失败时必须调用 [`PyErr_NoMemory()`](../c-api/exceptions.html#c.PyErr_NoMemory "PyErr_NoMemory")，然后返回一个错误指示。所有创建了对象的函数（比如 [`PyLong_FromLong()`](../c-api/long.html#c.PyLong_FromLong "PyLong_FromLong")）已经做了这样的事情，所以这是给那些直接调用 `malloc()` 相关的代码的提示。
 
-同样要注意，除了 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 这个重要的例外，对于返回一个整型值表示状态的函数，应该返回一个正值或 `0` 表示成功，`-1`表示失败，就像Unix系统调用一样。
+同样要注意，除了 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple") 这个重要的例外，对于返回一个整型值表示状态的函数，应该返回一个正值或 `0` 表示成功，`-1`表示失败，就像Unix系统调用一样。
 
 最后，当返回一个错误指示的时候，如果要清理“垃圾”时要小心，比如对已经创建的对象调用[`Py_XDECREF()`](../c-api/refcounting.html#c.Py_XDECREF "Py_XDECREF") 或 [`Py_DECREF()`](../c-api/refcounting.html#c.Py_DECREF "Py_DECREF")。
 
-选择抛出什么样的异常完全由调用者自己决定。对于Python内置的异常，都有对应的预定义好的C对象，比如 `PyExc_ZeroDivisionError`，而这些是可以直接使用的。当然，应该合理地选择要抛出的异常，比如，如果要表示一个文件无法打开，就不应该使用 `PyExc_TypeError`，而应该使用 `PyExc_OSError`。如果有参数列表错误，函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 通常抛出异常 `PyExc_TypeError`。如果有一个参数的值不符合想要的范围，或没有满足某些条件，那么抛出异常 `PyExc_ValueError` 是合适的。
+选择抛出什么样的异常完全由调用者自己决定。对于Python内置的异常，都有对应的预定义好的C对象，比如 `PyExc_ZeroDivisionError`，而这些是可以直接使用的。当然，应该合理地选择要抛出的异常，比如，如果要表示一个文件无法打开，就不应该使用 `PyExc_TypeError`，而应该使用 `PyExc_OSError`。如果有参数列表错误，函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple") 通常抛出异常 `PyExc_TypeError`。如果有一个参数的值不符合想要的范围，或没有满足某些条件，那么抛出异常 `PyExc_ValueError` 是合适的。
 
 当然也可以在模块中定义一个新的异常，这个异常就是对这个模块独有的。为了定义这个异常，通常在（模块）文件的开始声明一个 `static` 静态变量（指针）：
 
@@ -240,9 +240,9 @@ if (!PyArg_ParseTuple(args, "s", &command))
     return NULL;
 ```
 
-当检测到参数列表中有错误出现时，它就会返回 `NULL`。这个错误是根据 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 内部的异常所设置的，这里的 `NULL` 是错误指示器，用在那些返回值是对象指针的函数里。如果参数列表正常，字符串里的值就被拷贝到局部变量 `command` 中去。这是一个指针赋值，而且不应该修改这个指针指向的字符串（因此在标准C中，变量 `command` 应该被声明为 `const char *command`，这样更合适）。
+当检测到参数列表中有错误出现时，它就会返回 `NULL`。这个错误是根据 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 内部的异常所设置的，这里的 `NULL` 是错误指示器，用在那些返回值是对象指针的函数里。如果参数列表正常，字符串里的值就被拷贝到局部变量 `command` 中去。这是一个指针赋值，而且不应该修改这个指针指向的字符串（因此在标准C中，变量 `command` 应该被声明为 `const char *command`，这样更合适）。
 
-下面的语句就是调用Unix函数 `system()`，把从  [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 得到的字符串作为参数传入：
+下面的语句就是调用Unix函数 `system()`，把从  [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 得到的字符串作为参数传入：
 
 ```cpp
 sts = system(command);
@@ -278,11 +278,11 @@ static PyMethodDef SpamMethods[] = {
 };
 ```
 
-注意，第三项 `METH_VARARGS`，它是一个标记，用来告知Python解释器如何调用对应C函数的一种约定。通常情况下，它应该总是 `METH_VARARGS` 或者 `METH_VARARGS | METH_KEYWORDS`；值 `0` 表示使用了一个废弃的变种函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple")。
+注意，第三项 `METH_VARARGS`，它是一个标记，用来告知Python解释器如何调用对应C函数的一种约定。通常情况下，它应该总是 `METH_VARARGS` 或者 `METH_VARARGS | METH_KEYWORDS`；值 `0` 表示使用了一个废弃的变种函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple)。
 
-当仅使用 `METH_VARARGS` 的时候，函数应该只接收Python层面的参数，并将其当做一个元组，以供函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 进行解析，下面是该函数详细的分析。
+当仅使用 `METH_VARARGS` 的时候，函数应该只接收Python层面的参数，并将其当做一个元组，以供函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 进行解析，下面是该函数详细的分析。
 
-如果是以关键字参数的形式传参给函数，那么就可以在第三项上设置 `METH_KEYWORDS` 这一位（bit）。这种情况下，对应的C函数应该有第三个参数，这第三个参数是一个关键字的字典（keyword dictionary），而且应该使用函数 [`PyArg_ParseTupleAndKeywords()`](../c-api/arg.html#c.PyArg_ParseTupleAndKeywords "PyArg_ParseTupleAndKeywords") 去解析传递进来的参数。
+如果是以关键字参数的形式传参给函数，那么就可以在第三项上设置 `METH_KEYWORDS` 这一位（bit）。这种情况下，对应的C函数应该有第三个参数，这第三个参数是一个关键字的字典（keyword dictionary），而且应该使用函数 [`PyArg_ParseTupleAndKeywords()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTupleAndKeywords") 去解析传递进来的参数。
 
 在模块定义结构中，必须引用前面提到的函数表（方法表，method table）：
 
@@ -410,7 +410,7 @@ my_set_callback(PyObject *dummy, PyObject *args)
 }
 ```
 
-这个函数必须通过Python解释器，使用 [`METH_VARARGS`](../c-api/structures.html#c.METH_VARARGS "METH_VARARGS") 这个标记注册（1.4 The Module’s Method Table and Initialization Function 描述了这种办法）。函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 以及它的参数在下一节 [Extracting Parameters in Extension Functions](#parsetuple) 中讨论。
+这个函数必须通过Python解释器，使用 [`METH_VARARGS`](../c-api/structures.html#c.METH_VARARGS "METH_VARARGS") 这个标记注册（1.4 The Module’s Method Table and Initialization Function 描述了这种办法）。函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 以及它的参数在下一节 [Extracting Parameters in Extension Functions](#parsetuple) 中讨论。
 
 宏 [`Py_XINCREF()`](../c-api/refcounting.html#c.Py_XINCREF "Py_XINCREF") 和 [`Py_XDECREF()`](../c-api/refcounting.html#c.Py_XDECREF "Py_XDECREF") 用来增加/减小一个对象的引用计数，并且可以使用在 `NULL` 指针上。更多讨论参考 [Reference Counts](#refcounts) 这一节。
 
@@ -475,7 +475,7 @@ Py_DECREF(result);
 
 ### 1.7. Extracting Parameters in Extension Functions
 
- [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 的函数原型如下：
+ [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple") 的函数原型如下：
  
 ```cpp
 int PyArg_ParseTuple(PyObject *arg, const char *format, ...);
@@ -483,7 +483,7 @@ int PyArg_ParseTuple(PyObject *arg, const char *format, ...);
 
 其中参数 `arg` 必须是一个元组对象，它包含的是从Python传递到C函数的参数列表；参数 `format` 必须是一个格式化的字符串，关于它的语法，可以参考Python/C API参考手册的 [Parsing arguments and building values](../c-api/arg.html#arg-parsing)；剩余的参数必须是和格式化字符串中对应类型的变量的地址。 
 
-需要注意的是，尽管函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 检查从Python传入的参数是否是这里所要求类型，但它并不检查传入这个函数的C变量的地址是否合法。换句话说，如果在这里犯了错误，那么程序很可能崩溃或者在内存的随机地址上写入（非法的）值。所以要小心！
+需要注意的是，尽管函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple") 检查从Python传入的参数是否是这里所要求类型，但它并不检查传入这个函数的C变量的地址是否合法。换句话说，如果在这里犯了错误，那么程序很可能崩溃或者在内存的随机地址上写入（非法的）值。所以要小心！
 
 需要注意的另一点是，提供给调用者的Python对象的引用计数是*borrowed* reference，所以不需要将它们的引用计数减一。
 
@@ -565,7 +565,7 @@ int PyArg_ParseTupleAndKeywords(PyObject *arg, PyObject *kwdict,
                                 const char *format, char *kwlist[], ...);
 ```
 
-参数 `arg` 和 `format` 和函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 中的含义相同。`kwdict` 参数是一个关键字的字典（dictionary of keywords），它作为Python运行时候的第三个参数传入。`kwlist` 参数是一个字符串列表，它的最后一个字符串必须是 `NULL`，这个字符串列表用来标识各个参数，而且名字和类型信息是按照 `format` 字符串中的格式，从左向右依次对应。如果解析参数成功，函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 返回 `true`，如果失败，就返回 `false`，并且会抛出一个对应的异常。
+参数 `arg` 和 `format` 和函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 中的含义相同。`kwdict` 参数是一个关键字的字典（dictionary of keywords），它作为Python运行时候的第三个参数传入。`kwlist` 参数是一个字符串列表，它的最后一个字符串必须是 `NULL`，这个字符串列表用来标识各个参数，而且名字和类型信息是按照 `format` 字符串中的格式，从左向右依次对应。如果解析参数成功，函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 返回 `true`，如果失败，就返回 `false`，并且会抛出一个对应的异常。
 
 注意，但使用关键字参数（keyword argument）的时候，嵌套的元组不能被解析；传入的关键字实参如果在 `kwlist` 中不存在，就会抛出一个 `TypeError` 的异常。
 
@@ -625,15 +625,15 @@ PyInit_keywdarg(void)
 
 ### 1.9. Building Arbitrary Values
 
-这个函数（`Py_BuildValue`）和函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 是相对应的关系，它的声明是：
+这个函数（`Py_BuildValue`）和函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 是相对应的关系，它的声明是：
 
 ```cpp
 PyObject *Py_BuildValue(const char *format, ...);
 ```
 
-和函数 [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 类似，它识别相同的一系列格式化的单元，但这个函数的参数必须不能是指针，而必须是值。这里的不能是指针的参数指的是作为函数输入的变量，就是 `const char *format` 后面的那些值，而 `format` 本身就是输出结果，可以是指针。这个函数返回一个新的Python对象，适合从Python中调用一个C函数作为返回。
+和函数 [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 类似，它识别相同的一系列格式化的单元，但这个函数的参数必须不能是指针，而必须是值。这里的不能是指针的参数指的是作为函数输入的变量，就是 `const char *format` 后面的那些值，而 `format` 本身就是输出结果，可以是指针。这个函数返回一个新的Python对象，适合从Python中调用一个C函数作为返回。
 
-和函数  [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 不同的一点是，函数  [`PyArg_ParseTuple()`](../c-api/arg.html#c.PyArg_ParseTuple "PyArg_ParseTuple") 的第一个参数（`PyObject *args`）必须是一个元组，因为Python的参数列表总是特意以元组的方式来表示，而函数 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue") 就不总是构建一个元组。只有当它的字符串包含两个或更多的格式单元时，它才构造为一个元组。如果格式化字符串是空的，那么它就返回 `None`；如果它只包含一个格式化单元，那么它返回的就是那个格式化单元对应的对象的类型。当元组的格式为0或1时，为了特意返回一个元组，就需要给格式化字符串加上圆括号。
+和函数  [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 不同的一点是，函数  [`PyArg_ParseTuple()`](https://docs.python.org/3/c-api/arg.html#c.PyArg_ParseTuple) 的第一个参数（`PyObject *args`）必须是一个元组，因为Python的参数列表总是特意以元组的方式来表示，而函数 [`Py_BuildValue()`](../c-api/arg.html#c.Py_BuildValue "Py_BuildValue") 就不总是构建一个元组。只有当它的字符串包含两个或更多的格式单元时，它才构造为一个元组。如果格式化字符串是空的，那么它就返回 `None`；如果它只包含一个格式化单元，那么它返回的就是那个格式化单元对应的对象的类型。当元组的格式为0或1时，为了特意返回一个元组，就需要给格式化字符串加上圆括号。
 
 下面是一些例子，左侧是函数调用，右侧是返回的Python结果。
 
