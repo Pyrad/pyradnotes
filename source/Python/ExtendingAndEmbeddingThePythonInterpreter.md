@@ -13,6 +13,7 @@
 
 exercise caution 谨慎行事
 
+
 ## Links
 
 [Python 3.x.x documentation](https://docs.python.org/3/index.html)
@@ -24,13 +25,24 @@ exercise caution 谨慎行事
 [浅谈Python C扩展](https://blog.csdn.net/fitzzhang/article/details/79212411)
 
 
-### 推荐的第三方工具
+### 编译Python export 模块
+
+- [C++ CMake 使用 Python3](https://www.cnblogs.com/mxnote/p/16743186.html)
+- [浅析 C++ 调用 Python 模块](https://www.cnblogs.com/findumars/p/6142330.html)
+- [FindPython3 - 3.27.4](https://cmake.org/cmake/help/latest/module/FindPython3.html)
+
+
+
+
+
+
+## 推荐的第三方工具
 
 本指南只介绍了在此版本的CPython下，利用其提供的基本工具，创建扩展模块。其他第三方程序，如 [Cython](https://cython.org/), [cffi](https://cffi.readthedocs.io/), [SWIG](https://www.swig.org/) 以及 [Numba](https://numba.pydata.org/) 都提供了更简单便捷和更复杂功能多样的方法，用来创建Python的C和C++的扩展。
 
 [Python Packaging User Guide: Binary Extensions](https://packaging.python.org/guides/packaging-binary-extensions/) 不仅介绍了几种可用工具，它们使得创建二进制扩展更加便捷，而且还讨论了为什么创建一个扩展模块或许是首要考虑的各种原因。
 
-### 不使用第三方工具来创建扩展
+## 不使用第三方工具来创建扩展
 
 这一节主要讲述，在不使用第三方工具的情况下，如何创建出C/C++的扩展模块，这主要是为了这些第三方工具的作者使用，并不是鼓励使用这种办法创建自己的C/C++的扩展模块。
 
@@ -70,7 +82,7 @@ exercise caution 谨慎行事
     -   [5.3. Using DLLs in Practice](https://docs.python.org/3/extending/windows.html#using-dlls-in-practice)
 
 
-### 把CPython runtime嵌入更大的应用中
+## 把CPython runtime嵌入更大的应用中
 
 
 相比于创建一个运行于Python解释器当中的扩展当做主应用程序，有时候，更希望把CPython runtime嵌入到一个更大的应用程序中。这部分讲述了成功达成这个目的的一些细节。
