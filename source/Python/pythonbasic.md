@@ -144,3 +144,21 @@ print(type(msg))
 <class 'str'>
 Good day today
 ```
+
+
+
+## 查看当前Python的环境
+
+查看 `include` 目录
+
+```powershell
+python -c "import sysconfig; print(sysconfig.get_path('include'))"
+```
+
+查看`lib`目录
+
+```powershell
+python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))"
+```
+
+
