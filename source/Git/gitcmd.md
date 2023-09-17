@@ -414,6 +414,39 @@ $ git config --global core.editor "vim"
 $ git commit --amend
 ```
 
+## Change history commit message
+
+[我想试试教会你如何修改Git提交信息](https://blog.csdn.net/itartisans/article/details/131564377)
+
+1. 首先需要退回到需要修改的commit之前的一个commit
+
+    ```shell
+    git rebase -i <hash_id_before_commit_to_edit>
+    ```
+
+    比如，
+
+    ```shell
+    git rebase -i ba4afdc957468f42d960e322047f6b4fc1dea427
+    ```
+
+
+2. 指向了上述命令之后，会打开一个临时文件，这个文件上部会列出来当前提交之后的所有的提交信息，顺序是按照时间顺序由早到晚排序的。
+    
+    每个提交信息的前面有字段代表需要执行的操作，具体选项在这个临时文件的下部有说明。
+    
+    常用的包括 `pick`，修改时使用的 `reword` 和 `edit`。`reword` 和 `edit` 的区别是 `reword` 提交后会自动合并，所以只能编辑提交信息，而 `edit` 提交后会停留在修改的提交，之后可以通过 `--amend` 修改提交内容。
+    
+    在需要修改的commit前面把 `pick` 修改为 `reword`，然后保存（或许不需要退出？），此时就会打开另外一个临时文件，这第二个临时文件展示的就是指定的要修改的提交的内容，此时修改提交内容之后，保存退出即可。
+
+3. 之后要记得用 `git rebase --continue`，将head重新指向最新的commit。
+4. 之后使用 `git push`（或者 `git push --force`）推送到远程仓库中。
+
+其他参考文章
+
+- [git修改历史提交(commit)信息](https://blog.csdn.net/A_man_of_ideas/article/details/130919624)
+
+
 ## Git to show messages of only one commit
 
 Only show the names of files modified, w/o diff
