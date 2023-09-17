@@ -27,3 +27,10 @@ COMMAND ${CMAKE_COMMAND} -E copy
         ${CMAKE_CURRENT_BINARY_DIR}/input.txt
 )
 ```
+
+
+## 编译库是添加-fPIC选项的方式及验证
+
+网页地址：[编译库是添加-fPIC选项的方式及验证](https://blog.csdn.net/m0_37876242/article/details/121786076)
+
+
