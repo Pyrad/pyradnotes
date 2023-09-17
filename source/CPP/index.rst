@@ -12,3 +12,4 @@ C/C++
     ReadingMinutesEffectiveModernCPP
     CppConcurrencyInAction.md
     clang.md
+    CMake_PRIVATE_PUBLIC_INTERFACE.md
