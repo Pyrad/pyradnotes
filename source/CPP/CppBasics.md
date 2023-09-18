@@ -135,6 +135,12 @@ Link: [Locate the path of STL headers used by g++](https://stackoverflow.com/que
 [C++ Unordered Map Under the Hood](https://jbseg.medium.com/c-unordered-map-under-the-hood-9540cec4553a)
 
 
+## How to measure memory usage of `std::unordered_map`
+
+[https://stackoverflow.com/questions/25375202/how-to-measure-the-memory-usage-of-stdunordered-map](https://stackoverflow.com/questions/25375202/how-to-measure-the-memory-usage-of-stdunordered-map)
+
+
+
 ## C++ Variadic Macros
 
 See page on [3.6 Variadic Macros](https://gcc.gnu.org/onlinedocs/cpp/Variadic-Macros.html)
