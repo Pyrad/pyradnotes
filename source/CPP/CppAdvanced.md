@@ -102,3 +102,11 @@ This file shows some advanced usages of C/C++
 
 网页链接：[https://www.coder.work/article/90276](https://www.coder.work/article/90276)
 
+### Compiling Extension Modules on Windows using mingw
+
+网页链接：
+[https://scipy-cookbook.readthedocs.io/items/CompilingExtensionsOnWindowsWithMinGW.html](https://scipy-cookbook.readthedocs.io/items/CompilingExtensionsOnWindowsWithMinGW.html)
+
+### MSYS2 - Python
+
+网页链接：[https://www.msys2.org/docs/python/](https://www.msys2.org/docs/python/)
