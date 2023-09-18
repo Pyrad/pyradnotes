@@ -97,3 +97,8 @@ This file shows some advanced usages of C/C++
 ### 使用C++编写Python扩展
 
 网页链接：[https://www.jianshu.com/p/eb2618067eae](https://www.jianshu.com/p/eb2618067eae)
+
+### python - 如何在 Python 中使用 MinGW-w64 构建我的 C 扩展？
+
+网页链接：[https://www.coder.work/article/90276](https://www.coder.work/article/90276)
+
