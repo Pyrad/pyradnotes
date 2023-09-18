@@ -94,3 +94,6 @@ This file shows some advanced usages of C/C++
 
 网页链接：[https://zhuanlan.zhihu.com/p/361844595](https://zhuanlan.zhihu.com/p/361844595)
 
+### 使用C++编写Python扩展
+
+网页链接：[https://www.jianshu.com/p/eb2618067eae](https://www.jianshu.com/p/eb2618067eae)
