@@ -89,3 +89,8 @@ This file shows some advanced usages of C/C++
 
 [有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？ - 觅新笑话中的回答 - 知乎](https://www.zhihu.com/question/20201738/answer/2928936881)
 
+
+### Win10+MinGw编译可被Python调用的dll库
+
+网页链接：[https://zhuanlan.zhihu.com/p/361844595](https://zhuanlan.zhihu.com/p/361844595)
+
