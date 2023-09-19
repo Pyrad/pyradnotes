@@ -110,3 +110,8 @@ This file shows some advanced usages of C/C++
 ### MSYS2 - Python
 
 网页链接：[https://www.msys2.org/docs/python/](https://www.msys2.org/docs/python/)
+
+
+### Building a Python C Extension Module
+
+网页链接：[https://realpython.com/build-python-c-extension-module/](https://realpython.com/build-python-c-extension-module/)
