@@ -119,3 +119,8 @@ This file shows some advanced usages of C/C++
 ### Installing Python Modules  - Building Extensions: Tips and Tricks
 
 [https://davis.lbl.gov/Manuals/PYTHON-2.3.3/inst/tweak-flags.html](https://davis.lbl.gov/Manuals/PYTHON-2.3.3/inst/tweak-flags.html)
+
+
+### Building a Python C extension module with CMake
+
+[https://martinopilia.com/posts/2018/09/15/building-python-extension.html](https://martinopilia.com/posts/2018/09/15/building-python-extension.html)
