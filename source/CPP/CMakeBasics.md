@@ -34,3 +34,17 @@ COMMAND ${CMAKE_COMMAND} -E copy
 网页地址：[编译库是添加-fPIC选项的方式及验证](https://blog.csdn.net/m0_37876242/article/details/121786076)
 
 
+## 改变编译出来的`.so`或`.dll` library的前缀或后缀
+
+网页地址：[How do you rename a library filename in CMake?](https://stackoverflow.com/questions/31038963/how-do-you-rename-a-library-filename-in-cmake)
+
+By default, the library filename will be `libnew_thing.so`
+```cmake
+add_library(new_thing ${NEW_THING_SRCS})
+```
+
+This changes the filename to `new_thing.so`
+
+```cmake
+set_target_properties(new_thing PROPERTIES PREFIX "")
+```
