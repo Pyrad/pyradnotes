@@ -115,3 +115,7 @@ This file shows some advanced usages of C/C++
 ### Building a Python C Extension Module
 
 网页链接：[https://realpython.com/build-python-c-extension-module/](https://realpython.com/build-python-c-extension-module/)
+
+### Installing Python Modules  - Building Extensions: Tips and Tricks
+
+[https://davis.lbl.gov/Manuals/PYTHON-2.3.3/inst/tweak-flags.html](https://davis.lbl.gov/Manuals/PYTHON-2.3.3/inst/tweak-flags.html)
