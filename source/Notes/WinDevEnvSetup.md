@@ -12,6 +12,12 @@
 - 通过关闭该睡眠功能，可以删除`C:\hiberfil.sys`文件（文件大概6GB大小）
 - 如想再开启，执行`powercfg -hibernate on`即可
 
+## Windows Rescue Related
+
+[老毛桃官网 - https://www.laomaotao.net](https://www.laomaotao.net/)
+
+[USBOS - https://www.puresys.net/701.html](https://www.puresys.net/701.html)
+
 
 
 ## Windows Powershell
