@@ -1704,6 +1704,42 @@ brew install gcc
 [Zlibrary ISBN检索](https://find.looks.wang/isbn.htm)
 
 
+## 可用软件列表
+
+30+ 个常用开源软件，小妹吐血分享 - 傻大个黑科技的文章 - 知乎
+https://zhuanlan.zhihu.com/p/657376197
+
+VLC	https://apps.microsoft.com/store/detail/vlc/XPDM1ZW6815MQM?hl=zh-cn&gl=cn
+ShareX	https://apps.microsoft.com/store/detail/sharex/9NBLGGH4Z1SP?hl=zh-cn&gl=cn&rtc=1
+OBS	 https://apps.microsoft.com/store/detail/obs-studio/XPFFH613W8V6LV
+Rufus	https://apps.microsoft.com/store/detail/rufus/9PC3H3V7Q9CH?hl=zh-cn&gl=cn
+Lively Wallpaper	https://apps.microsoft.com/store/detail/lively-wallpaper/9NTM2QC6QWS7?hl=zh-cn&gl=cn
+Rise Media Player	https://github.com/Rise-Software/Rise-Media-Player
+Cider —— Apple Music 的替代品	https://apps.microsoft.com/store/detail/cider-beta/9p21xj9d9g66
+KDE Connect——Phone Link 的替代品	https://apps.microsoft.com/store/detail/kde-connect/9N93MRMSXBF0?hl=zh-cn&gl=cn
+GIMP——Adobe Photoshop 的免费替代品	https://apps.microsoft.com/store/detail/gimp/XPDM27W10192Q0
+Audacity	https://apps.microsoft.com/store/detail/audacity/XP8K0J757HHRDW
+Shotcut — Adobe Premiere Pro 的免费替代品	https://shotcut.org/
+7-Zip 和 NanaZip	7zip: https://www.7-zip.org/	NanaZip: https://apps.microsoft.com/store/detail/nanazip/9N8G7TSCL18R
+LibreOffice — Microsoft Office 的免费替代品	https://www.libreoffice.org/
+QuickLook	https://apps.microsoft.com/store/detail/quicklook/9NV4BS3L1H4S
+File	https://github.com/files-community/Files
+ScreenToGif	https://www.screentogif.com/
+Brave Browser——Chrome、Edge 的开源替代品	https://apps.microsoft.com/store/detail/brave-browser/XP8C9QZMS2PC1T
+Bitwarden	https://bitwarden.com/
+Blender——Autodesk Maya 和 Cinema 4D 的免费替代品	https://www.blender.org/
+Okular — 付费 PDF 编辑器的免费替代品	https://apps.microsoft.com/store/detail/okular/9N41MSQ1WNM8?hl=zh-cn&gl=cn&rtc=1
+Krita — Adobe Illustrator 和 Adobe Animate 的免费替代品	https://krita.org/en/
+HandBrake	https://handbrake.fr/
+FreeCAD — AutoCAD 的免费替代品	https://www.freecad.org/
+VeraCrypt	https://www.veracrypt.fr/en/Downloads.html
+Joplin — OneNote 和 Evernote 的免费替代品	https://github.com/laurent22/joplin/
+BleachBit — CCleaner 的开源替代品	https://www.bleachbit.org/
+Clonezilla — Macrium Reflect 的免费替代品	https://clonezilla.org/
+Mailspring	https://getmailspring.com/
+Transmission	https://transmissionbt.com/
+ExplorerPatcher	https://github.com/valinet/ExplorerPatcher
+
 
 ## Fxxking GFW
 
