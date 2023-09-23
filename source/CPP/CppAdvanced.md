@@ -124,3 +124,9 @@ This file shows some advanced usages of C/C++
 ### Building a Python C extension module with CMake
 
 [https://martinopilia.com/posts/2018/09/15/building-python-extension.html](https://martinopilia.com/posts/2018/09/15/building-python-extension.html)
+
+
+
+## C++异常处理的底层机制 - dingtingli的文章
+
+链接：[C++异常处理的底层机制 - dingtingli的文章 - 知乎 https://zhuanlan.zhihu.com/p/656940263](https://zhuanlan.zhihu.com/p/656940263)
