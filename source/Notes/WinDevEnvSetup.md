@@ -253,6 +253,54 @@ I'll edit my former post with a header so that people stumbling upon this thread
 
 [Package page link](https://packages.msys2.org/queue)
 
+#### Windows Terminal加入Msys2
+
+链接地址：[MSYS2 - Terminals](https://www.msys2.org/docs/terminals/)
+
+简单来说，就是在Windows Terminal中的启动项里，使用如下命令
+
+```powershell
+C:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64
+```
+
+或者如下在`json`文件中进行设置（在[链接地址](https://www.msys2.org/docs/terminals/)里面有讲到）
+
+```json
+// This makes UCRT64 the default shell
+"defaultProfile": "{17da3cac-b318-431e-8a3e-7fcdefe6d114}",
+"profiles": {
+  "list":
+  [
+    // ...
+    {
+      "guid": "{17da3cac-b318-431e-8a3e-7fcdefe6d114}",
+      "name": "UCRT64 / MSYS2",
+      "commandline": "C:/msys64/msys2_shell.cmd -defterm -here -no-start -ucrt64",
+      "startingDirectory": "C:/msys64/home/%USERNAME%",
+      "icon": "C:/msys64/ucrt64.ico",
+      "font": 
+      {
+        "face": "Lucida Console",
+        "size": 9
+      }
+    },
+    {
+      "guid": "{71160544-14d8-4194-af25-d05feeac7233}",
+      "name": "MSYS / MSYS2",
+      "commandline": "C:/msys64/msys2_shell.cmd -defterm -here -no-start -msys",
+      "startingDirectory": "C:/msys64/home/%USERNAME%",
+      "icon": "C:/msys64/msys2.ico",
+      "font": 
+      {
+        "face": "Lucida Console",
+        "size": 9
+      }
+    },
+    // ...
+  ]
+}
+```
+
 
 
 #### Terminal 中文显示切换为英文
