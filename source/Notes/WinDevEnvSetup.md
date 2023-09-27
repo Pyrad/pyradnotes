@@ -1803,6 +1803,7 @@ ExplorerPatcher	https://github.com/valinet/ExplorerPatcher
 
 [ACL4SSR - https://acl4ssr-sub.github.io/](https://acl4ssr-sub.github.io/)
 
+[Manjaro-KDE安装配置全攻略 - ayamir的文章 - 知乎](https://zhuanlan.zhihu.com/p/114296129)
 
 ### 修改host文件
 
