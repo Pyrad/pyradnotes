@@ -1791,6 +1791,19 @@ ExplorerPatcher	https://github.com/valinet/ExplorerPatcher
 
 ## Fxxking GFW
 
+
+### 航空公司
+
+[Clash](https://docs.cfw.lbyczf.com/)
+
+-   Clash：一个 Go 语言开发的多平台代理客户端，[Github(opens new window)](https://github.com/Dreamacro/clash)
+-   ClashX：Clash 的 Mac 图形客户端，[Github(opens new window)](https://github.com/yichengchen/clashX)
+-   ClashForAndroid：Clash 的 Android 图形客户端，[Github(opens new window)](https://github.com/Kr328/ClashForAndroid)
+-   **Clash for Windows：本项目，Clash 的 Windows/macOS/Linux 图形客户端，[Github (opens new window)](https://github.com/Fndroid/clash_for_windows_pkg)**，使用文档详见：[https://docs.cfw.lbyczf.com/](https://docs.cfw.lbyczf.com/)
+
+[ACL4SSR - https://acl4ssr-sub.github.io/](https://acl4ssr-sub.github.io/)
+
+
 ### 修改host文件
 
 此办法效果不怎么好，因为它们使用的是域名污染的伎俩，仅此志之。
