@@ -162,3 +162,17 @@ python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))"
 ```
 
 
+
+
+# Python to create list and generator
+
+```python
+a_list = [i for i in range(10)]
+a_itr = (i for i in range(10))
+next_element_0 = next(a_itr, None)
+next_element_1 = next(a_itr, None)
+```
+
+Here `next_element_0` is `0` and `next_element_1` is `1`.
+
+
