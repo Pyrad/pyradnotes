@@ -1725,6 +1725,23 @@ brew install gcc
 
 
 
+## Z-Library
+
+### Available links
+
+2023-09-29
+
+[https://singlelogin.se](https://singlelogin.se)
+[https://singlelogin.re](https://singlelogin.re)
+[https://singlelogin.site](https://singlelogin.site)
+
+### Send mail to ask for a link
+
+Send an mail to blackbox@zlib.se, then a link will be received.
+
+
+
+
 ## 使用百度秒传
 
 ### 步骤一
