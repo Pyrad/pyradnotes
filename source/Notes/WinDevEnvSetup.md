@@ -12,11 +12,23 @@
 - 通过关闭该睡眠功能，可以删除`C:\hiberfil.sys`文件（文件大概6GB大小）
 - 如想再开启，执行`powercfg -hibernate on`即可
 
-## Windows Rescue Related
+### Windows Rescue Related
 
 [老毛桃官网 - https://www.laomaotao.net](https://www.laomaotao.net/)
 
 [USBOS - https://www.puresys.net/701.html](https://www.puresys.net/701.html)
+
+
+### Windows 7 升级 Windows 10
+
+- 前往微软网站，下载Win10升级工具
+   网址：[https://www.microsoft.com/zh-cn/software-download/windows10](https://www.microsoft.com/zh-cn/software-download/windows10)
+   点击“**是否希望在您的电脑上安装 Windows 10？**”下面的“**立即下载工具**”，即可下载升级程序：`MediaCreationTool22H2.exe`。
+   打开此升级程序，但可能出现 `0x80072F8F-0x20000`错误，此时需要下载解决工具（官方）：`MicrosoftEasyFix51044.msi`，可以参考文章 [win7升级到win10](https://blog.csdn.net/guyuelin123/article/details/127436084)。
+   点击安装`MicrosoftEasyFix51044.msi`之后，再安装`MediaCreationTool22H2.exe`，即可启动升级程序。
+- 然后参考升级讲解视频：[Win7免费升级Win10的6大问题，以及解决办法](https://www.bilibili.com/video/BV1tW4y1676w/?spm_id_from=333.999.0.0)，选择进行升级。
+   
+
 
 
 
