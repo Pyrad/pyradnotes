@@ -1841,7 +1841,7 @@ ExplorerPatcher	https://github.com/valinet/ExplorerPatcher
 
 [FastGithub下载及使用](https://zhuanlan.zhihu.com/p/428454772)
 
-
+[steamcommunity 302 Ver.12.1.28](https://www.dogfight360.com/blog/686/)
 
 
 
