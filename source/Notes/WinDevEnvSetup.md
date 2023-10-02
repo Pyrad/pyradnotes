@@ -1834,6 +1834,17 @@ ExplorerPatcher	https://github.com/valinet/ExplorerPatcher
 
 [Manjaro-KDE安装配置全攻略 - ayamir的文章 - 知乎](https://zhuanlan.zhihu.com/p/114296129)
 
+
+### Steam++ (Watt Toolkit)
+
+[Steam++ (Watt Tookit)](https://steampp.net/)：「Watt Toolkit」是一个开源跨 平台的多功能 Steam 工具箱。
+
+[FastGithub下载及使用](https://zhuanlan.zhihu.com/p/428454772)
+
+
+
+
+
 ### 修改host文件
 
 此办法效果不怎么好，因为它们使用的是域名污染的伎俩，仅此志之。
