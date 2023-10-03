@@ -24,12 +24,12 @@
 
    ```bash
    .\b2.exe install \
-   	--build-type=complete \
-   	threading=multi \
-   	link=shared \
-   	address-model=64 \
-   	toolset=gcc \
-   	--prefix="D:\procs\boost_1_79_0"
+   	    --build-type=complete \
+   	    threading=multi \
+   	    link=shared \
+   	    address-model=64 \
+   	    toolset=gcc \
+   	    --prefix="D:\procs\boost_1_79_0"
    ```
 
    Note that `gcc` must have been set already before this, and `prefix` is where to copy the headers and libs to.
@@ -41,6 +41,40 @@
    ```bash
    ...updated 18043 targets...
    ```
+
+6. If to compile only a few libraries, for example, `python`, `filesystem` and `regex`, these can be specified, and if doing so, other libraries won't be compiled
+
+   ```bash
+   .\b2.exe install \
+      	--build-type=complete \
+      	threading=multi \
+      	link=shared \
+      	address-model=64 \
+      	toolset=gcc \
+      	--with-python \
+      	--with-filesystem \
+      	--with-regex \
+      	--prefix="D:\procs\boost_1_79_0"
+   ```
+
+7. If you have already compiled once by using `b2.exe install ...` for only a few libraries, as above, and now you want to compile more libraries, **but** without copying header files, remember to use `b2.exe stage ...` instead of `b2.exe install`, thus copying header files will be skipped, as this process takes quite a long time to finish copying.
+
+   For example, I'd like to compile one more library `serialization` after  `python`, `filesystem` and `regex` are compiled, using the following.
+
+   ```bash
+   .\b2.exe stage \
+        --build-type=complete \
+        threading=multi \
+        link=shared \
+        address-model=64 \
+        toolset=gcc \
+        --with-serialization \
+        --prefix="D:\procs\boost_1_79_0"
+   ```
+
+
+
+
 
 
 
