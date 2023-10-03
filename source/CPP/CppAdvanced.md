@@ -126,6 +126,51 @@ This file shows some advanced usages of C/C++
 [https://martinopilia.com/posts/2018/09/15/building-python-extension.html](https://martinopilia.com/posts/2018/09/15/building-python-extension.html)
 
 
+### (?) Solution to undefined reference to `__imp__Py_Dealloc'
+
+[Embedded Python fails to compile](https://raspberrypi.stackexchange.com/questions/119453/embedded-python-fails-to-compile)
+
+[https://raspberrypi.stackexchange.com/questions/119453/embedded-python-fails-to-compile](https://raspberrypi.stackexchange.com/questions/119453/embedded-python-fails-to-compile)
+
+也许能解决下面的问题，但还没时（2023年10月3日19:32:26）
+
+```bash
+FAILED: pyrun/bpyrun.dll pyrun/libbpyrun.dll.a
+
+cmd.exe /C "cd . && D:\procs\msys64\mingw64\bin\c++.exe -O3 -DNDEBUG -shared -o pyrun\bpyrun.dll -Wl,--out-implib,pyrun\libbpyrun.dll.a -Wl,--major-image-version
+
+,0,--minor-image-version,0 pyrun/CMakeFiles/bpyrun.dir/bpyrun.cpp.obj -LD:/procs/boost_1_83_0/lib D:/procs/boost_1_83_0/lib/libboost_python38-mgw12-mt-x64-1_83.dll
+
+-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+
+D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: pyrun/CMakeFiles/bpyrun.dir/bpyrun.cpp.obj:bpyrun.cpp:(
+
+.text+0x32): undefined reference to `__imp__Py_Dealloc'
+
+D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: pyrun/CMakeFiles/bpyrun.dir/bpyrun.cpp.obj:bpyrun.cpp:(
+
+.text+0xc2): undefined reference to `__imp__Py_Dealloc'
+
+D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: pyrun/CMakeFiles/bpyrun.dir/bpyrun.cpp.obj:bpyrun.cpp:(
+
+.text+0xdd): undefined reference to `__imp__Py_Dealloc'
+
+D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: pyrun/CMakeFiles/bpyrun.dir/bpyrun.cpp.obj:bpyrun.cpp:(
+
+.text$_ZN5boost6python6detail21converter_target_typeINS0_15to_python_valueIRKPKcEEE10get_pytypeEv[_ZN5boost6python6detail21converter_target_typeINS0_15to_python_va
+
+lueIRKPKcEEE10get_pytypeEv]+0x3): undefined reference to `__imp_PyUnicode_Type'
+
+D:/procs/msys64/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/12.1.0/../../../../x86_64-w64-mingw32/bin/ld.exe: pyrun/CMakeFiles/bpyrun.dir/bpyrun.cpp.obj:bpyrun.cpp:(
+
+.text.startup+0x7): undefined reference to `__imp__Py_NoneStruct'
+
+collect2.exe: error: ld returned 1 exit status
+
+ninja: build stopped: subcommand failed.
+```
+
+
 
 ## C++异常处理的底层机制 - dingtingli的文章
 
