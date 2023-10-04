@@ -3,6 +3,11 @@
 
 <!-- more -->
 
+## helpmanual.io man pages and help text for unix commands
+
+Linux命令查询网址：[https://helpmanual.io/](https://helpmanual.io/)
+
+
 ## 如果想提取同时包含两个关键词的行，可以用awk命令
 
 ```shell
