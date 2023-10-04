@@ -176,8 +176,38 @@
    ```
 
    
+7. 在Linux中，可能由于没有指明Python root目录，导致编译boost时没有能够编译出对应的`libboost_python38.so`这样的动态库，这样如果要编译的是Python的C extension，那么在编译时可能出现如下的错误：
 
+   ```bash
+   ...
+   fatal error: pyconfig.h No such file or directory
+   ```
 
+   为了解决上面的问题，需要再次执行`./bootstrap.sh `，然后指明Python root的目录，如下：
+   
+   ```bash
+   ./bootstrap.sh \
+	   --with-python=/home/pyrad/procs/Python-3.8.3/bin/python3.8 \
+	   --with-python-root=/home/pyrad/procs/Python-3.8.3 \
+	   --prefix=/home/pyrad/procs/boost_1_73_0
+   ```
+
+   然后，重新**仅**编译`libboost_python38.so`这样的动态库（版本号根据具体情况不同）：
+
+   ```bash
+   ./b2 stage link=shared address-model=64 toolset=gcc --with-python
+   ```
+
+   上面命令执行完毕，会在当前编译目录下的`stage/lib`目录中，生成如下几个动态库：
+
+   ```bash
+   stage/lib/libboost_python38.so -> libboost_python38.so.1.73.0
+   stage/lib/libboost_python38.so.1 -> libboost_python38.so.1.73.0
+   stage/lib/libboost_python38.so.1.73 -> libboost_python38.so.1.73.0
+   stage/lib/libboost_python38.so.1.73.0
+   ```
+
+   之后将这些`.so`动态库文件拷贝入`BOOST_ROOT/lib`中即可，这里的`BOOST_ROOT`是boost的安装目录。
 
 # Reference
 
