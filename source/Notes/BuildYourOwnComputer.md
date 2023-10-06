@@ -18,6 +18,10 @@ ASUS：DOCP (Direct OverClock Profile)
 
 Gigabyte：EOCP (Extended OverClock Profile)
 
+AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **O**verdrive）。
+
+[AMD必看！什么是PBO？PBO如何开启？PBO2开启教程 - 开车匣的文章 - 知乎](https://zhuanlan.zhihu.com/p/375665927)
+
 
 
 ## CPU价格
