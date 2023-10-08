@@ -12,6 +12,22 @@
 - 通过关闭该睡眠功能，可以删除`C:\hiberfil.sys`文件（文件大概6GB大小）
 - 如想再开启，执行`powercfg -hibernate on`即可
 
+### Change weird username on Windows 11
+
+1.  Open Run Command by `Win + R`, type `netplwiz` and hit `Enter`.    
+2.  In the User Accounts window, select the user account for which the username needs to be changed.    
+3.  Click on Properties.    
+4.  In the General tab, you'll see your existing username. Rename it to your liking after removing it.    
+5.  Once the new username has been added, click the Apply button and OK.    
+6.  Then, log out of your account, and you'll be greeted with your new username on the sign-in screen when you sign in.
+
+### How to Rename a User Folder in Windows 11
+
+[https://www.alphr.com/rename-user-folder-windows-11/](https://www.alphr.com/rename-user-folder-windows-11/)
+
+实际上，可以直接创建一个新的账户，然后给定合理的名字，然后登录新账户之后，删除掉原先的旧账户。但需要注意的是，包括桌面等原先账户的文件就会被删除掉，需要在删除之前做备份。
+
+
 ### Windows Rescue Related
 
 [老毛桃官网 - https://www.laomaotao.net](https://www.laomaotao.net/)
