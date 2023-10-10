@@ -273,7 +273,16 @@ I'll edit my former post with a header so that people stumbling upon this thread
 
   
 
+### MSYS2 installation list
 
+目前（2023年10月10日 19:28）可以按照以下列表进行安装
+
+```bash
+pacman -S --needed base-devel mingw-w64-x86_64-toolchain
+pacman -S msys/openssh
+pacman -S msys/vim
+pacman -S mingw64/mingw-w64-x86_64-python-pip
+```
 
 ### MSYS2 Setup
 
