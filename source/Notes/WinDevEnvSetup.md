@@ -958,6 +958,105 @@ scrapy
 ```powershell
 pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com  -r pypkglist.txt
 ```
+
+截止2023年10月10日22:21:54，Asus Windows 7上通过`pip install`安装的Python package列表如下：
+
+```powershell
+Package                       Version
+----------------------------- ---------
+alabaster                     0.7.12
+appdirs                       1.4.4
+attrs                         22.2.0
+Automat                       22.10.0
+Babel                         2.10.3
+certifi                       2022.6.15
+cffi                          1.15.1
+charset-normalizer            2.1.0
+colorama                      0.4.5
+commonmark                    0.9.1
+constantly                    15.1.0
+cryptography                  39.0.2
+cssselect                     1.2.0
+docutils                      0.17.1
+esbonio                       0.13.1
+et-xmlfile                    1.1.0
+filelock                      3.10.0
+getmac                        0.9.3
+hyperlink                     21.0.0
+idna                          3.3
+imagesize                     1.4.1
+importlib-metadata            4.12.0
+incremental                   22.10.0
+itemadapter                   0.7.0
+itemloaders                   1.0.6
+Jinja2                        3.1.2
+jmespath                      1.0.1
+lxml                          4.9.2
+Markdown                      3.4.1
+markdown-it-py                2.1.0
+MarkupSafe                    2.1.1
+mdit-py-plugins               0.3.3
+mdurl                         0.1.2
+mpmath                        1.2.1
+myst-parser                   0.18.1
+numpy                         1.23.1
+openpyxl                      3.1.2
+packaging                     21.3
+pandas                        1.4.3
+pandoc                        2.2
+parsel                        1.7.0
+pip                           22.2.1
+plumbum                       1.7.2
+ply                           3.11
+Protego                       0.2.1
+pyasn1                        0.4.8
+pyasn1-modules                0.2.8
+pycparser                     2.21
+pydantic                      1.9.1
+PyDispatcher                  2.0.7
+pygls                         0.12
+Pygments                      2.12.0
+pyOpenSSL                     23.0.0
+pyparsing                     3.0.9
+PyPDF2                        2.11.2
+pyspellchecker                0.6.3
+python-dateutil               2.8.2
+pytz                          2022.1
+pywin32                       304
+PyYAML                        6.0
+queuelib                      1.6.2
+recommonmark                  0.7.1
+requests                      2.28.1
+requests-file                 1.5.1
+Scrapy                        2.8.0
+service-identity              21.1.0
+setuptools                    49.2.1
+six                           1.16.0
+snowballstemmer               2.2.0
+Sphinx                        5.1.1
+sphinx-markdown-tables        0.0.16
+sphinx-rtd-theme              1.0.0
+sphinxcontrib-applehelp       1.0.2
+sphinxcontrib-devhelp         1.0.2
+sphinxcontrib-htmlhelp        2.0.0
+sphinxcontrib-jsmath          1.0.1
+sphinxcontrib-mermaid         0.7.1
+sphinxcontrib-qthelp          1.0.3
+sphinxcontrib-serializinghtml 1.1.5
+sympy                         1.10.1
+tldextract                    3.4.0
+Twisted                       22.10.0
+twisted-iocpsupport           1.0.2
+typeguard                     2.13.3
+typing_extensions             4.3.0
+urllib3                       1.26.11
+w3lib                         2.1.1
+wheel                         0.37.1
+zipp                          3.8.1
+zope.interface                6.0
+```
+
+
 ### 安装numpy
 
 ```powershell
