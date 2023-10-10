@@ -941,6 +941,7 @@ sphinx-mathjax-offline
 myst-parser
 openpyxl
 sphinxcontrib-mermaid
+scrapy
 ```
 
 将上述内容写入文件 `pypkglist.txt`，然后使用如下命令，一次性依次安装
