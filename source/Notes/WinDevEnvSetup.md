@@ -919,9 +919,36 @@ ModuleNotFoundError: No module named 'encodings'
 
 
 
-### 通过`PIP`安装Python module
+## 通过`PIP`安装Python module
 
-#### 安装numpy
+### 可安装Python package列表
+
+最新的可以按需安装的Python package列表 2023年10月10日 17:54
+
+目前有如下的Python package可以安装：
+
+```bash
+numpy
+pandas
+sphinx_rtd_theme
+recommonmark
+pandoc
+sphinx_markdown_tables
+esbonio
+sympy
+sphinx
+sphinx-mathjax-offline
+myst-parser
+openpyxl
+sphinxcontrib-mermaid
+```
+
+将上述内容写入文件 `pypkglist.txt`，然后使用如下命令，一次性依次安装
+
+```powershell
+pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com  -r pypkglist.txt
+```
+### 安装numpy
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com numpy
@@ -938,7 +965,7 @@ pip        22.1.2
 setuptools 49.2.1
 ```
 
-#### 安装`pandas`
+### 安装`pandas`
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com pandas
@@ -961,7 +988,7 @@ setuptools      49.2.1
 six             1.16.0
 ```
 
-#### 安装`sympy`
+### 安装`sympy`
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sympy
@@ -987,7 +1014,7 @@ six             1.16.0
 sympy           1.10.1
 ```
 
-#### 安装`sphinx`
+### 安装`sphinx`
 
 ```powershell
 D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx
@@ -997,7 +1024,7 @@ D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simp
 
 如果先安装`sphinx`，再按照`sphinx_rtd_theme`，`sphinx_rtd_theme`会把之前安装好的卸载掉然后重新安装，导致版本降低了。
 
-#### 安装`sphinx_rtd_theme`
+### 安装`sphinx_rtd_theme`
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx_rtd_theme
@@ -1015,7 +1042,7 @@ Successfully installed Jinja2-3.1.2 MarkupSafe-2.1.1 Pygments-2.12.0 alabaster-0
 
 
 
-#### 安装`recommonmark`
+### 安装`recommonmark`
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com recommonmark
@@ -1059,7 +1086,7 @@ Successfully installed commonmark-0.9.1 recommonmark-0.7.1
 
 
 
-#### 安装`pandoc`
+### 安装`pandoc`
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com pandoc
@@ -1069,7 +1096,7 @@ PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.a
 
 
 
-#### 安装`sphinx_markdown_tables`
+### 安装`sphinx_markdown_tables`
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx_markdown_tables
@@ -1079,7 +1106,7 @@ PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.a
 
 
 
-#### 安装`esbonio`
+### 安装`esbonio`
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com esbonio
@@ -1089,7 +1116,7 @@ PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.a
 
 
 
-#### 安装`sphinx-mathjax-offline `
+### 安装`sphinx-mathjax-offline `
 
 ```powershell
 PS C:\Users\Pyrad> D:\procs\python38\Scripts\pip.exe install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com sphinx-mathjax-offline
@@ -1165,7 +1192,7 @@ zipp                          3.5.0		<-- sphinx
 
 
 
-#### 安装注意事项
+### 安装注意事项
 
 因为vim的很多plugin需要用到python的支持（目前主要是python3了），所以要注意
 
@@ -1203,7 +1230,7 @@ zipp                          3.5.0		<-- sphinx
 
 
 
-#### How to uninstall some/all Python packages?
+### How to uninstall some/all Python packages?
 
 [Reference page](https://stackoverflow.com/questions/11248073/what-is-the-easiest-way-to-remove-all-packages-installed-by-pip)
 
@@ -1214,7 +1241,7 @@ pip uninstall -r packagelist.txt -y
 
 
 
-#### How to install some/all Python packages?
+### How to install some/all Python packages?
 
 可以直接把以下module名称写入到一个文件中，然后使用上面提到的命令中的`-r <package_list_file>`来一次性完成安装，`pip`会根据依赖关系寻找并下载其他需要的module，并且如果有版本要求，可能会卸载当前低版本的module，然后重新安装高版本的package。(2022-10-07)
 
