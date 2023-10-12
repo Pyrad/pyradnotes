@@ -95,6 +95,23 @@ type filename.txt
 ```
 
 
+### 修改`dir`显示颜色
+
+- 下载 [Davlind/PSColor](https://github.com/Davlind/PSColor)
+   ```bash
+   longc@ssea MINGW64 /d/Pyrad/GitHub $ git clone git@github.com:Davlind/PSColor.git
+   ```
+- 使用如下命令找到Powershell的module path
+   ```powershell
+   PS D:\Pyrad> $env:PSModulePath
+   D:\OneDrive\Documents\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+   ```
+- 把`release`目录拷贝到上面的任意一个路径中去，然后重命名为`PSColor`
+- 在Powershell的配置文件（可通过命令`$profile`得到）中，加入`Import-Module PSColor`
+- 重新启动新的Powershell，即可生效。
+
+
+
 ### 使用Python查看CPU信息
 
 关于 Win32类，参考 [MSDN说明](https://learn.microsoft.com/zh-cn/windows/win32/cimwin32prov/win32-processor)
