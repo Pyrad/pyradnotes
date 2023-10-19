@@ -1634,6 +1634,8 @@ extensions.append('myst_parser')
 
 之后，在sphinx的顶层目录`make html`时，就会调用`myst-parser`来解析Markdown文件。
 
+【2023年10月19日 18点57分】在0.19.2版本之后，可以直接使用mermaid正常的语法了。
+
 
 
 ### MathJax
