@@ -1931,6 +1931,8 @@ graph TB
 
 下面的mermaid的code block在编辑器里面**可以**实时渲染，但在生成的html文件里不能正常渲染。
 
+==【更新】在myst-parser的`0.19.2`版本开始，可以进行相关设置，然后就可以在html中正常渲染，不需要在`mermaid`前后添加花括号`{mermaid}`>==
+
 ```mermaid
 graph TB
 	%% s=start  e=end  f=fork  n=normal
