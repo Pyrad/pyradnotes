@@ -104,7 +104,8 @@ if HAS_READTHEDOCS_ENV_VAR is True:
 	extensions.append('sphinxcontrib_mermaid_v071.mermaid')
 else:
 	extensions.append('sphinxcontrib.mermaid')
-
+# Since 0.19.2, myst-parser supports rendering normal mermaid blocks.
+myst_fence_as_directive = ["mermaid"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
