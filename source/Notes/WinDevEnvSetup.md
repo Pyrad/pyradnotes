@@ -1665,9 +1665,18 @@ mathjax_path = 'es5/tex-chtml.js'
 pip install sphinxcontrib-mermaid
 ```
 
+安装之后，需要在 `conf.py` 中如下设置：
+
+```python
+extensions = []
+extensions.append('myst_parser')
+extensions.append('sphinxcontrib.mermaid')
+```
+
+
 下载之后，需要如下编写mermaid的代码块。
 
-为了在sphinx中使用MyST-parser进行渲染，在Markdown文件中要写成\`\`\`{mermaid}\`\`\`，而不是\`\`\`mermaid\`\`\`（即要加上一对花括号使得MyST-parser能够识别）。但这样的问题是在Markdown编辑器（比如Typora，Obsidian等）里不能正常渲染，只有通过MyST-parser在sphinx中生成网页之后才能渲染。
+【在`MyST-Parser`的`0.19.2`版本之前】，为了在sphinx中使用MyST-parser进行渲染，在Markdown文件中要写成\`\`\`{mermaid}\`\`\`，而不是\`\`\`mermaid\`\`\`（即要加上一对花括号使得MyST-parser能够识别）。但这样的问题是在Markdown编辑器（比如Typora，Obsidian等）里不能正常渲染，只有通过MyST-parser在sphinx中生成网页之后才能渲染。
 
 下面的mermaid的code block在编辑器里面**不能**实时渲染，但在生成的html文件里渲染是正常的。
 
@@ -1723,12 +1732,23 @@ graph TB
 > ```
 
 
+【在`MyST-Parser`的`0.19.2`版本之后】，就不再需要给`mermaid`加上花括号了，而是直接在`conf.py`中做如下设置之后，就可以直接在html中正常渲染，这样在Obsidian、MarkText等编辑器中就可以按照正常的写法进行编辑了：
 
+```python
+extensions = ["myst_parser", "sphinxcontrib.mermaid"]
+myst_fence_as_directive = ["mermaid"]
+# optional to use directive options
+myst_enable_extensions = ["attrs_block"]
+```
 
+如上设置之后，就可以在编辑器中直接如下书写：
 
+```shell
+graph LR
+a --> b
+```
 
-
-
+关于 `MyST-Parser`的`0.19.2`版本的说明，参见[链接网页](https://myst-parser.readthedocs.io/en/latest/develop/_changelog.html#id3)。
 
 
 
