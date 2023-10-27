@@ -111,6 +111,18 @@ type filename.txt
 - 重新启动新的Powershell，即可生效。
 
 
+### 设定alias
+
+可以定义一个函数，然后使用`New-Alias`来设定同名链接，如下。
+
+```powershell
+# Go to Gitee folder
+function GoToGiteeFolder {
+	Set-Location "D:\Pyrad\Gitee\"
+}
+New-Alias cdworkgitee GoToGiteeFolder
+```
+
 
 ### 使用Python查看CPU信息
 
