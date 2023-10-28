@@ -247,3 +247,51 @@ macro expand <MACRO>
 ```
 
 最后，可以在`gdb`中使用命令 `help macro` 来查看和宏相关的信息。
+
+
+## Print to log file
+
+[Logging Output (Debugging with GDB) (sourceware.org)](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Logging-Output.html)
+
+You may want to save the output of GDB commands to a file. There are several commands to control GDB’s logging.
+
+```shell
+set logging enabled [on|off]
+```
+
+Enable or disable logging.
+
+```shell
+set logging file file
+```
+
+Change the name of the current logfile. The default logfile is `gdb.txt`.
+
+```shell
+set logging overwrite [on|off]
+```
+
+By default, GDB will append to the logfile. Set `overwrite` if you want `set logging enabled on` to overwrite the logfile instead.
+
+```shell
+set logging redirect [on|off]
+```
+
+By default, GDB output will go to both the terminal and the logfile. Set `redirect` if you want output to go only to the log file.
+
+```shell
+set logging debugredirect [on|off]
+```
+
+By default, GDB debug output will go to both the terminal and the logfile. Set `debugredirect` if you want debug output to go only to the log file.
+
+```shell
+show logging
+```
+
+Show the current values of the logging settings.
+
+You can also redirect the output of a GDB command to a shell command. See [pipe](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Shell-Commands.html#pipe).
+
+
+
