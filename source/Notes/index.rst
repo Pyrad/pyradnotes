@@ -20,3 +20,4 @@ Notes
    ReadTheDoc
    ResourcesLink
    BuildYourOwnComputer.md
+   clothes.md
