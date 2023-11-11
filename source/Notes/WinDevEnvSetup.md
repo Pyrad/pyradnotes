@@ -2037,6 +2037,22 @@ https://zhuanlan.zhihu.com/p/657376197
 
 [Manjaro-KDE安装配置全攻略 - ayamir的文章 - 知乎](https://zhuanlan.zhihu.com/p/114296129)
 
+### Clash.Meta
+
+Surfing internet with sicence - Youtube [https://www.youtube.com/watch?v=nSYPpYIxL8o](https://www.youtube.com/watch?v=nSYPpYIxL8o)[](https://www.youtube.com/watch?v=nSYPpYIxL8o)
+
+Clash.Meta [https://github.com/MetaCubeX/Clash.Meta/tree/Alpha](https://github.com/MetaCubeX/Clash.Meta/tree/Alpha)
+
+clash verge
+
+X2ray [https://github.com/v2fly/v2ray-core](https://github.com/v2fly/v2ray-core)
+
+xray [https://github.com/XTLS/Xray-core](https://github.com/XTLS/Xray-core)
+
+sing-box [https://github.com/SagerNet/sing-box](https://github.com/SagerNet/sing-box)
+
+hysteria [https://github.com/apernet/hysteria](https://github.com/apernet/hysteria)
+
 
 ### Steam++ (Watt Toolkit)
 
