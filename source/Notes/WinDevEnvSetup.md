@@ -2043,7 +2043,7 @@ Surfing internet with sicence - Youtube [https://www.youtube.com/watch?v=nSYPpYI
 
 Clash.Meta [https://github.com/MetaCubeX/Clash.Meta/tree/Alpha](https://github.com/MetaCubeX/Clash.Meta/tree/Alpha)
 
-clash verge
+clash verge [https://github.com/zzzgydi/clash-verge](https://github.com/zzzgydi/clash-verge)
 
 X2ray [https://github.com/v2fly/v2ray-core](https://github.com/v2fly/v2ray-core)
 
