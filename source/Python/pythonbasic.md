@@ -163,8 +163,53 @@ python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))"
 
 
 
+## Python design patterns
 
-# Python to create list and generator
+[Python design patterns - https://python-patterns.guide](https://python-patterns.guide/)
+
+## How to create a singleton class in Python
+
+Refer to link (Creating a singleton in Python)[https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python]
+
+A singleton
+
+```python
+class OriginPoint(object):
+    """A singleton class"""
+    _data = None
+
+    def __new__(cls):
+        if cls._data is None:
+            # Create one and only one instance
+            cls._data = super(OriginPoint, cls).__new__(cls)
+            # Initialize other attributes
+            cls._data._dict = dict()
+            cls._data._x = 0
+            cls._data._y = 0
+        return cls._data
+
+    def __init__(self):
+        # Don't do anything in __init__ as it's a singleton
+        pass
+
+    def __repr__(self):
+        return f"x={self._x}, y={self._y}, dict={len(self._dict)}"
+```
+
+Validate to see if it's singleton
+
+```python
+p0 = OriginPoint()
+p1 = OriginPoint()
+print("Address of p0 is:", p0)
+print("Address of p1 is:", p1)
+print(p0 is p1)
+```
+
+
+
+
+## Python to create list and generator
 
 ```python
 a_list = [i for i in range(10)]
