@@ -368,6 +368,21 @@ C:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64
 ```
 
 
+#### To disable cursor blinking in Windows Terminal
+
+For bash/zsh
+
+Putting the following at the end of your .bashrc/.zshrc file
+
+```bash
+echo -e -n "\e[2 q"
+```
+
+For PowerShell
+
+```powershell
+Write-Host -NoNewLine "`e[2 q"
+```
 
 #### Terminal 中文显示切换为英文
 
