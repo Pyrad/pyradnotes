@@ -306,4 +306,7 @@ You can also redirect the output of a GDB command to a shell command. See [pi
 
 
 
+## GDB tutorial
+
+[RMS's gdb Debugger Tutorial](http://www.unknownroad.com/rtfm/gdbtut/)
 
