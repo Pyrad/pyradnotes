@@ -294,4 +294,16 @@ Show the current values of the logging settings.
 You can also redirect the output of a GDB command to a shell command. See [pipe](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Shell-Commands.html#pipe).
 
 
+## GDB Python Support
+
+[GDB Python Support](https://devguide.python.org/advanced-tools/gdb/index.html)
+
+## GDB Pretty Printer
+
+[https://stackoverflow.com/questions/12574253/c-gdb-python-pretty-printing-tutorial](https://stackoverflow.com/questions/12574253/c-gdb-python-pretty-printing-tutorial)
+
+[https://www.kurokatta.org/grumble/2018/05/gdb-pretty](https://www.kurokatta.org/grumble/2018/05/gdb-pretty)
+
+
+
 
