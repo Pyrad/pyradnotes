@@ -664,3 +664,9 @@ done
 ```
 
 Refer to [git-for-each-ref](https://git-scm.com/docs/git-for-each-ref) and [git-show-ref](https://git-scm.com/docs/git-show-ref) for more details.
+
+
+## Git repo control line ending styles
+
+[Git End-of-Line Issues](https://learn.openwaterfoundation.org/owf-learn-git/eol/)
+
