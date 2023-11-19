@@ -48,3 +48,39 @@ This changes the filename to `new_thing.so`
 ```cmake
 set_target_properties(new_thing PROPERTIES PREFIX "")
 ```
+
+
+## MSYS2 CMake path prefix is in Windows format (C:/) but needs MSYS2/\*nix style (/c/) to link
+
+[MSYS2 CMake path prefix is in Windows format (C:/) but needs MSYS2/*nix style (/c/) to link](https://stackoverflow.com/questions/54767375/msys2-cmake-path-prefix-is-in-windows-format-c-but-needs-msys2-nix-style)
+
+```cmake
+    cmake_minimum_required(VERSION 3.12)
+
+    project(sample CXX)
+
+    # Find GTK+ headers/libs with PkgConfig
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+
+    # Generated paths starting with "C:" need to be converted to /c/ to work with MSYS2
+    # TODO remove this or do it some way better at some point in the future
+    if(MSYS OR MINGW)
+        string(REGEX REPLACE "C:" "/c/" GTK3_INCLUDE_DIRS "${GTK3_INCLUDE_DIRS}")
+    endif(MSYS OR MINGW)
+
+    include_directories(${GTK3_INCLUDE_DIRS})
+    link_directories(${GTK3_LIBRARY_DIRS})
+
+    add_definitions(${GTK3_CFLAGS_OTHER})
+
+    set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/natives)
+    set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib/natives)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+    add_executable(sample src/main.cpp)
+
+    target_link_libraries(sample ${GTK3_LIBRARIES})
+```
+
+
