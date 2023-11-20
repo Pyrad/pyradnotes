@@ -81,6 +81,10 @@ $$
 \end{array}
 $$
 
+## Latex Math Symbols
+
+[List of LaTeX mathematical symbols](https://oeis.org/wiki/List_of_LaTeX_mathematical_symbols)
+
 ## Delimiters
 
 $$
