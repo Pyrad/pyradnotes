@@ -94,5 +94,7 @@ set_target_properties(new_thing PROPERTIES PREFIX "")
 
 
 
+## CMake 正确链接动态库
 
+[CMake如何做到正确链接动态库so？ - Lion Long的回答 - 知乎](https://www.zhihu.com/question/489682173/answer/2873091122)
 
