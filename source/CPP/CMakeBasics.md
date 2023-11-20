@@ -87,3 +87,12 @@ set_target_properties(new_thing PROPERTIES PREFIX "")
 ## Turn on `-DBoost_DEBUG=ON` for cmake to print out more information about errors
 
 [cmake v3.15.3 cannot find boost v1.71.0](https://stackoverflow.com/questions/57870032/cmake-v3-15-3-cannot-find-boost-v1-71-0)
+
+## CMake Workshop
+
+[Detecting your environment](https://enccs.github.io/cmake-workshop/environment/)
+
+
+
+
+
