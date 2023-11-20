@@ -921,6 +921,23 @@ Start gitg normally
 The steps here come from this [answer](https://stackoverflow.com/questions/36209671/im-trying-to-run-gedit-in-cygwin-but-receiving-error)
 
 
+#### Build git from source on Linux
+
+- This is a note for ***Linux***
+- 3 prerequisites are
+	- [asciidoc](https://asciidoc-py.github.io/INSTALL.html) hosted by Github [asciidoc-py3 - Github](https://github.com/asciidoc/asciidoc-py3/releases)
+	- [xmlto](https://www.pagure.io/xmlto/tree/) from [Tree - xmlto - Pagure.io](https://www.pagure.io/xmlto/tree/)
+	- [docbook2x-texi](https://docbook2x.sourceforge.net/) : [docbook2X: Home page (sourceforge.net)](https://docbook2x.sourceforge.net/)
+- Download latest git source tarball from Github: [git/git: Git Source Code Mirror - GitHub](https://github.com/git/git)
+- Decompress the tarball downloaded, check installation messages from file `INSTALL`
+- Use the following command to install it to a specific user folder instead of `~/bin/`
+  ```shell
+  cd $GIT_SOURCE_DIR
+  make configure
+  ./configure --prefix=/home/Pyrad/proc/git2.43
+  make all doc
+  make install
+  ```
 
 
 
