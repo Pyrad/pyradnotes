@@ -171,4 +171,10 @@ int foo(int UNUSED(x)) {
 #endif // LOGGING_ENABLED
 ```
 
+## Does C++ lambda have any runtime cost?
 
+Short answer: no.
+
+detail: [Does Lambda Object Construction Cost a Lot - StackOverflow](https://stackoverflow.com/questions/50346822/does-lambda-object-construction-cost-a-lot)
+
+> here, lambda is just an instance of an anonymous type. The type itself is processed at compile-time, so no worries. What happens at run-time though is the capture of variables (here var). When a capture is done by value, the value itself is copied into the lambda instance. This is what costs. When a capture is done by reference, the reference is copied into the lambda, which is cheap.
