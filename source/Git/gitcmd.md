@@ -575,6 +575,11 @@ git stash show stash@{0}
 git stash show stash@{0} --patch
 ```
 
+To show files in a stash, stash `0` for example, use `-u` option or `--include-untracked`. To include untracked files, version >= 2.32.
+
+```shell
+git stash show -u 0
+```
 
 ## Git show untracked files as a list
 
