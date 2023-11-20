@@ -64,6 +64,15 @@ $$
 
 [Reference - # 如何用latex编写矩阵](https://zhuanlan.zhihu.com/p/266267223)
 
+## Latex Use backslash itself
+
+A example using backslash in a matrix (latex syntax)
+$$
+\begin{matrix}
+\alpha & \backslash{alpha} & \beta & \backslash{beta} &
+\gamma & \backslash{gamma} & \delta & \backslash{delta} \\
+\end{matrix}
+$$
 
 ## Latex Math Constructs
 
