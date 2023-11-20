@@ -1462,6 +1462,10 @@ pip install -i http://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.ali
 ```
 
 
+### Building with CMake, Ninja and Clang on Windows
+
+[Building with CMake, Ninja and Clang on Windows](https://newbedev.com/building-with-cmake-ninja-and-clang-on-windows)
+
 
 ## ReadTheDocs
 
