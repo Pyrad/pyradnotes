@@ -521,7 +521,20 @@ init(1)---cnid_metad(1311)---cnid_dbd(5145)
 ```
 
 
+## Ubuntu 安装tofrodos（类似dos2unix)
 
+ubuntu下面没有dos2unix，需要安装`tofrodos`来使用`todos`和`fromdos`这两个命令
+
+```shell
+# install tofrodos
+apt-get install tofrodos
+
+# Use todos (change a file from unix style to window style)
+todos <FILE>
+
+# Use fromdos (change a file from window style to unix style)
+fromdos <FILE>
+```
 
 
 ```shell
