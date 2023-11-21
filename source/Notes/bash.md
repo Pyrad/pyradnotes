@@ -232,3 +232,7 @@ echo $PATH | awk -F: '{for (i = 1; i <= NF; ++i) print i, $i}'
 [3.5.3 Shell Parameter Expansion](https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html)
 
 
+## Bash multiple conditions and `[[` and `((` in if-condition
+
+[Bash Multiple Conditions](https://stackoverflow.com/a/20263097)
+
