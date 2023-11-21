@@ -1921,8 +1921,6 @@ A plugin for generate markdown table quickly like Typora.
 
 
 
-
-
 ### References
 
 [MathJax的基本使用](https://www.cnblogs.com/mqingqing123/p/12711372.html)
@@ -1939,7 +1937,9 @@ A plugin for generate markdown table quickly like Typora.
 
 [MathJax in Markdown](https://hiltmon.com/blog/2017/01/28/mathjax-in-markdown/)
 
+[MathJax Documentation](https://docs.mathjax.org/en/latest/index.html)
 
+[How-to-add-MathJax in Sphinx](https://www.sphinx-doc.org/en/master/usage/extensions/math.html#module-sphinx.ext.mathjax)
 
 
 
