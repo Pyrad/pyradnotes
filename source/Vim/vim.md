@@ -120,6 +120,12 @@
 
 其中，`^M`是同时按下`Ctrl+V+M`三个键所输入的，注意，是同时。
 
+## Vim frequently used commands
+
+[link](http://blog.chinaunix.net/uid-20769502-id-112737.html)
+
+[link2](https://www.zhihu.com/question/27478597/answer/36837839)
+
 ## 要打开vim中的函数列表，用命令
 
 ```powershell
