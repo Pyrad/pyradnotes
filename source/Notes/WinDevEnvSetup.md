@@ -272,6 +272,10 @@ I'll edit my former post with a header so that people stumbling upon this thread
 
 参考官方网站首页引导：[https://www.msys2.org/](https://www.msys2.org/)
 
+Release page: [https://github.com/msys2/msys2-installer/releases](https://github.com/msys2/msys2-installer/releases)
+
+Tsinghua mirror page: [https://mirrors.tuna.tsinghua.edu.cn/help/msys2/](https://mirrors.tuna.tsinghua.edu.cn/help/msys2/) 
+
 简要步骤
 
 - 下载安装程序
@@ -286,22 +290,17 @@ I'll edit my former post with a header so that people stumbling upon this thread
 
   并且在后面输入`Y`同意安装
 
-  
-
 - Run "MSYS2 MSYS" from Start menu，这个会弹出另外一个terminal窗口，并再次输入
 
   ```bash
   $ pacman -Syu
   ```
 
-  
-
 - 安装基本的套件，比如官网上提到的
 
   ```bash
   $ pacman -S --needed base-devel mingw-w64-x86_64-toolchain
   ```
-
   
 
 ### MSYS2 installation list
@@ -369,6 +368,10 @@ C:/msys64/msys2_shell.cmd -defterm -here -no-start -mingw64
 }
 ```
 
+
+#### Tutorial
+
+MSYS2使用教程 [https://blog.csdn.net/Dreamhai/article/details/109842184](https://blog.csdn.net/Dreamhai/article/details/109842184)
 
 #### To disable cursor blinking in Windows Terminal
 
