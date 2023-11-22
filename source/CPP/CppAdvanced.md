@@ -177,6 +177,10 @@ ninja: build stopped: subcommand failed.
 [https://blog.csdn.net/Charmve/article/details/126387362](https://blog.csdn.net/Charmve/article/details/126387362)
 
 
+### How can I see parse tree, intermediate code, optimization code and assembly code during COMPILATION?
+
+[https://stackoverflow.com/questions/1496497/how-can-i-see-parse-tree-intermediate-code-optimization-code-and-assembly-code](https://stackoverflow.com/questions/1496497/how-can-i-see-parse-tree-intermediate-code-optimization-code-and-assembly-code)
+
 
 ## C++异常处理的底层机制 - dingtingli的文章
 
