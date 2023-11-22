@@ -259,7 +259,9 @@ I'll edit my former post with a header so that people stumbling upon this thread
 ```
 
 
+## MinGW
 
+替代在线安装，软件仓库：[http://files.1f0.de/mingw/](http://files.1f0.de/mingw/)
 
 
 ## MSYS2 Setting Notes
