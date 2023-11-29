@@ -954,6 +954,13 @@ Each hit of `backspace` produces a space and make the cursor move right, which i
 
 Possible solutions in this discussion: [Arrow keys and backspace not working in bash after recent update](https://github.com/msys2/MSYS2-packages/issues/1124)
 
+#### Linux Powerline for Shell
+
+How to install & use powerline in shell
+
+-   [http://www.2daygeek.com/powerline-adds-powerful-statusline-to-vim-bash-tumx-in-ubuntu-fedora-debian-arch-linux-mint/](http://www.2daygeek.com/powerline-adds-powerful-statusline-to-vim-bash-tumx-in-ubuntu-fedora-debian-arch-linux-mint/)
+-   [https://linux.cn/article-8651-1.html](https://linux.cn/article-8651-1.html) (translated to Chinese)
+
 
 
 ## Tabby
