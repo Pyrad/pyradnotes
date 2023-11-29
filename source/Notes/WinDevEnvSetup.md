@@ -263,6 +263,9 @@ I'll edit my former post with a header so that people stumbling upon this thread
 
 替代在线安装，软件仓库：[http://files.1f0.de/mingw/](http://files.1f0.de/mingw/)
 
+### 搜索和安装
+
+[MinGW-W64 下载、安装与配置（支持最新版的GCC，目前 GCC 13.2.0）- CSDN博客](https://blog.csdn.net/B11050729/article/details/132176767)
 
 ## MSYS2 Setting Notes
 
