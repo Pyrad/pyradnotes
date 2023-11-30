@@ -961,6 +961,11 @@ How to install & use powerline in shell
 -   [http://www.2daygeek.com/powerline-adds-powerful-statusline-to-vim-bash-tumx-in-ubuntu-fedora-debian-arch-linux-mint/](http://www.2daygeek.com/powerline-adds-powerful-statusline-to-vim-bash-tumx-in-ubuntu-fedora-debian-arch-linux-mint/)
 -   [https://linux.cn/article-8651-1.html](https://linux.cn/article-8651-1.html) (translated to Chinese)
 
+#### Git-bash powerline
+
+[为 Git Bash 设置 PowerLine](https://zhuanlan.zhihu.com/p/402739037)
+
+[使用nerd-font/font-patcher为字体添加字体图标](https://zhuanlan.zhihu.com/p/150097941)
 
 
 ## Tabby
