@@ -431,3 +431,10 @@ Here `keyword_pattern` is the word to search, and `%` is current file name, `cw`
 ## Vim Official Home Page
 
 官网：[https://www.vim.org/download.php](https://www.vim.org/download.php)
+
+
+## Pass clangd args to YouCompleteMe
+
+```vim
+let g:ycm_clangd_args = ['--query-driver=' .. '/depot/gcc-7.3.0/bin/g++']
+```
