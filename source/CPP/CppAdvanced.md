@@ -176,6 +176,15 @@ ninja: build stopped: subcommand failed.
 
 [https://blog.csdn.net/Charmve/article/details/126387362](https://blog.csdn.net/Charmve/article/details/126387362)
 
+### Windows下Python中常见的几种DLL load failed问题的原因以及解决方案
+
+[Windows下Python中常见的几种DLL load failed问题的原因以及解决方案 - 知乎](https://zhuanlan.zhihu.com/p/133986373)
+
+### linux编译动态库之fPIC
+
+[linux编译动态库之fPIC - 知乎](https://zhuanlan.zhihu.com/p/368364069)
+
+[linux编译动态库之fPIC- CSDN](https://blog.csdn.net/TH_NUM/article/details/86541234)
 
 ### How can I see parse tree, intermediate code, optimization code and assembly code during COMPILATION?
 
