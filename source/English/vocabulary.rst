@@ -126,6 +126,9 @@ Vocabulary  (reStructuredtext)
     * - **Unices**
       - n/a
       - *n.* Plural of Unix
+    * - **ASCII**
+      - Read as 'ask ee'
+      - *n.* America Standard Code for Information Interchange
 
 
 
