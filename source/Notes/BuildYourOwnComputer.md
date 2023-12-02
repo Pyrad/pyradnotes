@@ -45,7 +45,8 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 
 |项目|核心数量|线程数量|内置核显 |功耗|价格|时间 |
 |:-----|---|---|---|---|:-----|:-----|
-|[Intel i5 12400F 盒装](https://item.jd.com/100031035610.html)|6|12|否|65W|1189|2023-08-30|
+|[Intel i5 12400 盒装](https://item.jd.com/10027670672823.html#crumb-wrap)|6|12|是|  |  |  |
+|[Intel i5 12400F 盒装](https://item.jd.com/100031035610.html)|6 |12|否|65W |1189|2023-08-30|
 |[Intel i5 12490F 盒装](https://item.jd.com/100037299996.html)|6|12|否|65W|1099|2023-08-30|
 |[Intel i5 13400 盒装](https://item.jd.com/100049450205.html)|10|16|是|65W|1749|2023-08-30|
 |[Intel i5 13400F 盒装](https://item.jd.com/100049450275.html)|10|16|否|65W|1489|2023-08-30|
@@ -54,6 +55,15 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 |      |   |   |   |   |      |      |
 
 
+板U套装
+
+[华硕TUF GAMING B660M-PLUS WIFI D4重炮手 + i5-13400](https://item.jd.com/100051521451.html#crumb-wrap) 2748
+
+[微星 B760M BOMBER WIFI DDR5 + i5-13400](https://item.jd.com/100061604139.html#) 2598
+
+[微星 B760M BOMBER WIFI DDR4 + i5-13400](https://item.jd.com/100042247532.html#crumb-wrap) 2448
 
 
+内存
 
+[光威 32GB DDR4 3200 天策系列](https://item.jd.com/100022451588.html#crumb-wrap) 399
