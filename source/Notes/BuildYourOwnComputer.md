@@ -55,6 +55,15 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 |      |   |   |   |   |      |      |
 
 
+### Intel CPU Spec
+
+[Intel Core i5 13400 - Intel](https://ark.intel.com/content/www/us/en/ark/products/230495/intel-core-i5-13400-processor-20m-cache-up-to-4-60-ghz.html)
+
+[Intel Core i5 13400 - TechPowerUp](https://www.techpowerup.com/cpu-specs/core-i5-13400.c2994)
+
+[Inel Core i5 12400 - TechPowerUp](https://www.techpowerup.com/cpu-specs/core-i5-12400.c2549)
+
+
 板U套装
 
 [华硕TUF GAMING B660M-PLUS WIFI D4重炮手 + i5-13400](https://item.jd.com/100051521451.html#crumb-wrap) 2748
