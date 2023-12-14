@@ -89,6 +89,9 @@ This file shows some advanced usages of C/C++
 
 [有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？ - 觅新笑话中的回答 - 知乎](https://www.zhihu.com/question/20201738/answer/2928936881)
 
+### Python调用C++ DLL库 ------OSError: WinError 126 找不到指定的模块。
+
+https://blog.csdn.net/qq_34430371/article/details/112261682
 
 ### Win10+MinGw编译可被Python调用的dll库
 
