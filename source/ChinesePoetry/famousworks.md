@@ -20,3 +20,18 @@
 他日，驴一鸣，虎大骇，远遁；以为且噬己也，甚恐。然往来视之，觉无异能者；益习其声，又近出前后，终不敢搏。稍近，益狎，荡倚冲冒。驴不胜怒，蹄之。虎因喜，计之曰：“技止此耳！”因跳踉大㘎，断其喉，尽其肉，乃去。</font>
 
 ​                <font face="楷体" size=6 color=black>噫！形之庞也类有德，声之宏也类有能。向不出其技，虎虽猛，疑畏，卒不敢取。今若是焉，悲夫！</font>
+
+
+# 记承天寺夜游
+
+<font face="楷体" size=5 color=black>苏轼 北宋</font>
+
+<font face="楷体" size=5 color=black>元丰六年十月十二日夜，解衣欲睡，月色入户，欣然起行。</font>
+<font face="楷体" size=5 color=black>念无与为乐者，遂至承天寺寻张怀民。</font>
+<font face="楷体" size=5 color=black>怀民亦未寝，相与步于中庭。</font>
+<font face="楷体" size=5 color=black>庭下如积水空明，水中藻、荇交横，盖竹柏影也。</font>
+<font face="楷体" size=5 color=black>何夜无月？何处无竹柏？但少闲人如吾两人者耳。</font>
+
+[为什么苏轼的《记承天寺夜游》能被选到课本中？ - 南行兮的回答 - 知乎](https://www.zhihu.com/question/38496786/answer/3325754785)
+
+简结：时间，因果，过程，事物，省思。
