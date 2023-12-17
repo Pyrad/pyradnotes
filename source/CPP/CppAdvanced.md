@@ -89,6 +89,17 @@ This file shows some advanced usages of C/C++
 
 [有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？ - 觅新笑话中的回答 - 知乎](https://www.zhihu.com/question/20201738/answer/2928936881)
 
+## Python如何调用C/C++，及问题解决
+
+[Python调用.dll文件,报错FileNotFoundError: Could not find module ‘xx\....\xx.dll](https://blog.csdn.net/weixin_43980331/article/details/132556194)
+
+这篇博客里面提到的使用`winmode=0`的办法，在msys2中试过，可行，但`ctype`只能调用C/C++中的函数，不能构造其中的class，所以有一定的限制。（记录于2023年12月17日19:13:15）
+
+[Python调用C/C++ - 51CTO博客](https://blog.51cto.com/u_15930680/5990951)
+
+本篇主要介绍了几种常见的Python调用C/C++的DLL的方法。
+
+
 ### Python调用C++ DLL库 ------OSError: WinError 126 找不到指定的模块。
 
 [https://blog.csdn.net/qq_34430371/article/details/112261682](https://blog.csdn.net/qq_34430371/article/details/112261682)
