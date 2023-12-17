@@ -93,6 +93,14 @@ This file shows some advanced usages of C/C++
 
 [https://blog.csdn.net/qq_34430371/article/details/112261682](https://blog.csdn.net/qq_34430371/article/details/112261682)
 
+### Dependency Walker
+
+[Dependency Walker](http://www.dependencywalker.com/)
+
+[Dependencies - An open-source modern Dependency Walker](https://github.com/lucasg/Dependencies)
+
+[Let's make dependency walker fast again!](https://zhuanlan.zhihu.com/p/268629149)
+
 ### Win10+MinGw编译可被Python调用的dll库
 
 网页链接：[https://zhuanlan.zhihu.com/p/361844595](https://zhuanlan.zhihu.com/p/361844595)
