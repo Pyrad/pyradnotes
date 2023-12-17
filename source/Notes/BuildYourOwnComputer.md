@@ -76,3 +76,9 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 内存
 
 [光威 32GB DDR4 3200 天策系列](https://item.jd.com/100022451588.html#crumb-wrap) 399
+
+
+
+## 装机经验
+
+[R5-5600G怎么搭配？ - 仙溪村村民的回答 - 知乎](https://www.zhihu.com/question/485256886/answer/3137539970)
