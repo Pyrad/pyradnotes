@@ -91,7 +91,7 @@ This file shows some advanced usages of C/C++
 
 ### Python调用C++ DLL库 ------OSError: WinError 126 找不到指定的模块。
 
-https://blog.csdn.net/qq_34430371/article/details/112261682
+[https://blog.csdn.net/qq_34430371/article/details/112261682](https://blog.csdn.net/qq_34430371/article/details/112261682)
 
 ### Win10+MinGw编译可被Python调用的dll库
 
