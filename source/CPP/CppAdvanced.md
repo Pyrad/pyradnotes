@@ -99,6 +99,11 @@ This file shows some advanced usages of C/C++
 
 本篇主要介绍了几种常见的Python调用C/C++的DLL的方法。
 
+### How to use C++ classes with ctypes?
+
+如何通过`ctypes`调用C++的class
+
+[python - How to use C++ classes with ctypes? - Stack Overflow](https://stackoverflow.com/questions/1615813/how-to-use-c-classes-with-ctypes)
 
 ### Python调用C++ DLL库 ------OSError: WinError 126 找不到指定的模块。
 
