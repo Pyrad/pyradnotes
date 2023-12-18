@@ -56,6 +56,19 @@ let g:coc_data_home = 'D:/procs/VimVersion9/vimfiles/coc_nvim_files/data_home'
 
 用该命令可以打开在`$coc_data_home/ultisnips/<type-name>.snippets`文件，其中`<type-name>`表示和当前文件类型相同的类型名称，比如当前打开的是`cpp`文件，那么`:CocCommand snippets.editSnippets`就会打开一个名字叫做`$coc_data_home/ultisnips/cpp.snippets`的文件以供编辑。
 
+在安装了`SirVer/ultisnips`和`honza/vim-snippets`这两个plugin之后，`coc-nvim`可以使用如下命令打开（查看）snippet文件：
+
+```vim
+:CocCommand snippets.openSnippetFiles
+```
+
+一般在`SirVer/ultisnips`和`honza/vim-snippets`这两个plugin之后，它们有各种对应的snippets文件，分别如下：
+
+```shell
+$HOME/.vim/plugged/vim-snippets/UltiSnips/vim.snippets
+$HOME/.vim/plugged/vim-snippets/snippets/vim.snippets
+```
+
 ### 自动补全
 
 - 动补全默认是**自动开启**
