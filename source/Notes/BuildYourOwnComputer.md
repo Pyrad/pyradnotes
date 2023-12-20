@@ -88,20 +88,34 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 
 [【B站电脑装机UP大总结---方便比较UP神车的朋友选择】](https://www.bilibili.com/video/BV1LD4y1J7Ly/?share_source=copy_web&vd_source=eff6214d4429afad84b6a122ad71c441)
 
-AS极客，as极客
-远古时代装机猿，装机猿自营店
-二斤啦啦啦啦，二斤和她的主机
-中正评测，中正评测
-和微论件，和微论件DIY电脑
+AS极客，[as极客](https://mlf888.taobao.com/?spm=a1z10.1-c.0.0.4bc27839q39aKb)
+
+远古时代装机猿，[装机猿自营店](https://zjyzyd.taobao.com/?spm=a1z10.1-c-s.0.0.2c6f6272P0cNQj)
+
+二斤啦啦啦啦，[二斤和她的主机](https://ejhtdzj.taobao.com/?spm=a1z10.1-c.0.0.3d635ac5mYaGbt)
+
+中正评测，[中正评测](https://zzpcgfd.taobao.com/?spm=a1z10.1-c-s.0.0.34a46a27QwuK3C)
+
+和微论件，[和微论件DIY电脑](https://shop461754287.taobao.com/?spm=a1z10.1-c-s.0.0.98d26a85szFHDa)
+
 摩西电脑，摩西电脑
+
 杀手装机中心，杀手装机店
-装机侠林BB，装机侠林BB装机店
+
+装机侠林BB，[装机侠林BB装机店](https://shop335658483.taobao.com/?spm=a1z10.1-c-s.0.0.353356bboTzXZm)
+
 邻家小妹装机馆，邻家小妹装机馆
+
 河东数码装机团，河东数码
+
 米亚的装机馆，蒙面it侠
+
 夏小荷装机馆，夏小荷装机馆
+
 幽灵高端电竞装机，幽灵高端电竞装机
+
 半吨云评测，千斤装机店
+
 船长总动员，船长装机店
 
 
