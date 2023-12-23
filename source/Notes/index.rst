@@ -21,3 +21,4 @@ Notes
    ResourcesLink
    BuildYourOwnComputer.md
    clothes.md
+   food.md
