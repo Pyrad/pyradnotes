@@ -78,6 +78,24 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 [光威 32GB DDR4 3200 天策系列](https://item.jd.com/100022451588.html#crumb-wrap) 399
 
 
+## 装机配置清单
+
+### 配置一
+
+|类别|链接|价格|
+|:-----|:-----|:-----|
+|板+U|[微星B450M-A PRO MAX II + AMD R5 5600G](https://item.jd.com/100069369338.html)|1288|
+|内存|[金百达32GB DDR4 3200银爵](https://item.jd.com/100007177599.html)|399|
+|SSD|[金百达 1TB SSD M.2(NVMe PCIe 4.0x4)](https://item.jd.com/100050170596.html)|379|
+|散热 |[利民 AX120 V2 PLUS](https://item.jd.com/100011850860.html#)|149|
+|电源 |[游戏悍将 550W 金牌](https://item.jd.com/100078330677.html)|179|
+|机箱 |[爱国者 JV13黑色 机箱](https://item.jd.com/100061121082.html#) |89.9 |
+|- | - |2483.9 |
+
+
+
+
+
 
 ## 装机经验
 
