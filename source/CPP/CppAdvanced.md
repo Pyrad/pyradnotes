@@ -95,6 +95,10 @@ This file shows some advanced usages of C/C++
 
 这篇博客里面提到的使用`winmode=0`的办法，在msys2中试过，可行，但`ctype`只能调用C/C++中的函数，不能构造其中的class，所以有一定的限制。（记录于2023年12月17日19:13:15）
 
+[Python3.8 ctypes加载dll: 报错 FileNotFoundError: Could not find module ‘xx.dll’ (or one of its](https://blog.csdn.net/weixin_39916966/article/details/125779841)
+
+这篇文章介绍了，如果使用了绝对路径还不能正常使用，就有可能是要加载的`.dll`文件还依赖于其他`.dll`文件，那么就需要使用它里面提到的办法2或3解决。
+
 [Python调用C/C++ - 51CTO博客](https://blog.51cto.com/u_15930680/5990951)
 
 本篇主要介绍了几种常见的Python调用C/C++的DLL的方法。
