@@ -227,3 +227,7 @@ Here `next_element_0` is `0` and `next_element_1` is `1`.
 [Build a python package with setup.py in CMake - StackOverflow](https://stackoverflow.com/questions/29232614/build-a-python-package-with-setup-py-in-cmake)
 
 [Using CMake with setup.py](https://stackoverflow.com/questions/13298504/using-cmake-with-setup-py)
+
+## Python的distutils模块介绍
+
+[Python的Distutils模块](https://blog.csdn.net/weixin_36670529/article/details/102794001)
