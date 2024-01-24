@@ -187,3 +187,9 @@ Use `-E` option of `gcc/g++`.
 ```shell
 g++ -E source_file.cpp > source_file_preprocess_out.cpp
 ```
+
+
+
+## Cheat Sheets & Infographics
+
+[Cheat Sheets & Infographics](https://hackingcpp.com/cpp/cheat_sheets.html)
