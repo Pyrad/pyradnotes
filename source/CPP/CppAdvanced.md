@@ -250,7 +250,11 @@ ninja: build stopped: subcommand failed.
 How to install GLIBC 2.29 or higher in Ubuntu 18.04 [Link](https://stackoverflow.com/questions/72513993/how-to-install-glibc-2-29-or-higher-in-ubuntu-18-04)
 
 
+## C++数据可视化库matplot++
 
+[C++数据可视化库matplot++ - cirno的文章 - 知乎](https://zhuanlan.zhihu.com/p/681383952)
+
+[https://zhuanlan.zhihu.com/p/681383952](https://zhuanlan.zhihu.com/p/681383952)
 
 
 
