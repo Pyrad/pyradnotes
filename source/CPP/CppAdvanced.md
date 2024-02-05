@@ -226,6 +226,30 @@ ninja: build stopped: subcommand failed.
 
 链接：[C++异常处理的底层机制 - dingtingli的文章 - 知乎 https://zhuanlan.zhihu.com/p/656940263](https://zhuanlan.zhihu.com/p/656940263)
 
+## 编译glibc
+
+作者：天国滑行
+链接：https://zhuanlan.zhihu.com/p/681393388
+来源：知乎
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+
+[Vscode更新不当人啦 - 天国滑行的文章 - 知乎](https://zhuanlan.zhihu.com/p/681393388)
+
+[https://zhuanlan.zhihu.com/p/681393388](https://zhuanlan.zhihu.com/p/681393388)
+
+[How to install GLIBC 2.29 or higher in Ubuntu 18.04](https://stackoverflow.com/questions/72513993/how-to-install-glibc-2-29-or-higher-in-ubuntu-18-04)
+
+[https://github.com/microsoft/vscode/issues/201129](https://github.com/microsoft/vscode/issues/201129)
+
+[https://github.com/microsoft/vscode/issues/203375](https://github.com/microsoft/vscode/issues/203375)
+
+[https://github.com/microsoft/vscode-remote-release/issues/9464](https://github.com/microsoft/vscode-remote-release/issues/9464)
+
+[https://github.com/microsoft/vscode-remote-release/issues/9464](https://github.com/microsoft/vscode-remote-release/issues/9464)
+
+How to install GLIBC 2.29 or higher in Ubuntu 18.04 [Link](https://stackoverflow.com/questions/72513993/how-to-install-glibc-2-29-or-higher-in-ubuntu-18-04)
+
+
 
 
 
