@@ -438,3 +438,14 @@ Here `keyword_pattern` is the word to search, and `%` is current file name, `cw`
 ```vim
 let g:ycm_clangd_args = ['--query-driver=' .. '/depot/gcc-7.3.0/bin/g++']
 ```
+
+## Vim滚动屏幕（鼠标居中）
+
+[Vim documentation: scroll (sourceforge.net)](https://vimdoc.sourceforge.net/htmldoc/scroll.html#zz)
+
+`zz`：把鼠标所在的行调整到屏幕中间（居中）
+
+但没有built-in的居中列的操作，所以需要使用`zL`和`zH`这两个滚动命令来近似实现。
+
+`zL`：把屏幕向**左**移动半个屏幕宽度
+`zH`：把屏幕向**右**移动半个屏幕宽度
