@@ -310,3 +310,152 @@ You can also redirect the output of a GDB command to a shell command. See [pi
 
 [RMS's gdb Debugger Tutorial](http://www.unknownroad.com/rtfm/gdbtut/)
 
+
+## GDB Python
+
+### Pretty Printer
+
+为了使用STL的**pretty-printer**，需要把对应版本的gcc目录下面`libstdcxx`拷贝到某个专门给GDB使用的目录，然后在`~/.gdbinit`中加入对应的Python代码以便生效。
+
+比如，把gcc-7.3.0中的`libstdcxx`拷贝到`~/scripts/python.utilities/PythonGdb`中：
+
+```bash
+cp -rf ${GCC_DIR}/python/libstdcxx/ ~/scripts/python.utilities/PythonGdb/libstdcxx
+```
+
+然后在`~/.gdbinit`中加入如下代码
+
+```python
+handle SIG35 noprint nostop
+
+#------------------------------------------------------------
+# Import the pretty-printer module from a local backup dir
+#------------------------------------------------------------
+python
+import sys
+sys.path.insert(0, '~/scripts/python.utilities/PythonGdb')
+from libstdcxx.v6.printers import register_libstdcxx_printers
+register_libstdcxx_printers(None)
+end
+```
+
+
+### 查看编译GDB时的配置信息(Python)
+
+可以使用`--configuration`参数进行查看
+
+```bash
+gdb --configuration
+```
+
+### gdb中执行Python script
+
+编写Python script，**并且**以`.py`作为后缀。
+
+然后在gdb中直接source即可
+
+```gdb
+(gdb) source myPyCmds.py
+```
+
+也可直接在gdb中键入命令`py`，进入Python prompt，输入Python代码结束之后，以`end`结尾并回车，即可执行输入的Python代码。
+
+```gdb
+(gdb) py
+> import gdb
+> val = gdb.Value(0)
+> end
+(gdb)
+```
+
+
+### 从gdb当前session中的variable创建对应的`gdb.Value` object
+
+gdb提供了Python module `gdb`，可以直接import进来。
+
+使用`gdb`这个module提供的API `parse_and_eval()`，参数是当前gdb session中的变量对应的名字（字符串），返回的值是一个`gdb.Value` object。
+
+```python
+cxx_var_name_str = "my_cxx_symbol"
+val = gdb.parse_and_eval(cxx_var_name_str )
+```
+
+### GDB Pretty-Printer中显示错误的Python stack
+
+在使用pretty-printer的时候，如果发生错误，可能只显示简短的异常信息，例如，
+
+```gdb
+(gdb) p uptr_var
+$112 = Python Exception <type 'exceptions.TypeError'> expected string or buffer:
+```
+
+如果要查看更多信息，需要在gdb中设置`set pyathon print-stack [full|message]`：
+
+```gdb
+(gdb) set python print-stack full
+```
+
+然后就可以打印并查看更详细的错误信息，
+
+```gdb
+(gdb) p overflow_filter
+$113 = Traceback (most recent call last):
+  File "$TO_GDB_PYTHON_DIR/libstdcxx/v6/printers.py", line 144, in to_string
+    if is_specialization_of(impl_type, '__uniq_ptr_impl'): # New implementation
+  File "$TO_GDB_PYTHON_DIR/libstdcxx/v6/printers.py", line 108, in is_specialization_of
+    return re.match('^std::(%s)?%s<.*>$' % (_versioned_namespace, template_name), type) is not None
+  File "$PYTHON_DIR/lib/python2.6/re.py", line 137, in match
+    return _compile(pattern, flags).match(string)
+TypeError: expected string or buffer
+```
+
+可以在查看详细信息之后，把显示方式改回默认值：
+
+```gdb
+(gdb) set python print-stack message
+```
+
+
+### GDB Python Pretty-Printer中查看C++变量类型的操作
+
+以`std::unique_ptr`对应的pretty printer为例。
+
+在`$GCC_DIR/python/libstdcxx/v6/printers.py`中，对`std::unique_ptr`有如下对应的Python类处理代码。
+
+```python
+class UniquePointerPrinter:
+  "Print a unique_ptr"
+
+  def __init__ (self, typename, val):
+    self.val = val
+
+  def to_string (self):
+    impl_type = self.val.type.fields()[0].type.tag
+    if is_specialization_of(impl_type, '__uniq_ptr_impl'): # New implementation
+      v = self.val['_M_t']['_M_t']['_M_head_impl']
+    elif is_specialization_of(impl_type, 'tuple'):
+      v = self.val['_M_t']['_M_head_impl']
+    else:
+      raise ValueError("Unsupported implementation for unique_ptr: %s" % self.val.type.fields()[0].type.tag)
+    return 'std::unique_ptr<%s> containing %s' % (str(v.type.target()), str(v))
+```
+
+在函数`to_string()`中，
+
+- `self.val`的类型是`gdb.Value`，它用来表示当前gdb session中一个对应的C/C++ object，这样以便在Python中访问。关于这个类，可以查看gnu gdb手册中*Extending GDB*这一章关于`gdb.Value`类和其上的成员的说明。
+
+- `self.val.type`返回的是一个类型为`gdb.Type`的object。
+
+- `self.val.type.fields()`返回的是一个Python `list` object，其中每个元素都是一个`gdb.Field`的object，可以查看手册中`gdb.Type`的说明。
+
+- `self.val.type.fields()[0]`返回一个`gdb.Field` object
+
+- `self.val.type.fields()[0].type`返回一个`gdb.Field` object上的`type`成员，它也是一个`gdb.Type`类型的对象。
+
+- `self.val.type.fields()[0].type.tag`返回的是这个`gdb.Type`类型的`tag`（实际上就是一个字符串），手册中说它是*The tag name for this type. The tag name is the name after struct, union, or enum in C and C++*，也就是关键字`class`后面那个的名字。
+  
+  需要注意的是，有时候这个`tag`会返回一个`None`，在`std::unique_ptr`的pretty printer中我就遇到这个问题。这种情况下，我的临时办法是使用`self.val.type.fields()[0].type.name`，它返回的也是一个Python字符串，它类似于这样：`std::unique_ptr<XXXXX>::__tuple_type`。
+  
+  然后根据这个返回的名字字符串做判断。
+
+
