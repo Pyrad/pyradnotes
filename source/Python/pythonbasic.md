@@ -231,3 +231,71 @@ Here `next_element_0` is `0` and `next_element_1` is `1`.
 ## Python的distutils模块介绍
 
 [Python的Distutils模块](https://blog.csdn.net/weixin_36670529/article/details/102794001)
+
+
+## Python magic methods
+
+[Python Special/Magic Methods](https://majianglin2003.medium.com/python-special-methods-afcb795ff985#d3a0)
+
+关于`__setattr__`、`__getattr__`和`__getattribute__`
+
+- `__setattr__(self, attr, value)`
+
+  它是encapsulation method，即`.`号运算都会先调用到它。
+  
+- `__getattr__(self, attr)`
+
+  只有当self上的`attr`不存在时，才会调用这个方法，它是用来当做fallback method来做encapsulation的。
+  
+- `__getattribute__(self, attr)`
+
+  这个方法在访问`self`的任何attribute的时候都会被调用，使用它时要小心，因为很容易造成无限循环递归。
+
+  这个方法比较有用的是，可以控制和屏蔽对某些attribute的访问。因为任何访问attribute的操作都会调用这个函数，所以可以在它里面实现具体的控制和屏蔽逻辑。
+
+  [StackOverflow - Difference between `__getattr__` and `__getattribute__`](https://stackoverflow.com/questions/3278077/difference-between-getattr-and-getattribute)
+
+
+## Python `__setattr__` 导致的无限递归问题
+
+参考回答：[StackOverflow - maximum recursion depth while using __setattr__ in python new style object?](https://stackoverflow.com/questions/20361340/maximum-recursion-depth-while-using-setattr-in-python-new-style-object)
+
+```python
+class foo(object):
+  def __init__(self, n):
+    self.data = dict()
+
+  def __getattr__(self, attr):
+    if not attr in self.data.keys():
+      print "[ERROR] Attribute {} not found in dict.".format(attr)
+      return None
+    else:
+      return self.data[attr]
+
+  def __setattr__(self, attr, value):
+    self.data[attr] = value
+
+if __name__ == "__main__":
+  fval = foo(10)
+```
+
+执行上面的代码，会产生如下的无限递归错误
+
+```shell
+RuntimeError: maximum recursion depth exceeded
+```
+
+原因是，因为实现了magic method `__setattr__`，所以对`foo` class object的任何设置attribute的操作都会调用到它。
+因此，在函数`def __init__`中也不例外，也就是说 `self.data = dict()`就调用到这个 `__setattr__`方法。
+而在magic method `__setattr__`中，因为此时`self`上还没有`data`这个attribute，所以就要调用`__getattr__`方法（因为它是获取属性的兜底函数）。
+而在上面`__getattr__`方法的实现中，又再次使用到了`self.data`这个获取`data`方式，同样地，此时`self`上仍然还没有`data`。
+因此，`__getattr__`方法再次被调用（开始递归调用），然后就重复上述的过程，发生了无限递归，最终导致到达递归深度上限而报错。
+
+因此，修改的办法是，在`__init__`函数中，不直接使用`self.data`来初始化这个属性，而是使用`self`的`__dict__`，避免访问一个还没有添加好的属性。
+
+```python
+class foo(object):
+  def __init__(self, n):
+    self.__dict__["data"] = dict()
+```
+
