@@ -169,7 +169,7 @@ python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))"
 
 ## How to create a singleton class in Python
 
-Refer to link (Creating a singleton in Python)[https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python]
+Refer to link [Creating a singleton in Python](https://stackoverflow.com/questions/6760685/creating-a-singleton-in-python)
 
 A singleton
 
