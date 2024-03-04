@@ -22,3 +22,4 @@ Notes
    BuildYourOwnComputer.md
    clothes.md
    food.md
+   Games.md
