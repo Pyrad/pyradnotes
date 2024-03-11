@@ -2,6 +2,8 @@
 
 ## Heroes of Might and Magic III
 
+[英雄无敌3各种版本网盘下载 - 哔哩哔哩 (bilibili.com)](https://www.bilibili.com/read/cv9473168/)
+
 Link: [Heroes of Might and Magic III](https://strategywiki.org/wiki/Heroes_of_Might_and_Magic_III:_The_Shadow_of_Death)
 
 Walkthrough: [Heroes of Might and Magic III: New Beginning](https://strategywiki.org/wiki/Heroes_of_Might_and_Magic_III:_The_Shadow_of_Death/New_Beginning)
