@@ -65,6 +65,18 @@ ptype variable_name
 ```
 
 
+## GDB 查看当前加载的 symbol（binary）
+
+Check the `main` function located in which symbol/binary
+
+```gdb
+info symbol main
+```
+
+reference: [https://visualgdb.com/gdbreference/commands/info_symbol](https://visualgdb.com/gdbreference/commands/info_symbol)
+
+
+
 
 ## GDB check vtable from a pointer/reference to base class object
 
