@@ -449,3 +449,11 @@ let g:ycm_clangd_args = ['--query-driver=' .. '/depot/gcc-7.3.0/bin/g++']
 
 `zL`：把屏幕向**左**移动半个屏幕宽度
 `zH`：把屏幕向**右**移动半个屏幕宽度
+
+## Vim 跳转至函数或代码块开始/结束的位置
+
+Vim - Python: Jump to the begin/end of function/block
+
+[https://vi.stackexchange.com/questions/7262/end-of-python-block-motion](https://vi.stackexchange.com/questions/7262/end-of-python-block-motion)
+
+
