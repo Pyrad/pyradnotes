@@ -69,3 +69,16 @@ Walkthrough: [Heroes of Might and Magic III: New Beginning](https://strategywiki
 3. Search for a Killer
 
 4. Final Peace
+
+
+
+## Heroes of Might and Magic IV
+
+### 人族 The true blade 真实之剑/真刃
+
+1. The drawing of the blade 没落之剑
+2. The Trials 考验
+3. The first step of many 第一步
+4. Seeking the steel 寻找钢铁
+5. The rightful heir天命之子
+
