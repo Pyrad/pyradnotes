@@ -74,6 +74,10 @@ Walkthrough: [Heroes of Might and Magic III: New Beginning](https://strategywiki
 
 ## Heroes of Might and Magic IV
 
+### Heroes of Might and Magic IV Overview
+
+[Heroes of Might and Magic IV Overview](http://www.heroesofmightandmagic.com/heroes4/heroesofmightandmagic4iv.shtml)
+
 ### 人族 The true blade 真实之剑/真刃
 
 1. The drawing of the blade 没落之剑
