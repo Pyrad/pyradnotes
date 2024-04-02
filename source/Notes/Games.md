@@ -78,7 +78,9 @@ Walkthrough: [Heroes of Might and Magic III: New Beginning](https://strategywiki
 
 [Heroes of Might and Magic IV Overview](http://www.heroesofmightandmagic.com/heroes4/heroesofmightandmagic4iv.shtml)
 
-### 人族 The true blade 真实之剑/真刃
+### Campaigns of HoMM4
+
+#### 人族 The true blade 真实之剑/真刃
 
 1. The drawing of the blade 没落之剑
 2. The Trials 考验
@@ -86,34 +88,39 @@ Walkthrough: [Heroes of Might and Magic III: New Beginning](https://strategywiki
 4. Seeking the steel 寻找钢铁
 5. The rightful heir天命之子
 
-### 野蛮族 Glory of days past 光辉岁月
+#### 野蛮族 Glory of days past 光辉岁月
+
 1. A new way 新道路
 2. A necessary war 必要的战斗
 3. The king’s choice 国王的选择
 4. The tribe 群落
 
-### 自然族 Elwin and shaera 艾尔文和莎拉
+#### 自然族 Elwin and shaera 艾尔文和莎拉
+
 1. the lover 情人
 2. Mark of the tiger 虎之印记
 3. Ture love 真爱
 4. Reflections 责难
 5. Together 同心协力
 
-### 混乱族 The pirate’s daughter 海盗的女儿
+#### 混乱族 The pirate’s daughter 海盗的女儿
+
 1. The pirate’s daughter 海盗的女儿
 2. Blood cove 血色海湾
 3. The strait of the lost 失落的海峡
 4. Bay of maids 少女的海湾
 5. Never look back不要往回看
 
-### 鬼族 half-dead 半生者
+#### 鬼族 half-dead 半生者
+
 1. Eater of children食童者
 2. The fiery realm 狂热的领土
 3. The point of power 力量之塔
 4. Life and death 生与死
 5. The unholy breath 不洁的气息
 
-### 守序族 The price of peace 和平的代价
+#### 守序族 The price of peace 和平的代价
+
 1. At the crossroade 旅程
 2. An enemy’s trust 敌人的信任
 3. Servant 仆人
