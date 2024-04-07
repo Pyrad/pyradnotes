@@ -7,7 +7,87 @@ A Tour of Life (Pyrad's Notes!)
 =========================================
 
 
+.. list-table:: Selected Contents
+    :widths: 20 20 20 20 20
+    :header-rows: 0
 
+    * - :doc:`Geometry </Geometry/index>`
+      - :doc:`CGAA3 </Geometry/ComputationalGeometryAA3rd>`
+      - :doc:`GeometryRelated </Geometry/GeometryRelated>`
+      -
+      -
+    * - :doc:`Git </Git/index>`
+      - :doc:`git </Git/git>`
+      -
+      -
+      -
+    * - :doc:`Linux </Linux/index>`
+      - :doc:`LinuxELF </Linux/LinuxELF>`
+      - :doc:`bash </Linux/bash>`
+      - :doc:`gdb </Linux/gdb>`
+      - :doc:`linuxTips </Linux/linuxTips>`
+    * -
+      - :doc:`linuxall </Linux/linuxall>`
+      -
+      -
+      -
+    * - :doc:`Python </Python/index>`
+      - :doc:`Extending </Python/ExtendingAndEmbeddingThePythonInterpreter>`
+      - :doc:`NumpyVisualIntro </Python/NumpyVisualIntro>`
+      - :doc:`numpybasics </Python/numpybasics>`
+      - :doc:`pythonbasic </Python/pythonbasic>`
+    * -
+      - :doc:`pythonstring </Python/pythonstring>`
+      -
+      -
+      -
+    * - :doc:`Vim </Vim/index>`
+      - :doc:`vim </Vim/vim>`
+      - :doc:`vim_install </Vim/vim_install>`
+      - :doc:`vim_plugin </Vim/vim_plugin>`
+      -
+    * - :doc:`CPP </CPP/index>`
+      - :doc:`CMakeBasics </CPP/CMakeBasics>`
+      - :doc:`CMake_INTERFACE </CPP/CMake_PRIVATE_PUBLIC_INTERFACE>`
+      - :doc:`CppAdvanced </CPP/CppAdvanced>`
+      - :doc:`CppBasics </CPP/CppBasics>`
+    * -
+      - :doc:`Concurrency </CPP/CppConcurrencyInAction>`
+      - :doc:`LvalueRvalue </CPP/LvalueRvalue>`
+      - :doc:`EMCPP </CPP/ReadingMinutesEffectiveModernCPP>`
+      - :doc:`SmartPointers </CPP/SmartPointers>`
+    * -
+      - :doc:`clang </CPP/clang>`
+      -
+      -
+      -
+    * - :doc:`Notes </Notes/index>`
+      - :doc:`BYOC </Notes/BuildYourOwnComputer>`
+      - :doc:`CMakeTutorial </Notes/CMakeTutorialNotes>`
+      - :doc:`Games </Notes/Games>`
+      - :doc:`InstallBoostLib </Notes/InstallBoostLib>`
+    * -
+      - :doc:`InstallOhMyPosh </Notes/InstallOhMyPosh>`
+      - :doc:`Msys2 </Notes/Msys2>`
+      - :doc:`ReadTheDoc </Notes/ReadTheDoc>`
+      - :doc:`ResourcesLink </Notes/ResourcesLink>`
+    * -
+      - :doc:`Tcl </Notes/Tcl>`
+      - :doc:`TerminalOnWindows </Notes/TerminalOnWindows>`
+      - :doc:`WinDevEnvSetup </Notes/WinDevEnvSetup>`
+      - :doc:`clothes </Notes/clothes>`
+    * -
+      - :doc:`food </Notes/food>`
+      - :doc:`geometry </Notes/geometry>`
+      - :doc:`reStructuredtext </Notes/reStructuredtext>`
+      - :doc:`rstExample </Notes/rstExample>`
+    * -
+      - :doc:`software </Notes/software>`
+      - :doc:`sphinxbasics </Notes/sphinxbasics>`
+      -
+      -
+
+  
 
 .. list-table:: Quick Link
     :widths: 20 20 20 20 20
