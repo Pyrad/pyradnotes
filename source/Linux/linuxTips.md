@@ -672,6 +672,25 @@ The table below provides a quick reference to error numbers, error name and thei
 
 
 
+## Decompress a `xxx.tar.bz2` file
+
+- 首先解压成一个 `.tar`格式的打包文件
+
+  ```shell
+  bzip2 -dk xxx.tar.bz2
+  ```
+
+  注意这里的`-d`表示decompress，而`-k`表示保留原先的`.bz2`文件。
+  如果不添加`-k`选项，原先的`.bz2`文件，在解压之后会被自动删除。
+
+  这个命令会生成一个对应的打包文件：`xxx.tar`
+
+- 然后再使用`tar`命令提取打包文件即可。
+
+  ```shell
+  tar -xf xxx.tar
+
+
 
 
 
