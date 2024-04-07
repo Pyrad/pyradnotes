@@ -86,6 +86,16 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`sphinxbasics </Notes/sphinxbasics>`
       -
       -
+    * - :doc:`Markdown </Markdown/index>`
+      - :doc:`LatexMathSymbols </Markdown/LatexMathSymbols>`
+      - :doc:`MD Tutorial </Markdown/MarkDown.Tutorial.Obsidian.Version.2022.1.12>`
+      - :doc:`markdown </Markdown/markdown>`
+      -
+    * - :doc:`RealEstate </RealEstate/index>`
+      - :doc:`hfnumbers </RealEstate/hfnumbers>`
+      - :doc:`realestate </RealEstate/realestate>`
+      - :doc:`numbers2023 </RealEstate/resalenumbers2023>`
+      - :doc:`numbers2024 </RealEstate/resalenumbers2024>`
 
   
 
