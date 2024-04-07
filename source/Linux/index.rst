@@ -8,3 +8,4 @@ Linux
    linuxTips.md
    gdb.md
    LinuxELF.md
+   bash.md
