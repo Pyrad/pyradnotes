@@ -1,6 +1,10 @@
 # Vim Installation
 
 
+## How to make vim for win32 - Yongwei
+
+[https://github.com/adah1972/vim/wiki](https://github.com/adah1972/vim/wiki)
+
 
 ## Install gVim on Windows platform
 
