@@ -471,3 +471,13 @@ class UniquePointerPrinter:
   然后根据这个返回的名字字符串做判断。
 
 
+## 查看GDB当前加载的程序路径
+
+[Show the location of the executable in GDB](https://stackoverflow.com/questions/71518645/show-the-location-of-the-executable-in-gdb)
+
+```gdb
+info file
+```
+
+
+
