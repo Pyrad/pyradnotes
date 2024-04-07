@@ -69,6 +69,14 @@ $HOME/.vim/plugged/vim-snippets/UltiSnips/vim.snippets
 $HOME/.vim/plugged/vim-snippets/snippets/vim.snippets
 ```
 
+config文件对应的coc snippet文件路径，一般是如下：
+
+```shell
+~/.config/coc/ultisnippet/conf.snippets
+```
+
+
+
 ### 自动补全
 
 - 动补全默认是**自动开启**
