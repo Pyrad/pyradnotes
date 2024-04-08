@@ -9,3 +9,4 @@ Linux
    gdb.md
    LinuxELF.md
    bash.md
+   Emacs.md
