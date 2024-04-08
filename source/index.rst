@@ -97,27 +97,6 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`numbers2023 </RealEstate/resalenumbers2023>`
       - :doc:`numbers2024 </RealEstate/resalenumbers2024>`
 
-  
-
-.. list-table:: Quick Link
-    :widths: 20 20 20 20 20
-    :header-rows: 0
-
-    * - :doc:`Algorithms </AlgorithmsDataStructures/index>`
-      - :doc:`C/C++ </CPP/index>`
-      - :doc:`Linux </Linux/index>`
-      - :doc:`Python </Python/index>`
-      - :doc:`Geometry </Geometry/index>`
-    * - :doc:`Java </Java/index>`
-      - :doc:`VIM </Vim/index>`
-      - :doc:`TODO </TODO/index>`
-      - :doc:`English </English/index>`
-      - :doc:`Chinese </ChinesePoetry/index>`
-    * - :doc:`Golang </Go/index>`
-      - :doc:`FAL </FightAgainstLeviathan/index>`
-      - :doc:`Real Estate </RealEstate/index>`
-      -
-      -
 
 
 
