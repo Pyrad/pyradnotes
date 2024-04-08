@@ -28,7 +28,7 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`linuxTips </Linux/linuxTips>`
     * -
       - :doc:`linuxall </Linux/linuxall>`
-      -
+      - :doc:`Emacs </Linux/Emacs>`
       -
       -
     * - :doc:`Python </Python/index>`
