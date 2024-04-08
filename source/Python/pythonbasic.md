@@ -299,3 +299,30 @@ class foo(object):
     self.__dict__["data"] = dict()
 ```
 
+## Python - Use "x not in" or "not x in"
+
+["x not in" vs. "not x in" - StackOverflow](https://stackoverflow.com/questions/3481554/x-not-in-vs-not-x-in)
+
+根据链接中回答所述，良好的使用习惯应该是 `x not in`，而不是 `not x in`。
+
+如下，即为推荐用法。
+
+```python
+alist = [1, 2, 3]
+val = 0
+if val not in alist:
+  print("Not in alist")
+```
+
+
+## Python `if x is not None` or `if not x is None`?
+
+[Python `if x is not None` or `if not x is None`? - StackOverflow](https://stackoverflow.com/questions/2710940/python-if-x-is-not-none-or-if-not-x-is-none)
+
+类似上一条目，良好的使用习惯应该是 `if x is not None`，而不是 `if not x is None`，如下。
+
+```python
+val = 1
+if val is not None:
+  print("Value is not None")
+```
