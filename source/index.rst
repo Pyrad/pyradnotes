@@ -11,17 +11,17 @@ A Tour of Life (Pyrad's Notes!)
     :widths: 20 20 20 20 20
     :header-rows: 0
 
-    * - :doc:`Geometry </Geometry/index>`
+    * - :math:`\star` :doc:`Geometry </Geometry/index>`
       - :doc:`CGAA3 </Geometry/ComputationalGeometryAA3rd>`
       - :doc:`GeometryRelated </Geometry/GeometryRelated>`
       -
       -
-    * - :doc:`Git </Git/index>`
+    * - :math:`\star` :doc:`Git </Git/index>`
       - :doc:`git </Git/git>`
       -
       -
       -
-    * - :doc:`Linux </Linux/index>`
+    * - :math:`\star` :doc:`Linux </Linux/index>`
       - :doc:`LinuxELF </Linux/LinuxELF>`
       - :doc:`bash </Linux/bash>`
       - :doc:`gdb </Linux/gdb>`
@@ -31,7 +31,7 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`Emacs </Linux/Emacs>`
       -
       -
-    * - :doc:`Python </Python/index>`
+    * - :math:`\star` :doc:`Python </Python/index>`
       - :doc:`Extending </Python/ExtendingAndEmbeddingThePythonInterpreter>`
       - :doc:`NumpyVisualIntro </Python/NumpyVisualIntro>`
       - :doc:`numpybasics </Python/numpybasics>`
@@ -41,12 +41,12 @@ A Tour of Life (Pyrad's Notes!)
       -
       -
       -
-    * - :doc:`Vim </Vim/index>`
+    * - :math:`\star` :doc:`Vim </Vim/index>`
       - :doc:`vim </Vim/vim>`
       - :doc:`vim_install </Vim/vim_install>`
       - :doc:`vim_plugin </Vim/vim_plugin>`
       -
-    * - :doc:`CPP </CPP/index>`
+    * - :math:`\star` :doc:`CPP </CPP/index>`
       - :doc:`CMakeBasics </CPP/CMakeBasics>`
       - :doc:`CMake_INTERFACE </CPP/CMake_PRIVATE_PUBLIC_INTERFACE>`
       - :doc:`CppAdvanced </CPP/CppAdvanced>`
@@ -61,7 +61,7 @@ A Tour of Life (Pyrad's Notes!)
       -
       -
       -
-    * - :doc:`Notes </Notes/index>`
+    * - :math:`\star` :doc:`Notes </Notes/index>`
       - :doc:`BYOC </Notes/BuildYourOwnComputer>`
       - :doc:`CMakeTutorial </Notes/CMakeTutorialNotes>`
       - :doc:`Games </Notes/Games>`
@@ -86,12 +86,12 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`sphinxbasics </Notes/sphinxbasics>`
       -
       -
-    * - :doc:`Markdown </Markdown/index>`
+    * - :math:`\star` :doc:`Markdown </Markdown/index>`
       - :doc:`LatexMathSymbols </Markdown/LatexMathSymbols>`
       - :doc:`MD Tutorial </Markdown/MarkDown.Tutorial.Obsidian.Version.2022.1.12>`
       - :doc:`markdown </Markdown/markdown>`
       -
-    * - :doc:`RealEstate </RealEstate/index>`
+    * - :math:`\star` :doc:`RealEstate </RealEstate/index>`
       - :doc:`hfnumbers </RealEstate/hfnumbers>`
       - :doc:`realestate </RealEstate/realestate>`
       - :doc:`numbers2023 </RealEstate/resalenumbers2023>`
