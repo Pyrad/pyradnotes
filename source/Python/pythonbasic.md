@@ -326,3 +326,16 @@ val = 1
 if val is not None:
   print("Value is not None")
 ```
+
+## Python 长字符串使用 `.format()`格式化
+
+```python
+vstr = "END"
+fstr = ("This is a very long long long long "
+		"long long long long long long long "
+		"long long long long long long long "
+		"long long long long long long long "
+		"long long long long long long line {}").format(vstr)
+```
+
+上面的`fstr`就是一行很长的字符串，并不是多行字符串。
