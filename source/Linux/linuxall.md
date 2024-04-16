@@ -119,3 +119,9 @@ If using `[[ ]]` for if-condition, then `-eq`, `-ne` and etc should be used, `==
 
 If trying to use `<`, `>`, ... arithematic operators, using `(())` for if-condition
 
+
+## Patch file explained
+
+[What is the format of a patch file? - Stack Overflow](https://stackoverflow.com/questions/987372/what-is-the-format-of-a-patch-file)
+
+
