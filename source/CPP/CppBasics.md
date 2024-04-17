@@ -193,3 +193,16 @@ g++ -E source_file.cpp > source_file_preprocess_out.cpp
 ## Cheat Sheets & Infographics
 
 [Cheat Sheets & Infographics](https://hackingcpp.com/cpp/cheat_sheets.html)
+
+
+## Foreign Function Interface
+
+A foreign function interface (FFI) is a mechanism by which a program written in one programming language can call routines or make use of services written or compiled in another one. An FFI is often used in contexts where calls are made into binary dynamic-link library.
+
+[Foreign Function Interface - Wikipedia](https://en.wikipedia.org/wiki/Foreign_function_interface)
+
+
+# Checking the code generated implicitly by the C++ compiler
+
+https://stackoverflow.com/questions/24858014/checking-the-code-generated-implicitly-by-the-c-compiler
+
