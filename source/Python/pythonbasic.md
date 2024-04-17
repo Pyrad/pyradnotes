@@ -339,3 +339,10 @@ fstr = ("This is a very long long long long "
 ```
 
 上面的`fstr`就是一行很长的字符串，并不是多行字符串。
+
+
+
+
+## Python setuptool for automation
+
+[https://www.youtube.com/watch?v=Yt-UF7fNLJE](https://www.youtube.com/watch?v=Yt-UF7fNLJE)
