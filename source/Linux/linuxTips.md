@@ -768,7 +768,22 @@ diff -rBNu src.orig/java/org/apache/nutch/analysis/NutchAnalysisConstants.java s
   - 没有 `-` 或 `+` 起始的行，表示的是不变的行。
 
 
+# Shell read file line by line
 
+```shell
+fname="myfile.txt"
+while IFS= read -r line; do
+  echo "$line"
+done < $fname
+```
+
+# maxdirsize
+
+[What is maxdirsize](https://kb.netapp.com/onprem/ontap/os/What_is_maxdirsize)
+
+Maxdirsize determines the number of files a directory can hold.
+
+The default value of `maxdirsize` is 320M, which is 320\*1024\*1024=335544320.
 
 
 
