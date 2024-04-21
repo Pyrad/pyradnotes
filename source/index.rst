@@ -29,7 +29,7 @@ A Tour of Life (Pyrad's Notes!)
     * -
       - :doc:`linuxall </Linux/linuxall>`
       - :doc:`Emacs </Linux/Emacs>`
-      -
+      - :doc:`Makefile </Linux/makefile>`
       -
     * - :math:`\star` :doc:`Python </Python/index>`
       - :doc:`Extending </Python/ExtendingAndEmbeddingThePythonInterpreter>`
