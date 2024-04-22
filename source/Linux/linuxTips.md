@@ -239,6 +239,8 @@ $ cat /dev/null > filename
 
 ### `tar` 命令常用选项的含义
 
+[Linux tar command](https://linuxize.com/post/how-to-create-and-extract-archives-using-the-tar-command-in-linux/)
+
 - `tar`，含义是**T**ape **AR**chive。
 
 命令格式：
