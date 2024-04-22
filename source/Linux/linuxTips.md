@@ -235,8 +235,58 @@ $ cat /dev/null > filename
 ```
 
 
+## 使用tar命令压缩和解压
 
-## XZ格式的文件解压
+### `tar` 命令常用选项的含义
+
+- `tar`，含义是**T**ape **AR**chive。
+
+命令格式：
+
+```shell
+tar [OPERATION_AND_OPTIONS] [ARCHIVE_NAME] [FILE_NAME(s)]
+```
+
+**Operations**：
+- `-c`，`--create`，表示创建新的 `tar` 归档包文件
+- `-x`，`--extract`，表示从归档包文件中抽取归档文件
+- `-t`，`-list`，表示列出归档包文件中包含的文件
+
+**Options**
+- `-v`，`--verbose`，表示显示正在处理的文件（列表）
+- `-f`，后面要跟上归档文件包的名称
+
+Archive_Name：表示归档包文件名称
+
+File_Names：表示要从归档包中抽取出的文件。如果省略，表示抽取包中所有文件。
+
+
+
+### 解压 `tar.gz` 格式的压缩包
+
+```shell
+tar -zxf FILE_NAME.tar.gz
+```
+
+### 解压 `xz` 格式的压缩包
+
+```shell
+tar -Jxf FILE_NAME.tar.xz
+```
+
+这里 `-J` 表示使用 `xz` 命令来解压
+
+### 解压 `bz2` 格式的压缩包
+
+```shell
+tar -jxf FILE_NAME.tar.gz
+```
+
+这里 `-j` 表示使用 `bzip2` 命令来解压
+
+
+
+### 分步解压 `XZ` 格式的压缩包文件
 
 ```shell
 xz -kd <FILE_NAME>
@@ -247,9 +297,27 @@ xz -kd <FILE_NAME>
 tar xf <FILE_NAME>
 ```
 
+### 分步解压 `.tar.bz2` 格式的压缩包文件
+
+- 首先解压成一个 `.tar`格式的打包文件
+
+  ```shell
+  bzip2 -dk xxx.tar.bz2
+  ```
+
+  注意这里的`-d`表示decompress，而`-k`表示保留原先的`.bz2`文件。
+  如果不添加`-k`选项，原先的`.bz2`文件，在解压之后会被自动删除。
+
+  这个命令会生成一个对应的打包文件：`xxx.tar`
+
+- 然后再使用`tar`命令提取打包文件即可。
+
+  ```shell
+  tar -xf xxx.tar
+  ```
 
 
-## tar 打包
+### tar 打包
 
 ```shell
 tar -czf <TARGET>.tar.gz <FILES_TO_BE_COMPRESSED>
@@ -672,24 +740,6 @@ The table below provides a quick reference to error numbers, error name and thei
 
 
 
-## Decompress a `xxx.tar.bz2` file
-
-- 首先解压成一个 `.tar`格式的打包文件
-
-  ```shell
-  bzip2 -dk xxx.tar.bz2
-  ```
-
-  注意这里的`-d`表示decompress，而`-k`表示保留原先的`.bz2`文件。
-  如果不添加`-k`选项，原先的`.bz2`文件，在解压之后会被自动删除。
-
-  这个命令会生成一个对应的打包文件：`xxx.tar`
-
-- 然后再使用`tar`命令提取打包文件即可。
-
-  ```shell
-  tar -xf xxx.tar
-  ```
 
 ## Patch file explained
 
