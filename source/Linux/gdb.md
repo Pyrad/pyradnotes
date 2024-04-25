@@ -483,5 +483,37 @@ info file
 
 [https://blog.csdn.net/kafeiflynn/article/details/6712888](https://blog.csdn.net/kafeiflynn/article/details/6712888)
 
+## GDB watch std::vector
+
+[How to "watch" the size of a C++ std::vector in gdb? - StackOverflow](https://stackoverflow.com/questions/8249048/how-to-watch-the-size-of-a-c-stdvector-in-gdb)
+
+假设 `vec` 是一个 `std::vector<int>`。
+
+```gdb
+(gdb) p vec._M_impl._M_finish
+$2 = (int *) 0x0
+
+(gdb) p &vec._M_impl._M_finish
+$3 = (int **) 0x7fffffffd878
+
+(gdb) watch *$3
+Hardware watchpoint 2: *$3
+
+(gdb) c
+
+Hardware watchpoint 3: *$4
+
+Old value = (int *) 0x0
+New value = (int *) 0x604010
+
+```
+
+简而言之：
+
+- 获得这个 `std::vector<int>` 的底层数组实现的尾部指针：`vec._M_impl._M_finish`
+
+- 添加硬件断点，检测存储这个尾部指针的地址上，内容的变化，也就是这个尾部指针的值的变化。
+
+- 继续执行程序，直到检测到这个尾部指针值的变化。
 
 
