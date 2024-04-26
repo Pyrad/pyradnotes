@@ -24,5 +24,7 @@ https://en.wikipedia.org/wiki/Computational_geometry
 
 [你工作中最推荐的 C/C++ 程序库有哪些，为什么？ - 知乎](https://www.zhihu.com/question/51134387)
 
+## Bentley-Ottmann Sweep line algorithm
 
+[Bentley-Ottmann Sweep line algorithm](https://github.com/ideasman42/isect_segments-bentley_ottmann)
 
