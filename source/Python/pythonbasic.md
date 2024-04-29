@@ -346,3 +346,8 @@ fstr = ("This is a very long long long long "
 ## Python setuptool for automation
 
 [https://www.youtube.com/watch?v=Yt-UF7fNLJE](https://www.youtube.com/watch?v=Yt-UF7fNLJE)
+
+
+## Building and testing a hybrid Python/C++ package
+
+[Building and testing a hybrid Python/C++ package](https://www.benjack.io/building-and-testing-a-hybrid-python/c-package/)

@@ -215,3 +215,7 @@ A foreign function interface (FFI) is a mechanism by which a program written in 
 
 https://stackoverflow.com/questions/24858014/checking-the-code-generated-implicitly-by-the-c-compiler
 
+
+## Building and testing a hybrid Python/C++ package
+
+[Building and testing a hybrid Python/C++ package](https://www.benjack.io/building-and-testing-a-hybrid-python/c-package/)
