@@ -202,7 +202,16 @@ A foreign function interface (FFI) is a mechanism by which a program written in 
 [Foreign Function Interface - Wikipedia](https://en.wikipedia.org/wiki/Foreign_function_interface)
 
 
-# Checking the code generated implicitly by the C++ compiler
+## Doxygen - How to create a doxygen doc for C++ STL?
+
+[https://www.doxygen.nl/manual/external.html](https://www.doxygen.nl/manual/external.html)
+
+[https://en.cppreference.com/w/Cppreference:Archives](https://en.cppreference.com/w/Cppreference:Archives)
+
+[https://flcwiki.desy.de/How%20to%20document%20your%20code%20using%20doxygen](https://flcwiki.desy.de/How%20to%20document%20your%20code%20using%20doxygen)
+
+
+## Checking the code generated implicitly by the C++ compiler
 
 https://stackoverflow.com/questions/24858014/checking-the-code-generated-implicitly-by-the-c-compiler
 
