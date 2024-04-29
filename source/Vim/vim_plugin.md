@@ -101,6 +101,12 @@ config文件对应的coc snippet文件路径，一般是如下：
 
 
 
+### How to write a coc.nvim extension
+
+[Sam's world](https://samroeca.com/)
+
+[https://samroeca.com/coc-plugin.html#coc-plugin](https://samroeca.com/coc-plugin.html#coc-plugin)
+
 
 
 
