@@ -838,6 +838,20 @@ Maxdirsize determines the number of files a directory can hold.
 The default value of `maxdirsize` is 320M, which is 320\*1024\*1024=335544320.
 
 
+## `cut` 删除文件特定列
+
+删除第3至最后所有列
+
+```shell
+cut -d " " -f 3- my_file.txt
+```
+
+删除第3至第12列
+
+```shell
+cut -d " " -f 3-12 my_file.txt
+```
+
 
 
 
