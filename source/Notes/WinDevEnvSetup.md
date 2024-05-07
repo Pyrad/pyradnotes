@@ -258,7 +258,7 @@ I'll edit my former post with a header so that people stumbling upon this thread
 }
 ```
 
-## VSCode - Mark all files in a folder as read-only
+### VSCode - Mark all files in a folder as read-only
 
 Prerequisite - VS Code version >= 1.79
 
@@ -267,6 +267,30 @@ Prerequisite - VS Code version >= 1.79
 3. Add pattern to "Files: Readonly Include"
 4. To mark all files in a directory recursively, use 2 wild chars `*`, for example, `C:/path/to/a/root/directory/**`.
 5. If only ONE wild char `*` is used, for example, `C:/path/to/a/root/directory/*`, only files in `C:/path/to/a/root/directory` is marked as read-only, the files in its sub-directories are NOT marked as read-only.
+
+
+
+### VS Code speedup
+
+官网：[https://code.visualstudio.com/#alt-downloads](https://code.visualstudio.com/#alt-downloads)
+
+官网下载速度有时候快有时候慢。
+
+首先在官网找到需要下载的文件，点击下载。
+
+复制载地址，然后将域名的部分更换为如下内容：
+
+```
+vscode.cdn.azure.cn
+```
+
+例如更新后的地址为
+
+```
+https://vscode.cdn.azure.cn/stable/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/code_1.52.1-1608136922_amd64.deb
+```
+
+这个就是国内的镜像了点开后你会发现速度直接起飞。
 
 
 
