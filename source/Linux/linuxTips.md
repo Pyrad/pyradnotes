@@ -852,7 +852,13 @@ cut -d " " -f 3- my_file.txt
 cut -d " " -f 3-12 my_file.txt
 ```
 
+## awk 截取最后几列
 
+```shell
+awk '{print $(NF-1), $NF}' tmptest.info
+```
+
+这里 `$NF` 是按照分隔符切分之后，field的个数。
 
 
 
