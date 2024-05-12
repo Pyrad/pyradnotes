@@ -457,3 +457,38 @@ Vim - Python: Jump to the begin/end of function/block
 [https://vi.stackexchange.com/questions/7262/end-of-python-block-motion](https://vi.stackexchange.com/questions/7262/end-of-python-block-motion)
 
 
+## Vim 中使用 `printf()` 做替换
+
+Using printf() in substituation
+
+[Using vim's printf in a substitution - Stack Overflow](https://stackoverflow.com/questions/41330466/using-vims-printf-in-a-substitution)
+
+```vim
+:%s/\(\d\+\)\/\(\d\+\)\/\(\d\+\)/\=printf('%d-%02d-%02d 00:00:00', submatch(3), submatch(1), submatch(2))/
+```
+
+再比如，得到当前行行号，并插入到替换之后的字符串中去。
+
+```vim
+262,1869s/\(^\S.*\s\+{\)/\=printf("%s LTPRINT(%d);", submatch(1), line('.'))/gc
+```
+
+这个命令，会把如下的字符串
+
+```shell
+[ \t]*\n            {
+<sanity_check>.*    {
+```
+
+替换成如下的形式，
+
+```shell
+[ \t]*\n            { LTPRINT(31);
+<sanity_check>.*    { LTPRINT(32);
+```
+
+这里的 `LTPRINT` 实际上是一个 macro，如下，
+
+```cpp
+#define LTPRINT(x) fprintf(p3stdout, "[LTM] %s\n", x)
+```
