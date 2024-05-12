@@ -219,3 +219,12 @@ https://stackoverflow.com/questions/24858014/checking-the-code-generated-implici
 ## Building and testing a hybrid Python/C++ package
 
 [Building and testing a hybrid Python/C++ package](https://www.benjack.io/building-and-testing-a-hybrid-python/c-package/)
+
+## Flex & Bison (pdf) by John Levine
+
+[Flex & Bison - John Levine](https://web.iitd.ac.in/~sumeet/flex__bison.pdf)
+
+[Compiler Construction using Flex and Bison](https://www.admb-project.org/tools/flex/compiler.pdf)
+
+
+
