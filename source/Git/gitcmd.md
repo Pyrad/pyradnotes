@@ -675,3 +675,54 @@ Refer to [git-for-each-ref](https://git-scm.com/docs/git-for-each-ref) and [git-
 
 [Git End-of-Line Issues](https://learn.openwaterfoundation.org/owf-learn-git/eol/)
 
+
+## Not possible to fast-forwad, aborting
+
+参考链接：[git - Error "Fatal: Not possible to fast-forward, aborting" - Stack Overflow](https://stackoverflow.com/questions/13106179/error-fatal-not-possible-to-fast-forward-aborting)
+
+
+一般情况下，如果本地的repo进行了修改，commit了，但没有push，同时remote又已经接受了其他repo的commit push，那么本地的repo在做push的时候就会出现类似下面的问题，
+
+```shell
+To github.com:Pyrad/pyradnotes.git
+! [rejected] master -> master (fetch first)
+error: failed to push some refs to 'github.com:Pyrad/pyradnotes.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
+hint: See 'Note about fast-forwards' in 'git push --hlep' for details.
+```
+
+如果此时再执行 `git pull`，并且当前的策略设置是 `fast-forwards`，那么就会出现如下问题，
+
+```shell
+Enumerating objects: 11, done.
+Counting objects: 100% (11/11), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 42.36 KiB | 116.00 KiB/s, done.
+Total 6 (delta 4), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (4/4), completed with 4 local objects.
+fatal: Not possible to fast-forward, aborting.
+```
+
+为了临时解决这个问题，可以使用 `--no-ff` 选项，临时避开这个问题，
+
+```shell
+git pull --no-ff
+```
+
+此时再查看当前repo的状态，就会发现存在没有push到remote的commits，
+
+```shell
+git status
+
+On branch master
+Your branch is ahead of 'origin/master' by 2 commits.
+  (Use "git push" to publish your local commits)
+
+nothing to commit, working tree clean.
+```
+
+此时在使用 `git push` ，把当前repo中还没提交的commit再提交即可。
