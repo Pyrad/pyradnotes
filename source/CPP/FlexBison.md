@@ -191,4 +191,276 @@ bison 规则中，使用的是单个分号 `;` 用来分隔不同的rule。
 一个 symbol 对应的值（value），在 action 中用 `$$` 表示。
 
 
+## Chapter 2 Using Flex
+
+### Regular Expressions
+
+这一节主要介绍了用于正则表达式中的metalanguage，即用于匹配字符的特殊字符标识。
+
+^ -> circumflex
+
+virtue n. 高尚的道德，德行；美德，
+
+punctuation n. 标点符号，标点符号用法
+
+#### Regular Expression Examples
+
+一个用来匹配 Fortan-style 的数字的正则表达式
+
+```flex
+[-+]?([0-9]*\.?[0-9]+|[0-9]+\.)(E(+|-)?[0-9]+)?
+```
+
+#### How Flex Handles Ambiguous Patterns
+
+flex 解决 conflict 的两个办法
+
+- 当输入匹配时，取最长的匹配
+
+- 当有相同匹配时，取最先出现的匹配
+
+#### Context-Dependent Tokens
+
+Flex 提供了叫 start state 的状态，用来解决和上下文相关的 token 匹配问题。
+
+
+### File I/O in Flex Scanners
+
+（这一节讲的主要是flex如何读入文件，而不是标准输入）
+
+flex scanner 默认的输入是 `stdin` （标准输入），由变量 `yyin` 标识。
+
+如果要改变这个默认输入，比如使其从文件中读入字符，可以对 `yyin` 变量进行赋值。
+
+比如讲打开文件的指针赋值给 `yyin` 。
+
+```cpp
+yyin = fopen(argv[1], "r")
+```
+
+如果程序中对 `yyin` 没有赋值，那么 `yylex()` 函数会默认将其赋值到 `stdin` 。
+
+这里看起来 `perror()` 也是 flex library 里面提供的函数。
+
+lex scanner 扫描到 `yyin` 的结尾时，会调用函数 `yywrap()`。
+
+这个做法原先的目的是，如果有下一个需要读入的文件， `yywrap()` 可以用来调整 `yyin` ，
+然后返回 `0` ， 以便继续扫描。
+
+如果没有下一个文件，当前已经读到了结尾，那么它就返回 `1` ，告诉 lex scanner 扫描已经结束。
+
+这个机制目前看起来已经没有用了，但 flex 和 lex 仍然保留了这个机制。
+
+目前的 flex 版本中，可以使用 `%option noyywrap` 来告诉 scanner 不需要调用函数 `yywrap()`。
+
+
+### Reading Several Files
+
+如果要连续读入（扫描）多个文件，flex 提供了函数 `yyrestart()` 。
+
+这个函数的参数是文件指针，需要在 `yylex()` 之前调用。
+
+
+```cpp
+for (int i = 0; i < argc; i++) {
+   // ...
+   FILE *f = fopen(argv[i], "r");
+   yyrestart(f);
+   yylex();
+   fclose(f);
+   // ...
+}
+```
+
+flex 也通过了 `YY_NEW_FILE` ，它相当于是 `yyrestart(yyin)` 。
+
+
+### The I/O Structure of a Flex Scanner
+
+flex 默认的输入是 `stdin` ，默认的输出是 `stdout` 。但它们都可以被更改。
+
+#### Input to a Flex Scanner
+
+最早的 lex 是从 `yyin` 中逐个字符读入进行扫描的。
+
+Flex scanner 从 `stdin` 和文件读入的区别是，从文件中读入可以一次读入一大块，
+但从 `stdin` 交互式读入时，它一次读入一个字符。
+
+flex 有一个用来描述单个输入的数据结构 `YY_BUFFER_STATE` ，它通常包含一个文件指针，
+以及其他一些变量和标识。
+
+通常这个文件指针是和要读入的文件相关联的，但也可以直接创建一个没有关联到文件的 `YY_BUFFER_STATE` ，
+从而直接扫描内存的中的字符串。
+
+典型的使用过程，
+
+- 使用函数 `yy_create_buffer` 创建一个 `YY_BUFFER_STATE` 结构，可以和文件相关联或不关联。
+
+- 使用函数 `yy_switch_to_buffer` 告诉 scanner 使用刚才创建的 buffer 来扫描。
+
+- 使用 `yylex()` 或其他（比如 `yyparse()` ） 调用扫描器开始扫描。
+
+```cpp
+YY_BUFFER_STATE bp;
+extern FILE* yyin;
+
+// ... whatever the program does before the first call to the scanner
+if (!yyin)
+   yyin = stdin; // default input is stdin
+
+// YY_BUF_SIZE defined by flex, typically 16K
+bp = yy_create_buffer(yyin, YY_BUF_SIZE );
+
+// tell it to use the buffer we just made
+yy_switch_to_buffer(bp);
+
+// or yyparse() or whatever calls the scanner
+yylex();
+```
+
+如果是扫描多个文件，还是要用到函数 `yyrestart()` 。
+（还要创建对应个` YY_BUFFER_STATE` 结构？然后再 scan？）
+
+还有其他的函数用来创建被扫描的buffer
+
+- `yy_scan_string("string")` ： 扫描以 `\0` 字符结尾的字符串。
+
+- `yy_scan_buffer(char *bas, size)` ： 扫描已知长度的buffer。
+
+`YY_BUFFER_STATE` 使用 `yy_create_buffer()` 创建，
+使用完毕时候可以使用 `yy_delete_buffer()` 来销毁。
+
+
+允许重定义宏 `YY_INPUT` 提供了管理输入的最大灵活性。
+
+```cpp
+#define YY_INPUT(buf,result,max_size) ...
+```
+
+机制是，当 scanner 的 input buffer 为空时， `YYINPUT` 就会被调用。
+`buf` 是（字符）缓冲区， `max_size` 是其长度， `result` 是读入的字符放置的位置（？）。
+
+Flex 还提到了两个宏 `inptu()` 和 `unput()`。
+
+- `input()` 是从输入流冲返回下一个字符。
+
+- `unput(c)` 是把一个字符放回到输入流中去。
+
+
+总结，三种管理输入层次
+
+- 直接设置 `yyin` 来扫描文件
+
+- 创建 ` YY_BUFFER_STATE` 来扫描
+
+- 重定义 `YY_INPUT`。
+
+
+#### Flex Scanner Output
+
+早期版本的 lex 的行为，会在scanner 的结束处加入类似如下的规则，
+用来匹配input中没有匹配到其他pattern的字符串，然后拷贝到输出里去。
+
+```flex
+. ECHO;
+
+#define ECHO fwrite(yytext, yyleng, 1, yyout)
+```
+
+因为这样写容易出现bug，所以 flex 提供了 `%option nodefault` ，避免
+加入这样一条默认的rule。
+
+在这种情况下，如果其他的rule没有覆盖所有可能出现的情况， flex 就会报错。
+
+
+### Start States and Nested Input Files
+
+本节讲解了一个例子， 说明了如何创建、切换和销毁 `YY_BUFFER_STATE` ，
+并利用它来读取扫描嵌套的 `#include<XXX>` 这样的文件。
+
+在这个例子中，介绍了如何切换 `YY_BUFFER_STATE` ，并保留之前已经读到的内容，
+并不使用 `yyrestart()` 重新开始扫描的技术。
+
+
+以 `%x` 开始的行定义的是一个 start state 。
+
+flex 默认会定义一个叫做 `INITIAL` 的 start state 。
+
+在rule部分，用尖括号 `<` `>` 括起来的 start state ，后面跟上要匹配的pattern，
+表示只有在这种 start state 的情况下，这种 pattern才能被匹配到。如下，
+
+```cpp
+%x IFILE
+<IFILE>[^ \t\n\">]+ { /* ... */ }
+```
+
+`%x` 表示 exclusive start state，表示只有这种状态下的pattern才能被匹配到。
+
+`%s` 表示 inclusive start state，表示其他状态下的pattern都能被匹配到。
+
+在 action code 里面，有一个 `BEGIN` 的宏，用来切换 start state 。
+
+
+`yylineno` 是 flex 提供的一个用来记录当前行号的 int 变量。
+它通过 `%option yylineno` 来声明，flex 据此定义一个叫做 `yylineno` 的变量，用来维护行号。
+
+它的效果是，每当 scanner 读到一个换行符的时候，这个变量就自增 `1` ；如果 scanner 有所谓的
+"backs up over a newline" ， 这个变量自减 `1` 。
+
+flex 提供的宏 `yytermnate()` 返回一个值 `YY_NULL` ，它实际上是值 `0` 。
+Bison parser 把它当做是输入的终结标识。
+
+
+`<<EOF>>` 是一个特殊的 pattern ，扫描到文件结尾时，会匹配到它。
+
+### Symbol Tables and a Concordance Generator
+
+这一节提到的 **symbol table** ，概念和编译器中的 symbol table 是相同的。
+
+它是用来记录输入中的名字的。
+
+这节提到了一个叫做 **concordance** 的概念，它实际上就是用来记录输入中每个word出现的行号（以及文件名）。
+
+**concordance** 叫关键字似乎比较合适。
+
+
+#### Managing Symbol Tables
+
+本节主要介绍了一个如何建立 symbol table 的例子，通过这个例子说明了 flex scanner 用到的一些特性。
+
+本节提到了 `yylineno` 这个 option。
+
+`yylineno` 是 flex 提供的一个用来记录当前行号的 int 变量。
+它通过 `%option yylineno` 来声明，flex 据此定义一个叫做 `yylineno` 的变量，用来维护行号。
+
+它的效果是，每当 scanner 读到一个换行符的时候，这个变量就自增 `1` ；如果 scanner 有所谓的
+"backs up over a newline" ， 这个变量自减 `1` 。
+
+但是如果是读入类似 `#include` 这样的形式，那么仍然需要手动把 `yylineno` 设置为 `1`
+（ `#include` 开始时），或设置为之前保存的值（`#include` 结束时）。
+
+提到另外一个 option 是 `case-insensitive` ， 它表示 flex 不区分输入的大小写，不过它也不会修改输入。
+
+本节例子里面提到的 symbol table ，其实就是一个 `symbol` 数据结构的数组，每个元素包含名字（指针），
+以及一个reference的列表。
+
+
+本节的例子中，还提到了一个叫做 `hashing with linear probing` 的技术。
+
+它是通过计算hash的办法，首先把一个字符串转换为一个数组的索引，然后查看是否是要搜索的元素。
+如果不是，就从此处开始，依次向后查找。
+
+### C Language Cross-Reference
+
+本节讲述了另外一个例子，其中包含了本章中所学到的 flex 的技术。
+
+
+在 lex 文件的 declaration 部分，似乎可以对pattern起名字，以便后续使用。
+比如，例子里面给如下三个pattern起了名字，
+
+```flex
+UCN (\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8})
+EXP ([Ee][-+]?[0-9]+)
+ILEN ([Uu](L|l|LL|ll)?|(L|l|LL|ll)[Uu]?)
+`
 
