@@ -22,3 +22,4 @@ Notes
    clothes.md
    food.md
    Games.md
+   LearningGPU.md
