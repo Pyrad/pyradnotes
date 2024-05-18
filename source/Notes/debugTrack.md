@@ -50,6 +50,17 @@
 
 ---
 
+发现了 CuPy 的 ndarray 是用 **Cython** 实现的，定义在如下的源文件中
+
+```shell
+cupy/_core/core/ndarray.pyd
+cupy/_core/core/ndarray.pyx
+```
+
+其中 `cupy/_core/core/ndarray.pyd` 的 Cython 的声明文件（看起来类似C的头文件），而 `cupy/_core/core/ndarray.pyx` 似乎是Cython 的定义文件（看起来类似C的源文件）。
+
+---
+
 NumPy 中的 NEP 是 **N**umPy **E**hancement **P**roposals，链接
 
 - [NumPy NEPs Content - NumPy](https://numpy.org/neps/content.html)
