@@ -23,3 +23,4 @@ Notes
    food.md
    Games.md
    LearningGPU.md
+   debugTrack.md
