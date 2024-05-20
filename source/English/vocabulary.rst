@@ -129,6 +129,12 @@ Vocabulary  (reStructuredtext)
     * - **ASCII**
       - Read as 'ask ee'
       - *n.* America Standard Code for Information Interchange
+    * - **monkey patch**
+      - n/a
+      - *n.* 猴补丁，是一种很脏的编程技巧，用拼凑代码的方法修改程序逻辑，
+        这种技巧也叫鸭子双关。
+        猴补丁意思是用类似双关的技巧拼凑出和常规程序相左的程序逻辑，
+        这种技巧只会在运行时刻生效。
 
 
 
