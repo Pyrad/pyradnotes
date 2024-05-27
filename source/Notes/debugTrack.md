@@ -86,3 +86,101 @@ coercion /kəʊˈɜːʃ(ə)n/ n. 强迫，胁迫；高压政治，威压
 unilateral /ˌjuːnɪˈlætrəl/ adj. 单方的，单边的；单侧的，单面的；（父母）单系的；舌边音
 
 reflexive /rɪˈfleksɪv/ adj. （词或词形）反身的；反射性的，本能反应的；（关系）自反的；考虑自身影响的；n. 反身词
+
+
+## 2024-05-27
+
+PyTorch 源码检视
+
+Python 中的 `class Tensor` 定义在文件 `$srcroot/torch/_tensor.py` 中，它继承自另一个 `class torch._C.TensorBase` 。
+
+`class torch._C.TensorBase` 在文件 `torch/_C/__init__.pyi.in` 中，这个文件似乎是中间文件，它会被用来生成最终定义 `class torch._C.TensorBase` 的 C文件（还不是十分确定？）
+
+在文件 `torch/_C/__init__.pyi.in` 中 `class torch._C.TensorBase` 出现的地方，有如下注释：
+
+```python
+# Defined in torch/csrc/autograd/python_variable.cpp
+class TensorBase(metaclass=_TensorMeta):
+   # ...
+```
+
+说明
+
+（一） `class torch._C.TensorBase` 应该是定义在 `torch/csrc/autograd/python_variable.cpp` 里面的。
+
+（二）`class torch._C.TensorBase` 应该还继承了一个metaclass叫做 `class _TensorMeta`。
+
+在文件 `torch/csrc/autograd/python_variable.cpp` 中，确实找到了 `class torch._C.TensorBase` 和 `class _TensorMeta` 的定义，它们实际上是使用CPython扩展出来的新类型（即class）：
+
+```cpp
+PyTypeObject THPVariableMetaType = {
+    PyVarObject_HEAD_INIT(
+        DEFERRED_ADDRESS(&PyType_Type),
+        0) "torch._C._TensorMeta", /* tp_name */
+    sizeof(THPVariableMeta), /* tp_basicsize */
+    // ...
+    nullptr, /* tp_new */
+};
+
+PyTypeObject THPVariableType = {
+    PyVarObject_HEAD_INIT(
+        &THPVariableMetaType,
+        0) "torch._C.TensorBase", /* tp_name */
+    sizeof(THPVariable), /* tp_basicsize */
+    0, /* tp_itemsize */
+    // ...
+    // Although new is provided here, it is illegal to call this with cls ==
+    // THPVariableMeta.  Instead, subclass it first and then construct it
+    THPVariable_pynew, /* tp_new */
+};
+
+PyObject* THPVariable_pynew(
+    PyTypeObject* type,
+    PyObject* args,
+    PyObject* kwargs) {
+  // ...
+  auto tensor = torch::utils::base_tensor_ctor(args, kwargs);
+  // WARNING: tensor is NOT guaranteed to be a fresh tensor; e.g., if it was
+  // given a raw pointer that will refcount bump
+  // NB: base_tensor_ctor can call into dispatched ATen functions (e.g.,
+  // alias(), lift_fresh()) which can return Tensor subclasses.  We allow
+  // these to be passed on directly.
+  return THPVariable_NewWithVar(
+      type,
+      std::move(tensor),
+      c10::impl::PyInterpreterStatus::MAYBE_UNINITIALIZED,
+      /*allow_preexisting_pyobj=*/true);
+  END_HANDLE_TH_ERRORS
+}
+
+```
+
+可以看到定义  `class torch._C.TensorBase` 中，说明了创建这个新类型的函数是 `THPVariable_pynew` ，而这个函数就在这个class定义的后面，它调用了 `torch::utils::base_tensor_ctor()` 来解析传入的参数（列表参数 `args` 和字典参数 `kwargs` ）。
+
+函数  `torch::utils::base_tensor_ctor()` 定义在 `torch/csrc/utils/tensor_new.h` 和  `torch/csrc/utils/tensor_new.cpp` 中，而这个函数就只是直接调用另外一个函数 `legacy_tensor_generic_ctor_new()` 。
+
+函数 `legacy_tensor_generic_ctor_new()` 也定义在  `torch/csrc/utils/tensor_new.cpp` 中，它创建了一个叫做 `struct PythonArgParser` 的结构，并调用它上的 `parse()` 函数来分析传入的参数。
+
+又经过搜索，发现 `struct PythonArgParser` 定义在 `torch/csrc/utils/python_arg_parser.h` 中：
+
+```cpp
+// A PythonArgParser contains a list of valid signatures. Instances are
+// typically global variables and should be immutable.
+struct PYBIND11_EXPORT PythonArgParser {
+   // ...
+   PythonArgs raw_parse(PyObject* self, PyObject* args,PyObject* kwargs,
+      // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,modernize-avoid-c-arrays)
+      PyObject* parsed_args[]);
+
+  std::vector<FunctionSignature> signatures_;
+  std::string function_name;
+  size_t max_args;
+  bool traceable;
+}
+```
+
+实际上， `PythonArgParser::parse()` 调用的是 `PythonArgParser::raw_parse`，而它又调用了它的成员数据 `signatures_` 中的每个元素的 `parse()` 。
+
+（未完待续，2024年5月27日23:36:55）
+
+
