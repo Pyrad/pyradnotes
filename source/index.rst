@@ -84,7 +84,7 @@ A Tour of Life (Pyrad's Notes!)
     * -
       - :doc:`software </Notes/software>`
       - :doc:`sphinxbasics </Notes/sphinxbasics>`
-      -
+      - :doc:`debugTrack </Notes/debugTrack>`
       -
     * - :math:`\star` :doc:`Markdown </Markdown/index>`
       - :doc:`LatexMathSymbols </Markdown/LatexMathSymbols>`
