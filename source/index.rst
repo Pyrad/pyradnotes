@@ -58,7 +58,7 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`SmartPointers </CPP/SmartPointers>`
     * -
       - :doc:`clang </CPP/clang>`
-      -
+      - :doc:`BoostPython </CPP/BoostPython>`
       -
       -
     * - :math:`\star` :doc:`Notes </Notes/index>`
