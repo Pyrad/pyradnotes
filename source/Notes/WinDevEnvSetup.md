@@ -43,7 +43,7 @@
    打开此升级程序，但可能出现 `0x80072F8F-0x20000`错误，此时需要下载解决工具（官方）：`MicrosoftEasyFix51044.msi`，可以参考文章 [win7升级到win10](https://blog.csdn.net/guyuelin123/article/details/127436084)。
    点击安装`MicrosoftEasyFix51044.msi`之后，再安装`MediaCreationTool22H2.exe`，即可启动升级程序。
 - 然后参考升级讲解视频：[Win7免费升级Win10的6大问题，以及解决办法](https://www.bilibili.com/video/BV1tW4y1676w/?spm_id_from=333.999.0.0)，选择进行升级。
-   
+  
 
 
 
@@ -291,6 +291,14 @@ https://vscode.cdn.azure.cn/stable/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/code
 ```
 
 这个就是国内的镜像了点开后你会发现速度直接起飞。
+
+
+
+## Scrapy
+
+[爬取网页时，报错出现404或者418问题 - csdn](https://blog.csdn.net/m0_63097763/article/details/125305676)
+
+[Scrapy报400和415错误 - 简书](https://www.jianshu.com/p/6d8ef9649f5a)
 
 
 
@@ -2231,7 +2239,6 @@ hysteria [https://github.com/apernet/hysteria](https://github.com/apernet/hyste
 - 打开`cmd`控制台
 
   - 输入`ipconfig /flushdns`来刷新
-
 
 
 
