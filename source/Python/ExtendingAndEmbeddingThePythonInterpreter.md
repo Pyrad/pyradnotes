@@ -977,5 +977,107 @@ PyInit_client(void)
 
 
 
+# Notes for Extending and Embedding the Python Interpreter
 
+## 1. Extending Python with C or C++
 
+### 添加一个模块的具体步骤
+
+定义一个模块（module）的步骤：
+
+定义一个method table，
+
+```cpp
+static PyMethodDef SpamMethods[] = {
+    ...
+    {"system", spam_system, METH_VARARGS, "Execute a shell command."},
+    ...
+    {NULL, NULL, 0, NULL}        /* Sentinel */
+};
+```
+
+定义模块数据结构，必须引用前面定义好的method table
+
+```cpp
+static struct PyModuleDef spammodule = {
+    PyModuleDef_HEAD_INIT,
+    "spam",   /* name of module */
+    spam_doc, /* module documentation, may be NULL */
+    -1,       /* size of per-interpreter state of the module,
+                 or -1 if the module keeps state in global variables. */
+    SpamMethods
+};
+```
+
+定义模块初始化函数
+
+- 必须是non-static
+- 其名字必须是 `PyInit_name`，这里 `name` 就是模块的名字。
+
+```cpp
+PyMODINIT_FUNC
+PyInit_spam(void)
+{
+    return PyModule_Create(&spammodule);
+}
+```
+
+如果需要程序启动时，把这个模块当做一个built-in模块，就需如下，在程序启动时，在初始化列表中添加进去：
+
+```cpp
+int
+main(int argc, char *argv[])
+{
+    wchar_t *program = Py_DecodeLocale(argv[0], NULL);
+    if (program == NULL) {
+        fprintf(stderr, "Fatal error: cannot decode argv[0]\n");
+        exit(1);
+    }
+
+    /* Add a built-in module, before Py_Initialize */
+    if (PyImport_AppendInittab("spam", PyInit_spam) == -1) {
+        fprintf(stderr, "Error: could not extend in-built modules table\n");
+        exit(1);
+    }
+
+    /* Pass argv[0] to the Python interpreter */
+    Py_SetProgramName(program);
+
+    /* Initialize the Python interpreter.  Required.
+       If this step fails, it will be a fatal error. */
+    Py_Initialize();
+
+    /* Optionally import the module; alternatively,
+       import can be deferred until the embedded script
+       imports it. */
+    PyObject *pmodule = PyImport_ImportModule("spam");
+    if (!pmodule) {
+        PyErr_Print();
+        fprintf(stderr, "Error: could not import module 'spam'\n");
+    }
+
+    ...
+
+    PyMem_RawFree(program);
+```
+
+### 杂记
+
+根据约定俗成的说明，如果一个模块名字叫做 `spam` ，那包含它的C文件就叫做 `spammodule.c` ，或直接叫做 `spam.c` （如果名字比较长） 。（这只是个约定，简单情况可以遵从，但不一定永远遵守）
+
+C文件一开始如下
+
+```cpp
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+```
+
+其中需要定义 `#define PY_SSIZE_T_CLEAN` 的理由是，在解析函数（方法）的参数的时候，`PyArg_ParseTuple` 把 `s#` （格式化字符串）的长度要当成 `Py_ssize_t`，而不是 `int` 。具体说明参考函数 [PyArg_ParseTuple() - Python3 C-API](https://docs.python.org/3/c-api/arg.html#strings-and-buffers)。
+
+可以设置一个模块独有的错误信息，并创建它，然后使用 [`PyErr_SetString()`](https://docs.python.org/3/c-api/exceptions.html#c.PyErr_SetString)，或[`PyErr_SetFromErrno()`](https://docs.python.org/3/c-api/exceptions.html#c.PyErr_SetFromErrno) 等函数来设置这个错误信息。之后要清理就使用[`PyErr_Clear()`](https://docs.python.org/3/c-api/exceptions.html#c.PyErr_Clear)，如果不想独自处理这个错误，不想把他传递给解释器，就使用  [`PyErr_Clear()`](https://docs.python.org/3/c-api/exceptions.html#c.PyErr_Clear)。
+
+```cpp
+static PyObject *SpamError;
+SpamError = PyErr_NewException("spam.error", NULL, NULL);
+Py_XINCREF(SpamError);
+```
