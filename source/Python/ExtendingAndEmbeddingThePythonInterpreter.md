@@ -13,6 +13,8 @@
 
 exercise caution 谨慎行事
 
+boilerplate /ˈbɔɪləpleɪt/ 
+
 
 ## Links
 
@@ -1041,6 +1043,24 @@ PyInit_custom(void)
 - 一个`Custom`对象包含了什么：它是一个`CustomObject`的结构，每当一个`Custom`实例创建的时候，这个数据结构就会创建。
 - `Custom`类型如何运作：它是`CustomType`结构，它定义了一些flag和函数指针，当触发一些特定的操作时，解释器会检查它们，并在其中查找。
 - 如何初始化 `custom` 这个模块：定义 `custommodule` 结构，并使用 `PyInit_custom` 函数。
+
+
+首先定义了 `CustomObject` 类型，
+
+```cpp
+typedef struct {
+    PyObject_HEAD
+} CustomObject;
+```
+
+每个 `Custom` 类型的对象，都会包含它。`PyObject_HEAD` 是必须包含进来的宏，它出现在每个类型对象结构的开始，并且定义了一个 `PyObject` 类型的对象 `ob_base`，它包含一个指向类型对象的指针（可用 `Py_TYPE` 宏访问），以及一个引用计数器（可用 `Py_REFCNT` 宏访问）。使用这个宏的原因是，进行结构布局的抽象，以及在编译debug版本时，添加额外的数据（field）。
+
+注意：`PyObject_HEAD` 后面没有分号（`;`），如果添加了，有些编译器可能会报错。
+
+当然这是个为了说明而举的例子，通常
+
+
+
 
 ### 2.2. Adding data and methods to the Basic example
 
