@@ -1052,13 +1052,13 @@ PyInit_custom(void)
        PyObject_HEAD
    } CustomObject;
    ```
-   
+
    每个 `Custom` 类型的对象，都会包含它。`PyObject_HEAD` 是必须包含进来的宏，它出现在每个类型对象结构的开始，并且定义了一个 `PyObject` 类型的对象 `ob_base`，它包含一个指向类型对象的指针（可用 `Py_TYPE` 宏访问），以及一个引用计数器（可用 `Py_REFCNT` 宏访问）。使用这个宏的原因是，进行结构布局的抽象，以及在编译debug版本时，添加额外的数据（field）。
-   
+
    注意：`PyObject_HEAD` 后面没有分号（`;`），如果添加了，有些编译器可能会报错。
-   
+
    当然这里是为了说明而举的例子，而通常都会保护一些数据，比如Python中标准浮点型的定义是：
-   
+
    ```cpp
    typedef struct {
        PyObject_HEAD
@@ -1080,92 +1080,92 @@ PyInit_custom(void)
    };
    ```
 
-这里推荐使用C99形式的初始化定义方法，这样，这个`PyTypeObject`对象中其他不关心的数据的初始化，就可以交给编译器赋予其默认值。
+   这里推荐使用C99形式的初始化定义方法，这样，这个`PyTypeObject`对象中其他不关心的数据的初始化，就可以交给编译器赋予其默认值。
 
-```cpp
-PyVarObject_HEAD_INIT(NULL, 0)
-```
+   ```cpp
+   PyVarObject_HEAD_INIT(NULL, 0)
+   ```
 
-这个语句是初始化前面提到的 `ob_base` 。
+   这个语句是初始化前面提到的 `ob_base` 。
 
-```cpp
-.tp_name = "custom.Custom",
-```
+   ```cpp
+   .tp_name = "custom.Custom",
+   ```
 
-这句是用来指明这个新类型的字符串名称，比如它可以出现在打印错误信息当中。注意点号 `.` 之前是模块的名称，点号 `.` 后面是这个新类型的名称。
+   这句是用来指明这个新类型的字符串名称，比如它可以出现在打印错误信息当中。注意点号 `.` 之前是模块的名称，点号 `.` 后面是这个新类型的名称。
 
-```cpp
-.tp_basicsize = sizeof(CustomObject),
-```
+   ```cpp
+   .tp_basicsize = sizeof(CustomObject),
+   ```
 
-这句是在创建 `Custome` 这个类型的实例时，指明需要分配多少内存空间。
+   这句是在创建 `Custome` 这个类型的实例时，指明需要分配多少内存空间。
 
-```cpp
-.tp_itemsize = 0,
-```
+   ```cpp
+   .tp_itemsize = 0,
+   ```
 
-当这个值是非 `0` 时，一般用于变长大小的对象。如果不是变长对象，那么就应该是 `0` 。
+   当这个值是非 `0` 时，一般用于变长大小的对象。如果不是变长对象，那么就应该是 `0` 。
 
-需要注意的是，如果定义的这个类型要在Python中被其他类型所继承，那么它对应的这 `.tp_basicsize` 需要更大一些，否则会发生错误。
+   需要注意的是，如果定义的这个类型要在Python中被其他类型所继承，那么它对应的这 `.tp_basicsize` 需要更大一些，否则会发生错误。
 
-```cpp
-.tp_flags = Py_TPFLAGS_DEFAULT,
-```
+   ```cpp
+   .tp_flags = Py_TPFLAGS_DEFAULT,
+   ```
 
-一般情况下，所有类型的`.tp_flags` 中都需要包含 `Py_TPFLAGS_DEFAULT` ，它包含了截至Python 3.3时所有的成员（flag），如果需要其他额外的flag，就需要或起来（`|`）。
+   一般情况下，所有类型的`.tp_flags` 中都需要包含 `Py_TPFLAGS_DEFAULT` ，它包含了截至Python 3.3时所有的成员（flag），如果需要其他额外的flag，就需要或起来（`|`）。
 
-```cpp
-.tp_doc = PyDoc_STR("Custom objects"),
-```
+   ```cpp
+   .tp_doc = PyDoc_STR("Custom objects"),
+   ```
 
-这句就是定义这个类型的 doc string。
+   这句就是定义这个类型的 doc string。
 
-```cpp
-.tp_new = PyType_GenericNew,
-```
+   ```cpp
+   .tp_new = PyType_GenericNew,
+   ```
 
-这句指明了Python类型的 `__new__` 方法，而且它必须被显式地指明。这里使用了默认的API函数 `PyType_GenericNew`。
+   这句指明了Python类型的 `__new__` 方法，而且它必须被显式地指明。这里使用了默认的API函数 `PyType_GenericNew`。
 
-```cpp
-if (PyType_Ready(&CustomType) < 0)
-    return;
-```
+   ```cpp
+   if (PyType_Ready(&CustomType) < 0)
+       return;
+   ```
 
-这句用来初始化 `Custom` 这个新类型，赋予一些成员默认的值，包括把 `ob_type` 赋值为 `NULL` 。
+   这句用来初始化 `Custom` 这个新类型，赋予一些成员默认的值，包括把 `ob_type` 赋值为 `NULL` 。
 
-```cpp
-Py_INCREF(&CustomType);
-if (PyModule_AddObject(m, "Custom", (PyObject *) &CustomType) < 0) {
-    Py_DECREF(&CustomType);
-    Py_DECREF(m);
-    return NULL;
-}
-```
+   ```cpp
+   Py_INCREF(&CustomType);
+   if (PyModule_AddObject(m, "Custom", (PyObject *) &CustomType) < 0) {
+       Py_DECREF(&CustomType);
+       Py_DECREF(m);
+       return NULL;
+   }
+   ```
 
-这句是把 `Custom` 这个类型加入到模块字典中去（module dictionary），这样，就可以使用类似如下语句创建 `Custom` 类型的对象了，
+   这句是把 `Custom` 这个类型加入到模块字典中去（module dictionary），这样，就可以使用类似如下语句创建 `Custom` 类型的对象了，
 
-```python
-import custom
-mycustom = custom.Custom()
-```
+   ```python
+   import custom
+   mycustom = custom.Custom()
+   ```
 
-差不多需要的就这些了，把上面这些代码放到一个 `custom.c` 的文件中，然后创建一个 `setup.py` 的文件，内容如下，
+   差不多需要的就这些了，把上面这些代码放到一个 `custom.c` 的文件中，然后创建一个 `setup.py` 的文件，内容如下，
 
-```python
-from distutils.core import setup, Extension
-setup(name="custom", version="1.0",
-      ext_modules=[Extension("custom", ["custom.c"])])
-```
+   ```python
+   from distutils.core import setup, Extension
+   setup(name="custom", version="1.0",
+         ext_modules=[Extension("custom", ["custom.c"])])
+   ```
 
-然后编译，
+   然后编译，
 
-```shell
-python setup.py build
-```
+   ```shell
+   python setup.py build
+   ```
 
-这样在一个子目录中，会生成一个 `custom.so` 的动态库，在那个子目录中启动Python，就可以使用 `import custom`，然后创建 `Custom` 的对象了。
+   这样在一个子目录中，会生成一个 `custom.so` 的动态库，在那个子目录中启动Python，就可以使用 `import custom`，然后创建 `Custom` 的对象了。
 
-注意，这里为了举例说明，使用了较陈旧的 `distutils` 来编译Python的C扩展，实际当中，应该使用新的 `setuptools` 库，参考网页查看说明：[Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
+   注意，这里为了举例说明，使用了较陈旧的 `distutils` 来编译Python的C扩展，实际当中，应该使用新的 `setuptools` 库，参考网页查看说明：[Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)
 
 
 
