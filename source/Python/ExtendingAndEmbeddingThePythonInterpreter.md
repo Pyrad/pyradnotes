@@ -1,6 +1,6 @@
 # Extending and Embedding the Python Interpreter
 
-本文档主要描述，如何通过C/C+-来创建新的Rython模块（module），从而扩展Python解释器（的使用）。这些Python module不仅可以定义新函数，而且还能定义新的对象类型（class）和对应的（类）方法。
+本文档主要描述，如何通过C/C+-来创建新的Python模块（module），从而扩展Python解释器（的使用）。这些Python module不仅可以定义新函数，而且还能定义新的对象类型（class）和对应的（类）方法。
 
 本文档同样也描述了，如果把Python解释器嵌入另外一个程序，从而当做一个扩展语言使用。
 
