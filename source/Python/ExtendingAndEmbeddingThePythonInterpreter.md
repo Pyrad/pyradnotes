@@ -1172,6 +1172,284 @@ PyInit_custom(void)
 
 ### 2.2. Adding data and methods to the Basic example
 
+在上一节（2.1）的基础上，这一节，引入新的模块 `custom2`，在其中，我们给原先的例子里添加一些数据和方法，并使得它可以被继承。
+
+```cpp
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#include "structmember.h"
+
+typedef struct {
+    PyObject_HEAD
+    PyObject *first; /* first name */
+    PyObject *last;  /* last name */
+    int number;
+} CustomObject;
+
+static void
+Custom_dealloc(CustomObject *self)
+{
+    Py_XDECREF(self->first);
+    Py_XDECREF(self->last);
+    Py_TYPE(self)->tp_free((PyObject *) self);
+}
+
+static PyObject *
+Custom_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    CustomObject *self;
+    self = (CustomObject *) type->tp_alloc(type, 0);
+    if (self != NULL) {
+        self->first = PyUnicode_FromString("");
+        if (self->first == NULL) {
+            Py_DECREF(self);
+            return NULL;
+        }
+        self->last = PyUnicode_FromString("");
+        if (self->last == NULL) {
+            Py_DECREF(self);
+            return NULL;
+        }
+        self->number = 0;
+    }
+    return (PyObject *) self;
+}
+
+static int
+Custom_init(CustomObject *self, PyObject *args, PyObject *kwds)
+{
+    static char *kwlist[] = {"first", "last", "number", NULL};
+    PyObject *first = NULL, *last = NULL, *tmp;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOi", kwlist,
+                                     &first, &last,
+                                     &self->number))
+        return -1;
+
+    if (first) {
+        tmp = self->first;
+        Py_INCREF(first);
+        self->first = first;
+        Py_XDECREF(tmp);
+    }
+    if (last) {
+        tmp = self->last;
+        Py_INCREF(last);
+        self->last = last;
+        Py_XDECREF(tmp);
+    }
+    return 0;
+}
+
+static PyMemberDef Custom_members[] = {
+    {"first", T_OBJECT_EX, offsetof(CustomObject, first), 0,
+     "first name"},
+    {"last", T_OBJECT_EX, offsetof(CustomObject, last), 0,
+     "last name"},
+    {"number", T_INT, offsetof(CustomObject, number), 0,
+     "custom number"},
+    {NULL}  /* Sentinel */
+};
+
+static PyObject *
+Custom_name(CustomObject *self, PyObject *Py_UNUSED(ignored))
+{
+    if (self->first == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "first");
+        return NULL;
+    }
+    if (self->last == NULL) {
+        PyErr_SetString(PyExc_AttributeError, "last");
+        return NULL;
+    }
+    return PyUnicode_FromFormat("%S %S", self->first, self->last);
+}
+
+static PyMethodDef Custom_methods[] = {
+    {"name", (PyCFunction) Custom_name, METH_NOARGS,
+     "Return the name, combining the first and last name"
+    },
+    {NULL}  /* Sentinel */
+};
+
+static PyTypeObject CustomType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "custom2.Custom",
+    .tp_doc = PyDoc_STR("Custom objects"),
+    .tp_basicsize = sizeof(CustomObject),
+    .tp_itemsize = 0,
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    .tp_new = Custom_new,
+    .tp_init = (initproc) Custom_init,
+    .tp_dealloc = (destructor) Custom_dealloc,
+    .tp_members = Custom_members,
+    .tp_methods = Custom_methods,
+};
+
+static PyModuleDef custommodule = {
+    PyModuleDef_HEAD_INIT,
+    .m_name = "custom2",
+    .m_doc = "Example module that creates an extension type.",
+    .m_size = -1,
+};
+
+PyMODINIT_FUNC
+PyInit_custom2(void)
+{
+    PyObject *m;
+    if (PyType_Ready(&CustomType) < 0)
+        return NULL;
+
+    m = PyModule_Create(&custommodule);
+    if (m == NULL)
+        return NULL;
+
+    Py_INCREF(&CustomType);
+    if (PyModule_AddObject(m, "Custom", (PyObject *) &CustomType) < 0) {
+        Py_DECREF(&CustomType);
+        Py_DECREF(m);
+        return NULL;
+    }
+
+    return m;
+}
+
+```
+
+在这个版本中，有一些改动。
+
+1. 首先多包含了头文件，用来处理属性。
+
+   ```cpp
+   #include <structmember.h>
+   ```
+
+2. 现在，新的 `Custom` 类型里，多了三个数据（属性），`first`，`last` 和 `number`。
+
+   其中，`first` 和 `last` 都是 Python string，而 `number` 是C的integer。
+
+   ```cpp
+   typedef struct {
+       PyObject_HEAD
+       PyObject *first; /* first name */
+       PyObject *last;  /* last name */
+       int number;
+   } CustomObject;
+   ```
+
+   因为现在我们有了需要处理的数据，需要对数据（所占用内存）的分配和释放要更加小心，至少，需要一个释放的方法，
+
+   ```cpp
+   static void
+   Custom_dealloc(CustomObject *self)
+   {
+       Py_XDECREF(self->first);
+       Py_XDECREF(self->last);
+       Py_TYPE(self)->tp_free((PyObject *) self);
+   }
+   ```
+
+   并且这个方法，被赋予了 `.tp_dealloc` ，
+
+   ```cpp
+   .tp_dealloc = (destructor) Custom_dealloc,
+   ```
+
+   这个方法先把两个Python属性的计数减去一。这里使用的函数是 `Py_XDECREF`，它可以处理参数是 `NULL` 的情况（比如在 `tp_new` 的时候发生了错误，那么返回的指针就是 `NULL`）。
+
+   然后它调用了这个对象的类型的释放函数来释放内存。注意这里是通过 `Py_TYPE(self)` 来得到它对应的类型的object的，因为我们的这个新类型 `CustomType`，有可能被其他类型继承。
+
+   还有，赋值给 `.tp_dealloc` 时，要指明 `(destructor)`。原因是，`.tp_dealloc` 是一个函数指针变量，它接受的参数是 `PyObject*`，而我们的 `Custom_dealloc` 的参数是 `CustomObjec*`，如不指明就会报错。这里是C中的面向对象的多态！
+
+   因为我们希望在初始化时，把 `first` 和 `last` 的值初始化为空字符串，所以定义如下的 `tp_new` 实现，
+
+   ```cpp
+   static PyObject *
+   Custom_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+   {
+       CustomObject *self;
+       self = (CustomObject *) type->tp_alloc(type, 0);
+       if (self != NULL) {
+           self->first = PyUnicode_FromString("");
+           if (self->first == NULL) {
+               Py_DECREF(self);
+               return NULL;
+           }
+           self->last = PyUnicode_FromString("");
+           if (self->last == NULL) {
+               Py_DECREF(self);
+               return NULL;
+           }
+           self->number = 0;
+       }
+       return (PyObject *) self;
+   }
+   ```
+
+   然后把这个函数（指针）赋予 `.tp_new` 成员，
+
+   ```cpp
+   .tp_new = Custom_new,
+   ```
+
+   这个成员在Python中就是对应 `__new__` 方法，它是用来创建一个此类型的新的对象。这一项并不是必须的，实际上在很多实现当中，都使用了前面提到过的 `PyType_GenericNew` 函数，而这里举例，是说明我们可以在其中把对应的成员变量初始化为想要的值。
+
+   `tp_new` 函数（指针）的第一个参数是 `PyTypeObject *` 而不是 `CustomType`，原因是可能是继承出来的对象，后面的参数是当这个类型的对象被创建时传入的其他参数（positional arguments & keyword arguments），通常这些参数（positional arguments & keyword arguments）会被忽略，并留给初始化函数（C中是 `tp_init`，Python中是 `__init__`）去处理。
+
+   注意，`tp_new` 不需要显式地调用 `tp_init`，因为Python解释会自己做这件事情。
+
+   在 `tp_new` 的实现中，使用了 `tp_alloc` 函数来分配内存，
+
+   ```cpp
+   self = (CustomObject *) type->tp_alloc(type, 0);
+   ```
+
+   这里我们没有找到（定义）`tp_alloc`，原因是通常 `PyType_Ready()` 函数会帮忙填上这个成员：因为继承了父类，而这个父类通常是 `object` 。绝大多数的类型使用的是默认的内存分配策略。
+
+   注意，如果创建的是一个“协作”的`tp_new`（即调用父类的 `tp_new` 或 `__new__`）时，永远确定地调用想要调用（父类）的 `tp_new`，或 `type->tp_base->tp_new`，而不是在运行的时候，试图去确定调用哪个方法。如果不是这样做，那么继承自该类型的新类型，很可能不会正常工作。
+
+   我们同样提供初始化函数，接收参数，用来初始化对象，
+
+   ```cpp
+   static int
+   Custom_init(CustomObject *self, PyObject *args, PyObject *kwds)
+   {
+       static char *kwlist[] = {"first", "last", "number", NULL};
+       PyObject *first = NULL, *last = NULL, *tmp;
+
+       if (!PyArg_ParseTupleAndKeywords(args, kwds, "|OOi", kwlist,
+                                        &first, &last,
+                                        &self->number))
+           return -1;
+
+       if (first) {
+           tmp = self->first;
+           Py_INCREF(first);
+           self->first = first;
+           Py_XDECREF(tmp);
+       }
+       if (last) {
+           tmp = self->last;
+           Py_INCREF(last);
+           self->last = last;
+           Py_XDECREF(tmp);
+       }
+       return 0;
+   }
+   ```
+
+   这个函数被赋予 `tp_init`。
+
+   ```cpp
+   .tp_init = (initproc) Custom_init,
+   ```
+
+   C中的 `tp_init` expose到Python就是 `__init__` 方法，它在对象创建完毕之后，用来初始化这个对象的值。初始化函数同样应该永远接受位置参数和关键字参数（positional arguments & keyword arguments），并且它在成功时返回 `0` ，失败时返回 `-1` 。
+
+   和 `tp_new` 不同的是，`tp_init` 不能保证一定被调用到（比如 `pickle` 模块），而且它也有可能会被多次调用。
+
+
+
 ### 2.3. Providing finer control over data attributes
 
 ### 2.4. Supporting cyclic garbage collection
