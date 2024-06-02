@@ -976,6 +976,82 @@ PyInit_client(void)
 【4】These guarantees don’t hold when you use the “old” style calling convention — this is still found in much existing code.
 
 
+## 2. Defining Extension Types: Tutorial
+
+Python 允许C扩展的书写者定义新的类型（class类），就像built-in的`str` 和 `list` 类型一样，这个新类型也能在Python代码中对其进行操作。书写这些新类型有既定的模式步骤，本文主要介绍这个话题。
+
+### 2.1. The Basics
+
+CPython把所有的Python object都当成是 `PyObject*`，它是所有Python object的“基本类型”。这个 `PyObject` 类型，只包含这个对象的引用计数（reference count），以及一个指向这个object对应的类型的类型对象（type object）。这就是行为所在：这个类型对象（type object）决定了Python解释器会调用对应的哪些函数，比如，当查找一个object上的attribute或method的时候，或和其他类型的object相乘。这些C函数叫做类型方法（“type method”）。
+
+因此，如果要定义一个新的类型，就要创建一个新的类型对象。
+
+使用例子来解释会更能说明问题，本文就讨论了一个最小限度但确实完全的例子，定义了一个模块，定义了一个新的类型叫做 `Custom`，它位于C扩展`custom`中。
+
+```cpp
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+
+typedef struct {
+    PyObject_HEAD
+    /* Type-specific fields go here. */
+} CustomObject;
+
+static PyTypeObject CustomType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "custom.Custom",
+    .tp_doc = PyDoc_STR("Custom objects"),
+    .tp_basicsize = sizeof(CustomObject),
+    .tp_itemsize = 0,
+    .tp_flags = Py_TPFLAGS_DEFAULT,
+    .tp_new = PyType_GenericNew,
+};
+
+static PyModuleDef custommodule = {
+    PyModuleDef_HEAD_INIT,
+    .m_name = "custom",
+    .m_doc = "Example module that creates an extension type.",
+    .m_size = -1,
+};
+
+PyMODINIT_FUNC
+PyInit_custom(void)
+{
+    PyObject *m;
+    if (PyType_Ready(&CustomType) < 0)
+        return NULL;
+
+    m = PyModule_Create(&custommodule);
+    if (m == NULL)
+        return NULL;
+
+    Py_INCREF(&CustomType);
+    if (PyModule_AddObject(m, "Custom", (PyObject *) &CustomType) < 0) {
+        Py_DECREF(&CustomType);
+        Py_DECREF(m);
+        return NULL;
+    }
+
+    return m;
+}
+```
+
+上面的例子中，定义了三件事：
+
+- 一个`Custom`对象包含了什么：它是一个`CustomObject`的结构，每当一个`Custom`实例创建的时候，这个数据结构就会创建。
+- `Custom`类型如何运作：它是`CustomType`结构，它定义了一些flag和函数指针，当触发一些特定的操作时，解释器会检查它们，并在其中查找。
+- 如何初始化 `custom` 这个模块：定义 `custommodule` 结构，并使用 `PyInit_custom` 函数。
+
+### 2.2. Adding data and methods to the Basic example
+
+### 2.3. Providing finer control over data attributes
+
+### 2.4. Supporting cyclic garbage collection
+
+### 2.5. Subclassing other types
+
+
+
 
 # Notes for Extending and Embedding the Python Interpreter
 
