@@ -98,3 +98,12 @@ set_target_properties(new_thing PROPERTIES PREFIX "")
 
 [CMake如何做到正确链接动态库so？ - Lion Long的回答 - 知乎](https://www.zhihu.com/question/489682173/answer/2873091122)
 
+
+
+
+## 使用 CMake 和 setuptools，把二者结合起来，编译 C extension 的参考文章：
+
+[使用CMake扩展setuptools](https://cloud.tencent.com/developer/information/%E4%BD%BF%E7%94%A8CMake%E6%89%A9%E5%B1%95setuptools%E3%80%82%E6%9C%AA%E5%AE%89%E8%A3%85%E7%94%9F%E6%88%90%E6%89%A9%E5%B1%95)
+
+
+

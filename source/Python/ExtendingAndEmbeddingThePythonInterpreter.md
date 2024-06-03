@@ -1563,3 +1563,8 @@ static PyObject *SpamError;
 SpamError = PyErr_NewException("spam.error", NULL, NULL);
 Py_XINCREF(SpamError);
 ```
+
+
+使用 CMake 和 setuptools，把二者结合起来，编译 C extension 的参考文章：
+
+[使用CMake扩展setuptools](https://cloud.tencent.com/developer/information/%E4%BD%BF%E7%94%A8CMake%E6%89%A9%E5%B1%95setuptools%E3%80%82%E6%9C%AA%E5%AE%89%E8%A3%85%E7%94%9F%E6%88%90%E6%89%A9%E5%B1%95)
