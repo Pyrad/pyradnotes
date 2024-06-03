@@ -1543,6 +1543,102 @@ main(int argc, char *argv[])
     PyMem_RawFree(program);
 ```
 
+### 使用 setuptools 来编译这个C extension
+
+参考官方文档：[Building Extension Modules](https://setuptools.pypa.io/en/latest/userguide/ext_modules.html)
+
+还有另外一篇文章提到如何在CMake中使用 setuptools：[使用CMake扩展setuptools](https://cloud.tencent.com/developer/information/%E4%BD%BF%E7%94%A8CMake%E6%89%A9%E5%B1%95setuptools%E3%80%82%E6%9C%AA%E5%AE%89%E8%A3%85%E7%94%9F%E6%88%90%E6%89%A9%E5%B1%95)
+
+步骤：
+
+（一）确认 setuptool，python以及 gcc都已安装并工作正常。
+
+（二）创建项目目录，把上面的代码写入文件 `custom.c` 中
+
+（三）创建 `pyproject.toml` 文件如下
+
+```toml
+# pyproject.toml
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my_custom"  # as it would appear on PyPI
+version = "0.42"
+```
+
+（四）创建 `setup.py` 文件
+
+```python
+from setuptools import Extension, setup
+
+setup(
+    ext_modules=[
+        Extension(
+            name="custom",  # as it would be imported
+                               # may include packages/namespaces separated by `.`
+
+            sources=["custom.c"], # all sources are compiled into a single binary file
+        ),
+    ]
+)
+```
+
+至此，该项目目录下文件的情况如下
+
+```shell
+<project_folder>
+├── pyproject.toml
+├── setup.py
+└── custom.c
+```
+
+
+（五）使用如下命令，编译C extension
+
+```shell
+python setup.py build_ext
+```
+
+命令的输出如下，
+
+```shell
+running build_ext
+
+building 'custom' extension
+
+creating build
+
+creating build/temp.mingw_x86_64-3.10
+
+gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -march=x86-64 -mtune=generic -O2 -pipe -O3 -march=x86-64 -mtune=generic -O2 -pipe -O3 -ID:/procs/msys64/mingw64/include/python3.10 -c custom.c -o build/temp.mingw_x86_64-3.10/custom.o
+
+writing build/temp.mingw_x86_64-3.10/custom.cp310-mingw_x86_64.def
+
+creating build/lib.mingw_x86_64-3.10
+
+gcc -shared -Wl,--enable-auto-image-base -pipe -pipe -s build/temp.mingw_x86_64-3.10/custom.o build/temp.mingw_x86_64-3.10/custom.cp310-mingw_x86_64.def -LD:/procs/msys64/mingw64/lib/python3.10/config-3.10 -LD:/procs/msys64/mingw64/lib -lpython3.10 -lm -lversion -lshlwapi -o build/lib.mingw_x86_64-3.10/custom.cp310-mingw_x86_64.pyd
+```
+
+它会生成一个编译目录 `build`，它的结构如下，
+
+```shell
+$ tree build/
+build/
+├── lib.mingw_x86_64-3.10
+│   └── custom.cp310-mingw_x86_64.pyd
+└── temp.mingw_x86_64-3.10
+    ├── custom.cp310-mingw_x86_64.def
+    └── custom.o
+
+2 directories, 3 files
+```
+
+切换到 `lib.mingw_x86_64-3.10` 目录下，启动 python，即可使用 `import custom` ，将编写完毕的C extension module导入。
+
+
+
 ### 杂记
 
 根据约定俗成的说明，如果一个模块名字叫做 `spam` ，那包含它的C文件就叫做 `spammodule.c` ，或直接叫做 `spam.c` （如果名字比较长） 。（这只是个约定，简单情况可以遵从，但不一定永远遵守）
