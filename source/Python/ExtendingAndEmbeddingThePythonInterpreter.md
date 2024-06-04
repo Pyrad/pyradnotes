@@ -1448,6 +1448,11 @@ PyInit_custom2(void)
 
    和 `tp_new` 不同的是，`tp_init` 不能保证一定被调用到（比如 `pickle` 模块），而且它也有可能会被多次调用。
 
+   比如，任何人都能调用我们所定义类型的 `object` 上的 `__init__` 方法。而正因为如此，应该对赋予新属性（attribute）
+   要格外小心。
+
+
+
 
 
 ### 2.3. Providing finer control over data attributes
