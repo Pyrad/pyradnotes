@@ -529,6 +529,19 @@ or,
 git stash save "My temp modified files"
 ```
 
+or,
+
+```shell
+git stash push -m "My temp modified files"
+```
+
+Note, this only saves the files being tracked, if there's any file which is not tracked by the git (i.e., newly added), option `--include-untracked` (or `-u` for short) could be used to save that files,
+
+```shell
+git stash push --include-untracked -m "My temp modified files"
+git stash push -u -m "My temp modified files"
+```
+
 To check how many stashes you have,
 
 ```shell
