@@ -1448,8 +1448,106 @@ PyInit_custom2(void)
 
    和 `tp_new` 不同的是，`tp_init` 不能保证一定被调用到（比如 `pickle` 模块），而且它也有可能会被多次调用。
 
-   比如，任何人都能调用我们所定义类型的 `object` 上的 `__init__` 方法。而正因为如此，应该对赋予新属性（attribute）
-   要格外小心。
+   比如，任何人都能调用我们所定义类型的 `object` 上的 `__init__` 方法。而正因为如此，应该对赋予新属性（attribute）要格外小心。
+
+   比如下面的例子中，因为没有限制 `first` 这个member成员的类型，所以它可以是任意类型的对象。它也许有一个能访问 `first` 这个member成员的析构函数；或者，它能够释放 global interpreter lock，并让特定的代码在另外的线程中访问并修改我们的对象。
+
+   为了保护我们的代码，防止这种可能发生，我们总是在赋值成员之后，才把它的引用计数减一。那么，在什么时候不需要这么做？
+
+   - 我们确定知道引用计数是大于 `1` 的
+   - 我们确定对象的析构函数不会释放 GIL（Global Interpreter Lock），也不会回调这个类型的代码。
+   - 在一种类型的 `tp_dealloc` 函数里，把引用计数减一，但这个类型不支持循环垃圾回收（cyclic garbage collection）机制。
+
+   如果我们希望把成员数据当做属性（attribute）expose到Python，有几种办法可以做到，最简单的办法就是定义member definition，
+
+   ```cpp
+   static PyMemberDef Custom_members[] = {
+    {"first", T_OBJECT_EX, offsetof(CustomObject, first), 0,
+     "first name"},
+    {"last", T_OBJECT_EX, offsetof(CustomObject, last), 0,
+     "last name"},
+    {"number", T_INT, offsetof(CustomObject, number), 0,
+     "custom number"},
+    {NULL}  /* Sentinel */
+};
+   ```
+
+   然后把这个定义赋值给 `tp_members`（函数指针），
+
+   ```cpp
+   .tp_members = Custom_members,
+   ```
+
+   每一个成员的定义，有对应的名称，类型，偏移，访问标识，以及文档字符串。在 3.3.1 中的 Generic Attribute Management 里面有更多详细的介绍。
+
+   这种办法的缺点是，对于赋值给这种类型属性的值（另外的对象），无法限定其类型。比如这个例子中的 `first` 和 `last` ，我们期望它的类型是 `str`，但（按照）这样的办法，实际上任意类型的对象，都可以赋值给它们。进一步，通过赋值C的空指针（`NULL`），属性也可以是被删除的，这样，尽管我们能确保它在初始化时被赋予非空的指针，但在删除的时候，也有可能被赋予空指针。
+
+   接下来定义另外一个成员函数，`Custom.name()`，它的作用就是把 `first` 和 `last` 这两个字符串拼接起来，
+
+   ```cpp
+   static PyObject *
+   Custom_name(CustomObject *self, PyObject *Py_UNUSED(ignored))
+   {
+	   if (self->first == NULL) {
+		   PyErr_SetString(PyExc_AttributeError, "first");
+		   return NULL;
+		}
+		if (self->last == NULL) {
+			PyErr_SetString(PyExc_AttributeError, "last");
+		return NULL;
+	    }
+    return PyUnicode_FromFormat("%S %S", self->first, self->last);
+    }
+   ```
+
+   这个函数的第一个参数是 `Custom` 类型（或继承它的子类型）的对象（实例），成员函数（方法）的第一个参数总是一个它的实例（指针），而且成员函数也经常接受positional arguments 和 keyword arguments。不过本例中为了简单起见，没有声明这两种参数。而上面这个函数（方法），在Python中就相当于如下的函数（方法），
+
+   ```python
+   def name(self):
+	   return "%s %s" % (self.first, self.last)
+   ```
+
+   在下一节，有介绍办法能够防止 `first` 和 `last` 这两个属性被赋予空指针，还能限定它们只能被赋予字符串类型。
+
+   在我们定义了（类型的）方法之后，我们需要建立一个方法定义的数组，
+
+   ```cpp
+   static PyMethodDef Custom_methods[] = {
+	   {"name", (PyCFunction) Custom_name, METH_NOARGS,
+	   "Return the name, combining the first and last name"
+	   },
+	   {NULL}  /* Sentinel */
+	};
+   ```
+
+   这里使用到了宏 `METH_NOARGS`，用来声明这个方法只接受 `self` 参数，而不接收位置参数和字典参数等。
+
+   然后把这个数组（指针）复制给 `tp_methods`，
+
+   ```cpp
+   .tp_methods = Custom_methods,
+   ```
+
+  截止目前，我们前面所写的代码中，并没有假设这些方法所作用的类型。所以为了使得我们的这个新类型可以当做一个父类被继承，目前我们所要做的，就只是添加一个标识：`Py_TPFLAGS_BASETYPE`，
+
+   ```cpp
+   .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+   ```
+
+   为了和上一个例子区分开开来，我们把函数 `PyInit_custom()` 重命名为 `PyInit_custom2()` ，在 `PyModuleDef` 也更改过来，同时也在 `PyTypeObject` 结构体中更改过来。
+
+   最后，修改 `setup.py` ，编译新的模块（module）。
+
+   ```python
+   from distutils.core import setup, Extension
+
+   setup(name="custom", version="1.0",
+         ext_modules=[
+            Extension("custom", ["custom.c"]),
+            Extension("custom2", ["custom2.c"]),
+        ])
+   ```
+
 
 
 
