@@ -10,3 +10,4 @@ Python
     pythonbasic.md
     ExtendingAndEmbeddingThePythonInterpreter.md
     anaconda.md
+    pytorch.md
