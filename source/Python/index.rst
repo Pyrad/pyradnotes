@@ -9,3 +9,4 @@ Python
     pythonstring.md
     pythonbasic.md
     ExtendingAndEmbeddingThePythonInterpreter.md
+    anaconda.md
