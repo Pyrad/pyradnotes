@@ -1845,12 +1845,317 @@ Custom_init(CustomObject *self, PyObject *args, PyObject *kwds)
 
 把模块的名称，以及初始化函数的名称做了修改之后，在 `setup.py` 中添加这新的一项，就可以编译第三个版本的 `custom3` 。
 
-
-
-
-
-
 ### 2.4. Supporting cyclic garbage collection
+
+Python的垃圾回收器可以识别不再需要的对象，甚至它们的引用计数不是零。这种情况有可能发生于存在循环引用的情况下，
+
+```python
+l = []
+l.append(l)
+del l
+```
+
+上面的这个例子中，一个列表包含了它自身。但要删除它的时候，它的引用计数仍然不是零。幸运的是，Python的循环引用垃圾回收器，最终可以发现这种情况，识别出来它是垃圾对象，然后回收它。
+
+在第二版的 `Custom` 中，我们允许任何类型的值赋值给 `first` 和 `last` ，而在第二版的 `Custom` 和第三版的`Custom`中，我们允许 `Custom` 或 `Custom` 被继承，这样子类就可以允许被添加上任何类型的属性。因为这两种原因， `Custom` 对象就可能发生循环引用，比如，
+
+```python
+import custom3
+class Derived(custom3.Custom): pass
+
+n = Derived()
+n.some_attribute = n
+```
+
+为了使得发生了循环引用的 `Custom` 对象，能够被循环引用垃圾回收器所识别，并回收，我们要在 `Custom` 类型中定义两个额外的函数（指针），然后设置一个标识，使得这两个添加的函数起作用。
+
+```cpp
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#include "structmember.h"
+
+typedef struct {
+    PyObject_HEAD
+    PyObject *first; /* first name */
+    PyObject *last;  /* last name */
+    int number;
+} CustomObject;
+
+static int
+Custom_traverse(CustomObject *self, visitproc visit, void *arg)
+{
+    Py_VISIT(self->first);
+    Py_VISIT(self->last);
+    return 0;
+}
+
+static int
+Custom_clear(CustomObject *self)
+{
+    Py_CLEAR(self->first);
+    Py_CLEAR(self->last);
+    return 0;
+}
+
+static void
+Custom_dealloc(CustomObject *self)
+{
+    PyObject_GC_UnTrack(self);
+    Custom_clear(self);
+    Py_TYPE(self)->tp_free((PyObject *) self);
+}
+
+static PyObject *
+Custom_new(PyTypeObject *type, PyObject *args, PyObject *kwds)
+{
+    CustomObject *self;
+    self = (CustomObject *) type->tp_alloc(type, 0);
+    if (self != NULL) {
+        self->first = PyUnicode_FromString("");
+        if (self->first == NULL) {
+            Py_DECREF(self);
+            return NULL;
+        }
+        self->last = PyUnicode_FromString("");
+        if (self->last == NULL) {
+            Py_DECREF(self);
+            return NULL;
+        }
+        self->number = 0;
+    }
+    return (PyObject *) self;
+}
+
+static int
+Custom_init(CustomObject *self, PyObject *args, PyObject *kwds)
+{
+    static char *kwlist[] = {"first", "last", "number", NULL};
+    PyObject *first = NULL, *last = NULL, *tmp;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|UUi", kwlist,
+                                     &first, &last,
+                                     &self->number))
+        return -1;
+
+    if (first) {
+        tmp = self->first;
+        Py_INCREF(first);
+        self->first = first;
+        Py_DECREF(tmp);
+    }
+    if (last) {
+        tmp = self->last;
+        Py_INCREF(last);
+        self->last = last;
+        Py_DECREF(tmp);
+    }
+    return 0;
+}
+
+static PyMemberDef Custom_members[] = {
+    {"number", T_INT, offsetof(CustomObject, number), 0,
+     "custom number"},
+    {NULL}  /* Sentinel */
+};
+
+static PyObject *
+Custom_getfirst(CustomObject *self, void *closure)
+{
+    Py_INCREF(self->first);
+    return self->first;
+}
+
+static int
+Custom_setfirst(CustomObject *self, PyObject *value, void *closure)
+{
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete the first attribute");
+        return -1;
+    }
+    if (!PyUnicode_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "The first attribute value must be a string");
+        return -1;
+    }
+    Py_INCREF(value);
+    Py_CLEAR(self->first);
+    self->first = value;
+    return 0;
+}
+
+static PyObject *
+Custom_getlast(CustomObject *self, void *closure)
+{
+    Py_INCREF(self->last);
+    return self->last;
+}
+
+static int
+Custom_setlast(CustomObject *self, PyObject *value, void *closure)
+{
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete the last attribute");
+        return -1;
+    }
+    if (!PyUnicode_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "The last attribute value must be a string");
+        return -1;
+    }
+    Py_INCREF(value);
+    Py_CLEAR(self->last);
+    self->last = value;
+    return 0;
+}
+
+static PyGetSetDef Custom_getsetters[] = {
+    {"first", (getter) Custom_getfirst, (setter) Custom_setfirst,
+     "first name", NULL},
+    {"last", (getter) Custom_getlast, (setter) Custom_setlast,
+     "last name", NULL},
+    {NULL}  /* Sentinel */
+};
+
+static PyObject *
+Custom_name(CustomObject *self, PyObject *Py_UNUSED(ignored))
+{
+    return PyUnicode_FromFormat("%S %S", self->first, self->last);
+}
+
+static PyMethodDef Custom_methods[] = {
+    {"name", (PyCFunction) Custom_name, METH_NOARGS,
+     "Return the name, combining the first and last name"
+    },
+    {NULL}  /* Sentinel */
+};
+
+static PyTypeObject CustomType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "custom4.Custom",
+    .tp_doc = PyDoc_STR("Custom objects"),
+    .tp_basicsize = sizeof(CustomObject),
+    .tp_itemsize = 0,
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
+    .tp_new = Custom_new,
+    .tp_init = (initproc) Custom_init,
+    .tp_dealloc = (destructor) Custom_dealloc,
+    .tp_traverse = (traverseproc) Custom_traverse,
+    .tp_clear = (inquiry) Custom_clear,
+    .tp_members = Custom_members,
+    .tp_methods = Custom_methods,
+    .tp_getset = Custom_getsetters,
+};
+
+static PyModuleDef custommodule = {
+    PyModuleDef_HEAD_INIT,
+    .m_name = "custom4",
+    .m_doc = "Example module that creates an extension type.",
+    .m_size = -1,
+};
+
+PyMODINIT_FUNC
+PyInit_custom4(void)
+{
+    PyObject *m;
+    if (PyType_Ready(&CustomType) < 0)
+        return NULL;
+
+    m = PyModule_Create(&custommodule);
+    if (m == NULL)
+        return NULL;
+
+    Py_INCREF(&CustomType);
+    if (PyModule_AddObject(m, "Custom", (PyObject *) &CustomType) < 0) {
+        Py_DECREF(&CustomType);
+        Py_DECREF(m);
+        return NULL;
+    }
+
+    return m;
+}
+```
+
+要添加的这两个函数，一个是遍历函数（traverse），另一个是清理函数（clear）。
+
+首先，遍历函数可以使得Python的循环引用垃圾回收器，识别循环引用的情况，
+
+```cpp
+static int
+Custom_traverse(CustomObject *self, visitproc visit, void *arg)
+{
+    int vret;
+    if (self->first) {
+        vret = visit(self->first, arg);
+        if (vret != 0)
+            return vret;
+    }
+    if (self->last) {
+        vret = visit(self->last, arg);
+        if (vret != 0)
+            return vret;
+    }
+    return 0;
+}
+```
+
+遍历函数有三个参数，第一个是 `CustomObject` 这个类型的对象，第二个是一个所谓的访问（visit）函数，第三个参数是一个空指针`void *arg`，是传递给这个访问（visit）函数用的。这个访问（visit）函数把要检查的subobject当做第一个参数，然后把 `arg` 当做第二个参数。访问（visit）函数的返回值是一个整数，如果这个整数是非`0`，那么变量函数就必须直接返回这个非`0`的值。
+
+Python里提供了一个宏 `Py_VISIT`，它（展开之后）可以自动调用访问（visit）函数，所以上面变量函数的样板代码可以简化成如下的几行。但需要注意的是，如果使用宏 `Py_VISIT`，那么这个遍历函数的第二、三个参数名字必须是 `visit` 和 `arg` 。
+
+```cpp
+static int
+Custom_traverse(CustomObject *self, visitproc visit, void *arg)
+{
+    Py_VISIT(self->first);
+    Py_VISIT(self->last);
+    return 0;
+}
+```
+
+除了提供遍历函数，还要提供清理（clear）函数，以便清理存在循环引用的subobject，
+
+```cpp
+static int
+Custom_clear(CustomObject *self)
+{
+    Py_CLEAR(self->first);
+    Py_CLEAR(self->last);
+    return 0;
+}
+```
+
+这里使用了宏 `Py_CLEAR`，它是当需要减少引用计数时，清理任意类型的数据属性的推荐、安全的方法。如果在给一个属性赋值为 `NULL`之前，就使用 `Py_XDECREF` 函数，那么析构函数就有可能读到这个正要被删除的属性。
+
+宏 `Py_CLEAR` 的展开类似如下，
+
+```cpp
+PyObject *tmp;
+tmp = self->first;
+self->first = NULL;
+Py_XDECREF(tmp);
+```
+
+析构函数 `Custom_dealloc` 在清理属性数据的时候，可能调用任意代码，这意味着循环引用垃圾回收器可能被触发。因为GC假定引用计数是非`0`的，所以，需要调用函数 `PyObject_GC_UnTrack`，使其暂停引用计数操作，然后清理成员属性，
+
+```cpp
+static void
+Custom_dealloc(CustomObject *self)
+{
+    PyObject_GC_UnTrack(self);
+    Custom_clear(self);
+    Py_TYPE(self)->tp_free((PyObject *) self);
+}
+```
+
+最后，在标识中添加 `Py_TPFLAGS_HAVE_GC` ，开启循环引用识别的能力，
+
+```cpp
+.tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE | Py_TPFLAGS_HAVE_GC,
+```
+
+大概就是这么多了。
+
+如果有定制的 `tp_alloc` 和 `tp_free` 函数，那么我们就需要为了具备循环引用回收的能力，而修改它们。但大多数的C扩展，实际上会使用默认的（函数指针）。
 
 ### 2.5. Subclassing other types
 
