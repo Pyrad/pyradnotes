@@ -2159,6 +2159,155 @@ Custom_dealloc(CustomObject *self)
 
 ### 2.5. Subclassing other types
 
+可以基于现有的类型，继承新的类型扩展。最容易的办法就是继承built-in类型，原因是它们可以很容易地使用那些类型的 `PyTypeObject` 。但是在不同的C扩展模块直接，使用这些 `PyTypeObject` 就比较困难。
+
+本节的例子，引入了一个 `SubList` 的类型，它继承自built-in的 `list` 类型。这个新的类型和普通的 `list` 类型是完全兼容的，只不过它有一个额外的函数 `increment()` ，用来对内部的计数器加一：
+
+```python
+>>> import sublist
+>>> s = sublist.SubList(range(3))
+>>> s.extend(s)
+>>> print(len(s))
+6
+>>> print(s.increment())
+1
+>>> print(s.increment())
+2
+```
+
+本节所提到的 `SubList` 类型的代码如下，
+
+```cpp
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+
+typedef struct {
+    PyListObject list;
+    int state;
+} SubListObject;
+
+static PyObject *
+SubList_increment(SubListObject *self, PyObject *unused)
+{
+    self->state++;
+    return PyLong_FromLong(self->state);
+}
+
+static PyMethodDef SubList_methods[] = {
+    {"increment", (PyCFunction) SubList_increment, METH_NOARGS,
+     PyDoc_STR("increment state counter")},
+    {NULL},
+};
+
+static int
+SubList_init(SubListObject *self, PyObject *args, PyObject *kwds)
+{
+    if (PyList_Type.tp_init((PyObject *) self, args, kwds) < 0)
+        return -1;
+    self->state = 0;
+    return 0;
+}
+
+static PyTypeObject SubListType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    .tp_name = "sublist.SubList",
+    .tp_doc = PyDoc_STR("SubList objects"),
+    .tp_basicsize = sizeof(SubListObject),
+    .tp_itemsize = 0,
+    .tp_flags = Py_TPFLAGS_DEFAULT | Py_TPFLAGS_BASETYPE,
+    .tp_init = (initproc) SubList_init,
+    .tp_methods = SubList_methods,
+};
+
+static PyModuleDef sublistmodule = {
+    PyModuleDef_HEAD_INIT,
+    .m_name = "sublist",
+    .m_doc = "Example module that creates an extension type.",
+    .m_size = -1,
+};
+
+PyMODINIT_FUNC
+PyInit_sublist(void)
+{
+    PyObject *m;
+    SubListType.tp_base = &PyList_Type;
+    if (PyType_Ready(&SubListType) < 0)
+        return NULL;
+
+    m = PyModule_Create(&sublistmodule);
+    if (m == NULL)
+        return NULL;
+
+    Py_INCREF(&SubListType);
+    if (PyModule_AddObject(m, "SubList", (PyObject *) &SubListType) < 0) {
+        Py_DECREF(&SubListType);
+        Py_DECREF(m);
+        return NULL;
+    }
+
+    return m;
+}
+```
+
+和前面几节中的 `Custom` 版本的代码很相近，下面注意介绍其中有主要区别的部分。
+
+```cpp
+typedef struct {
+    PyListObject list;
+    int state;
+} SubListObject;
+```
+
+第一个差异是，对于这个继承类的对象类型结构，它的第一个成员（属性）是，基类类型对象，而这个基类类型对象已经包含了 `PyObject_HEAD` ，作为它的第一个成员（属性）。
+
+当一个对象是 `SubList` 类型的实例时，它的 `PyObject*` 指针就可以安全地转换为 `PyListObject*` 和 `SubListObject*` 。
+
+```cpp
+static int
+SubList_init(SubListObject *self, PyObject *args, PyObject *kwds)
+{
+    if (PyList_Type.tp_init((PyObject *) self, args, kwds) < 0)
+        return -1;
+    self->state = 0;
+    return 0;
+}
+```
+
+上面这个初始化函数中，调用了基类的初始化函数 `PyList_Type.tp_init` 来完成初始化，然后在对子类中的数据成员再坐初始化。
+
+当存在自定义的 `tp_new` 和 `tp_dealloc` 成员方法的时候，这种调用模式很重要。 （子类的）`tp_new` 函数不要使用它自己的 `tp_alloc` 来申请内存，而是直接调用父类的 `tp_new` 来完成这项工作。
+
+`PyTypeObject` 结构中有一项 `tp_base`，用来指明这个类的基类（concrete base class）。因为跨平台编译器的问题，没有办法在定义 `SubListType` 的时候，把这一项 `tp_base` 填入（比如像`tp_name` 一样），而是要在模块的初始化函数里面，再把它填入，如下，
+
+```cpp
+PyMODINIT_FUNC
+PyInit_sublist(void)
+{
+    PyObject* m;
+    SubListType.tp_base = &PyList_Type;
+    if (PyType_Ready(&SubListType) < 0)
+        return NULL;
+
+    m = PyModule_Create(&sublistmodule);
+    if (m == NULL)
+        return NULL;
+
+    Py_INCREF(&SubListType);
+    if (PyModule_AddObject(m, "SubList", (PyObject *) &SubListType) < 0) {
+        Py_DECREF(&SubListType);
+        Py_DECREF(m);
+        return NULL;
+    }
+
+    return m;
+}
+```
+
+在调用 `PyType_Ready()` 函数的时候，`SubListType` 必须要有 `tp_base` 这一项。当继承一个现有的类型时，不需要把 `PyType_GenericNew()` 赋予 `tp_alloc` （函数指针），因为子类会继承父类的内存分配函数。
+
+调用 `PyType_Ready()` 函数，把 type object加入到module中，就和前面 `Custom` 例子中的代码一样了。
+
+
 
 
 
