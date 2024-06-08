@@ -228,3 +228,24 @@ https://stackoverflow.com/questions/24858014/checking-the-code-generated-implici
 
 
 
+## 32-bit floating point
+
+[单精度浮点数(float32)存储与表示方式](https://zhuanlan.zhihu.com/p/632347955)
+
+一个32位浮点数由三部分组成（从左向右，依次为第0位、第1位、... 第31位）
+
+- 符号位（sign）：共 $1$ 位，最高位（第31位）
+- 指数部分（exponent）：共 $8$ 位，次高位（第30位至第23位）
+- 尾数部分（fraction）：共 $23$ 位，次高位（第22位至第0位）
+
+可以由下面的公司计算32位浮点数的真实值
+
+$$
+(-1)^{b_{31}} \times 2^{({b_{30}b_{29} \cdot \cdot \cdot b_{23}})-127} \times (1.b_{22}b_{21} \cdot \cdot \cdot b_{0})_2
+$$
+
+用 $sign$ 表示符号位，$E$ 标识指数部分，上式可以改写位：
+
+$$
+(-1)^{sign} \times 2^{E - 127} \times (1 + \sum_{i=1}^{23}b_{23-i}2^{-1})
+$$
