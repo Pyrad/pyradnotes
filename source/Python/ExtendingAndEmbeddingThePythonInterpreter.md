@@ -1746,6 +1746,107 @@ PyInit_custom3(void)
 ```
 
 
+为了对变量 `first` 和 `last` 做更精细的控制，这里使用了定制的 getter 和 setter 函数，下面是 `first` 对应的 getter 和 setter 函数，
+
+```cpp
+static PyObject *
+Custom_getfirst(CustomObject *self, void *closure)
+{
+    Py_INCREF(self->first);
+    return self->first;
+}
+
+static int
+Custom_setfirst(CustomObject *self, PyObject *value, void *closure)
+{
+    PyObject *tmp;
+    if (value == NULL) {
+        PyErr_SetString(PyExc_TypeError, "Cannot delete the first attribute");
+        return -1;
+    }
+    if (!PyUnicode_Check(value)) {
+        PyErr_SetString(PyExc_TypeError,
+                        "The first attribute value must be a string");
+        return -1;
+    }
+    tmp = self->first;
+    Py_INCREF(value);
+    self->first = value;
+    Py_DECREF(tmp);
+    return 0;
+}
+```
+
+这个 getter 函数的参数是一个 `Custom` 对象，和一个空指针 `closure` 。本例中实际上没有使用空指针 `closure` ，但它可以包含一些数据，以便传递给 setter 和 getter 函数。
+
+这个 setter 函数的参数是一个  `Custom` 对象，一个新的值，以及一个空指针 `closure` 。本例中，不允许给 `first` 赋值空（`NULL`），或者赋值非string类型，所以有这两个检查。
+
+再定义了这两个函数之后，需要定义一个 `PyGetSetDef` 结构类型的数组，
+
+```cpp
+static PyGetSetDef Custom_getsetters[] = {
+    {"first", (getter) Custom_getfirst, (setter) Custom_setfirst,
+     "first name", NULL},
+    {"last", (getter) Custom_getlast, (setter) Custom_setlast,
+     "last name", NULL},
+    {NULL}  /* Sentinel, but actually it is closure method above */
+};
+```
+
+然后把这个数组（指针）注册到 `.tp_getset` 上，
+
+```cpp
+.tp_getset = Custom_getsetters,
+```
+
+注意，这个 `PyGetSetDef` 结构类型的数组，它的最后一项实际上应该是前面提到的 `closure` 指针，但本例中因为是空，所以直接给了 `NULL` 。
+
+和第一个版本的 `custom` 相比，我们同样需要把 `first` 和 `last` 这两个变量对应的函数从 `Custom_members` 中移除，而只剩下对另外一个成员 `number` 的设置，
+
+```cpp
+static PyMemberDef Custom_members[] = {
+    {"number", T_INT, offsetof(CustomObject, number), 0,
+     "custom number"},
+    {NULL}  /* Sentinel */
+};
+```
+
+同样地，在 `.tp_init` 对应的初始化函数里面，对 `first` 和 `last` 这两个属性的赋值，限定为仅允许string类型，
+
+```cpp
+static int
+Custom_init(CustomObject *self, PyObject *args, PyObject *kwds)
+{
+    static char *kwlist[] = {"first", "last", "number", NULL};
+    PyObject *first = NULL, *last = NULL, *tmp;
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwds, "|UUi", kwlist,
+                                     &first, &last,
+                                     &self->number))
+        return -1;
+
+    if (first) {
+        tmp = self->first;
+        Py_INCREF(first);
+        self->first = first;
+        Py_DECREF(tmp);
+    }
+    if (last) {
+        tmp = self->last;
+        Py_INCREF(last);
+        self->last = last;
+        Py_DECREF(tmp);
+    }
+    return 0;
+}
+```
+
+经过这些改动，对 `first` 和 `last` 这两个属性的大多数操作，就可以不再检查 `NULL` 了，因为它们已经不会是 `NULL`了，这也意味着调用函数 `Py_XDECREF` 就可以被替换为 `Py_XDECREF` 了。但在 `.tp_dealloc` 函数（指针）里，仍然需要检查 `NULL` ，原因是，在 `.tp_new` 的时候（创建的时候），有可能失败，这样的这两个成员（属性）就可能是 `NULL` 。
+
+把模块的名称，以及初始化函数的名称做了修改之后，在 `setup.py` 中添加这新的一项，就可以编译第三个版本的 `custom3` 。
+
+
+
 
 
 
