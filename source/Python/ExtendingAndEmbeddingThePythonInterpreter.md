@@ -2750,27 +2750,62 @@ iternextfunc tp_iternext;
 
 任何可迭代的对象，需要同时实现 `tp_iter` 和 `tp_iternext` 。`tp_iter` 返回一个新创建的迭代器引用，而 `tp_iternext` 返回指向下一个对象的迭代器引用。如果迭代到达了末尾，`tp_iternext` 需要返回 `NULL` ，并且**不设置**异常；或者设置 `StopIteration` 异常，然后返回 `NULL` （不设定异常会获得稍好一点的性能）。如果发生了错误，`tp_iternext` 总是要设置异常，然后返回 `NULL` 。
 
-
-
-
-
-
-
-
-
 ### 3.6. Weak Reference Support
 
+Python 实现 weak reference的目标之一，就是为了降低追求性能的对象的运行开销。
 
+为了支持weakly referencable（弱引用），扩展出来的类型需要做两件事：
 
+- 在C的数据结构中，包含一项 `PyObject *` 。这个对象的constructor要被置为 `NULL` （默认就是 `NULL`）。
+- 上述 `PyObject*` 偏移处，设定一个 `tp_weaklistoffset` 类型成员，使得Python解释器得知如何访问和操作那个 field。
 
+具体地，这是一个例子，
 
+```cpp
+typedef struct {
+    PyObject_HEAD
+    PyObject *weakreflist;  /* List of weak references */
+} TrivialObject;
+```
 
+上面的代码中，添加了一项 `PyObject *weakreflist` 。再在下面的代码中，正确地设置 `.tp_weaklistoffset` ，使它是 `weakreflist` 的正确的偏移值。
 
+```cpp
+static PyTypeObject TrivialType = {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    /* ... other members omitted for brevity ... */
+    .tp_weaklistoffset = offsetof(TrivialObject, weakreflist),
+};
+```
 
+此外唯一需要实现的是，如果这一项（`.tp_weaklistoffset` ）非空，就在 `tp_dealloc` 函数中，调用 `PyObject_ClearWeakRefs()` 函数来清理，如下：
 
-
+```cpp
+static void
+Trivial_dealloc(TrivialObject *self)
+{
+    /* Clear weakrefs first before calling any destructors */
+    if (self->weakreflist != NULL)
+        PyObject_ClearWeakRefs((PyObject *) self);
+    /* ... remainder of destruction code omitted for brevity ... */
+    Py_TYPE(self)->tp_free((PyObject *) self);
+}
+```
 
 ### 3.7. More Suggestions
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
