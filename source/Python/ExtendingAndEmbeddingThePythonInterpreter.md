@@ -2480,15 +2480,49 @@ my_dealloc(PyObject *obj)
 
 从Python 3.4开始，推荐不要在 `tp_dealloc` 中实现复杂的终止逻辑，而是把这些放到 `tp_finalize` 方法里面去。
 
-
-
-
-
-
-
-
-
 ### 3.2. Object Presentation
+
+在Python中，一个对象的文本表示方法有两种，分别是函数 `repr()` 和 `str()`，它们都是（这个object类型的）可选项。其中 `print()` 函数只调用 `str()` 。
+
+```cpp
+reprfunc tp_repr;
+reprfunc tp_str;
+```
+
+其中 `tp_repr` 返回的是一个 string 类型的对象，表示如何表示这个对象，例如，
+
+```cpp
+static PyObject *
+newdatatype_repr(newdatatypeobject * obj)
+{
+    return PyUnicode_FromFormat("Repr-ified_newdatatype{{size:%d}}",
+                                obj->obj_UnderlyingDatatypePtr->size);
+}
+```
+
+如果没有提供 `tp_repr` 函数，那么解释器会提供一种表达方式：使用 `tp_name` 和对象的id唯一值。
+
+函数 `tp_str` 对应Python方法 `str()`，而 `tp_repr` 对应Python方法 `repr()`。它和 `tp_repr` 很类似，但它更强调可读性。如果没有提供 `tp_str` ，那么就会使用 `tp_repr` 代替。
+
+下面举了个例子，
+
+```cpp
+static PyObject *
+newdatatype_str(newdatatypeobject * obj)
+{
+    return PyUnicode_FromFormat("Stringified_newdatatype{{size:%d}}",
+                                obj->obj_UnderlyingDatatypePtr->size);
+}
+```
+
+
+
+
+
+
+
+
+
 
 ### 3.3. Attribute Management
 
