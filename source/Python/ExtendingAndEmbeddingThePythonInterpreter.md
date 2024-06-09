@@ -15,6 +15,7 @@ exercise caution 谨慎行事
 
 boilerplate /ˈbɔɪləpleɪt/ 
 
+assorted 各种各样，混杂的
 
 ## Links
 
@@ -2306,6 +2307,146 @@ PyInit_sublist(void)
 在调用 `PyType_Ready()` 函数的时候，`SubListType` 必须要有 `tp_base` 这一项。当继承一个现有的类型时，不需要把 `PyType_GenericNew()` 赋予 `tp_alloc` （函数指针），因为子类会继承父类的内存分配函数。
 
 调用 `PyType_Ready()` 函数，把 type object加入到module中，就和前面 `Custom` 例子中的代码一样了。
+
+
+## 3. Defining Extension Types: Assorted Topics
+
+本章快速地介绍了一些可以自己定义的类型方法（type method），以及它们的作用。
+
+下面是 `PyTypeObject` 数据结构，省略了一些只在debug模式下有用的属性。
+
+```cpp
+typedef struct _typeobject {
+    PyObject_VAR_HEAD
+    const char *tp_name; /* For printing, in format "<module>.<name>" */
+    Py_ssize_t tp_basicsize, tp_itemsize; /* For allocation */
+
+    /* Methods to implement standard operations */
+
+    destructor tp_dealloc;
+    Py_ssize_t tp_vectorcall_offset;
+    getattrfunc tp_getattr;
+    setattrfunc tp_setattr;
+    PyAsyncMethods *tp_as_async; /* formerly known as tp_compare (Python 2)
+                                    or tp_reserved (Python 3) */
+    reprfunc tp_repr;
+
+    /* Method suites for standard classes */
+
+    PyNumberMethods *tp_as_number;
+    PySequenceMethods *tp_as_sequence;
+    PyMappingMethods *tp_as_mapping;
+
+    /* More standard operations (here for binary compatibility) */
+
+    hashfunc tp_hash;
+    ternaryfunc tp_call;
+    reprfunc tp_str;
+    getattrofunc tp_getattro;
+    setattrofunc tp_setattro;
+
+    /* Functions to access object as input/output buffer */
+    PyBufferProcs *tp_as_buffer;
+
+    /* Flags to define presence of optional/expanded features */
+    unsigned long tp_flags;
+
+    const char *tp_doc; /* Documentation string */
+
+    /* Assigned meaning in release 2.0 */
+    /* call function for all accessible objects */
+    traverseproc tp_traverse;
+
+    /* delete references to contained objects */
+    inquiry tp_clear;
+
+    /* Assigned meaning in release 2.1 */
+    /* rich comparisons */
+    richcmpfunc tp_richcompare;
+
+    /* weak reference enabler */
+    Py_ssize_t tp_weaklistoffset;
+
+    /* Iterators */
+    getiterfunc tp_iter;
+    iternextfunc tp_iternext;
+
+    /* Attribute descriptor and subclassing stuff */
+    struct PyMethodDef *tp_methods;
+    struct PyMemberDef *tp_members;
+    struct PyGetSetDef *tp_getset;
+    // Strong reference on a heap type, borrowed reference on a static type
+    struct _typeobject *tp_base;
+    PyObject *tp_dict;
+    descrgetfunc tp_descr_get;
+    descrsetfunc tp_descr_set;
+    Py_ssize_t tp_dictoffset;
+    initproc tp_init;
+    allocfunc tp_alloc;
+    newfunc tp_new;
+    freefunc tp_free; /* Low-level free-memory routine */
+    inquiry tp_is_gc; /* For PyObject_IS_GC */
+    PyObject *tp_bases;
+    PyObject *tp_mro; /* method resolution order */
+    PyObject *tp_cache;
+    PyObject *tp_subclasses;
+    PyObject *tp_weaklist;
+    destructor tp_del;
+
+    /* Type attribute cache version tag. Added in version 2.6 */
+    unsigned int tp_version_tag;
+
+    destructor tp_finalize;
+    vectorcallfunc tp_vectorcall;
+} PyTypeObject;
+```
+
+虽然 `PyTypeObject` 中的成员（函数指针）很多，但多数情况下，只需要定义其中的一些即可。
+
+`PyTypeObject` 中成员的顺序是有着历史遗留问题的包袱，所以本章介绍时不会按照顺序讲解。
+
+```cpp
+const char *tp_name; /* For printing */
+```
+
+这一项名称，主要是为了调试使用，所以应该赋予其一个有意义好分辨的字符串。
+
+```cpp
+Py_ssize_t tp_basicsize, tp_itemsize; /* For allocation */
+```
+
+这一项主要是告诉runtime，这种类型新的对象在创建的时候，应该分配多少内存。`tp_itemsize` 对于像 `str`， `tuple` 这样Python中变长的类型，就有用处。
+
+```cpp
+const char *tp_doc;
+```
+
+这项是文档字符串，用于Python中类似 `obj.__doc__` 的返回值。
+
+
+
+
+
+### 3.1. Finalization and De-allocation
+
+### 3.2. Object Presentation
+
+### 3.3. Attribute Management
+
+#### 3.3.1. Generic Attribute Management
+
+#### 3.3.2. Type-specific Attribute Management
+
+### 3.4. Object Comparison
+
+### 3.5. Abstract Protocol Support
+
+### 3.6. Weak Reference Support
+
+### 3.7. More Suggestions
+
+
+
 
 
 
