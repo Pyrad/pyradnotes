@@ -2666,20 +2666,89 @@ newdatatype_richcmp(PyObject *obj1, PyObject *obj2, int op)
  }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
 ### 3.5. Abstract Protocol Support
 
+Python支持一系列的**抽象协议**，在 [Abstract Objects Layer](file:///D:/procs/python-3.11.4-docs-html/c-api/abstract.html#abstract) 中，可以找到对应接口的使用方法文档。
 
+在开发Python实现的早期，就已经定义了许多抽象接口。特别是像 number，mapping 以及 sequence 协议，自那时起，就已经是Python的一部分了。其他的接口协议是随着时间而增加的。依赖于类型实现中一些 handler function的协议，在旧的实现中，已经定义为了类型对象中handler的可选的block，而新的实现中，就是在注意的类型对象中，增加了新的成员（slots），并且伴有一个对应的标志位（flag），表明这个成员可以被解释器所查询到。（这个标志位并不意味着这个slot的value是非 `NULL` 。可以设置这个标志位表明这个slot已经被设置了，但这个slot仍然可能是空的。
+
+```cpp
+PyNumberMethods   *tp_as_number;
+PySequenceMethods *tp_as_sequence;
+PyMappingMethods  *tp_as_mapping;
+```
+
+如果希望类型的对象使用起来可以如同一个数组，一个序列，或者一个映射那样，那就分别实现C类型的  `PyNumberMethods`, `PySequenceMethods` 以及 `PyMappingMethods` 数据结构，而如何实现这些数据结构，取决于书写者自己。可以参考在Python源代码的 `Objects` 目录里面，对于这样的各种类型的实现的例子。
+
+```cpp
+hashfunc tp_hash;
+```
+
+这个函数，针对这种类型的实例对象，返回一个哈希值，例如，
+
+```cpp
+static Py_hash_t
+newdatatype_hash(newdatatypeobject *obj)
+{
+    Py_hash_t result;
+    result = obj->some_size + 32767 * obj->some_number;
+    if (result == -1)
+       result = -2;
+    return result;
+}
+```
+
+`Py_hash_t` 是一个有符合整型，它的位宽根据平台不同而不同。如果 `tp_hash` 返回 `-1` ，就表示出现了错误。
+
+```cpp
+ternaryfunc tp_call;
+```
+
+如果希望一个类型的实例对象是**可被调用的**，就要实现这个函数。
+
+这个函数有三个参数：
+
+- `self` 参数：是这个类型的实例
+- `arg` 参数：是一个tuple，包含了调用时候的参数。可以使用 `PyArg_ParseTuple()` 来解析参数。
+- `kwds` 参数：是一个字典，包含了函数传入的关键字参数。如果这个 `kwds` 参数是非 `NULL` ，使用 `PyArg_ParseTupleAndKeywords()` 来解析参数。如果不希望支持关键字参数，但这一项是非 `NULL` ，就抛异常 `TypeError` ，并填入信息表明不支持这个参数。
+
+下面是一个例子，
+
+```cpp
+static PyObject *
+newdatatype_call(newdatatypeobject *self, PyObject *args, PyObject *kwds)
+{
+    PyObject *result;
+    const char *arg1;
+    const char *arg2;
+    const char *arg3;
+
+    if (!PyArg_ParseTuple(args, "sss:call", &arg1, &arg2, &arg3)) {
+        return NULL;
+    }
+    result = PyUnicode_FromFormat(
+        "Returning -- value: [%d] arg1: [%s] arg2: [%s] arg3: [%s]\n",
+        obj->obj_UnderlyingDatatypePtr->size,
+        arg1, arg2, arg3);
+    return result;
+}
+```
+
+
+```cpp
+/* Iterators */
+getiterfunc tp_iter;
+iternextfunc tp_iternext;
+```
+
+这两个函数支持迭代器协议（iterator protocol）。这两个函数都只接受一个参数，即被调用到的实例对象本身，然后返回一个新的引用。如果发生错误，就设置exception，并且返回 `NULL` 。`tp_iter` 对应 Python 中的 `__iter__()` 方法，而 `tp_iternext` 对应 Python 中的 `__next__()` 方法。
+
+任何可迭代的对象，必须实现 `tp_iter` 函数，它要返回一个iterator object。
+
+- 对于 collections（比如 `tuple`，`list`），如果支持多个相互独立的iterator，那么每次调用 `tp_iter` 的时候，就要创建新的 iterator object，再返回。
+- 如果每次只能有一个迭代器（为了避免多次互不影响的迭代导致的副作用，比如文件对象），就实现 `tp_iter` 来创建新的iterator，并指向它们自己，同时，实现 `tp_iternext` 函数。
+
+任何可迭代的对象，需要同时实现 `tp_iter` 和 `tp_iternext` 。`tp_iter` 返回一个新创建的迭代器引用，而 `tp_iternext` 返回指向下一个对象的迭代器引用。如果迭代到达了末尾，`tp_iternext` 需要返回 `NULL` ，并且**不设置**异常；或者设置 `StopIteration` 异常，然后返回 `NULL` （不设定异常会获得稍好一点的性能）。如果发生了错误，`tp_iternext` 总是要设置异常，然后返回 `NULL` 。
 
 
 
