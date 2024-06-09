@@ -2594,19 +2594,38 @@ typedef struct PyMemberDef {
 
 #### 3.3.2. Type-specific Attribute Management
 
+本节以 `char*` 版本的属性存取函数为例进行说明，因为 `PyObject*` 版本只是在接口上有所不同而已。本节的例子和上一节的基本相同，但不是使用从Python 2.2开始的通用办法。这个例子解释了这些操作函数是如何被调用的，这样就可以按照需求，实现所对应的函数。
 
+当需要查找一个属性的时候，就调用 `tp_getattr` 函数。当一个类的 `__getattr__()` 方法被调用的时候， `tp_getattr` 函数同样会被调用。
 
+下面是一个例子，
 
+```cpp
+static PyObject *
+newdatatype_getattr(newdatatypeobject *obj, char *name)
+{
+    if (strcmp(name, "data") == 0)
+    {
+        return PyLong_FromLong(obj->data);
+    }
 
+    PyErr_Format(PyExc_AttributeError,
+                 "'%.50s' object has no attribute '%.400s'",
+                 tp->tp_name, name);
+    return NULL;
+}
+```
 
+当一个类实例的 `__setattr__()` 或 `__delattr__()` 被调用的时候， `tp_setattr` 就会被调用。当删除一个属性的时候，这个函数的第三个参数就应该是 `NULL` 。下面例子里，只是简单实现了一个exception，
 
-
-
-
-
-
-
-
+```cpp
+static int
+newdatatype_setattr(newdatatypeobject *obj, char *name, PyObject *v)
+{
+    PyErr_Format(PyExc_RuntimeError, "Read-only attribute: %s", name);
+    return -1;
+}
+```
 
 ### 3.4. Object Comparison
 
@@ -2615,9 +2634,39 @@ typedef struct PyMemberDef {
 
 
 
+
+
+
+
+
+
+
+
+
+
 ### 3.5. Abstract Protocol Support
 
+
+
+
+
+
+
+
+
+
+
 ### 3.6. Weak Reference Support
+
+
+
+
+
+
+
+
+
+
 
 ### 3.7. More Suggestions
 
