@@ -2629,9 +2629,42 @@ newdatatype_setattr(newdatatypeobject *obj, char *name, PyObject *v)
 
 ### 3.4. Object Comparison
 
+```cpp
+richcmpfunc tp_richcompare;
+```
 
+当需要比较两个对象的时候， `tp_richcompare` 就会被调用。它类似rich comparison method，比如 `__lt__()` ，而函数 `PyObject_RichCompare()` 和  `PyObject_RichCompareBool()` 也会调用到这个函数。
 
+这个函数有三个参数，前两个分别是两对象，第三个是操作符。操作符是：`Py_EQ`, `Py_NE`, `Py_LE`, `Py_GE`, `Py_LT` or `Py_GT` 其中的一个。根据操作符，它们需要比较这两个对象。如果比较成功，就返回 `Py_True` 或 `Py_False` ，如果没有对应的操作符操作（或应该尝试其他操作符），就返回 `Py_NotImplemented` ，如果设定了异常，就返回 `NULL` 。
 
+下面是一个例子，
+
+```cpp
+static PyObject *
+newdatatype_richcmp(PyObject *obj1, PyObject *obj2, int op)
+{
+    PyObject *result;
+    int c, size1, size2;
+
+    /* code to make sure that both arguments are of type
+       newdatatype omitted */
+
+    size1 = obj1->obj_UnderlyingDatatypePtr->size;
+    size2 = obj2->obj_UnderlyingDatatypePtr->size;
+
+    switch (op) {
+    case Py_LT: c = size1 <  size2; break;
+    case Py_LE: c = size1 <= size2; break;
+    case Py_EQ: c = size1 == size2; break;
+    case Py_NE: c = size1 != size2; break;
+    case Py_GT: c = size1 >  size2; break;
+    case Py_GE: c = size1 >= size2; break;
+    }
+    result = c ? Py_True : Py_False;
+    Py_INCREF(result);
+    return result;
+ }
+```
 
 
 
