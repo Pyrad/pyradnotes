@@ -2533,12 +2533,75 @@ setattrofunc tp_setattro;
 
 #### 3.3.1. Generic Attribute Management
 
+绝大多数的扩展只使用 **简单** 的属性，那么什么是**简单属性**？需要满足两个条件：
 
+- 它的名字，在调用 `PyType_Ready()`函数的时候，必须已经可知。
+- 当查询或设置属性的时候，无需特殊的处理，或者是无需根据其值，需要采取相应的操作。
 
+上面的条件中，并没有限制属性的值，无论是值是被计算出来的，还是数据是如何存储的。
 
+在调用 `PyType_Ready()`函数的时候，要使用这个类型对象所引用的三个table（即三个对应的成员函数指针），去创建descriptors，然后放入这个类型对象的dict中去。每个descriptor控制着访问对象实例的操作。这里的每个table都是可选的（即可以不设置），如果这3个table都是 `NULL` ，那么这个类型的实例，就只有从基类继承来的属性了，这样 `tp_getattro` 和 `tp_setattro` 就也要设置为 `NULL` ，以便使用基类的函数指针。
 
+下面就是这三个table（函数指针），
+
+```cpp
+struct PyMethodDef *tp_methods;
+struct PyMemberDef *tp_members;
+struct PyGetSetDef *tp_getset;
+```
+
+其中，
+
+-  `tp_methods` 指向的是一个 `PyMethodDef` 的数组（当然也可以是 `NULL`），`PyMethodDef` 数据结构如下，
+
+```cpp
+typedef struct PyMethodDef {
+    const char  *ml_name;       /* method name */
+    PyCFunction  ml_meth;       /* implementation function */
+    int          ml_flags;      /* flags */
+    const char  *ml_doc;        /* docstring */
+} PyMethodDef;
+```
+
+`tp_methods` 指向的这个 `PyMethodDef` 的数组，每一个元素就是一个 `PyMethodDef` 结构的对象，对应一个方法；从基类继承来的方法不需要放入这个数组中。这个数组的最后一个元素是一个警戒值，用来表示数组的最后一个元素，它的 `ml_name` 必须是 `NULL` 。
+
+- `tp_members` 指向的是一个 `PyMemberDef` 的数组（当然也可以是 `NULL`），每一项都是存于这个对象实例上的一个属性数据。这样的定义支持很多C类型，也支持读写访问，`PyMemberDef` 数据结构如下，
+
+```cpp
+typedef struct PyMemberDef {
+    const char *name;
+    int         type;
+    int         offset;
+    int         flags;
+    const char *doc;
+} PyMemberDef;
+```
+
+`tp_members` 指向数组的每一项，都会被创建为一个 descriptor，然后加入到这个类型中，用以从这个类型中获取对应的属性。`type` 变量的值，必须是 `structmember.h` 中定义的，而这个值说明了如何把Python中的值，转变为C中类型的值，或者是从C中类型的值转换回Python中去。`flags` 变量是用来控制这一项属性如何访问的标识位。
+
+下面的标识定义在 `structmember.h` 中，可以使用按位或（bitwise-OR）结合起来使用，
+
+|Constant| Meaning     |
+|:-----|:-----|
+|READONLY|只读 |
+|PY_AUDIT_READ|在读之前，发射 `object.__getattr__` 事件（audit event）|
+
+在Python 3.10中，`RESTRICTED`, `READ_RESTRICTED` and `WRITE_RESTRICTED` are deprecated. However, `READ_RESTRICTED` 都变成了 `PY_AUDIT_READ` 的别名，所以，`RESTRICTED` 或 `READ_RESTRICTED` 都会发射这个 audit event。
+
+在运行时，使用 `tp_members` 的一个优点是，如果一个属性是以这种方式定义的，那么一个相应的文档字符串就可以随之而提供。一个应用程序，能够使用侵入性的API，从类对象的descriptor上，使用 `__doc__` 得到这些字符串文档。
+
+和 `tp_methods` 指向的数组是类似的，这个数组的最后一个元素是一个警戒值。
 
 #### 3.3.2. Type-specific Attribute Management
+
+
+
+
+
+
+
+
+
 
 
 
