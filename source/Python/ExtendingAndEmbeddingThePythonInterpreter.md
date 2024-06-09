@@ -2515,22 +2515,42 @@ newdatatype_str(newdatatypeobject * obj)
 }
 ```
 
-
-
-
-
-
-
-
-
-
 ### 3.3. Attribute Management
+
+每种支持属性的对象类型，都要提供对应的函数，以便支持如何解析属性的存取，即，既包括如何获取这个属性，以及如何设置这个属性。删除属性是特殊的一种情况，它就是把对应的函数设定为 `NULL`。
+
+Python支持两种（亦即两对）这样的存取方式，一种对象类型只需要实现其中的一种即可。它们的区别是，一对把属性的名称当做是 `char*` 的参数，而另一种则是接收 `PyObject*` 类型的参数。可以视情况方便与否，选择其中一种实现即可。
+
+```cpp
+getattrfunc  tp_getattr;        /* char * version */
+setattrfunc  tp_setattr;
+/* ... */
+getattrofunc tp_getattro;       /* PyObject * version */
+setattrofunc tp_setattro;
+```
+
+如果获取属性的方式总是*简单操作*（后面解释），那么对于 `PyObject*` 版本的属性管理函数，就有通用的实现方式。类型专有的属性handler，在Python 2.2之后基本就消失了，只不过有些以前的代码还没有更新过来。
 
 #### 3.3.1. Generic Attribute Management
 
+
+
+
+
+
 #### 3.3.2. Type-specific Attribute Management
 
+
+
+
+
+
 ### 3.4. Object Comparison
+
+
+
+
+
 
 ### 3.5. Abstract Protocol Support
 
