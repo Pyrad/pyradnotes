@@ -2794,10 +2794,20 @@ Trivial_dealloc(TrivialObject *self)
 
 ### 3.7. More Suggestions
 
+想要学习如何实现特定的方法，下载 CPython 的源代码，切换到 `Objects` 目录，以 `tp_` + 函数名作为关键字，搜索C源文件，就可以参考许多例子。
 
+当需要检查一个对象是一个类型的实例时，可以使用函数 `PyObject_TypeCheck()` ，例如：
 
+```cpp
+if (!PyObject_TypeCheck(some_object, &MyType)) {
+    PyErr_SetString(PyExc_TypeError, "arg #1 not a mything");
+    return NULL;
+}
+```
 
+CPython 源代码下载网址：[https://www.python.org/downloads/source/](https://www.python.org/downloads/source/)
 
+GitHub上CPython的网址：[https://github.com/python/cpython](https://github.com/python/cpython)
 
 
 
