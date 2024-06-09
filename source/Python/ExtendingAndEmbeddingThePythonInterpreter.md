@@ -2813,13 +2813,32 @@ GitHub上CPython的网址：[https://github.com/python/cpython](https://github.c
 
 
 
+## 4. Building C and C++ Extensions
 
+CPython对应的C扩展，就是一个动态库，在Windows下名字后缀是 `.pyd` ， Linux下名字后缀是 `.so` ，这个动态库，导出的是一个**初始化函数**（_initialization function_）。
 
+为了能够被导入（importable），动态库（所在的路径）必须在 `PYTHONPATH` 中，而且必须以模块名来命名，具有正确的后缀。如果使用 distutils，会自动生成正确的文件名。
 
+初始化函数的signature是：
 
+```cpp
+PyObject *PyInit_modulename(void)
+```
 
+它要么返回一个完全初始化的模块，要么返回一个 `PyModuleDef` 对象。细节可以查看 [Initializing C modules](../c-api/module.html#initializing-modules) 。
 
+如果模块名中字符都是 ASCII，那么初始化函数的名字形式必须是 `PyInit_<moduleName>` ，其中 `<moduleName>` 就是模块的名称。当使用多阶段初始化（[Multi-phase initialization](../c-api/module.html#multi-phase-initialization),）时，允许模块的名称是非ASCII字符。在这种情况下，初始化函数的名字形式必须是 `PyInitU_<moduleName>` ，其中，`<moduleName>` 的编码是 _punycode_ ，并且其中的短线（hyphen）要被替换为下划线（underscore），下面的函数返回正确的初始化函数名称：
 
+```cpp
+def initfunc_name(name):
+    try:
+        suffix = b'_' + name.encode('ascii')
+    except UnicodeEncodeError:
+        suffix = b'U_' + name.encode('punycode').replace(b'-', b'_')
+    return b'PyInit' + suffix
+```
+
+从同一个动态库中，可以导出多个模块，方法是定义多个初始化函数。但是当导入的时候，需要symbolic link或custom importer，原因是默认只有和文件名称相同的模块才能被发现。具体参考“Multiple modules in one library” section in [**PEP 489**](https://peps.python.org/pep-0489/)。
 
 
 
