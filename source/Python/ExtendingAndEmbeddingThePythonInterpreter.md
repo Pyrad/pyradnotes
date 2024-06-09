@@ -2423,11 +2423,70 @@ const char *tp_doc;
 
 这项是文档字符串，用于Python中类似 `obj.__doc__` 的返回值。
 
-
-
-
-
 ### 3.1. Finalization and De-allocation
+
+```cpp
+destructor tp_dealloc;
+```
+
+在这种类型的对象的引用计数减至0时，此函数会被调用，然后内存被Python解释器回收。如果有要清理的内存或其他事项，就应该把对应的函数赋予它。同样地，对象本身也需要被释放，例如，
+
+```cpp
+static void
+newdatatype_dealloc(newdatatypeobject *obj)
+{
+    free(obj->obj_UnderlyingDatatypePtr);
+    Py_TYPE(obj)->tp_free((PyObject *)obj);
+}
+```
+
+需要注意的是，deallocator函数需要把目前pending的那个exception暂时放置于一边，原因是，当解释器展开（出栈）函数堆栈的时候，deallocator会被频繁地调用到，然而当因为一个exception而发生函数出栈时，deallocator也可以看到那个exception以及被设置了，这样，就有可能发生，当执行deallocator中的代码时，会发现那个以及被设定的exception，从而发生混淆。
+
+因此，合理的做法是，首先把这个正在pending的exception保存起来，然后处理有可能发生exception的代码，处理完成之后，在把之前那个pending的exception恢复出来。所以用到的两个函数是 `PyErr_Fetch()` 和 `PyErr_Restore()` ，下面是一个例子。
+
+```cpp
+static void
+my_dealloc(PyObject *obj)
+{
+    MyObject *self = (MyObject *) obj;
+    PyObject *cbresult;
+
+    if (self->my_callback != NULL) {
+        PyObject *err_type, *err_value, *err_traceback;
+
+        /* This saves the current exception state */
+        PyErr_Fetch(&err_type, &err_value, &err_traceback);
+
+        cbresult = PyObject_CallNoArgs(self->my_callback);
+        if (cbresult == NULL)
+            PyErr_WriteUnraisable(self->my_callback);
+        else
+            Py_DECREF(cbresult);
+
+        /* This restores the saved exception state */
+        PyErr_Restore(err_type, err_value, err_traceback);
+
+        Py_DECREF(self->my_callback);
+    }
+    Py_TYPE(obj)->tp_free((PyObject*)self);
+}
+```
+
+
+需要注意的是，在函数 `tp_dealloc` 中，如何安全地执行代码，是有一些限制的：
+
+- 首先，如果这个类型支持垃圾回收机制（使用 `tp_traverse` 和 `tp_clear`），那么，在调用 `tp_dealloc`的时候，这个对象的有些成员就可能以及被清除（clear）掉或终结（finalized）了。
+- 其次，在函数 `tp_dealloc` 中，这个对象不是出于一种安全的状态，因为它的引用计数已经变成0了。调用这个对象的API或是non-trivial object，最终可能会再次调用到 `tp_dealloc`，从而导致double free的问题，进而产生crash。
+
+从Python 3.4开始，推荐不要在 `tp_dealloc` 中实现复杂的终止逻辑，而是把这些放到 `tp_finalize` 方法里面去。
+
+
+
+
+
+
+
+
 
 ### 3.2. Object Presentation
 
