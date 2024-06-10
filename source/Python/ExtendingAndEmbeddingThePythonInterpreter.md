@@ -3131,6 +3131,58 @@ build/
 切换到 `lib.mingw_x86_64-3.10` 目录下，启动 python，即可使用 `import custom` ，将编写完毕的C extension module导入。
 
 
+注意事项：
+
+在步骤（四）中，使用的是 `gcc` 编译器，如果要使用 `g++`，那么 `setup.py` 文件就需要做如下修改（实际上添加一项 `language`）：
+
+```python
+from setuptools import Extension, setup
+
+setup(
+    ext_modules=[
+        Extension(
+            name="custom",  # as it would be imported
+                               # may include packages/namespaces separated by `.`
+
+            sources=["custom.c"], # all sources are compiled into a single binary file
+            language='c++', # using c++ compiler
+        ),
+    ]
+)
+```
+
+使用 `python setup.py build` 得到的输出是：
+
+```shell
+$ python setup.py build
+
+running build
+
+running build_ext
+
+building 'custom' extension
+
+creating build
+
+creating build/temp.mingw_x86_64-3.10
+
+gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall -march=x86-64 -mtune=generic -O2 -pipe -O3 -march=x86-64 -mtune=generic -O2 -pipe -O3 -ID:/procs/msys64/mingw64/include/python3.10 -c custom.c -o build/temp.mingw_x86_64-3.10/custom.o
+
+writing build/temp.mingw_x86_64-3.10/custom.cp310-mingw_x86_64.def
+
+creating build/lib.mingw_x86_64-3.10
+
+g++ -shared -Wl,--enable-auto-image-base -pipe -pipe -s build/temp.mingw_x86_64-3.10/custom.o build/temp.mingw_x86_64-3.10/custom.cp310-mingw_x86_64.def -LD:/procs/msys64/mingw64/lib/python3.10/config-3.10 -LD:/procs/msys64/mingw64/lib -lpython3.10 -lm -lversion -lshlwapi -o build/lib.mingw_x86_64-3.10/custom.cp310-mingw_x86_64.pyd
+
+```
+
+在步骤（五）中，实际测试，如下的命令也可以成功编译，
+
+```shell
+python setup.py build
+```
+
+
 
 ### 杂记
 
