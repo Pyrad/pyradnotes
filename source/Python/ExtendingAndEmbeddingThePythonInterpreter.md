@@ -2842,6 +2842,8 @@ def initfunc_name(name):
 
 ### 4.1. Building C and C++ Extensions with distutils
 
+【注意】在 Python 3.13 的时候，已经推荐使用 setuptools 来构建模块扩展，不再推荐使用 distutils了。
+
 Python的发行包中包含了 distutils 工具，可以用它构建模块扩展。因为 distutils 也支持创建二进制发行包，因此用户就不需要使用一个编译器来安装这个模块扩展。
 
 Distutils包需要一个驱动脚本 `setup.py` ，它就是一个普通的Python脚本，比如，
@@ -2866,11 +2868,69 @@ python setup.py build
 
 就会编译文件 `demo.c` ，在 `build` 目录下生成一个名字叫做 `demo` 的模块扩展。根据不同的系统平台，这个模块所在的目录可能是 `build/lib.system` ，并且名称可能是 `demo.so` 或 `demo.pyd` 。
 
+在文件 `setup.py` 中，所有的操作都是在 `setup` 函数中进行的。它接受一些字典参数（因此可以传递不同个数的参数），前面的例子中的参数，只是其中的一部分。特别地，例子中指出了需要构建包的元信息（meta-information），这个元信息描述了包的内容。一般地，一个包要包含额外的一些模块，比如Python source modulle，documentation，subpackage等等。参考 [Distributing Python Modules (Legacy version)](../distutils/index.html#distutils-index) 中关于 distutils 的功能，而本节只是讲述如何构建模块扩展。
 
+为了更好地组织驱动脚本 `setup.py` ，常常预先计算要传递给函数 `setup()` 的参数。前面的例子中，`setup()` 函数的 `ext_modules` 参数是一个模块扩展的列表，每一个都是这个扩展的一个实例（？）。本节的例子中，定义了一个叫做 `demo` 的扩展，它是通过编一个单独的文件 `demo.c` 而得到的。
 
+大多数情况下，构建一个扩展要更复杂，因为要定义很多预编译指令，并指定其他需要链接的库。本节的例子如下，
 
+```python
+from distutils.core import setup, Extension
 
+module1 = Extension('demo',
+                    define_macros = [('MAJOR_VERSION', '1'),
+                                     ('MINOR_VERSION', '0')],
+                    include_dirs = ['/usr/local/include'],
+                    libraries = ['tcl83'],
+                    library_dirs = ['/usr/local/lib'],
+                    sources = ['demo.c'])
 
+setup (name = 'PackageName',
+       version = '1.0',
+       description = 'This is a demo package',
+       author = 'Martin v. Loewis',
+       author_email = 'martin@v.loewis.de',
+       url = 'https://docs.python.org/extending/building',
+       long_description = '''
+This is really just a demo package.
+''',
+       ext_modules = [module1])
+```
+
+这个例子中，调用 `setup()` 函数的时候传入了元信息（meta-information），这种是分发包有需要构建包的情况下的推荐方法。对应扩展本身，它指明了预编译指令，头文件目录，链接库目录，以及搜索库目录。根据不同的编译器，distutils把这些信息通过不同的方式传递给它们。比如，在Unix中，生成的编译指令可能如下，
+
+```shell
+gcc -DNDEBUG -g -O3 -Wall -Wstrict-prototypes -fPIC -DMAJOR_VERSION=1 -DMINOR_VERSION=0 -I/usr/local/include -I/usr/local/include/python2.2 -c demo.c -o build/temp.linux-i686-2.2/demo.o
+
+gcc -shared build/temp.linux-i686-2.2/demo.o -L/usr/local/lib -ltcl83 -o build/lib.linux-i686-2.2/demo.so
+```
+
+上面这两行是为了演示而做的说明，用户则应该信任 distutils 产生的编译命令。
+
+### 4.2. Distributing your extension modules
+
+当成功构建了一个扩展模块的时候，有三种办法使用。
+
+终端用户可能需要安装这个模块，他们就要执行命令：
+
+```shell
+python setup.py install
+```
+
+模块维护者需要生成源代码包，他们执行命令：
+
+```shell
+python setup.py sdist
+```
+
+在另外一些情况下，源码发行包需要包含一些额外的文件，这需要通过一个 `MANIFEST.in` 的文件实现，具体参考 [Specifying the files to distribute](../distutils/sourcedist.html#manifest) 。
+
+如果已经成功创建了源码发行包，维护者同时也能创建二进制发行包。根据不同的平台，可以执行如下两条命令之一：
+
+```shell
+python setup.py bdist_rpm
+python setup.py bdist_dumb
+```
 
 
 
