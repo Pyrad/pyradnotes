@@ -492,3 +492,67 @@ Using printf() in substituation
 ```cpp
 #define LTPRINT(x) fprintf(p3stdout, "[LTM] %s\n", x)
 ```
+
+## Set file type at the end of a file for VIM to identify
+
+### For Python
+
+Set file as a Python file style, setting tabs, spaces, etc
+
+```shell
+vim: set ft=python et sw=2 ts=2 sts=2:
+```
+
+Pay attention that this line should be commented out in the file to avoid being recoginzed by the python interpreter, thus a symbol `#` should be added to the front of this line.
+
+### For C++
+
+```shell
+vim: set ff=unix et sw=3 ts=3 sts=3:
+```
+
+Remember to add comment symbol `//` to the front of this line.
+
+## coc-nvim 查看函数定义等快捷键
+
+```vim
+" GoTo code navigation
+nmap <silent> [f <Plug>(coc-definition)
+nmap <silent> [y <Plug>(coc-type-definition)
+nmap <silent> [i <Plug>(coc-implementation)
+nmap <silent> [r <Plug>(coc-references)
+```
+
+## config文件对应的coc snippet文件路径
+
+一般，coc对应的snippet文件是：
+
+`~/.config/coc/ultisnippet/conf.snippets`
+
+## Detect a file as Markdown type
+
+```shell
+autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
+```
+
+## 把某个关键字替换成连续递增的整数：
+
+```vim
+:%s/x/\=printf("%d", line('.') - 10)/gc
+```
+
+## 鼠标闪烁效果
+
+```vim
+" Disable all blinking:
+:set guicursor+=a:blinkon0
+" Remove previous setting:
+:set guicursor-=a:blinkon0
+" Restore default setting:
+:set guicursor&
+```
+
+
+
+
+
