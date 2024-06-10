@@ -462,5 +462,370 @@ Bison parser 把它当做是输入的终结标识。
 UCN (\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8})
 EXP ([Ee][-+]?[0-9]+)
 ILEN ([Uu](L|l|LL|ll)?|(L|l|LL|ll)[Uu]?)
-`
+```
+
+## Chapter 3 Using Bison
+
+### How a Bison Parser Matches Its Input
+
+```yacc
+statement: NAME '=' expression
+
+expression: NUMBER '+' NUMBER
+            | NUMBER '−' NUMBER
+```
+
+在 Bison 中， 一条 rule 由冒号 `:` 分为两部分。
+
+左侧部分（symbol）叫做 left-hand side of the rule ， 即 LHS
+
+右侧部分（symbols）叫做 right-hand side of the rule ， 即 RHS
+
+不同的rule，可以有相同的 left-hand side （LHS） symbol 。
+
+符号 `|` 表示有两条或多条rule有相同的LHS symbol 。
+
+在输入中出现的 symbols ，或由 lex 返回的 symbols ， 叫做 terminal symbols，或 tokens。
+
+而出现在（Bison）rule左侧的LHS symbol，叫做 nonterminal symbol，或 nonterminals。
+
+terminal symbol 和 nonterminal symbol **必须不相同** ，token 不能出现在rule的左侧。
+
+一条 rule 可以直接或间接地引用它自身（递归），从而使得分析较长的语句比较高效。
+
+
+### Shift/Reduce Parsing
+
+> A bison parser works by looking for rules that might match the tokens seen so far.
+
+Bison parser 是根据当前已经看到的 tokens ， 查询是否有匹配的 rule，并以此进行所谓的 shift 和 reduce。
+
+Bison parser 每次读到一个 token，但没有组成一条完整的 rule 的时候，它就把这个 token
+压入到内部维护的一个 stack 里面，然后切换到一个新的、反应刚读到的 token 的 state 上。
+
+这个动作叫做 **shift** 。
+
+当 Bison parser 读到了组成一条完整 rule 右侧（RHS）的所有 symbols 的时候，它就把这些 symbols
+从 stack 中都 pop 出来，然后把这条 rule 左侧（LHS）的symbol 压入 stack，同时切换到一个新 state上。
+
+这个动作叫做 **reduction** 。（因为它减少了stack上的item数量）
+
+每当 reduce a rule 的时候，它就会执行rule对应的user code。
+
+
+这里举例说明如下的表达式是如何被 parse 的。
+
+```cpp
+fred = 12 + 13
+```
+
+假设有如下的 rule ，
+
+```yacc
+statement: NAME '=' expression
+
+expression: NUMBER '+' NUMBER
+            | NUMBER '−' NUMBER
+```
+
+每次读到一个 token，就会向内部的 stack 中 shift 这个 token ，过程如下，
+
+第一次，读到 token `fred` ， 它是一个 `NAME` ， 但是不能组成一个完整的 rule（RHS），
+故向 stack 中压栈（shift），
+
+```cpp
+fred
+```
+
+第二次，读到 token `=` ，同样地，它和已经在栈中的 token 也不能组成一个完整的 rule（RHS），
+故继续向 stack 中压栈（shift），此时栈的内容如下
+
+```cpp
+fred =
+```
+
+第三次，读到 token `12` ，它是一个 `NUMBER`，同样地，它和已经在栈中的 token 也不能组成一个完整的 rule（RHS），
+故继续向 stack 中压栈（shift），此时栈的内容如下
+
+```cpp
+fred = 12
+```
+
+之后第四次重复了上述的压栈过程（shift），此时栈的内容如下，
+
+```cpp
+fred = 12 +
+```
+
+当第五次读到 token `13` 时，它自己本身也不是一个完整的rule（RHS），因此先把它压入栈（shift），
+此时栈中的内容如下，
+
+```cpp
+fred = 12 + 13
+```
+
+而这个时候，栈中的内容 `12 + 13` 对应的是下面 rule 的右侧（RHS），
+
+```yacc
+expression: NUMBER '+' NUMBER
+            | NUMBER '−' NUMBER
+```
+
+因此，这个时候就发生了 reduction ，token `12` ， `+` 和 `13` 从栈中弹出，然后使用这个 rule 的
+左侧（LHS）的symbol，把它压入栈中，那么此时栈中的内容如下，
+
+```cpp
+fred = expression
+```
+
+而此时栈中的内容又组成了 rule `statement: NAME '=' expression` 的右侧（RHS）部分，因此又产生了
+reduce，把 token `fred` ， `=` ，和 `expression` 再从栈中弹出，然后把这条 rule 的左侧（LHS）的
+symbol （这里是 statement）压入栈中，此时栈中的内容如下，
+
+```cpp
+statement
+```
+
+而这个 symbol 正是开始时的 symbol （ *start symbol* ），因此根据语法，读入的所有输入就是合法的。
+
+
+#### What Bison’s LALR(1) Parser Cannot Parse
+
+Bison parser 的两种 parse 方法。
+
+- LALR(1)
+
+  Look Ahead Left to Right with a one-token lookahead
+
+- GLR
+
+  Generalized Left to Right
+
+
+这一节介绍的是 LALR(1) ，第9章介绍 GLR。
+
+LALR 不能 parse 的语法
+
+- 同样的输入，匹配语法树中多个（节点）
+
+- 需要多读入的 token 多于一个的情况。
+
+关于上面提到的第二条，这里举例进行了说明。
+
+比如有如下的 rule ，
+
+```yacc
+phrase   : cart_animal AND CART
+         | work_animal AND PLOW
+
+cart_animal: HORSE | GOAT
+
+work_animal: HORSE | OX
+```
+
+如果有输入 `HORSE AND CART` ，看看会发生什么。
+
+首先，bison parser 读入第一个 token `HORSE` ，因为是 LALR(1)，所以实际上 bison parser
+还知道下一个 token 是 `AND`。
+
+此时，当前的 token 是 `HORSE` ，有两条 rule 都符合（`cart_animal` 和 `work_animal`），
+但 bison parser 不能区分出来它们，原因是，即使考虑到下一个token是 `AND` ，它们也都是
+`HORSE AND` ，并不能区分出来有所不同。
+
+而只有当再多读（考虑）下一个 token `CART` 的时候，bison parser 才能发现它符合第一条 rule
+的右侧 `cart_animal AND CART`，从而反推出来 `HORSE` 应该是 `cart_animal` ，而不是 `work_animal`。
+
+但这已经是额外多读了两个 token 了，并不是 LALR(1) 的工作方式（它每次只多读一个 token），所以这种
+情况下 bison parser 就不能正确分析了。
+
+为了使得 bison parser 能够区分，可以把第一条 rule 改成如下的形式，
+
+```yacc
+phrase   : cart_animal CART
+         | work_animal PLOW
+
+cart_animal: HORSE | GOAT
+
+work_animal: HORSE | OX
+```
+
+此时输入也需要变成 `HORSE CART`。
+
+这种情况下，bison parser 读入了第一个 token `HORSE`，如果仅仅靠这个 token ，
+bison parser 是区分不出来它是 `cart_animal` 还是 `work_animal` 的。
+
+但因为 bison parser 会多读一个 token `CART` ，所以它通过比较就会发现符合第一条 rule
+的右侧 symbols `cart_animal CART`，因此就会把 `HORSE` 判定为 `cart_animal`。
+
+栈中的变化，首先是把 `HORSE` 压入栈，此时它组成了rule `cart_animal: HORSE | GOAT` 的 RHS，
+因此 `HORSE` 出栈， `cart_animal` 入栈。
+
+再读第二个 token `CART`，它也先入栈，此时栈中的内容就是 `cart_animal CART` ，它符合第一条 rule
+的右侧 `phrase   : cart_animal CART` ， 因此 `cart_animal` 和 `CART`都出栈，symbol `phrase` 入栈。
+
+
+
+在第7章中，讨论了shift/reduce的更多细节。
+
+关于parse的技术，可以参考 Dick Grune 的 [Parsing Techniques: A Practical Guide](http://www.cs.vu.nl/~dick/PTAPG.html)
+
+
+### A Bison Parser
+
+和 Flex 相同， bison specification 同样拥有三部分的结构，
+
+- 第一部分是 definition section，定义的是 parser的控制信息，并且设置了parser工作时的环境（变量等）。
+
+- 第二部分包含了 parser 的 rule 。
+
+- 第三部分包含了C代码，这些C代码会被逐字逐句地拷贝到最终的C程序中去。
+
+
+Bison parser 通过把代码片段，添加到一个标准的框架文件中去，从而生成一个 C 程序。
+
+Bison 中的 rules 会被编译成状态机的数组，每个状态是匹配输入的 token。
+
+每当发生 rule reduce的时候，action 的 `$N` 和 `@N` 被转换为 C 代码，位于函数 `yyparse()` 里面的 switch-case 语句中。
+
+
+### Abstract Syntax Trees
+
+AST = Abstract Syntax Tree
+
+AST is basically a parse tree that omits the nodes for the uninteresting rules.
+
+AST 基本就是 parse tree 里面，去掉不具备实际意义的node，得到的结果。
+
+
+### An Improved Calculator That Creates ASTs
+
+bison parser 可以允许 symbol（token 和 nonterminals）关联到一个值上，并且允许定义这个值的类型。
+
+在 Bison specification 的第一部分（definition section），可以使用 `%union` 来定义一些类型，以供 symbol（token & nonterminals）使用。
+
+比如这里定义两种类型 `a` 和 `d` ，分别表示一个 AST 的指针类型，和一个 `double` 类型。
+
+```yacc
+%union {
+   struct ast *a;
+   double d;
+}
+```
+
+在定义了类型之后，就可以在声明 token 的时候，同时声明这个 token 的类型，这个类型的名称，要放在尖括号中 `< >` 。
+
+但如果不需要使用这个 token 对应的值，那么就可以不需要声明它的类型。
+
+比如，下面的例子中，声明了 `NUMBER` 这个 token 对应一个值，其值的类型是 `double`。而 `EOL` 只是被声明是 token，没有关联一个值。
+
+```yacc
+%token <d> NUMBER
+%token EOL
+```
+
+注意，第一章中提到过，一个 symbol 对应的值（value），在 action 中用 `$$` 表示。
+
+也要注意，如果一个 rule 没有指明显式的 action code，那么Bison parser 会赋予其默认的 action code，即
+
+```cpp
+$$ = $1;
+```
+
+在 bison 中， `$1` 表示的是 rule的右侧（RHS）出现的第`1`个symbol。
+
+另外，如果不使用一个 nonterminal symbol 的值，那么这个 nonterminal symbol 也可以**不声明**。
+
+
+#### Literal Character Tokens
+
+单个的char，可以在 lex 中直接当做 token 返回，它对应的 token number 实际上就是它自己的ASCII值。
+
+比如 `"+"` ， 就可以直接返回（`yytext[0]`）。
+
+
+
+在声明了 token 的类型之后，在 `flex` 中如果要使用一个输入的匹配 `yylval`，那么就得使用到和 C中`union`一样的语法。
+
+比如，因为已经在 yacc 中声明了 token `NUMBER` 是一个 `<d>` ，即浮点类型，那么 `flex` 在处理时，如果要取得对应的值，
+并把这个值设置到 `yylval` 中时，就需要使用 `yylval` 了（bison中可以不用这样写），然后才能返回这个 token `NUMBER`。
+
+```lex
+[0-9]+"."[0-9]*{EXP}? | "."?[0-9]+{EXP}? {
+											yylval.d = atof(yytext); return NUMBER;
+										 }
+```
+
+#### Building the AST Calculator
+
+Flex 的输出名字默认是 `lex.yy.c` ，如果要指定新的名字，就需要使用 `-o` 选项，如下，
+
+```shell
+flex -oMyLexName.c OriginalLex.l
+```
+
+Bison 和 Flex 结合起来编译，可以写成 Mikefile 步骤如下
+
+```makefile
+fb3_1: fb3_1.l fb3_1.y fb3_1.h
+	bison -d fb3_1.y
+	flex -ofb3_1.lex.c fb3_1.l
+	cc -o $@ fb3_1.tab.c fb3_1.lex.c fb3_1funcs.c
+```
+
+### Shift/Reduce Conflicts and Operator Precedence
+
+这节主要说明的是 Bison 如何处理 shift/reduce conflict。
+
+假如有如下的 rule，
+
+```yacc
+%type <a> exp
+
+%%
+/* ... */
+
+exp: exp '+' exp { $$ = newast('+', $1,$3); }
+	| exp '-' exp { $$ = newast('-', $1,$3);}
+	| exp '*' exp { $$ = newast('*', $1,$3); }
+	| exp '/' exp { $$ = newast('/', $1,$3); }
+	| '|' exp { $$ = newast('|', $2, NULL); }
+	| '(' exp ')' { $$ = $2; }
+	| '-' exp { $$ = newast('M', $2, NULL); }
+	| NUMBER { $$ = newnum($1); }
+	;
+%%
+```
+
+当输入是 `2+3*4` 时，分析如下。
+
+- 首先读入 token `2` ，压入栈（shift），此时它符合最后一条 rule 。
+
+  因此发生 reduce，把刚压入栈的 `2` 弹出，然后压入 nonterminal symbol `exp`。
+
+- 再读入 token `+` ，压入栈（shift），此时没有符合的 rule 。
+
+- 再读入 token `3` ，压入栈（shift），此时 `3` 这个 token 符合最后一条 rule
+  （即 `exp: NUMBER {$$ = newnum($1); }`），所以reduce，弹出 `3` ， 压入
+  nonterminal symbol `exp`。此时栈中的内容是 `exp + exp`。
+
+到这时候，bison parser 就会产生 shift/reduce conflict。
+
+原因是，因为使用的是 LALR(1) ，此时它已经知道下一个 token 是 `*` 了。
+
+那么此时，它可以直接按照 rule
+
+```yacc
+exp: exp '+' exp { $$ = newast('+', $1,$3); }
+```
+
+产生reduce，或者，读入下一个 token （即 `*` ），再把 `*` 压入栈，并且等到下次再
+遇到 `exp` 的时候，根据 rule
+
+```yacc
+exp: exp '*' exp { $$ = newast('*', $1,$3); }
+```
+
+再在那时候产生 reduce。
+
+产生这样 reduce/shift 问题的原因是：没有告诉 bison 关于操作符的 **precedence** 和 **associativity** 。
 
