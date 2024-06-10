@@ -361,3 +361,5 @@ fstr = ("This is a very long long long long "
 还有另外一篇文章提到如何在CMake中使用 setuptools：[使用CMake扩展setuptools](https://cloud.tencent.com/developer/information/%E4%BD%BF%E7%94%A8CMake%E6%89%A9%E5%B1%95setuptools%E3%80%82%E6%9C%AA%E5%AE%89%E8%A3%85%E7%94%9F%E6%88%90%E6%89%A9%E5%B1%95)
 
 步骤在 Extending and Embedding the Python Interpreter 的笔记中有详细的步骤描述。
+
+还有一篇文章，讲述如何在 setuptools 中使用 `g++` （C++语言）而不是 `gcc` 来编译对应模块扩展。
