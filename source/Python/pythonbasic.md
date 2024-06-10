@@ -351,3 +351,13 @@ fstr = ("This is a very long long long long "
 ## Building and testing a hybrid Python/C++ package
 
 [Building and testing a hybrid Python/C++ package](https://www.benjack.io/building-and-testing-a-hybrid-python/c-package/)
+
+
+
+## 使用 setuptools 来编译这个C extension
+
+参考官方文档：[Building Extension Modules](https://setuptools.pypa.io/en/latest/userguide/ext_modules.html)
+
+还有另外一篇文章提到如何在CMake中使用 setuptools：[使用CMake扩展setuptools](https://cloud.tencent.com/developer/information/%E4%BD%BF%E7%94%A8CMake%E6%89%A9%E5%B1%95setuptools%E3%80%82%E6%9C%AA%E5%AE%89%E8%A3%85%E7%94%9F%E6%88%90%E6%89%A9%E5%B1%95)
+
+步骤在 Extending and Embedding the Python Interpreter 的笔记中有详细的步骤描述。
