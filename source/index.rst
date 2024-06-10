@@ -60,7 +60,7 @@ A Tour of Life (Pyrad's Notes!)
       - :doc:`clang </CPP/clang>`
       - :doc:`BoostPython </CPP/BoostPython>`
       - :doc:`NumPy </CPP/NumPy>`
-      -
+      - :doc:`FlexBison </CPP/FlexBison>`
     * - :math:`\star` :doc:`Notes </Notes/index>`
       - :doc:`BYOC </Notes/BuildYourOwnComputer>`
       - :doc:`CMakeTutorial </Notes/CMakeTutorialNotes>`
