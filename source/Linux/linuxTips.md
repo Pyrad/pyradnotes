@@ -861,6 +861,24 @@ awk '{print $(NF-1), $NF}' tmptest.info
 这里 `$NF` 是按照分隔符切分之后，field的个数。
 
 
+## Linux diff & patch commands
+
+Apply diff from another file
+
+```shell
+path_to_file_A $ diff -u file_A file_B > mypatch.txt
+path_to_file_A $ patch -p0 < mypatch.txt
+```
+
+Apply diff to another file
+
+```shell
+path_to_file_A $ diff -u file_B file_A > mypatch.txt
+path_to_file_B $ patch -p0 < mypatch.txt
+```
+
+
+
 
 
 ```shell
