@@ -2840,6 +2840,40 @@ def initfunc_name(name):
 
 从同一个动态库中，可以导出多个模块，方法是定义多个初始化函数。但是当导入的时候，需要symbolic link或custom importer，原因是默认只有和文件名称相同的模块才能被发现。具体参考“Multiple modules in one library” section in [**PEP 489**](https://peps.python.org/pep-0489/)。
 
+### 4.1. Building C and C++ Extensions with distutils
+
+Python的发行包中包含了 distutils 工具，可以用它构建模块扩展。因为 distutils 也支持创建二进制发行包，因此用户就不需要使用一个编译器来安装这个模块扩展。
+
+Distutils包需要一个驱动脚本 `setup.py` ，它就是一个普通的Python脚本，比如，
+
+```python
+from distutils.core import setup, Extension
+
+module1 = Extension('demo',
+                    sources = ['demo.c'])
+
+setup (name = 'PackageName',
+       version = '1.0',
+       description = 'This is a demo package',
+       ext_modules = [module1])
+```
+
+使用这个驱动脚本 `setup.py` 和 文件 `demo.c` ，执行如下命令，
+
+```shell
+python setup.py build
+```
+
+就会编译文件 `demo.c` ，在 `build` 目录下生成一个名字叫做 `demo` 的模块扩展。根据不同的系统平台，这个模块所在的目录可能是 `build/lib.system` ，并且名称可能是 `demo.so` 或 `demo.pyd` 。
+
+
+
+
+
+
+
+
+
 
 
 
