@@ -3176,6 +3176,8 @@ g++ -shared -Wl,--enable-auto-image-base -pipe -pipe -s build/temp.mingw_x86_64-
 
 ```
 
+细节可以参考文章：[Writing cpython extension modules using C++](https://thomasnyberg.com/cpp_extension_modules.html)
+
 在步骤（五）中，实际测试，如下的命令也可以成功编译，
 
 ```shell
