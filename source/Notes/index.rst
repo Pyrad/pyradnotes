@@ -24,3 +24,4 @@ Notes
    Games.md
    LearningGPU.md
    debugTrack.md
+   OpenSourceMirrors.md
