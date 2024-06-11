@@ -11,3 +11,4 @@ Python
     ExtendingAndEmbeddingThePythonInterpreter.md
     anaconda.md
     pytorch.md
+    virtualEnv.md
