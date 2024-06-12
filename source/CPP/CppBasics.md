@@ -2,6 +2,13 @@
 
 This file shows some basic usages of C/C++
 
+## GNU binutils 文档网站（pdf）
+
+[Documentation for binutils 2.42 - sourceware.org](https://sourceware.org/binutils/docs/)
+
+[GNU Binutils - sourceware.og](https://sourceware.org/binutils/)
+
+
 ## Initialize a std::unique_ptr with `nullptr`
 
 See [Why does my unique_ptr think is has a null function pointer deleter](https://stackoverflow.com/questions/22915631/why-does-my-unique-ptr-think-is-has-a-null-function-pointer-deleter)
