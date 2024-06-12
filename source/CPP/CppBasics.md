@@ -8,6 +8,10 @@ This file shows some basic usages of C/C++
 
 [GNU Binutils - sourceware.og](https://sourceware.org/binutils/)
 
+## What is import libraries?
+
+[6.16 `ld` and WIN32 (cygwin/mingw) - sourceware.org](https://sourceware.org/binutils/docs/ld/WIN32.html)
+
 
 ## Initialize a std::unique_ptr with `nullptr`
 
