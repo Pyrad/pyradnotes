@@ -8,6 +8,10 @@ This file shows some basic usages of C/C++
 
 [GNU Binutils - sourceware.og](https://sourceware.org/binutils/)
 
+[Where is the official documentation of gnu linker script command language? - StackOverflow](https://stackoverflow.com/questions/76993422/where-is-the-official-documentation-of-gnu-linker-script-command-language)
+
+
+
 ## What is import libraries?
 
 [6.16 `ld` and WIN32 (cygwin/mingw) - sourceware.org](https://sourceware.org/binutils/docs/ld/WIN32.html)
