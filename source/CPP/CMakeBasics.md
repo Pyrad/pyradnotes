@@ -106,4 +106,15 @@ set_target_properties(new_thing PROPERTIES PREFIX "")
 [使用CMake扩展setuptools](https://cloud.tencent.com/developer/information/%E4%BD%BF%E7%94%A8CMake%E6%89%A9%E5%B1%95setuptools%E3%80%82%E6%9C%AA%E5%AE%89%E8%A3%85%E7%94%9F%E6%88%90%E6%89%A9%E5%B1%95)
 
 
+## Some links to build Python extension modules
+
+[Recommendations for Python module inclusion](https://discourse.cmake.org/t/recommendations-for-python-module-inlusion/2612)
+
+[Creating a python package (deb/rpm) from cmake](https://stackoverflow.com/questions/70017740/creating-a-python-package-deb-rpm-from-cmake)
+
+[Building Python submodules from C++ extensions via cmake](https://stackoverflow.com/questions/61956365/building-python-submodules-from-c-extensions-via-cmake)
+
+[A simple example of using cmake to build a Windows DLL](https://stackoverflow.com/questions/24872225/a-simple-example-of-using-cmake-to-build-a-windows-dll)
+
+[GenerateExportHeader](https://cmake.org/cmake/help/v3.0/module/GenerateExportHeader.html)
 
