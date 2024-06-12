@@ -12,6 +12,7 @@ This file shows some basic usages of C/C++
 
 [6.16 `ld` and WIN32 (cygwin/mingw) - sourceware.org](https://sourceware.org/binutils/docs/ld/WIN32.html)
 
+[7.4.8.9 Creating an Import Library - sourceware.org](https://gcc.gnu.org/onlinedocs/gnat_ugn/Creating-an-Import-Library.html)
 
 ## Initialize a std::unique_ptr with `nullptr`
 
