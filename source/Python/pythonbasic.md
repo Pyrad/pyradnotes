@@ -162,6 +162,12 @@ python -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))"
 ```
 
 
+## 查看当前Python编译时的选项信息
+
+```shell
+python -m sysconfig > tempfile.info 2>&1
+```
+
 
 ## Python design patterns
 
