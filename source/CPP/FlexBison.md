@@ -2,6 +2,8 @@
 
 [Yacc介绍 - Sina Blog](http://blog.chinaunix.net/uid-8867796-id-358793.html)
 
+[学习《编译原理》完全没有头绪怎么办？ - i5ting的回答 - 知乎](https://www.zhihu.com/question/26443913/answer/3529517945)
+
 # Flex & Bison by John Levine
 
 
