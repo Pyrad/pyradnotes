@@ -89,7 +89,7 @@ This file shows some advanced usages of C/C++
 
 [有哪些优秀的 C/C++ 开源代码框架？这些框架的设计思路是怎样的？ - 觅新笑话中的回答 - 知乎](https://www.zhihu.com/question/20201738/answer/2928936881)
 
-## Python如何调用C/C++，及问题解决
+### Python如何调用C/C++，及问题解决
 
 [Python调用.dll文件,报错FileNotFoundError: Could not find module ‘xx\....\xx.dll](https://blog.csdn.net/weixin_43980331/article/details/132556194)
 
@@ -220,6 +220,14 @@ ninja: build stopped: subcommand failed.
 ### How can I see parse tree, intermediate code, optimization code and assembly code during COMPILATION?
 
 [https://stackoverflow.com/questions/1496497/how-can-i-see-parse-tree-intermediate-code-optimization-code-and-assembly-code](https://stackoverflow.com/questions/1496497/how-can-i-see-parse-tree-intermediate-code-optimization-code-and-assembly-code)
+
+
+### 如何编译 Windows下 Python的静态库
+
+基于现有的Windows版本的Python（带有 `dll`动态库），在 msys2 下，编译对应的静态库（`dll.a`）。
+
+[How can I build my C extensions with MinGW-w64 in Python?](https://stackoverflow.com/questions/11182765/how-can-i-build-my-c-extensions-with-mingw-w64-in-python)
+
 
 
 ## C++异常处理的底层机制 - dingtingli的文章
