@@ -412,6 +412,294 @@ Server = https://mirror.iscas.ac.cn/msys2/msys/$arch/
 ```
 
 
+### Building Python extension in Windows via MSYS2 terminal
+
+#### 结论
+
+经过研究发现，可以直接使用 msys2 提供的 Python 的头文件和动态库，编译出可以在windows 下正常 import 的C extension，如下，
+
+```shell
+g++ -shared \
+    -ID:/procs/msys64/mingw64/include/python3.10 \
+    cpp11runtest.cpp \
+    -LD:/procs/msys64/mingw64/lib \
+    -lpython3.10 \
+    -o cpp11runtest.pyd
+```
+
+这里 msys2 提供的动态库路径是： `D:/procs/msys64/mingw64/lib/libpython3.10.dll.a`。
+
+上面的命令编译出来的 windows 下的 C extension，是可以正常 import 的。
+
+但是，如果使用自己在Windows下安装的Python，并使用如下的命令，编译出来的C extension，就**无法**正常import ：
+
+```shell
+g++ -shared \
+    -ID:/procs/python38/include \
+    cpp11runtest.cpp \
+    -LD:/procs/python38 \
+    -lpython38 \
+    -o cpp11runtest.pyd
+```
+
+虽然这个命令也可以编译出来一个 `cpp11runtest.pyd` 文件（Windows下的动态库），但在对应的 Python（即 `D:/procs/python38/python`）下去 import 它，会发生如下的错误，
+
+```shell
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: DLL load failed while importing cpp11runtest: 找不到指定的模块。
+```
+
+现在看起来，原因似乎是Windows下我自己安装的Python版本，只提供了 `dll`，但是没有对应的 `dll.a` 文件，而编译C extension，似乎是需要这个Windows下的 `dll.a` 文件的。**如果在Linux下**，**我使用自己编译出来的Python版本**，**编译这个C extensio**，**实际上是没问题的**。
+
+#### 发现过程
+
+使用一个简单的Python extension源代码，如下，
+
+```cpp
+#define PY_SSIZE_T_CLEAN
+#include <Python.h>
+#include <iostream>
+
+static PyObject *
+cpp11runtest_run_all(PyObject *self, PyObject *args) {
+    std::cout << "Running all by cpp11runtest_run_all\n";
+    return PyLong_FromLong(0);
+} // cpp11runtest_run_all
+
+static PyMethodDef cpp11runtest_methods[] = {
+    {"run", cpp11runtest_run_all, METH_VARARGS, "Run tests of cpp11 project."},
+    { NULL, NULL, 0, NULL} /* Sentinel */
+};
+
+static struct PyModuleDef cpp11runtest_module = {
+    PyModuleDef_HEAD_INIT,
+    "cpp11runtest", /* name of module */
+    "<This is the doc string of cpp11runtest module>",
+                     /* module documentation, may be NULL */
+    -1, /* size of per-interpreter state of the module,
+           or -1 if the module keeps state in global variables. */
+    cpp11runtest_methods
+};
+
+PyMODINIT_FUNC
+PyInit_cpp11runtest(void) {
+    PyObject *m = nullptr;
+    m = PyModule_Create(&cpp11runtest_module);
+    if (!m) { return nullptr; }
+    return m;
+}
+
+```
+
+然后使用 `setuptools` 来编译，它需要以下两个文件
+
+文件 `pyproj.toml`
+
+```toml
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "my_cpp11runtest"  # as it would appear on PyPI
+version = "0.42"
+```
+
+文件 `setup.py`
+
+```python
+setup(
+    ext_modules=[
+        Extension(
+            name="cpp11runtest",  # as it would be imported
+                                  # may include packages/namespaces separated by `.`
+            sources=["cpp11runtest.cpp"], # all sources are compiled into
+                                          # a single binary file
+            language='c++', # using c++ compiler
+        ),
+    ]
+)
+```
+
+然后把这三个文件（`cpp11runtest.cpp`，`setup.py` 和 `pyproj.toml`）放在同一个目录下，在 msys2 的terminal下，使用命令
+
+```shell
+python setup.py build_ext
+```
+
+他运行时的输出信息如下，
+
+```shell
+running build_ext
+building 'cpp11runtest' extension
+creating build
+creating build/temp.mingw_x86_64-3.10
+gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O3 -Wall \
+    -march=x86-64 -mtune=generic -O2 -pipe -O3 -march=x86-64 -mtune=generic -O2 \
+    -pipe -O3 -ID:/procs/msys64/mingw64/include/python3.10 -c cpp11runtest.cpp \
+    -o build/temp.mingw_x86_64-3.10/cpp11runtest.o
+writing build/temp.mingw_x86_64-3.10/cpp11runtest.cp310-mingw_x86_64.def
+creating build/lib.mingw_x86_64-3.10
+g++ -shared -Wl,--enable-auto-image-base -pipe -pipe \
+    -s build/temp.mingw_x86_64-3.10/cpp11runtest.o build/temp.mingw_x86_64-3.10/cpp11runtest.cp310-mingw_x86_64.def \
+    -LD:/procs/msys64/mingw64/lib/python3.10/config-3.10 \
+    -LD:/procs/msys64/mingw64/lib -lpython3.10 -lm -lversion -lshlwapi \
+    -o build/lib.mingw_x86_64-3.10/cpp11runtest.cp310-mingw_x86_64.pyd
+```
+
+它就会根据当前的平台信息，自己生成正确的编译命令，然后创建一个目录 `build` 进行编译，然后把编译出来的动态库，放在 `build` 目录下，含有平台信息名的一个目录下，比如这里的 `build/lib.mingw_x86_64-3.10/cpp11runtest.cp310-mingw_x86_64.pyd` 。
+
+```shell
+$ tree .
+.
+├── build
+│   ├── lib.mingw_x86_64-3.10
+│   │   ├── cpp11runtest.cp310-mingw_x86_64.pyd
+│   │   ├── objdump_cpp11runtest.cp310-mingw_x86_64.pyd.header.txt
+│   │   └── objdump_cpp11runtest.cp310-mingw_x86_64.pyd.txt
+│   └── temp.mingw_x86_64-3.10
+│       ├── cpp11runtest.cp310-mingw_x86_64.def
+│       └── cpp11runtest.o
+├── cpp11runtest.cpp
+├── pyproj.toml
+└── setup.py
+```
+
+我根据前面编译时，打印出来的编译命令，每次去掉一个编译选项，然后编译运行，并查看能否正常 import ，最后发现命令可以化简为如下，
+
+```shell
+g++ -shared \
+    -ID:/procs/msys64/mingw64/include/python3.10 \
+    cpp11runtest.cpp \
+    -LD:/procs/msys64/mingw64/lib \
+    -lpython3.10 \
+    -o cpp11runtest.pyd
+```
+
+即，只需要指定对应的Python的头文件目录，库和库的路径，其实就可以正确编译并得到正常的结果。
+
+但是，如果使用我自己安装的Windows版本（Win7，`D:\procs\python38`），把上面命令中对应的编译选择做替换，得到下面的命令，
+
+```shell
+g++ -shared \
+    -ID:/procs/python38/include \
+    cpp11runtest.cpp \
+    -LD:/procs/python38 \
+    -lpython38 \
+    -o cpp11runtest.pyd
+```
+
+这样编译出来的 `cpp11runtest.pyd`，就不能被正常 import。
+
+由此，发现是Windows版本的Python的问题。
+
+#### 使用CMake编译
+
+根据前面的试验，调研以及分析，最后得到结果，理论上使用CMake构建并编译，得到的结构也应该是正确的。
+
+所以首先按照原先指定 Windows 版本下Python的头文件、库以及库文件的方式，得到如下的 `CMakeLists.txt`，
+
+```cmake
+# Set the minimun version of CMake
+cmake_minimum_required(VERSION 3.10)
+
+# Set the project name
+project(MYCPP11TEST_CMAKE VERSION 0.1)
+
+# specify the C++ standard
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+set(Python3_INCLUDE_DIRS "D:/procs/python38/include")
+set(Python3_LIBRARIES "D:/procs/python38/python38.dll")
+set(Python3_LIBRARY "D:/procs/python38")
+set(PYTHON_EXECUTABLE "D:/procs/python38/python.exe")
+
+# Following variables are set in src/CMakeLists.txt
+MESSAGE(STATUS "[PYRAD]     Python related variables")
+MESSAGE(STATUS "[PYRAD]     Python3_FOUND= ${Python3_FOUND}")
+MESSAGE(STATUS "[PYRAD]     Python3_INCLUDE_DIRS = ${Python3_INCLUDE_DIRS}")
+MESSAGE(STATUS "[PYRAD]     Python3_LIBRARIES = ${Python3_LIBRARIES}")
+MESSAGE(STATUS "[PYRAD]     Python3_LIBRARY = ${Python3_LIBRARY}")
+MESSAGE(STATUS "[PYRAD]     PYTHON_EXECUTABLE = ${PYTHON_EXECUTABLE}")
+
+set(PyMod_cpp11runtest "cpp11runtest")
+add_library(${PyMod_cpp11runtest} SHARED cpp11runtest.cpp)
+set_target_properties(${PyMod_cpp11runtest} PROPERTIES PREFIX "" SUFFIX ".pyd")
+target_include_directories(${PyMod_cpp11runtest} PRIVATE ${Python3_INCLUDE_DIRS})
+target_link_libraries(${PyMod_cpp11runtest} ${Python3_LIBRARIES})
+```
+
+然后编译，
+
+```shell
+mkdir build
+cd build
+cmake -G Ninja .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+cmake --build .
+```
+
+果然，编译可以通过，也可以生成 `cpp11runtest.pyd`，但是import的时候就会报错（错误和前面提到的相同）。
+
+如果使用CMake 提供的 `find_package` 命令（如下），
+
+```cmake
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+```
+
+替换掉
+
+```shell
+set(Python3_INCLUDE_DIRS "D:/procs/python38/include")
+set(Python3_LIBRARIES "D:/procs/python38/python38.dll")
+set(Python3_LIBRARY "D:/procs/python38")
+set(PYTHON_EXECUTABLE "D:/procs/python38/python.exe")
+```
+
+那么在打印出来的信息中，
+
+```shell
+$ cmake -G Ninja .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=1
+-- [PYRAD]   ------------- [SUB DIR ] -------------
+-- [PYRAD]   CMAKE_CURRENT_SOURCE_DIR: E:/temp/extendingPython/cpp11runtest_cmake
+-- [PYRAD]     Python related variables
+-- [PYRAD]     Python3_FOUND= TRUE
+-- [PYRAD]     Python3_INCLUDE_DIRS = D:/procs/msys64/mingw64/include/python3.10
+-- [PYRAD]     Python3_LIBRARIES = D:/procs/msys64/mingw64/lib/libpython3.10.dll.a
+-- [PYRAD]     Python3_LIBRARY =
+-- [PYRAD]     PYTHON_EXECUTABLE =
+-- [PYRAD]   ------------- [SUB DIR ] [END] -------------
+-- Configuring done
+-- Generating done
+-- Build files have been written to: E:/temp/extendingPython/cpp11runtest_cmake/build
+```
+
+可以看到，CMake可以正确找到 msys2 下的Python头文件目录以及库文件（但是没有找到库的路径？不过可以正常编译通过），然后基于此编译，得到的结果，也是**正常的**（可以正常 import）。
+
+进一步，如果手动指定 msys2 的Python头文件目录、库目录以及库文件，即用
+
+```cmake
+set(Python3_INCLUDE_DIRS "D:/procs/msys64/mingw64/include/python3.10")
+set(Python3_LIBRARIES "libpython3.10.dll.a")
+set(Python3_LIBRARY "D:/procs/msys64/mingw64/lib")
+set(PYTHON_EXECUTABLE "D:/procs/msys64/mingw64/bin/python")
+```
+
+替换掉前面的，
+
+```shell
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+```
+
+那么得到的结果，也是**正常的**（可以正常 import）！！！
+
+至此，终于得知，确实是Windows版本的Python提供的Python动态库似乎不是正确的，因此基于它编译出来的C扩展是不能正确import。
+
+另外，需要提到的是，前面的路径，必须是以 `D:/procs/msys64/mingw64/include/python3.10` 这样带有 Windows 磁盘符的形式给出，如果直接以 `/mingw64/include/python3.10` 的形式给出，其实是会报错的。
+
+（2024年6月16日21:11:31）
+
 
 ### MSYS2 installation list
 
