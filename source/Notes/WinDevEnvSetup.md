@@ -347,7 +347,71 @@ Tsinghua mirror page: [https://mirrors.tuna.tsinghua.edu.cn/help/msys2/](https:/
   ```bash
   $ pacman -S --needed base-devel mingw-w64-x86_64-toolchain
   ```
-  
+
+### MSYS2 mirror setting
+
+为了下载加速，可以使用国内的镜像源。不过替换之前下载好像也不慢，可以酌情考虑添加。
+
+打开文件 `/path/to/msys64/etc/pacman.d/mirrorlist.msys`（如果已经在 msys2 的terminal 中时，路径就是 `/etc/pacman.d/mirrorlist.msys` ），并在文件头部添加如下镜像源，并保存
+
+```shell
+## Primary
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch/
+Server = https://mirror.msys2.org/msys/$arch/
+Server = https://repo.msys2.org/msys/$arch/
+
+## Tier 1
+Server = https://mirror.umd.edu/msys2/msys/$arch/
+Server = https://mirror.yandex.ru/mirrors/msys2/msys/$arch/
+Server = https://download.nus.edu.sg/mirror/msys2/msys/$arch/
+Server = https://ftp.acc.umu.se/mirror/msys2.org/msys/$arch/
+Server = https://ftp.nluug.nl/pub/os/windows/msys2/builds/msys/$arch/
+Server = https://ftp.osuosl.org/pub/msys2/msys/$arch/
+```
+
+实际上，原始的 `mirrorlist.sys` 内容如下，
+
+```shell
+# See https://www.msys2.org/dev/mirrors
+
+## Primary
+Server = https://mirror.msys2.org/msys/$arch/
+Server = https://repo.msys2.org/msys/$arch/
+
+## Tier 1
+Server = https://mirror.umd.edu/msys2/msys/$arch/
+Server = https://mirror.yandex.ru/mirrors/msys2/msys/$arch/
+Server = https://download.nus.edu.sg/mirror/msys2/msys/$arch/
+Server = https://ftp.acc.umu.se/mirror/msys2.org/msys/$arch/
+Server = https://ftp.nluug.nl/pub/os/windows/msys2/builds/msys/$arch/
+Server = https://ftp.osuosl.org/pub/msys2/msys/$arch/
+Server = https://mirror.internet.asn.au/pub/msys2/msys/$arch/
+Server = https://mirror.selfnet.de/msys2/msys/$arch/
+Server = https://mirror.ufro.cl/msys2/msys/$arch/
+Server = https://mirrors.dotsrc.org/msys2/msys/$arch/
+Server = https://mirrors.bfsu.edu.cn/msys2/msys/$arch/
+Server = https://mirrors.tuna.tsinghua.edu.cn/msys2/msys/$arch/
+Server = https://mirrors.ustc.edu.cn/msys2/msys/$arch/
+Server = https://mirror.nju.edu.cn/msys2/msys/$arch/
+Server = https://repo.extreme-ix.org/msys2/msys/$arch/
+Server = https://mirrors.hit.edu.cn/msys2/msys/$arch/
+
+## Tier 2
+Server = https://mirror.clarkson.edu/msys2/msys/$arch/
+Server = https://fastmirror.pp.ua/msys2/msys/$arch/
+Server = https://ftp.cc.uoc.gr/mirrors/msys2/msys/$arch/
+Server = https://mirror.jmu.edu/pub/msys2/msys/$arch/
+Server = https://mirrors.piconets.webwerks.in/msys2-mirror/msys/$arch/
+Server = https://quantum-mirror.hu/mirrors/pub/msys2/msys/$arch/
+Server = https://www2.futureware.at/~nickoe/msys2-mirror/msys/$arch/
+Server = https://mirrors.sjtug.sjtu.edu.cn/msys2/msys/$arch/
+Server = https://mirrors.bit.edu.cn/msys2/msys/$arch/
+Server = https://repo.casualgamer.ca/msys/$arch/
+Server = https://mirrors.aliyun.com/msys2/msys/$arch/
+Server = https://mirror.iscas.ac.cn/msys2/msys/$arch/
+```
+
+
 
 ### MSYS2 installation list
 
