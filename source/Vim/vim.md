@@ -553,6 +553,22 @@ autocmd BufNewFile,BufFilePre,BufRead *.md set filetype=markdown
 ```
 
 
+## Vimgrep
 
+使用如下命令，可以在当前文件中搜索特定关键字 `pattern` ，
 
+```vim
+:vimgrep /pattern/ %
+```
 
+然后可以在 quickfix 窗口中查看搜索结果
+
+```vim
+:copen
+```
+
+关闭 quickfix 窗口，可以使用命令，
+
+```vim
+:cclose
+```
