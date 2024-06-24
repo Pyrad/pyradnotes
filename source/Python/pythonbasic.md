@@ -369,3 +369,9 @@ fstr = ("This is a very long long long long "
 步骤在 Extending and Embedding the Python Interpreter 的笔记中有详细的步骤描述。
 
 还有一篇文章，讲述如何在 setuptools 中使用 `g++` （C++语言）而不是 `gcc` 来编译对应模块扩展。
+
+## Tutorial of setuptools
+
+[Quick Start - Setuptools](https://setuptools.pypa.io/en/latest/userguide/quickstart.html)
+
+[Python Packaging User Guide](https://packaging.python.org/en/latest/)
