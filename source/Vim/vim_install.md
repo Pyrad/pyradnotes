@@ -95,4 +95,13 @@
 
 11. In order to use `plug.vim`, download it and put it in folder `D:\procs\Vim9Compiled\vim90\runtime\autoload`, otherwise it can't be found.
 
-9. 
+
+
+## Neovim
+
+In most cases, neovim can be downloaded from [Nvim releases - GitHub](https://github.com/neovim/neovim/releases).
+
+But this requires glibc 2.31 at minimum.
+
+In order to work with older glibc versions, find releases at [Nvim releases for older glibc versions - GitHub](https://github.com/neovim/neovim-releases)
+
