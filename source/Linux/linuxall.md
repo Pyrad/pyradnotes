@@ -120,3 +120,98 @@ If using `[[ ]]` for if-condition, then `-eq`, `-ne` and etc should be used, `==
 If trying to use `<`, `>`, ... arithematic operators, using `(())` for if-condition
 
 
+## How to check libc version?
+
+[How to check libc version?- StackOverflow](https://stackoverflow.com/questions/62732447/how-to-check-libc-version)
+
+[Check glibc version for a particular gcc compiler- StackOverflow](https://stackoverflow.com/questions/9705660/check-glibc-version-for-a-particular-gcc-compiler)
+
+[Check the actual glibc version used](https://unix.stackexchange.com/questions/537003/check-the-actual-glibc-version-used)
+
+### Method 1
+
+[How to check libc version?- StackOverflow](https://stackoverflow.com/questions/62732447/how-to-check-libc-version)
+
+Use `gcc` output
+
+```shell
+GCC_FEATURES=$(gcc -dM -E - <<< "#include <features.h>")
+
+if grep -q __UCLIBC__ <<< "${GCC_FEATURES}"; then
+    echo "uClibc"
+    grep "#define __UCLIBC_MAJOR__" <<< "${GCC_FEATURES}"
+    grep "#define __UCLIBC_MINOR__" <<< "${GCC_FEATURES}"
+    grep "#define __UCLIBC_SUBLEVEL__" <<< "${GCC_FEATURES}"
+elif grep -q __GLIBC__ <<< "${GCC_FEATURES}"; then
+    echo "glibc"
+    grep "#define __GLIBC__" <<< "${GCC_FEATURES}"
+    grep "#define __GLIBC_MINOR__" <<< "${GCC_FEATURES}"
+else
+    echo "something else"
+fi
+```
+
+The output should be one of 3 above.
+
+### Method 2
+
+[Check glibc version for a particular gcc compiler- StackOverflow](https://stackoverflow.com/questions/9705660/check-glibc-version-for-a-particular-gcc-compiler)
+
+Check `/lib/libc.so` or `/lib64/libc.so`
+
+First check what `libc.so` is used by `gcc`.
+
+```shell
+$ gcc -print-file-name=libc.so
+/lib/../lib64/libc.so
+```
+
+Indeed, this file is a plain text,
+
+```shell
+$ file $(gcc -print-file-name=libc.so)
+/lib/../lib64/libc.so: ASCII text
+
+$ cat $(gcc -print-file-name=libc.so)
+/* GNU ld script
+   Use the shared library, but some functions are only in
+   the static library, so try that secondarily.  */
+OUTPUT_FORMAT(elf64-x86-64)
+GROUP ( /lib64/libc.so.6 /usr/lib64/libc_nonshared.a  AS_NEEDED ( /lib64/ld-linux-x86-64.so.2 ) )
+```
+
+> On ELF platforms `/lib/x86_64-linux-gnu/libc.so.6` is a position-independent executable with a dynamic symbol table (like that of a shared library):
+
+```shell
+$ file /lib/x86_64-linux-gnu/libc.so.6
+/lib/x86_64-linux-gnu/libc.so.6: symbolic link to libc-2.31.so
+
+$ file $(readlink -f /lib/x86_64-linux-gnu/libc.so.6)
+/usr/lib/x86_64-linux-gnu/libc-2.31.so: ELF 64-bit LSB shared object, x86-64, version 1 (GNU/Linux), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=1878e6b475720c7c51969e69ab2d276fae6d1dee, for GNU/Linux 3.2.0, stripped
+
+$ /lib/x86_64-linux-gnu/libc.so.6
+GNU C Library (Ubuntu GLIBC 2.31-0ubuntu9.9) stable release version 2.31.
+Copyright (C) 2020 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.
+There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+Compiled by GNU CC version 9.4.0.
+libc ABIs: UNIQUE IFUNC ABSOLUTE
+For bug reporting instructions, please see:
+<https://bugs.launchpad.net/ubuntu/+source/glibc/+bugs>.
+```
+
+
+### Method 3
+
+[Check the actual glibc version used](https://unix.stackexchange.com/questions/537003/check-the-actual-glibc-version-used)
+
+Use `strings`
+
+```shell
+strings /lib64/libc.so.6 | grep ^GLIBC_
+```
+
+
+
+
