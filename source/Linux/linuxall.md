@@ -128,6 +128,8 @@ If trying to use `<`, `>`, ... arithematic operators, using `(())` for if-condit
 
 [Check the actual glibc version used](https://unix.stackexchange.com/questions/537003/check-the-actual-glibc-version-used)
 
+[What do the multiple GLIBC versions mean in the output of ldd?](https://unix.stackexchange.com/questions/458659/what-do-the-multiple-glibc-versions-mean-in-the-output-of-ldd)
+
 ### Method 1
 
 [How to check libc version?- StackOverflow](https://stackoverflow.com/questions/62732447/how-to-check-libc-version)
