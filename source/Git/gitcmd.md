@@ -739,3 +739,23 @@ nothing to commit, working tree clean.
 ```
 
 此时在使用 `git push` ，把当前repo中还没提交的commit再提交即可。
+
+## How to handle git gc fatal: bad object refs/remotes/origin/HEAD error?
+
+[How to handle git gc fatal: bad object refs/remotes/origin/HEAD error?](https://stackoverflow.com/questions/37145151/how-to-handle-git-gc-fatal-bad-object-refs-remotes-origin-head-error)
+
+比如，如果有如下的报错，
+
+```shell
+fatal: bad object refs/tags/m_handoff-latest-merged
+error: XXXX did not send all necessary objects
+```
+
+
+一般情况，只需要把报告出来的 `refs/tags/m_handoff-latest-merged` 删除（或移动至其他不使用的位置）即可。
+
+```shell
+mv .git/refs/tags/m_handoff-latest-merged /tmp
+```
+
+产生问题的原因是，remote端的这个branch/tag已经被删除（重命名）了，但本地还是指向之前的branch/tag，因此产生不一致。
