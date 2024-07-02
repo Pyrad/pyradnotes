@@ -50,6 +50,10 @@
 
 ## Windows Powershell
 
+### 停止（修改）鼠标光标闪烁
+
+目前的办法是在 **KeyboardProperities** 的 **Speed** tab 中，调整 **Cursor blink rate**，将其设置为 `None` 。
+
 ### 修改prompt
 
 reference pages
@@ -782,6 +786,8 @@ echo -e -n "\e[2 q"
 ```
 
 For PowerShell
+
+（2024年7月3日 试过了，不好使）
 
 ```powershell
 Write-Host -NoNewLine "`e[2 q"
