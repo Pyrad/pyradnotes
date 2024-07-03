@@ -77,7 +77,44 @@ flex program 分三部分，由 `%%` 分开
 
 `flex` 默认赋予 scanner 函数的名字是 `yylex()` ，它默认会从 `stdin` 读入输入。
 
+---
 
+本节的例子 `fb1-1`
+
+```cpp
+/* File: fb1-1.l */
+
+/* fb1-1 just like unix wc */
+%{
+int chars = 0;
+int words = 0;
+int lines = 0;
+%}
+
+%%
+
+[a-zA-Z]+	{ words++; chars += strlen(yytext); }
+\n		{ chars++; lines++; }
+.		{ chars++; }
+
+%%
+
+main()
+{
+  yylex();
+  printf("%8d%8d%8d\n", lines, words, chars);
+}
+```
+
+编译 Makefile
+
+```makefile
+fb1-1:	fb1-1.l
+	flex $<
+	cc -o $@ lex.yy.c -lfl
+```
+
+---
 
 使用 `flex`
 
@@ -114,8 +151,77 @@ flex program 分三部分，由 `%%` 分开
 
 介绍了一个非常简单的，把英式单词转换为美式单词的 `flex` 程序。
 
+---
+
+本节的例子 `fb1-2`
+
+```cpp
+/* File: fb1-2.l */
+
+/* English -> American */
+
+%%
+"colour" { printf("color"); }
+"flavour" { printf("flavor"); }
+"clever" { printf("smart"); }
+"smart" { printf("elegant"); }
+"liberal" { printf("conservative"); }
+. { printf("%s", yytext); }
+%%
+main()
+{
+  yylex();
+}
+
+yywrap() { return 1; }
+```
+
+编译 Makefile
+
+```makefile
+fb1-2:	fb1-2.l
+	flex $<
+	cc -o $@ lex.yy.c -lfl
+```
+
+---
+
 
 #### Putting Flex and Bison Together
+
+---
+
+本节的例子 `fb1-3`
+
+```cpp
+/* File: fb1-3.l */
+
+/* recognize tokens for the calculator and print them out */
+
+%%
+"+"	{ printf("PLUS\n"); }
+"-"	{ printf("MINUS\n"); }
+"*"	{ printf("TIMES\n"); }
+"/"	{ printf("DIVIDE\n"); }
+"|"     { printf("ABS\n"); }
+[0-9]+	{ printf("NUMBER %s\n", yytext); }
+\n      { printf("NEWLINE\n"); }
+[ \t] { }
+.	{ printf("Mystery character %s\n", yytext); }
+%%
+```
+
+编译 Makefile
+
+```makefile
+fb1-3:	fb1-3.l
+	flex $<
+	cc -o $@ lex.yy.c -lfl
+```
+
+---
+
+
 
 
 #### The Scanner as Coroutine
@@ -124,8 +230,71 @@ flex program 分三部分，由 `%%` 分开
 
 这里还提到了 `flex` 和 `bison` 的由来和历史。
 
-#### Grammars and Parsing
+#### Tokens and Values
 
+
+---
+
+本节的例子 `fb1-4`
+
+```cpp
+/* File: fb1-4.l */
+
+/* recognize tokens for the calculator and print them out */
+
+%{
+   enum yytokentype {
+     NUMBER = 258,
+     ADD = 259,
+     SUB = 260,
+     MUL = 261,
+     DIV = 262,
+     ABS = 263,
+     EOL = 264 /* end of line */
+   };
+
+   int yylval;
+
+%}
+
+%%
+"+"	{ return ADD; }
+"-"	{ return SUB; }
+"*"	{ return MUL; }
+"/"	{ return DIV; }
+"|"     { return ABS; }
+[0-9]+	{ yylval = atoi(yytext); return NUMBER; }
+\n      { return EOL; }
+[ \t]   { /* ignore white space */ }
+.	{ printf("Mystery character %c\n", *yytext); }
+%%
+main()
+{
+  int tok;
+
+  while(tok = yylex()) {
+    printf("%d", tok);
+    if(tok == NUMBER) printf(" = %d\n", yylval);
+    else printf("\n");
+  }
+}
+```
+
+编译 Makefile
+
+```makefile
+fb1-4:	fb1-4.l
+	flex $<
+	cc -o $@ lex.yy.c -lfl
+```
+
+---
+
+
+
+### Grammars and Parsing
+
+#### BNF Grammars
 
 CFG = Context-Free Grammar （上下文无关文法）
 
@@ -193,6 +362,107 @@ bison 规则中，使用的是单个分号 `;` 用来分隔不同的rule。
 一个 symbol 对应的值（value），在 action 中用 `$$` 表示。
 
 
+---
+
+本节的例子 `fb1-5`
+
+文件 `fb1-5.l`
+
+```cpp
+/* File: fb1-5.l */
+
+/* recognize tokens for the calculator and print them out */
+
+%{
+# include "fb1-5.tab.h"
+%}
+
+%%
+"+"	{ return ADD; }
+"-"	{ return SUB; }
+"*"	{ return MUL; }
+"/"	{ return DIV; }
+"|"     { return ABS; }
+"("     { return OP; }
+")"     { return CP; }
+[0-9]+	{ yylval = atoi(yytext); return NUMBER; }
+
+\n      { return EOL; }
+"//".*  
+[ \t]   { /* ignore white space */ }
+.	{ yyerror("Mystery character %c\n", *yytext); }
+%%
+```
+
+文件 `fb1-5.y`
+
+```cpp
+/* File: fb1-5.y */
+
+/* simplest version of calculator */
+
+%{
+#  include <stdio.h>
+%}
+
+/* declare tokens */
+%token NUMBER
+%token ADD SUB MUL DIV ABS
+%token OP CP
+%token EOL
+
+%%
+
+calclist: /* nothing */
+ | calclist exp EOL { printf("= %d\n> ", $2); }
+ | calclist EOL { printf("> "); } /* blank line or a comment */
+ ;
+
+exp: factor
+ | exp ADD exp { $$ = $1 + $3; }
+ | exp SUB factor { $$ = $1 - $3; }
+ | exp ABS factor { $$ = $1 | $3; }
+ ;
+
+factor: term
+ | factor MUL term { $$ = $1 * $3; }
+ | factor DIV term { $$ = $1 / $3; }
+ ;
+
+term: NUMBER
+ | ABS term { $$ = $2 >= 0? $2 : - $2; }
+ | OP exp CP { $$ = $2; }
+ ;
+%%
+main()
+{
+  printf("> "); 
+  yyparse();
+}
+
+yyerror(char *s)
+{
+  fprintf(stderr, "error: %s\n", s);
+}
+
+```
+
+编译 Makefile
+
+```makefile
+fb1-5:	fb1-5.l fb1-5.y
+	bison -d fb1-5.y
+	flex fb1-5.l
+	cc -o $@ fb1-5.tab.c lex.yy.c -lfl
+```
+
+---
+
+
+#### Compiling Flex and Bison Programs Together
+
+
+
 ## Chapter 2 Using Flex
 
 ### Regular Expressions
@@ -229,6 +499,61 @@ Flex 提供了叫 start state 的状态，用来解决和上下文相关的 toke
 ### File I/O in Flex Scanners
 
 （这一节讲的主要是flex如何读入文件，而不是标准输入）
+
+
+---
+
+本节的例子 `fb2-1`
+
+```cpp
+/* File: fb2-1.l */
+
+/* fb2-1 even more like unix wc with explicit input */
+
+%{
+int chars = 0;
+int words = 0;
+int lines = 0;
+%}
+
+%%
+
+[a-zA-Z]+	{ words++; chars += strlen(yytext); }
+\n		{ chars++; lines++; }
+.		{ chars++; }
+
+%%
+
+main(argc, argv)
+int argc;
+char **argv;
+{
+  if(argc > 1) {
+    if(!(yyin = fopen(argv[1], "r"))) {
+      perror(argv[1]);
+      return (1);
+    }
+  }
+
+  yylex();
+  printf("%8d%8d%8d\n", lines, words, chars);
+}
+
+yywrap() { return 1; }
+```
+
+编译 Makefile
+
+```makefile
+CFLAGS=-g
+
+fb2-1:	fb2-1.l
+	flex -o $@.c $<
+	${CC} ${CFLAGS} -o $@ $@.c
+```
+
+---
+
 
 flex scanner 默认的输入是 `stdin` （标准输入），由变量 `yyin` 标识。
 
@@ -275,6 +600,81 @@ for (int i = 0; i < argc; i++) {
 ```
 
 flex 也通过了 `YY_NEW_FILE` ，它相当于是 `yyrestart(yyin)` 。
+
+
+---
+
+本节的例子 `fb2-2`
+
+```cpp
+/* File: fb2-2.l */
+
+/* fb2-2 read several files */
+
+%option noyywrap
+
+%{
+int chars = 0;
+int words = 0;
+int lines = 0;
+
+int totchars = 0;
+int totwords = 0;
+int totlines = 0;
+%}
+
+%%
+
+[a-zA-Z]+	{ words++; chars += strlen(yytext); }
+\n		{ chars++; lines++; }
+.		{ chars++; }
+
+%%
+
+main(int argc, char **argv)
+{
+  int i;
+
+  if(argc < 2) { /* just read stdin */
+    yylex();
+    printf("%8d%8d%8d\n", lines, words, chars);
+    return 0;
+  }
+
+  for(i = 1; i < argc; i++) {
+    FILE *f = fopen(argv[i], "r");
+  
+    if(!f) {
+      perror(argv[1]);
+      return (1);
+    }
+    yyrestart(f);
+    yylex();
+    fclose(f);
+    printf("%8d%8d%8d %s\n", lines, words, chars, argv[i]);
+    totchars += chars; chars = 0;
+    totwords += words; words = 0;
+    totlines += lines; lines = 0;
+  }
+  if(argc > 1)
+    printf("%8d%8d%8d total\n", totlines, totwords, totchars);
+  return 0;
+}
+
+```
+
+编译 Makefile
+
+```makefile
+CFLAGS=-g
+
+fb2-2:	fb2-2.l
+	flex -o $@.c $<
+	${CC} ${CFLAGS}  -o $@ $@.c
+```
+
+---
+
 
 
 ### The I/O Structure of a Flex Scanner
@@ -380,6 +780,130 @@ Flex 还提到了两个宏 `inptu()` 和 `unput()`。
 本节讲解了一个例子， 说明了如何创建、切换和销毁 `YY_BUFFER_STATE` ，
 并利用它来读取扫描嵌套的 `#include<XXX>` 这样的文件。
 
+
+---
+
+本节的例子 `fb2-3`
+
+```cpp
+/* File: fb2-3.l */
+
+/* fb2-3 skeleton for include files */
+
+%option noyywrap warn nodefault
+%x IFILE
+  struct bufstack {
+    struct bufstack *prev;	/* previous entry */
+    YY_BUFFER_STATE bs;		/* saved buffer */
+    int lineno;			/* saved line number */
+    char *filename;		/* name of this file */
+    FILE *f;			/* current file */
+  } *curbs = 0;
+
+  char *curfilename;		/* name of current input file */
+
+  int newfile(char *fn);
+  int popfile(void);
+
+%%
+^"#"[ \t]*include[ \t]*[\"<] { BEGIN IFILE; }
+
+<IFILE>[^ \t\n\">]+          { 
+                             { int c;
+			       while((c = input()) && c != '\n') ;
+			     }
+			     yylineno++;
+			     if(!newfile(yytext))
+                                yyterminate(); /* no such file */
+			     BEGIN INITIAL;
+                           }
+
+<IFILE>.|\n                { fprintf(stderr, "%4d bad include line\n", yylineno);
+				     yyterminate();
+			   }
+^.                         { fprintf(yyout, "%4d %s", yylineno, yytext); }
+^\n                        { fprintf(yyout, "%4d %s", yylineno++, yytext); }
+\n                         { ECHO; yylineno++; }
+.                          { ECHO; }
+<<EOF>>                    { if(!popfile()) yyterminate(); }
+%%
+
+main(int argc, char **argv)
+{
+  if(argc < 2) {
+    fprintf(stderr, "need filename\n");
+    return 1;
+  }
+  if(newfile(argv[1]))
+    yylex();
+}
+
+int
+  newfile(char *fn)
+{
+  FILE *f = fopen(fn, "r");
+  struct bufstack *bs = malloc(sizeof(struct bufstack));
+
+  /* die if no file or no room */
+  if(!f) { perror(fn); return 0; }
+  if(!bs) { perror("malloc"); exit(1); }
+
+  /* remember state */
+  if(curbs)curbs->lineno = yylineno;
+  bs->prev = curbs;
+
+  /* set up current entry */
+  bs->bs = yy_create_buffer(f, YY_BUF_SIZE);
+  bs->f = f;
+  bs->filename = fn;
+  yy_switch_to_buffer(bs->bs);
+  curbs = bs;
+  yylineno = 1;
+  curfilename = fn;
+  return 1;
+}
+
+int
+  popfile(void)
+{
+  struct bufstack *bs = curbs;
+  struct bufstack *prevbs;
+
+  if(!bs) return 0;
+
+  /* get rid of current entry */
+  fclose(bs->f);
+  yy_delete_buffer(bs->bs);
+
+  /* switch back to previous */
+  prevbs = bs->prev;
+  free(bs);
+
+  if(!prevbs) return 0;
+
+  yy_switch_to_buffer(prevbs->bs);
+  curbs = prevbs;
+  yylineno = curbs->lineno;
+  curfilename = curbs->filename;
+  return 1; 
+}
+
+```
+
+编译 Makefile
+
+```makefile
+CFLAGS=-g
+
+fb2-3:	fb2-3.l
+	flex -o $@.c $<
+	${CC} ${CFLAGS}  -o $@ $@.c
+```
+
+---
+
+
+
 在这个例子中，介绍了如何切换 `YY_BUFFER_STATE` ，并保留之前已经读到的内容，
 并不使用 `yyrestart()` 重新开始扫描的技术。
 
@@ -430,6 +954,231 @@ Bison parser 把它当做是输入的终结标识。
 
 本节主要介绍了一个如何建立 symbol table 的例子，通过这个例子说明了 flex scanner 用到的一些特性。
 
+---
+
+本节的例子 `fb2-4`
+
+```cpp
+/* File: fb2-4.l */
+
+/* fb2-4 text concordance */
+
+%option noyywrap nodefault yylineno case-insensitive
+
+/* the symbol table */
+%{
+  struct symbol {		/* a word */
+    struct ref *reflist;
+    char *name;
+  };
+
+  struct ref {
+    struct ref *next;
+    char *filename;
+    int flags;
+    int lineno;
+  };
+
+  /* simple symtab of fixed size */
+  #define NHASH 9997
+  struct symbol symtab[NHASH];
+
+  struct symbol *lookup(char*);
+  void addref(int, char*, char*, int);
+
+  char *curfilename;		/* name of current input file */
+
+%}
+%%
+ /* skip common words */
+a |
+an |
+and |
+are |
+as |
+at |
+be |
+but |
+for |
+in |
+is |
+it |
+of |
+on |
+or |
+that |
+the |
+this |
+to                     /* ignore */
+
+[a-z]+(\'(s|t))?   { addref(yylineno, curfilename, yytext, 0); }
+.|\n                   /* ignore everything else */
+%%
+
+/* hash a symbol */
+static unsigned
+symhash(char *sym)
+{
+  unsigned int hash = 0;
+  unsigned c;
+
+  while(c = *sym++) hash = hash*9 ^ c;
+
+  return hash;
+}
+
+int nnew, nold;
+int nprobe;
+
+struct symbol *
+lookup(char* sym)
+{
+  struct symbol *sp = &symtab[symhash(sym)%NHASH];
+  int scount = NHASH;		/* how many have we looked at */
+
+  while(--scount >= 0) {
+    nprobe++;
+    if(sp->name && !strcmp(sp->name, sym)) { nold++; return sp; }
+
+    if(!sp->name) {		/* new entry */
+      nnew++;
+      sp->name = strdup(sym);
+      sp->reflist = 0;
+      return sp;
+    }
+
+    if(++sp >= symtab+NHASH) sp = symtab; /* try the next entry */
+  }
+  fputs("symbol table overflow\n", stderr);
+  abort(); /* tried them all, table is full */
+
+}
+
+void
+addref(int lineno, char *filename, char *word, int flags)
+{
+  struct ref *r;
+  struct symbol *sp = lookup(word);
+
+  /* don't do dups */
+  if(sp->reflist &&
+     sp->reflist->lineno == lineno && sp->reflist->filename == filename) return;
+
+  r = malloc(sizeof(struct ref));
+  if(!r) {fputs("out of space\n", stderr); abort(); }
+  r->next = sp->reflist;
+  r->filename = filename;
+  r->lineno = lineno;
+  r->flags = flags;
+  sp->reflist = r;
+}
+
+/* print the references
+ * sort the table alphabetically
+ * then flip each entry's reflist to get it into forward order
+ * and print it out 
+ */
+
+/* aux function for sorting */
+static int
+symcompare(const void *xa, const void *xb)
+{
+  const struct symbol *a = xa;
+  const struct symbol *b = xb;
+
+  if(!a->name) {
+    if(!b->name) return 0;	/* both empty */
+    return 1;			/* put empties at the end */
+  }
+  if(!b->name) return -1;
+  return strcmp(a->name, b->name);
+}
+
+void
+printrefs()
+{
+  struct symbol *sp;
+
+  qsort(symtab, NHASH, sizeof(struct symbol), symcompare); /* sort the symbol table */
+
+  for(sp = symtab; sp->name && sp < symtab+NHASH; sp++) {
+    char *prevfn = NULL;	/* last printed filename, to skip dups */
+
+    /* reverse the list of references */
+    struct ref *rp = sp->reflist;
+    struct ref *rpp = 0;	/* previous ref */
+    struct ref *rpn;	/* next ref */
+
+    do {
+      rpn = rp->next;
+      rp->next = rpp;
+      rpp = rp;
+      rp = rpn;
+    } while(rp);
+
+    /* now print the word and its references */
+    printf("%10s", sp->name);
+    for(rp = rpp; rp; rp = rp->next) {
+      if(rp->filename == prevfn) {
+	printf(" %d", rp->lineno);
+      } else {
+	printf(" %s:%d", rp->filename, rp->lineno);
+	prevfn = rp->filename;
+      }
+    }
+    printf("\n");
+  }
+}
+
+main(argc, argv)
+int argc;
+char **argv;
+{
+  int i;
+
+  if(argc < 2) { /* just read stdin */
+    curfilename = "(stdin)";
+    yylineno = 1;
+    yylex();
+  } else
+  for(i = 1; i < argc; i++) {
+    FILE *f = fopen(argv[i], "r");
+  
+    if(!f) {
+      perror(argv[1]);
+      return (1);
+    }
+    curfilename = argv[i];	/* for addref */
+
+    yyrestart(f);
+    yylineno = 1;
+    yylex();
+    fclose(f);
+  }
+
+  printf("old = %d, new = %d, total = %d, probes = %d, avg = %1.2f\n",
+	 nold, nnew, nold+nnew, nprobe, (float)nprobe / (nold+nnew));
+
+  printrefs();
+}
+
+
+```
+
+编译 Makefile
+
+```makefile
+CFLAGS=-g
+
+fb2-4:	fb2-4.l
+	flex -o $@.c $<
+	${CC} ${CFLAGS}  -o $@ $@.c
+```
+
+---
+
+
+
 本节提到了 `yylineno` 这个 option。
 
 `yylineno` 是 flex 提供的一个用来记录当前行号的 int 变量。
@@ -455,6 +1204,393 @@ Bison parser 把它当做是输入的终结标识。
 ### C Language Cross-Reference
 
 本节讲述了另外一个例子，其中包含了本章中所学到的 flex 的技术。
+
+
+---
+
+本节的例子 `fb2-5
+
+```cpp
+/* File: fb2-5.l */
+
+/* fb2-5 C cross-ref */
+
+%option noyywrap nodefault yylineno
+
+%x COMMENT
+%x IFILE
+
+/* some complex named patterns */
+/* Universal Character Name */
+UCN	(\\u[0-9a-fA-F]{4}|\\U[0-9a-fA-F]{8})
+/* float exponent */
+EXP	([Ee][-+]?[0-9]+)
+/* integer length */
+ILEN    ([Uu](L|l|LL|ll)?|(L|l|LL|ll)[Uu]?)
+/* the symbol table */
+%{
+  struct symbol {		/* a variable name */
+    struct ref *reflist;
+    char *name;
+  };
+
+  struct ref {
+    struct ref *next;
+    char *filename;
+    int flags;			/* 01 - definition */
+    int lineno;
+  };
+
+  /* simple symtab of fixed size */
+  #define NHASH 9997
+  struct symbol symtab[NHASH];
+
+  struct symbol *lookup(char*);
+  void addref(int, char*, char*, int);
+
+  char *curfilename;		/* name of current input file */
+
+  int defining;			/* names are probably definitions */
+
+/* include file stack */  
+  struct bufstack {
+    struct bufstack *prev;	/* previous entry */
+    YY_BUFFER_STATE bs;		/* saved buffer */
+    int lineno;			/* saved line number in this file */
+    char *filename;		/* name of this file */
+    FILE *f;			/* current file */
+  } *curbs;
+
+  int newfile(char *fn);
+  int popfile(void);
+
+%}
+%%
+ /* comments */
+"/*"           { BEGIN(COMMENT) ; }
+<COMMENT>"*/"  { BEGIN(INITIAL); }
+<COMMENT>([^*]|\en)+|.
+
+ /* C++ comment, a common extension */
+"//".*\n
+
+ /* declaration keywords */
+_Bool |
+_Complex |
+_Imaginary |
+auto |
+char |
+const |
+double |
+enum |
+extern |
+float |
+inline |
+int |
+long |
+register |
+restrict |
+short |
+signed |
+static |
+struct |
+typedef |
+union |
+unsigned |
+void |
+volatile { defining = 1; }
+
+
+ /* keywords */
+break
+case
+continue
+default
+do
+else
+for
+goto
+if
+return
+sizeof
+switch
+while
+
+ /* constants */
+
+ /* integers */
+0[0-7]*{ILEN}?
+[1-9][0-9]*{ILEN}?
+0[Xx][0-9a-fA-F]+{ILEN}?
+
+ /* decimal float */
+([0-9]*\.[0-9]+|[0-9]+\.){EXP}?[flFL]?
+[0-9]+{EXP}[flFL]?
+
+ /* hex float */
+0[Xx]([0-9a-fA-F]*\.[0-9a-fA-F]+|[0-9a-fA-F]+\.?)[Pp][-+]?[0-9]+[flFL]?
+
+
+ /* char const */
+\'([^'\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})+\'
+
+ /* string literal */
+L?\"([^\"\\]|\\['"?\\abfnrtv]|\\[0-7]{1,3}|\\[Xx][0-9a-fA-F]+|{UCN})+\"
+
+ /* punctuators */
+"{"|"<%"|";"         { defining = 0; }
+
+
+"["|"]"|"("|")"|"{"|"}"|"."|"->"
+"++"|"--"|"&"|"*"|"+"|"-"|"~"|"!"
+"/"|"%"|"<<"|">>"|"<"|">"|"<="|">="|"=="|"!="|"^"|"|"|"&&"|"||"
+"?"|":"|";"|"..."
+"="|"*="|"/="|"%="|"+="|"-="|"<<="|">>="|"&="|"^=""|="
+","|"#"|"##"
+"<:"|":>"|"%>"|"%:"|"%:%:"
+
+ /* identifier */
+([_a-zA-Z]|{UCN})([_a-zA-Z0-9]|{UCN})* {
+                         addref(yylineno, curfilename, yytext, defining); }
+
+ /* white space */
+[ \t\n]+
+ /* continued line */
+\\$
+
+ /* some preprocessor stuff */
+"#"" "*if.*\n
+"#"" "*else.*\n
+"#"" "*endif.*\n
+"#"" "*define.*\n
+"#"" "*line.*\n
+
+ /* recognize an include */
+^"#"[ \t]*include[ \t]*[\"<] { BEGIN IFILE; }
+
+<IFILE>[^>\"]+  { 
+                       { int c;
+			 while((c = input()) && c != '\n') ;
+		       }
+		       newfile(strdup(yytext));
+		       BEGIN INITIAL;
+                }
+
+<IFILE>.|\n     { fprintf(stderr, "%s:%d bad include line\n",
+			  curfilename, yylineno);
+                  BEGIN INITIAL;
+                }
+
+<<EOF>>         { if(!popfile()) yyterminate(); }
+
+ /* invalid character */
+.               { printf("%s:%d: Mystery character '%s'\n",
+			 curfilename, yylineno, yytext);
+                }
+%%
+
+/* hash a symbol */
+static unsigned
+symhash(char *sym)
+{
+  unsigned int hash = 0;
+  unsigned c;
+
+  while(c = *sym++) hash = hash*9 ^ c;
+
+  return hash;
+}
+
+struct symbol *
+lookup(char* sym)
+{
+  struct symbol *sp = &symtab[symhash(sym)%NHASH];
+  int scount = NHASH;		/* how many have we looked at */
+
+  while(--scount >= 0) {
+    if(sp->name && !strcmp(sp->name, sym)) { return sp; }
+
+    if(!sp->name) {		/* new entry */
+      sp->name = strdup(sym);
+      sp->reflist = 0;
+      return sp;
+    }
+
+    if(++sp >= symtab+NHASH) sp = symtab; /* try the next entry */
+  }
+  fputs("symbol table overflow\n", stderr);
+  abort(); /* tried them all, table is full */
+
+}
+
+void
+addref(int lineno, char *filename, char *word, int flags)
+{
+  struct ref *r;
+  struct symbol *sp = lookup(word);
+
+  /* don't do dups */
+  if(sp->reflist &&
+     sp->reflist->lineno == lineno && sp->reflist->filename == filename) return;
+
+  r = malloc(sizeof(struct ref));
+  if(!r) {fputs("out of space\n", stderr); abort(); }
+  r->next = sp->reflist;
+  r->filename = filename;
+  r->lineno = lineno;
+  r->flags = flags;
+  sp->reflist = r;
+}
+
+/* print the references
+ * sort the table alphabetically
+ * then flip each entry's reflist to get it into forward order
+ * and print it out 
+ */
+
+/* aux function for sorting */
+static int
+symcompare(const void *xa, const void *xb)
+{
+  const struct symbol *a = xa;
+  const struct symbol *b = xb;
+
+  if(!a->name) {
+    if(!b->name) return 0;	/* both empty */
+    return 1;			/* put empties at the end */
+  }
+  if(!b->name) return -1;
+  return strcmp(a->name, b->name);
+}
+
+void
+printrefs()
+{
+  struct symbol *sp;
+
+  qsort(symtab, NHASH, sizeof(struct symbol), symcompare); /* sort the symbol table */
+
+  for(sp = symtab; sp->name && sp < symtab+NHASH; sp++) {
+    char *prevfn = NULL;	/* last printed filename, to skip dups */
+
+    /* reverse the list of references */
+    struct ref *rp = sp->reflist;
+    struct ref *rpp = 0;	/* previous ref */
+    struct ref *rpn;	/* next ref */
+
+    do {
+      rpn = rp->next;
+      rp->next = rpp;
+      rpp = rp;
+      rp = rpn;
+    } while(rp);
+
+    /* now print the word and its references */
+    printf("%10s", sp->name);
+    for(rp = rpp; rp; rp = rp->next) {
+      if(rp->filename == prevfn) {
+	printf(" %d", rp->lineno);
+      } else {
+	printf(" %s:%d", rp->filename, rp->lineno);
+	prevfn = rp->filename;
+      }
+      if(rp->flags & 01) printf("*");
+    }
+    printf("\n");
+  }
+}
+
+int
+main(argc, argv)
+int argc;
+char **argv;
+{
+  int i;
+
+  if(argc < 2) {
+    fprintf(stderr, "need filename\n");
+    return 1;
+  }
+  for(i = 1; i < argc; i++) {
+    if(newfile(argv[i])) yylex();
+  }
+
+  printrefs();
+  return 0;
+}
+
+/* nested input files */
+int
+  newfile(char *fn)
+{
+  FILE *f = fopen(fn, "r");
+  struct bufstack *bs;
+
+  /* check if no file */
+  if(!f) {
+    perror(fn);
+    return 0;
+  }
+
+  bs = malloc(sizeof(struct bufstack));
+  if(!bs) { perror("malloc"); exit(1); }
+
+  /* remember state */
+  if(curbs) curbs->lineno = yylineno;
+
+  bs->prev = curbs;
+  bs->f = f;
+  bs->filename = fn;
+
+  /* set up current entry */
+  bs->bs = yy_create_buffer(f, YY_BUF_SIZE);
+  yy_switch_to_buffer(bs->bs);
+  curbs = bs;
+  yylineno = 1;
+  curfilename = fn;
+  return 1;
+}
+
+int
+  popfile(void)
+{
+  struct bufstack *bs = curbs;
+  struct bufstack *prevbs;
+
+  if(!bs) return 0;
+
+  /* get rid of current entry
+  fclose(bs->f);
+  yy_delete_buffer(bs->bs);
+
+  /* switch back to previous */
+  prevbs = bs->prev;
+  free(bs);
+
+  if(!prevbs) return 0;
+
+  yy_switch_to_buffer(prevbs->bs);
+  curbs = prevbs;
+  yylineno = curbs->lineno;
+  curfilename = curbs->filename;
+  return 1; 
+}
+
+```
+
+编译 Makefile
+
+```makefile
+CFLAGS=-g
+
+fb2-5:	fb2-5.l
+	flex -o $@.c $<
+	${CC} ${CFLAGS}  -o $@ $@.c
+```
+
+---
+
+
 
 
 在 lex 文件的 declaration 部分，似乎可以对pattern起名字，以便后续使用。
