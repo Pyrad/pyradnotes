@@ -49,6 +49,8 @@ flex把对应的正则表达式转为一种叫做DFA（Deterministic Finite Auto
 
 #### Our First Flex Program
 
+**本节的例子** [fb1-1](#fb1-1)
+
 flex program 分三部分，由 `%%` 分开
 
 - 第一部分是 declarations & option settings。
@@ -78,44 +80,6 @@ flex program 分三部分，由 `%%` 分开
 
 `flex` 默认赋予 scanner 函数的名字是 `yylex()` ，它默认会从 `stdin` 读入输入。
 
----
-
-本节的例子 `fb1-1`
-
-```cpp
-/* File: fb1-1.l */
-
-/* fb1-1 just like unix wc */
-%{
-int chars = 0;
-int words = 0;
-int lines = 0;
-%}
-
-%%
-
-[a-zA-Z]+	{ words++; chars += strlen(yytext); }
-\n		{ chars++; lines++; }
-.		{ chars++; }
-
-%%
-
-main()
-{
-  yylex();
-  printf("%8d%8d%8d\n", lines, words, chars);
-}
-```
-
-编译 Makefile
-
-```makefile
-fb1-1:	fb1-1.l
-	flex $<
-	cc -o $@ lex.yy.c -lfl
-```
-
----
 
 使用 `flex`
 
