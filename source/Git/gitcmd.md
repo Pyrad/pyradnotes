@@ -759,3 +759,15 @@ mv .git/refs/tags/m_handoff-latest-merged /tmp
 ```
 
 产生问题的原因是，remote端的这个branch/tag已经被删除（重命名）了，但本地还是指向之前的branch/tag，因此产生不一致。
+
+## Git pull error did not send all necessary objects
+
+（似乎和上一条重复？2024年7月8日23:02:45）
+
+[BitBucket Git Error: did not send all necessary objects - StackOverflow](https://stackoverflow.com/questions/8788975/bitbucket-git-error-did-not-send-all-necessary-objects)
+
+可以按照其中第一个回答，把报错的那个文件删除掉，然后再 `git pull` 即可
+
+```shell
+rm .git/refs/remotes/origin/<name of branch>
+```
