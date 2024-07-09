@@ -118,36 +118,7 @@ flex program 分三部分，由 `%%` 分开
 
 ---
 
-本节的例子 `fb1-2`
-
-```cpp
-/* File: fb1-2.l */
-
-/* English -> American */
-
-%%
-"colour" { printf("color"); }
-"flavour" { printf("flavor"); }
-"clever" { printf("smart"); }
-"smart" { printf("elegant"); }
-"liberal" { printf("conservative"); }
-. { printf("%s", yytext); }
-%%
-main()
-{
-  yylex();
-}
-
-yywrap() { return 1; }
-```
-
-编译 Makefile
-
-```makefile
-fb1-2:	fb1-2.l
-	flex $<
-	cc -o $@ lex.yy.c -lfl
-```
+**本节的例子** [fb1-2](#fb1-2)
 
 ---
 
@@ -156,7 +127,7 @@ fb1-2:	fb1-2.l
 
 ---
 
-本节的例子 `fb1-3`
+**本节的例子** [fb1-3](#fb1-3)
 
 ```cpp
 /* File: fb1-3.l */
@@ -200,7 +171,7 @@ fb1-3:	fb1-3.l
 
 ---
 
-本节的例子 `fb1-4`
+**本节的例子** [fb1-4](#fb1-4)
 
 ```cpp
 /* File: fb1-4.l */
@@ -329,7 +300,7 @@ bison 规则中，使用的是单个分号 `;` 用来分隔不同的rule。
 
 ---
 
-本节的例子 `fb1-5`
+**本节的例子** [fb1-5](#fb1-5)
 
 文件 `fb1-5.l`
 
@@ -2999,23 +2970,24 @@ fb3-2:	fb3-2.l fb3-2.y fb3-2.h fb3-2funcs.c
 
 /* fb1-1 just like unix wc */
 %{
-int chars = 0;
-int words = 0;
-int lines = 0;
+   int chars = 0;
+   int words = 0;
+   int lines = 0;
 %}
 
 %%
 
-[a-zA-Z]+	{ words++; chars += strlen(yytext); }
-\n		{ chars++; lines++; }
-.		{ chars++; }
+[a-zA-Z]+   { words++; chars += strlen(yytext); }
+\n          { chars++; lines++; }
+.           { chars++; }
 
 %%
 
-main()
-{
-  yylex();
-  printf("%8d%8d%8d\n", lines, words, chars);
+int main() {
+   yylex();
+   printf("%8d%8d%8d\n", lines, words, chars);
+
+   return 0;
 }
 ```
 
@@ -3024,7 +2996,7 @@ main()
 ```makefile
 fb1-1:	fb1-1.l
 	flex $<
-	cc -o $@ lex.yy.c -lfl
+	cc -o $@ lex.yy.c -L/usr/lib -lfl
 ```
 
 
