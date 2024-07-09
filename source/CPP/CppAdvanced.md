@@ -268,3 +268,9 @@ How to install GLIBC 2.29 or higher in Ubuntu 18.04 [Link](https://stackoverflow
 ## SWIG 入门文档
 
 [SWIG入门文档（翻译自官方网站）](https://blog.csdn.net/weixin_39445116/article/details/110873807)
+
+## 编译器入门教程
+
+[北大编译实践在线文档 - GitHub](https://pku-minic.github.io/online-doc/#/)
+
+
