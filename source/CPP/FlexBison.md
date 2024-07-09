@@ -129,35 +129,7 @@ flex program 分三部分，由 `%%` 分开
 
 **本节的例子** [fb1-3](#fb1-3)
 
-```cpp
-/* File: fb1-3.l */
-
-/* recognize tokens for the calculator and print them out */
-
-%%
-"+"	{ printf("PLUS\n"); }
-"-"	{ printf("MINUS\n"); }
-"*"	{ printf("TIMES\n"); }
-"/"	{ printf("DIVIDE\n"); }
-"|"     { printf("ABS\n"); }
-[0-9]+	{ printf("NUMBER %s\n", yytext); }
-\n      { printf("NEWLINE\n"); }
-[ \t] { }
-.	{ printf("Mystery character %s\n", yytext); }
-%%
-```
-
-编译 Makefile
-
-```makefile
-fb1-3:	fb1-3.l
-	flex $<
-	cc -o $@ lex.yy.c -lfl
-```
-
 ---
-
-
 
 
 #### The Scanner as Coroutine
@@ -2994,9 +2966,9 @@ int main() {
 ### Makefile: fb1-1
 
 ```makefile
-fb1-1:	fb1-1.l
-	flex $<
-	cc -o $@ lex.yy.c -L/usr/lib -lfl
+fb1-1:  fb1-1.l
+    flex $<
+    cc -o $@ lex.yy.c -L/usr/lib -lfl
 ```
 
 
@@ -3028,9 +3000,9 @@ yywrap() { return 1; }
 ### Makefile: fb1-2
 
 ```makefile
-fb1-2:	fb1-2.l
-	flex $<
-	cc -o $@ lex.yy.c -lfl
+fb1-2:  fb1-2.l
+    flex $<
+    cc -o $@ lex.yy.c -L/usr/lib -lfl
 ```
 
 ## fb1-3
@@ -3043,24 +3015,25 @@ fb1-2:	fb1-2.l
 /* recognize tokens for the calculator and print them out */
 
 %%
-"+"	{ printf("PLUS\n"); }
-"-"	{ printf("MINUS\n"); }
-"*"	{ printf("TIMES\n"); }
-"/"	{ printf("DIVIDE\n"); }
-"|"     { printf("ABS\n"); }
-[0-9]+	{ printf("NUMBER %s\n", yytext); }
-\n      { printf("NEWLINE\n"); }
+"+"   { printf("PLUS\n"); }
+"-"   { printf("MINUS\n"); }
+"*"   { printf("TIMES\n"); }
+"/"   { printf("DIVIDE\n"); }
+"|"   { printf("ABS\n"); }
+[0-9]+   { printf("NUMBER %s\n", yytext); }
+\n    { printf("NEWLINE\n"); }
 [ \t] { }
-.	{ printf("Mystery character %s\n", yytext); }
+.  { printf("Mystery character %s\n", yytext); }
 %%
+
 ```
 
 ### Makefile: fb1-3
 
 ```makefile
-fb1-3:	fb1-3.l
-	flex $<
-	cc -o $@ lex.yy.c -lfl
+fb1-3:  fb1-3.l
+    flex $<
+    cc -o $@ lex.yy.c -L/usr/lib -lfl
 ```
 
 
