@@ -108,12 +108,23 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 
 | 类别  | 链接                                                                       | 价格    |
 | :-- | :----------------------------------------------------------------------- | :---- |
-| 板+U | [华硕 PRIME A520M-K + AMD R5 5600G](https://item.jd.com/100061469956.html) | 1119  |
-| 内存  | [金百达32GB DDR4 3200银爵](https://item.jd.com/100007177599.html)             | 399   |
-| SSD | [宏碁 掠夺者 NVME PCIE3.0 GM3500](https://item.jd.com/100011580275.html)      | 439   |
-| 散热  | [利民 AX120 V2 PLUS](https://item.jd.com/100006525699.html#)               | 109   |
-| 电源  | [游戏悍将 550W 金牌](https://item.jd.com/100078330677.html)                    | 179   |
-| 机箱  | [长城 启程K06W 白色](https://item.jd.com/100053762815.html)                    | 99.90 |
+|板+U| [华硕 PRIME A520M-K + AMD R5 5600G](https://item.jd.com/100061469956.html) | 1119  |
+|内存|[金百达32GB DDR4 3200银爵](https://item.jd.com/100007177599.html)| 399   |
+|SSD| [宏碁 掠夺者 NVME PCIE3.0 GM3500](https://item.jd.com/100011580275.html)      | 439   |
+|散热| [利民 AX120 V2 PLUS](https://item.jd.com/100006525699.html#)               | 109   |
+|电源| [游戏悍将 550W 金牌](https://item.jd.com/100078330677.html)                    | 179   |
+|机箱| [长城 启程K06W 白色](https://item.jd.com/100053762815.html)                    | 99.90 |
+
+### 配置三
+
+|类别|链接|价格|
+|:-----|:-----|:-----|
+|板+U|[技嘉 B650M GAMING WIFI + AMD R5 8600G](https://item.jd.com/100111828882.html) |2199|
+|内存|[金百达32GB DDR5 5600 银爵](https://item.jd.com/100046688873.html)|      |
+|SSD|      |      |
+|散热|      |      |
+|电源|      |      |
+|机箱|      |      |
 
 
 
