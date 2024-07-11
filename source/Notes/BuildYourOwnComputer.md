@@ -120,7 +120,7 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 |类别|链接|价格|
 |:-----|:-----|:-----|
 |板+U|[技嘉 B650M GAMING WIFI + AMD R5 8600G](https://item.jd.com/100111828882.html) |2199|
-|内存|[金百达32GB DDR5 5600 银爵](https://item.jd.com/100046688873.html)|      |
+|内存|[金百达32GB DDR5 5600 银爵](https://item.jd.com/100046688873.html)|599|
 |SSD|      |      |
 |散热|      |      |
 |电源|      |      |
