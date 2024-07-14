@@ -92,28 +92,29 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 
 价格 ￥**2483.9** （2023年12月27日21:48）
 
-|类别|链接|价格|
-|:-----|:-----|:-----|
-|板+U|[微星B450M-A PRO MAX II + AMD R5 5600G](https://item.jd.com/100069369338.html)|1288|
-|内存|[金百达32GB DDR4 3200银爵](https://item.jd.com/100007177599.html)|399|
-|SSD|[金百达 1TB SSD M.2(NVMe PCIe 4.0x4)](https://item.jd.com/100050170596.html)|379|
-|散热 |[利民 AX120 V2 PLUS](https://item.jd.com/100011850860.html#)|149|
-|电源 |[游戏悍将 550W 金牌](https://item.jd.com/100078330677.html)|179|
-|机箱 |[爱国者 JV13黑色 机箱](https://item.jd.com/100061121082.html#) |89.9 |
+|类别|链接 |价格|历史最低价 |
+|:-----|:-----|:-----|---|
+|板+U|[微星B450M-A PRO MAX II + AMD R5 5600G](https://item.jd.com/100069369338.html)|1288|  |
+|内存|[金百达32GB DDR4 3200银爵](https://item.jd.com/100007177599.html)|399|   |
+|SSD|[金百达 1TB SSD M.2(NVMe PCIe 4.0x4)](https://item.jd.com/100050170596.html)|379|   |
+|散热 |[利民 AX120 V2 PLUS](https://item.jd.com/100011850860.html#)|149|   |
+|电源 |[游戏悍将 550W 金牌](https://item.jd.com/100078330677.html)|179|   |
+|机箱 |[爱国者 JV13黑色 机箱](https://item.jd.com/100061121082.html#) |89.9 |   |
 
 ### 配置二
 
 
 价格 ￥**2370.9** （2024年6月3日19:08）
 
-| 类别  | 链接                                                                       | 价格    |
-| :-- | :----------------------------------------------------------------------- | :---- |
-|板+U| [华硕 PRIME A520M-K + AMD R5 5600G](https://item.jd.com/100061469956.html) | 1119  |
-|内存|[金百达32GB DDR4 3200银爵](https://item.jd.com/100007177599.html)| 399   |
-|SSD| [宏碁 掠夺者 NVME PCIE3.0 GM3500](https://item.jd.com/100011580275.html)      | 439   |
-|散热| [利民 AX120 V2 PLUS](https://item.jd.com/100006525699.html#)               | 109   |
-|电源| [游戏悍将 550W 金牌](https://item.jd.com/100078330677.html)                    | 179   |
-|机箱| [长城 启程K06W 白色](https://item.jd.com/100053762815.html)                    | 99.90 |
+| 类别  | 链接                                                                       |价格|历史最低价|
+| :-- | :----------------------------------------------------------------------- | :---- |---|
+|板+U| [华硕 PRIME A520M-K + AMD R5 5600G](https://item.jd.com/100061469956.html) | 1119  |1118|
+|内存|[金百达32GB DDR4 3200银爵](https://item.jd.com/100007177599.html)| 399   |389|
+|SSD | [宏碁 掠夺者 NVME PCIE3.0 GM3500](https://item.jd.com/100011580275.html)      | 439   |399|
+|散热| [利民 AX120 V2 PLUS](https://item.jd.com/100006525699.html#)               | 109   |106.5|
+|电源|[玄武650SE 650W](https://item.taobao.com/item.htm?spm=a1z10.1-c.w4004-22046778022.25.489e777cIjG349&id=798356825894) |205|205|
+|机箱 | [长城 启程K06W 白色](https://item.jd.com/100053762815.html)                    | 99.90 |99.9|
+|小计|  |2370.9|  |
 
 ### 配置三
 
