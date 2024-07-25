@@ -57,7 +57,7 @@ C:\Windows\System32\drivers\etc\hosts
 
 ### 访问 GitHub，修改对应的host文件
 
-可以下载如下的文件，然后加入到Windows下的host文件中去
+可以下载如下的文件，然后加入到Windows下的host文件中去，这个链接下载的文件中的IP是每天更新的。
 
 [Download host file for github](https://raw.hellogithub.com/hosts)
 
