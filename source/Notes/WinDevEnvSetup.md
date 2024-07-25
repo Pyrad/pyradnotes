@@ -63,6 +63,26 @@ C:\Windows\System32\drivers\etc\hosts
 
 参考知乎回答链接：[你的Vim配置是什么样的？ - 京山游侠的回答 - 知乎](https://www.zhihu.com/question/642699703/answer/3386324607)
 
+这个文件的内容如下，其中指出了 GitHub的repo地址。
+
+```txt
+# GitHub520 Host Start
+140.82.112.26                 alive.github.com
+140.82.112.5                  api.github.com
+185.199.109.153               assets-cdn.github.com
+... ...
+185.199.111.133               user-images.githubusercontent.com
+140.82.112.21                 education.github.com
+185.199.111.133               private-user-images.githubusercontent.com
+
+
+# Update time: 2024-07-25T13:52:59+08:00
+# Update url: https://raw.hellogithub.com/hosts
+# Star me: https://github.com/521xueweihan/GitHub520
+# GitHub520 Host End
+
+```
+
 
 ## Windows Powershell
 
