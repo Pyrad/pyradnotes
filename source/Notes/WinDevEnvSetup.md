@@ -45,6 +45,16 @@
 - 然后参考升级讲解视频：[Win7免费升级Win10的6大问题，以及解决办法](https://www.bilibili.com/video/BV1tW4y1676w/?spm_id_from=333.999.0.0)，选择进行升级。
   
 
+### Windows 下的host文件
+
+一般情况下，host文件位于如下的位置
+
+```powershell
+C:\Windows\System32\drivers\etc\hosts
+```
+
+参考说明网页：[使用自定义域名提供文件 - 运行 HTTP 服务器进行测试 - Azure PlayFab](https://learn.microsoft.com/zh-cn/gaming/playfab/features/authentication/platform-specific-authentication/running-an-http-server-for-testing#serving-files-with-a-custom-domain-name)
+
 
 
 
