@@ -55,7 +55,13 @@ C:\Windows\System32\drivers\etc\hosts
 
 参考说明网页：[使用自定义域名提供文件 - 运行 HTTP 服务器进行测试 - Azure PlayFab](https://learn.microsoft.com/zh-cn/gaming/playfab/features/authentication/platform-specific-authentication/running-an-http-server-for-testing#serving-files-with-a-custom-domain-name)
 
+### 访问 GitHub，修改对应的host文件
 
+可以下载如下的文件，然后加入到Windows下的host文件中去
+
+[Download host file for github](https://raw.hellogithub.com/hosts)
+
+参考知乎回答链接：[你的Vim配置是什么样的？ - 京山游侠的回答 - 知乎](https://www.zhihu.com/question/642699703/answer/3386324607)
 
 
 ## Windows Powershell
