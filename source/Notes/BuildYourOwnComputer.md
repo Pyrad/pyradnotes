@@ -1,6 +1,11 @@
 # Build Your Own Computer
 
 
+处理器和显卡天梯排名
+
+[《史上最全桌面级CPU天梯图》专用更新帖(公测版) - 秋刀鱼半藏 - 百度贴吧](https://tieba.baidu.com/p/5005825360)
+
+[《史上最全桌面级显卡天梯图》专用更新帖(公测版) - 秋刀鱼半藏 - 百度贴吧](https://tieba.baidu.com/p/6133450546)
 
 ## XMP
 
