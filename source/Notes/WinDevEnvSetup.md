@@ -45,6 +45,12 @@
 - 然后参考升级讲解视频：[Win7免费升级Win10的6大问题，以及解决办法](https://www.bilibili.com/video/BV1tW4y1676w/?spm_id_from=333.999.0.0)，选择进行升级。
   
 
+### WSL 安装
+
+#### 改变 WSL 以及 distribution 的位置
+
+[Change of WSL installation location](https://superuser.com/questions/1714345/change-of-wsl-installation-location)
+
 ### Windows 下的host文件
 
 一般情况下，host文件位于如下的位置
