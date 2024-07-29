@@ -25,3 +25,9 @@ Contents
 - Support Resources
 - Frequently Asked Questions (FAQs)
 - NumPy Extension Documentation
+
+## How to write Boost.Python converters
+
+[How to write Boost.Python type converters - sixty-north blog](https://sixty-north.com/blog/how-to-write-boost-python-type-converters.html "Permalink to How to write Boost.Python type converters")
+
+[How to write Boost.Python type converters - sixty-north blog](https://sixty-north.com/blog/how-to-write-boost-python-type-converters.html)
