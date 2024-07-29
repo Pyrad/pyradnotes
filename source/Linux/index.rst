@@ -11,3 +11,4 @@ Linux
    bash.md
    Emacs.md
    makefile.md
+   ubuntu.md
