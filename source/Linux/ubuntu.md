@@ -137,4 +137,4 @@ sudo apt-get install tcl tk
 sudo apt-get install locate
 ```
 
-注意，使用 Linux 下使用 `updatedb` 需要 root 权限在某些目录中创建文件。
+注意，使用 WSL Linux 下使用 `updatedb` ，可能会访问到 `/mnt/d` 这样的Windows文件目录，从而导致 hang（？），暂时不知道如何解决。
