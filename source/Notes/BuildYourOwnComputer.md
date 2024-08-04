@@ -115,10 +115,10 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 | :-- | :----------------------------------------------------------------------- | :---- |---|
 |板+U| [华硕 PRIME A520M-K + AMD R5 5600G](https://item.jd.com/100061469956.html) | 1119  |1118|
 |内存|[金百达32GB DDR4 3200银爵](https://item.jd.com/100007177599.html)| 399   |389|
-|SSD | [宏碁 掠夺者 NVME PCIE3.0 GM3500](https://item.jd.com/100011580275.html)      | 439   |399|
-|散热| [利民 AX120 V2 PLUS](https://item.jd.com/100006525699.html#)               | 109   |106.5|
+|SSD |[宏碁 掠夺者 1TB NVME PCIE3.0 GM3500](https://item.jd.com/100011580275.html)| 439   |399|
+|散热|[利民 AX120 V2 PLUS](https://item.jd.com/100006525699.html#)| 109   |106.5|
 |电源|[玄武650SE 650W](https://item.taobao.com/item.htm?spm=a1z10.1-c.w4004-22046778022.25.489e777cIjG349&id=798356825894) |205|205|
-|机箱 | [长城 启程K06W 白色](https://item.jd.com/100053762815.html)                    | 99.90 |99.9|
+|机箱 |[长城 启程K06W 白色](https://item.jd.com/100053762815.html)| 99.90 |99.9|
 |小计|  |2370.9|  |
 
 ### 配置三
@@ -127,10 +127,10 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 |:-----|:-----|:-----|
 |板+U|[AMD R5 8600G + 华硕 PRIME B650M-R](https://item.jd.com/100095061323.html)|2049|
 |内存|[光威 天策16GBx2 DDR5 6000](https://item.jd.com/100094504267.html)|579 |
-|SSD|      |      |
-|散热|  |      |
-|电源|      |      |
-|机箱|      |      |
+|SSD|[宏碁 掠夺者 1TB NVME PCIE3.0 GM3500](https://item.jd.com/100011580275.html)|439|
+|散热|[利民 AX120 V2 PLUS](https://item.jd.com/100011850860.html)|101|
+|电源|[玄武 550 v4](https://item.taobao.com/item.htm?spm=a1z10.1-c.w4004-22046778022.7.7f31777ckhyv6Z&id=700692686188&pisk=f5tkrmbv6U7SYaVlCqjSJaGGLL3xV7sCtBEd9MCEus5b2BIRvsoVeTzz4urP0Ev6t_HIPgLctIRcaBvIF95eTBfpyqn9FLsCYfKnXcp7GTVbOQ4z4skFC92yKHQ7LLsCYX2YYVnMFCcXqz6h8xjVpOXPYw7U3xXddkSFawP2395VTF8jLcj-uhMlW1VlBB8dTvMCCL50jKtcUjftfsZeZnWPrHRdiZQvmTbl_ZHYIUtyMp-JVZwjHM9vSBYe_jURaFXMiNLosuAMN9RV3QHLRtYHLhs5rRE9nKveWZxxQcsl4_8dVpeiwKxkwLtDpJzVqgLcS3jN41a47Pt7Atkp0yaCzt6c6V1m8W2nFceZnx4sPaWfefHmnyaCzt6c6xD05W_PhThO.&skuId=5446264631288)|205|
+|机箱|[长城 启程K06W 白色](https://item.jd.com/100053762815.html)|99|
 
 
 
