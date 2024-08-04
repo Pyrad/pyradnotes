@@ -118,3 +118,11 @@ set_target_properties(new_thing PROPERTIES PREFIX "")
 
 [GenerateExportHeader](https://cmake.org/cmake/help/v3.0/module/GenerateExportHeader.html)
 
+
+## Hacking CPP
+
+[Cheat Sheets & Infographics - https://hackingcpp.com](https://hackingcpp.com/cpp/cheat_sheets.html)
+
+
+
+
