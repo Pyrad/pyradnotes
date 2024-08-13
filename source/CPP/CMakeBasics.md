@@ -124,5 +124,7 @@ set_target_properties(new_thing PROPERTIES PREFIX "")
 [Cheat Sheets & Infographics - https://hackingcpp.com](https://hackingcpp.com/cpp/cheat_sheets.html)
 
 
+## 一个CMake Project的例子
 
+[modern-cmake - examples - extended-project - CLIUtils - GitLab](https://gitlab.com/CLIUtils/modern-cmake/tree/master/examples/extended-project)
 
