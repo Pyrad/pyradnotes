@@ -277,3 +277,7 @@ $$
 
 [浅析C++内存泄漏检测工具 - Frank Dellaert的文章 - 知乎](https://zhuanlan.zhihu.com/p/712139975)
 
+
+## Linux 下常用的程序调试器 gdb 是什么原理？
+
+[Linux 下常用的程序调试器 gdb 是什么原理？ - MeteorZ的回答 - 知乎](https://www.zhihu.com/question/578172542/answer/3389041105)
