@@ -216,4 +216,6 @@ strings /lib64/libc.so.6 | grep ^GLIBC_
 
 
 
+## Ubuntu 18.04 编译安装新版本glibc
 
+[Vscode更新不当人啦 - 天国滑行的文章 - 知乎](https://zhuanlan.zhihu.com/p/681393388)
