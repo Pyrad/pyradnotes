@@ -2557,8 +2557,9 @@ brew install gcc
 ### Send mail to ask for a link
 
 Send an mail to blackbox@zlib.se, then a link will be received.
+### z-libraray 镜像合集
 
-
+[全球最大的数字图书馆 Z-Library 最新可用网址及镜像合集 (持续更新)](https://topstip.com/the-worlds-largest-digital-library-z-library-newly-available-official-site-and-mirror/)
 
 
 ## 使用百度秒传
