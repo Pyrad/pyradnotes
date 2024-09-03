@@ -242,6 +242,10 @@ https://stackoverflow.com/questions/24858014/checking-the-code-generated-implici
 
 [Compiler Construction using Flex and Bison](https://www.admb-project.org/tools/flex/compiler.pdf)
 
+## Flex Manual - GNU
+
+[Flex Manual - GNU](https://ftp.gnu.org/old-gnu/Manuals/flex-2.5.4/html_mono/flex.html)
+
 
 
 ## 32-bit floating point
