@@ -524,11 +524,13 @@ New value = (int *) 0x604010
 
 |命令 (Command)|用途 (Purpose)|使用场景 (Usage Scenario)|
 |----------------|----------------|--------------------------|
-| info program | Execution status of the program. |程序的执行状态（显式程序的加载地址、执行路径等）|
-|info breakpoints| Status of specified breakpoints. | 查看指定断点的状态 |
-| info target | Names of targets and files being debugged. |正在调试的目标和文件的名称|
-| info threads |Display currently known threads.|显示当前已知的线程（显示当前程序的线程信息：线程编号、状态等）|
-|info inferiors| Print a list of inferiors being managed. |打印正在管理的下级列表（显示当前程序的进程信息：进程编号、状态等） |
+| `info program` | Execution status of the program. |程序的执行状态（显式程序的加载地址、执行路径等）|
+| `info source` | Information about the current source file. | 有关当前源文件的信息（包括文件名行数等） |
+| `info locals` | All local variables of current stack frame or those matching REGEXPs. | 查看当前堆栈帧的所有局部变量 |
+| `info breakpoints` | Status of specified breakpoints. | 查看指定断点的状态 |
+| `info target` | Names of targets and files being debugged. |正在调试的目标和文件的名称 |
+| `info threads` |Display currently known threads.|显示当前已知的线程（显示当前程序的线程信息：线程编号、状态等）|
+| `info inferiors` | Print a list of inferiors being managed. |打印正在管理的下级列表（显示当前程序的进程信息：进程编号、状态等） |
 |--- |---|---|
 | info address | Describe where symbol SYM is stored. | 查看符号SYM的存储位置 |
 | info all-registers | List of all registers and their contents, for selected stack frame. | 查看选定堆栈帧的所有寄存器及其内容 |
@@ -552,7 +554,6 @@ New value = (int *) 0x604010
 | info guile | Prefix command for Guile info displays. | Guile信息显示的前缀命令 |
 | info handle | What debugger does when program gets various signals. | 程序收到各种信号时调试器的操作 |
 | info line | Core addresses of the code for a source line. | 源代码行的核心地址 |
-| info locals | All local variables of current stack frame or those matching REGEXPs. | 查看当前堆栈帧的所有局部变量 |
 | info macro | Show the definition of MACRO. | 显示MACRO的定义 |
 | info macros | Show the definitions of all macros at LINESPEC. | 显示LINESPEC处所有宏的定义 |
 | info mem | Memory region attributes. | 内存区域属性 |
@@ -562,7 +563,6 @@ New value = (int *) 0x604010
 | info pretty-printer | GDB command to list all registered pretty-printers. | GDB命令列出所有注册的pretty-printers |
 | info probes | Show available static probes. | 显示可用的静态探针 |
 | info proc | Show additional information about a process. | 显示有关进程的其他信息 |
-
 | info record | Info record options. | 信息记录选项 |
 | info registers | List of integer registers and their contents. | 查看整数寄存器及其内容的列表 |
 | info scope | List the variables local to a scope. | 列出作用域内的局部变量 |
@@ -571,7 +571,6 @@ New value = (int *) 0x604010
 | info sharedlibrary | Status of loaded shared object libraries. | 已加载的共享对象库的状态 |
 | info signals | What debugger does when program gets various signals. | 程序收到各种信号时调试器的操作 |
 | info skip | Display the status of skips. | 显示跳过的状态 |
-| info source | Information about the current source file. | 有关当前源文件的信息 |
 | info sources | All source files in the program or those matching REGEXP. | 程序中的所有源文件或匹配的源文件 |
 | info stack | Backtrace of the stack, or innermost COUNT frames. | 堆栈的回溯或最内部的COUNT帧 |
 | info static-tracepoint-markers | List target static tracepoints markers. | 列出目标静态跟踪点标记 |
