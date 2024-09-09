@@ -534,7 +534,7 @@ New value = (int *) 0x604010
 |--- |---|---|
 | info address | Describe where symbol SYM is stored. | 查看符号SYM的存储位置 |
 | info all-registers | List of all registers and their contents, for selected stack frame. | 查看选定堆栈帧的所有寄存器及其内容 |
-| info args | All argument variables of current stack frame or those matching REGEXPs. | 查看当前堆栈帧的所有参数变量 |
+| info args |All argument variables of current stack frame or those matching REGEXPs.| 查看当前堆栈帧的所有参数变量 |
 | info auto-load | Print current status of auto-loaded files. | 打印自动加载文件的当前状态 |
 | info auxv | Display the inferior's auxiliary vector. | 显示下级的辅助向量 |
 | info bookmarks | Status of user-settable bookmarks. | 查看用户设置的书签状态 |
@@ -554,7 +554,7 @@ New value = (int *) 0x604010
 | info guile | Prefix command for Guile info displays. | Guile信息显示的前缀命令 |
 | info handle | What debugger does when program gets various signals. | 程序收到各种信号时调试器的操作 |
 | info line | Core addresses of the code for a source line. | 源代码行的核心地址 |
-| info macro | Show the definition of MACRO. | 显示MACRO的定义 |
+| info macro |Show the definition of MACRO.| 显示MACRO的定义 |
 | info macros | Show the definitions of all macros at LINESPEC. | 显示LINESPEC处所有宏的定义 |
 | info mem | Memory region attributes. | 内存区域属性 |
 | info module | Print information about modules. | 打印模块信息 |
@@ -588,7 +588,7 @@ New value = (int *) 0x604010
 | info warranty | Various kinds of warranty you do not have. | 您没有的各种保修 |
 | info watchpoints | Status of specified watchpoints. | 查看指定监视点的状态 |
 | info win | List of all displayed windows. | 列出所有显示的窗口 |
-| info xmethod | GDB command to list registered xmethod matchers. | GDB命令列出注册的xmethod匹配器 |
+| info xmethod |GDB command to list registered xmethod matchers.| GDB命令列出注册的xmethod匹配器 |
 
 
 
