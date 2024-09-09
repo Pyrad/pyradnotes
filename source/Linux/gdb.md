@@ -517,3 +517,91 @@ New value = (int *) 0x604010
 - 继续执行程序，直到检测到这个尾部指针值的变化。
 
 
+
+## GDB info command
+
+[GDB中的info命令：一次全面的探索 - 泡沫o0的文章 - 知乎](https://zhuanlan.zhihu.com/p/661431501)
+
+|命令 (Command)|用途 (Purpose)|使用场景 (Usage Scenario)|
+|----------------|----------------|--------------------------|
+| info program | Execution status of the program. |程序的执行状态（显式程序的加载地址、执行路径等）|
+|info breakpoints| Status of specified breakpoints. | 查看指定断点的状态 |
+| info target | Names of targets and files being debugged. |正在调试的目标和文件的名称|
+| info threads |Display currently known threads.|显示当前已知的线程（显示当前程序的线程信息：线程编号、状态等）|
+|info inferiors| Print a list of inferiors being managed. |打印正在管理的下级列表（显示当前程序的进程信息：进程编号、状态等） |
+|--- |---|---|
+| info address | Describe where symbol SYM is stored. | 查看符号SYM的存储位置 |
+| info all-registers | List of all registers and their contents, for selected stack frame. | 查看选定堆栈帧的所有寄存器及其内容 |
+| info args | All argument variables of current stack frame or those matching REGEXPs. | 查看当前堆栈帧的所有参数变量 |
+| info auto-load | Print current status of auto-loaded files. | 打印自动加载文件的当前状态 |
+| info auxv | Display the inferior's auxiliary vector. | 显示下级的辅助向量 |
+| info bookmarks | Status of user-settable bookmarks. | 查看用户设置的书签状态 |
+| info checkpoints | IDs of currently known checkpoints. | 查看当前已知的检查点ID |
+| info classes | All Objective-C classes, or those matching REGEXP. | 查看所有Objective-C类或匹配的类 |
+| info common | Print out the values contained in a Fortran COMMON block. | 打印Fortran COMMON块中的值 |
+| info copying | Conditions for redistributing copies of GDB. | GDB复制的分发条件 |
+| info dcache | Print information on the dcache performance. | 打印dcache性能信息 |
+| info display | Expressions to display when program stops. | 程序停止时要显示的表达式 |
+| info exceptions | List all Ada exception names. | 列出所有Ada异常名称 |
+| info extensions | All filename extensions associated with a source language. | 与源语言关联的所有文件名扩展名 |
+| info files | Names of targets and files being debugged. | 正在调试的目标和文件的名称 |
+| info float | Print the status of the floating point unit. | 打印浮点单元的状态 |
+| info frame | All about the selected stack frame. | 有关选定堆栈帧的所有信息 |
+| info frame-filter | List all registered Python frame-filters. | 列出所有注册的Python帧过滤器 |
+| info functions | All function names or those matching REGEXPs. | 所有函数名称或匹配的函数名称 |
+| info guile | Prefix command for Guile info displays. | Guile信息显示的前缀命令 |
+| info handle | What debugger does when program gets various signals. | 程序收到各种信号时调试器的操作 |
+| info line | Core addresses of the code for a source line. | 源代码行的核心地址 |
+| info locals | All local variables of current stack frame or those matching REGEXPs. | 查看当前堆栈帧的所有局部变量 |
+| info macro | Show the definition of MACRO. | 显示MACRO的定义 |
+| info macros | Show the definitions of all macros at LINESPEC. | 显示LINESPEC处所有宏的定义 |
+| info mem | Memory region attributes. | 内存区域属性 |
+| info module | Print information about modules. | 打印模块信息 |
+| info modules | All module names, or those matching REGEXP. | 所有模块名称或匹配的模块名称 |
+| info os | Show OS data ARG. | 显示OS数据ARG |
+| info pretty-printer | GDB command to list all registered pretty-printers. | GDB命令列出所有注册的pretty-printers |
+| info probes | Show available static probes. | 显示可用的静态探针 |
+| info proc | Show additional information about a process. | 显示有关进程的其他信息 |
+
+| info record | Info record options. | 信息记录选项 |
+| info registers | List of integer registers and their contents. | 查看整数寄存器及其内容的列表 |
+| info scope | List the variables local to a scope. | 列出作用域内的局部变量 |
+| info selectors | All Objective-C selectors, or those matching REGEXP. | 所有Objective-C选择器或匹配的选择器 |
+| info set | Show all GDB settings. | 显示所有GDB设置 |
+| info sharedlibrary | Status of loaded shared object libraries. | 已加载的共享对象库的状态 |
+| info signals | What debugger does when program gets various signals. | 程序收到各种信号时调试器的操作 |
+| info skip | Display the status of skips. | 显示跳过的状态 |
+| info source | Information about the current source file. | 有关当前源文件的信息 |
+| info sources | All source files in the program or those matching REGEXP. | 程序中的所有源文件或匹配的源文件 |
+| info stack | Backtrace of the stack, or innermost COUNT frames. | 堆栈的回溯或最内部的COUNT帧 |
+| info static-tracepoint-markers | List target static tracepoints markers. | 列出目标静态跟踪点标记 |
+| info symbol | Describe what symbol is at location ADDR. | 描述位于ADDR位置的符号 |
+| info tasks | Provide information about all known Ada tasks. | 提供有关所有已知Ada任务的信息 |
+| info terminal | Print inferior's saved terminal status. | 打印下级保存的终端状态 |
+| info tracepoints | Status of specified tracepoints. | 查看指定跟踪点的状态 |
+| info tvariables | Status of trace state variables and their values. | 跟踪状态变量及其值的状态 |
+| info type-printers | GDB command to list all registered type-printers. | GDB命令列出所有注册的类型打印机 |
+| info types | All type names, or those matching REGEXP. | 所有类型名称或匹配的类型名称 |
+| info unwinder | GDB command to list unwinders. | GDB命令列出unwinders |
+| info variables | All global and static variable names or those matching REGEXPs. | 所有全局和静态变量名称或匹配的变量名称 |
+| info vector | Print the status of the vector unit. | 打印向量单元的状态 |
+| info vtbl | Show the virtual function table for a C++ object. | 显示C++对象的虚函数表 |
+| info warranty | Various kinds of warranty you do not have. | 您没有的各种保修 |
+| info watchpoints | Status of specified watchpoints. | 查看指定监视点的状态 |
+| info win | List of all displayed windows. | 列出所有显示的窗口 |
+| info xmethod | GDB command to list registered xmethod matchers. | GDB命令列出注册的xmethod匹配器 |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
