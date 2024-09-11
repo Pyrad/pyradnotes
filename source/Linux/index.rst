@@ -12,3 +12,4 @@ Linux
    Emacs.md
    makefile.md
    ubuntu.md
+   linuxSystem.md
