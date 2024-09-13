@@ -219,3 +219,22 @@ strings /lib64/libc.so.6 | grep ^GLIBC_
 ## Ubuntu 18.04 编译安装新版本glibc
 
 [Vscode更新不当人啦 - 天国滑行的文章 - 知乎](https://zhuanlan.zhihu.com/p/681393388)
+
+
+## 编译silver searcher（ag）的时候遇到的multiple definition的问题
+
+在编译安装silver searher的时候，可能会出现如下的多重定义的错误，
+
+ ```shell
+ /bin/ld: src/log.o:/<path-to-silver-searcher>/src/log.h:12:multiple definition of 'print_mtx';
+ ```
+
+这是一个bug，在[GitHub链接](https://github.com/ggreer/the_silver_searcher/issues/1378)上有讨论到。
+
+同样在上面这个链接里面，有人提到，目前的workaround是，
+
+```shell
+make CFLAGS="-fcommon -D_GNU_SOURCE -lpthread"
+```
+
+经过尝试，发现可行。
