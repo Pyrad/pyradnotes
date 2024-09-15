@@ -138,3 +138,12 @@ https://en.wikipedia.org/wiki/Computational_geometry
 《[科学可视化软件介绍 – 医学图像查看器MRIcroGL](https://zhuanlan.zhihu.com/p/693700342)》
 
 《[科学可视化软件介绍 – 机器人开发可视化工具rviz](https://zhuanlan.zhihu.com/p/693876340)》
+
+
+## Digital Geometry Processing
+
+[Digital Geometry Processing - University of Science and Technology of China](https://ustc-gcl-f.github.io/course/2020_Spring_DGP/index.html)
+
+Slides link - [All slides](https://rec.ustc.edu.cn/share/49c5fe30-c679-11ea-9996-65c18839ba05)
+
+
