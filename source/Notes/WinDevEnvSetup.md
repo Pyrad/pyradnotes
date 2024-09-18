@@ -45,6 +45,34 @@
 - 然后参考升级讲解视频：[Win7免费升级Win10的6大问题，以及解决办法](https://www.bilibili.com/video/BV1tW4y1676w/?spm_id_from=333.999.0.0)，选择进行升级。
   
 
+### WSL中使用vim时列模式失效的问题
+
+[Visual-Block mode not working in Vim with C-v on WSL@Windows 10](https://stackoverflow.com/questions/61824177/visual-block-mode-not-working-in-vim-with-c-v-on-wslwindows-10)
+
+简单地说，就是因为`Ctrl` + `v` 在 WSL 中被绑定到了paste的功能上。要改变这一绑定，使用 `Ctrl` + `Shift` + `v`，在 `settings.json` 中把这个快捷键解除绑定，如下，
+
+version 1.4 之后，
+
+```json
+"actions": [
+   ...
+   // { "command": {"action": "paste", ...}, "keys": "ctrl+v" }, <------ THIS LINE
+]
+```
+
+version 1.4 之前
+
+```json
+"keybindings": [
+   ...
+   // { "command": "paste", "keys": "ctrl+v" }, <------ THIS LINE
+]
+```
+
+
+
+
+
 ### WSL 安装
 
 #### 改变 WSL 以及 distribution 的位置
