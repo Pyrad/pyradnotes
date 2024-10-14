@@ -25,3 +25,4 @@ Notes
    LearningGPU.md
    debugTrack.md
    OpenSourceMirrors.md
+   shoppinglist.md
