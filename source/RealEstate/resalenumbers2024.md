@@ -1387,9 +1387,9 @@ $$
 \begin{array}{l|r|r|r|r|r|r|r}
 \hline
 \mathrm{Date} & \mathrm{10-27} & \mathrm{10-28} & \mathrm{10-28} & \mathrm{10-29} & \mathrm{10-30} & \mathrm{10-31} & \mathrm{11-01} \\
-\mathrm{城市} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} \\
+\mathrm{城市} & \mathrm{13:27} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} \\
 \hline
-北京 & - & - & - & - & - & - & - \\
+北京 & 132,089 & - & - & - & - & - & - \\
 广州 & - & - & - & - & - & - & - \\
 苏州 & - & - & - & - & - & - & - \\
 杭州 & - & - & - & - & - & - & - \\
