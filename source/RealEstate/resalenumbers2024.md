@@ -1386,10 +1386,10 @@ $\text{Year 2024 Week 43}$
 $$
 \begin{array}{l|r|r|r|r|r|r|r}
 \hline
-\mathrm{Date} & \mathrm{10-27} & \mathrm{10-28} & \mathrm{10-28} & \mathrm{10-29} & \mathrm{10-30} & \mathrm{10-31} & \mathrm{11-01} \\
-\mathrm{城市} & \mathrm{13:27} & \mathrm{22:24} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} \\
+\mathrm{Date} & \mathrm{10-27} & \mathrm{10-28} & \mathrm{10-29} & \mathrm{10-30} & \mathrm{10-31} & \mathrm{11-01} & \mathrm{11-02} \\
+\mathrm{城市} & \mathrm{13:27} & \mathrm{22:24} & \mathrm{22:05} & \mathrm{-} & \mathrm{-} & \mathrm{-} & \mathrm{-} \\
 \hline
-北京 & 132,089 & 131,720 & - & - & - & - & - \\
+北京 & 132,089 & 131,720 & 134,623 & - & - & - & - \\
 广州 & - & - & - & - & - & - & - \\
 苏州 & - & - & - & - & - & - & - \\
 杭州 & - & - & - & - & - & - & - \\
