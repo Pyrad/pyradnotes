@@ -81,3 +81,8 @@ Libgen 镜像网站，搜索后点击右边的“Mirror”可直接下载。
 Search engine of shadow libraries: books, papers, comics, magazines.
 
 https://annas-archive.org/
+
+
+### zlibrary数字图书馆官网，最新镜像网址入口（11.20）
+
+https://www.rymdh.com/10513.html
