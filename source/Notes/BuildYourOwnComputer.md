@@ -125,7 +125,7 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 
 价格 ￥**3472** （2024年8月4日12:36）
 
-|类别|链接|价格 |
+|类别 |链接|价格 |
 |:-----|:-----|:-----|
 |板+U|[AMD R5 8600G + 华硕 PRIME B650M-R](https://item.jd.com/100095061323.html)|2049|
 |内存|[光威 天策16GBx2 DDR5 6000](https://item.jd.com/100094504267.html)|579 |
@@ -133,6 +133,25 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 |散热|[利民 AX120 V2 PLUS](https://item.jd.com/100011850860.html)|101|
 |电源|[玄武 550 v4](https://item.taobao.com/item.htm?spm=a1z10.1-c.w4004-22046778022.7.7f31777ckhyv6Z&id=700692686188&pisk=f5tkrmbv6U7SYaVlCqjSJaGGLL3xV7sCtBEd9MCEus5b2BIRvsoVeTzz4urP0Ev6t_HIPgLctIRcaBvIF95eTBfpyqn9FLsCYfKnXcp7GTVbOQ4z4skFC92yKHQ7LLsCYX2YYVnMFCcXqz6h8xjVpOXPYw7U3xXddkSFawP2395VTF8jLcj-uhMlW1VlBB8dTvMCCL50jKtcUjftfsZeZnWPrHRdiZQvmTbl_ZHYIUtyMp-JVZwjHM9vSBYe_jURaFXMiNLosuAMN9RV3QHLRtYHLhs5rRE9nKveWZxxQcsl4_8dVpeiwKxkwLtDpJzVqgLcS3jN41a47Pt7Atkp0yaCzt6c6V1m8W2nFceZnx4sPaWfefHmnyaCzt6c6xD05W_PhThO.&skuId=5446264631288)|205|
 |机箱|[长城 启程K06W 白色](https://item.jd.com/100053762815.html)|99|
+
+
+### 配置四
+
+价格 ￥**2783.82** （2024年11月25日22:02）
+
+天猫部分：399+449=848
+
+京东部分：1521.36 + 101 + 205 + 108.46 = 1935.82
+
+|类别 |链接|价格 |
+|:-----|:-----|:-----|
+|板+U|[AMD R7 5700G + 华硕 PRIME B550M-K](https://item.jd.com/100026125463.html)|1521.36|
+|内存|[宇瞻 黑豹马甲 D4 3200 16Gx2](https://chaoshi.detail.tmall.com/item.htm?id=843194433655&skuId=5786317195161) [宇瞻 NOX 暗黑马甲 D4 3200 16Gx2](https://chaoshi.detail.tmall.com/item.htm?id=842849102384&skuId=5616088272938)|399 |
+|SSD|[铠侠 SD10 1TB PCIe4.0 NVMe/M2](https://chaoshi.detail.tmall.com/item.htm?id=756508384334&skuId=5389853415910)|449|
+|散热|[利民 AX120 V2 PLUS](https://item.jd.com/100011850860.html) |101|
+|电源|[玄武 550 v4](https://item.taobao.com/item.htm?spm=a1z10.1-c.w4004-22046778022.7.7f31777ckhyv6Z&id=700692686188&pisk=f5tkrmbv6U7SYaVlCqjSJaGGLL3xV7sCtBEd9MCEus5b2BIRvsoVeTzz4urP0Ev6t_HIPgLctIRcaBvIF95eTBfpyqn9FLsCYfKnXcp7GTVbOQ4z4skFC92yKHQ7LLsCYX2YYVnMFCcXqz6h8xjVpOXPYw7U3xXddkSFawP2395VTF8jLcj-uhMlW1VlBB8dTvMCCL50jKtcUjftfsZeZnWPrHRdiZQvmTbl_ZHYIUtyMp-JVZwjHM9vSBYe_jURaFXMiNLosuAMN9RV3QHLRtYHLhs5rRE9nKveWZxxQcsl4_8dVpeiwKxkwLtDpJzVqgLcS3jN41a47Pt7Atkp0yaCzt6c6V1m8W2nFceZnx4sPaWfefHmnyaCzt6c6xD05W_PhThO.&skuId=5446264631288)|205 |
+|机箱|[长城 K08 白色](https://item.jd.com/100088538492.html) | 108.46 |
+
 
 
 ## 桌面音箱
