@@ -592,6 +592,27 @@ New value = (int *) 0x604010
 
 
 
+## 查看函数的位置和定义
+
+可以通过如下的几种命令，来查看一个函数的
+
+（1）函数原型
+
+```gdb
+info address function_name
+```
+
+（2）函数定义文件（以及行号）
+
+```gdb
+info line *function_name
+```
+
+（2）函数源码
+
+```gdb
+list function_name
+```
 
 
 
