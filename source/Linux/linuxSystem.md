@@ -36,3 +36,9 @@ execve
 
 [Linux下Fork与Exec使用 - 知乎](https://zhuanlan.zhihu.com/p/659902392)
 
+
+## Terminal emulator
+
+[10 个常见的 Linux 终端仿真器 | Linux 中国](https://zhuanlan.zhihu.com/p/358691410)
+
+
