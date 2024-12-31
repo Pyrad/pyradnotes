@@ -289,4 +289,8 @@ $$
 
 ## PLT和GOT的作用，动态链接的整个过程
 
+[iqiyi - xHook](https://github.com/iqiyi/xHook/blob/master/docs/overview/android_plt_hook_overview.zh-CN.md)
+
 [C++学习 - chengxumiaodaren/cpp-learning](https://github.com/chengxumiaodaren/cpp-learning)
+
+[Linux动态链接为什么要用PLT和GOT表？ - 程序喵大人的回答 - 知乎](https://www.zhihu.com/question/21249496/answer/2120859142)
