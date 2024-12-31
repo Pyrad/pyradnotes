@@ -285,3 +285,8 @@ $$
 ## Linux 下常用的程序调试器 gdb 是什么原理？
 
 [Linux 下常用的程序调试器 gdb 是什么原理？ - MeteorZ的回答 - 知乎](https://www.zhihu.com/question/578172542/answer/3389041105)
+
+
+## PLT和GOT的作用，动态链接的整个过程
+
+[C++学习 - chengxumiaodaren/cpp-learning](https://github.com/chengxumiaodaren/cpp-learning)
