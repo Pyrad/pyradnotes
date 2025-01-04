@@ -13,6 +13,27 @@
 [CPython源码学习：5、Python如何加载so/pyd动态库？ - 晓帆笔记本的文章 - 知乎](https://zhuanlan.zhihu.com/p/661902441)
 
 
+
+## python源码剖析
+
+python源码剖析 - 陈儒 - 电子工业出版社 - 2008-06 - 480页
+
+[如何学习才能达到能浅读CPython源码? - 南山烟雨珠江潮的回答 - 知乎](https://www.zhihu.com/question/8490330195/answer/70415053969)
+
+下面链接是上面链接中提到的参考网页资料：
+
+[python3-source-code-analysis - GitHub](https://github.com/flaggo/python3-source-code-analysis) ：是参考 **python源码剖析 - 陈儒** 对Python 3.7的源码分析。
+
+[Building a Python compiler and interpreter - mathspp.com](https://mathspp.com/blog/building-a-python-compiler-and-interpreter)
+
+[A Python Interpreter Written in Python - Allison Kaptur - 中文版](http://qingyunha.github.io/taotao/)
+
+[A Python Interpreter Written in Python - Allison Kaptur - 英文版](https://aosabook.org/en/500L/a-python-interpreter-written-in-python.html)
+
+[一个相关的视频教程](https://www.youtube.com/watch%3Fv%3DdCCcDj8YtDI)
+
+
+
 ## Python Buffer Protocol
 
 [An Introduction to the Python Buffer Protocol - GitHub](https://jakevdp.github.io/blog/2014/05/05/introduction-to-the-python-buffer-protocol/)
