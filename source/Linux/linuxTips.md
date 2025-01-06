@@ -911,3 +911,15 @@ categories:
 - linux related
 tags: linux
 ```
+
+
+## Xterm
+
+如果要回复 xterm的系统默认设置，可以使用如下命令，
+
+```shell
+xrdb -load /dev/null
+```
+
+
+
