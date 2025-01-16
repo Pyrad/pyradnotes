@@ -771,3 +771,78 @@ mv .git/refs/tags/m_handoff-latest-merged /tmp
 ```shell
 rm .git/refs/remotes/origin/<name of branch>
 ```
+
+## Copy/push/clone a local branch from one repo to another
+
+如何把一个本地 git repo (A) 中的 local branch (mybranch) 拷贝到另外一个 git repo (B) 中。
+
+首先，这另外一个 repo 不是 Github，而是位于本机另外一个路径下的 git repo。
+
+办法步骤：
+
+- 首先，把 repo B 的 路径当作 remote，添加到 repo A 中。
+
+  比如，在 repo A 中使用命令 `git remote -v`，可以得到当前它对于的fetch 和 push的remote，
+  
+  ```shell
+  /path/to/repoA % git remote -v
+  origin git@github.com:Pyrad/cpp.git (fetch)
+  origin git@github.com:Pyrad/cpp.git (push)
+  ```
+  
+  那么，通过 `git remote set-url`，可以增加一个指向 repo B 的 remote origin，如下，
+  
+  ```shell
+  /path/to/repoA % git remote set-url --add origin /path/to/repoB
+  /path/to/repoA % git remote -v
+  origin git@github.com:Pyrad/cpp.git (fetch)
+  origin git@github.com:Pyrad/cpp.git (push)
+  origin /path/to/repoB (push)
+  ```
+  
+  那么，此时 repoB 也就成为了 repoA 的一个 push origin。
+
+  注意，这里的 `--add origin /path/to/repoB` 中的 `origin` 是 repo B 中已经存在的。
+
+- 然后，把要拷贝的local git branch，直接使用如下命令push即可，
+
+  ```shelll
+  git push <path_to_another_repo> <my_branch_name_in_repo_A>:<my_branch_name_in_repo_B>
+  ```
+  
+  这里，`<path_to_another_repo>` 就是 repo B 的路径，而 `<my_branch_name_in_repo_A>` 就是
+  要拷贝的branch 在 repo A 中的名字，而 `<my_branch_name_in_repo_B>` 就是要把这个 branch
+  拷贝到 repo B 中所命名的名字。
+  
+  在本例中，命令如下，
+  
+  ```shell
+  /path/to/repoA % git push /path/to/repoB mybranch:mybranch
+  Enumerating objects: 229, done.
+  Counting objects: 100% (165/165), done.
+  Delta compression using up to 20 threads
+  Compressing objects: 100% (121/121), done.
+  Writing objects: 100% (121/121), 16.94 KiB | 1.54 MiB/s done.
+  Total 121 (delta 99), reused 0 (delta 0), pack-reused 0
+  remote: Resolving deltas: 100% (99/99), completed with 28 local objects.
+  remote: Checking connectivity: 121, done.
+  To /path/to/repoB
+   * [new branch]         mybranch -> mybranch
+  ```
+
+  如果还要拷贝其他branch，也在此时，重复使用上述命令来push。
+
+- 最后，在 repo A 中，把指向 repo B 的remote 删除即可，如下，
+  
+  ```shell
+  /path/to/repoA % git remote set-url --delete origin /path/to/repoB
+  /path/to/repoA % git remote -v
+  origin git@github.com:Pyrad/cpp.git (fetch)
+  origin git@github.com:Pyrad/cpp.git (push)
+  ```
+
+
+
+
+
+
