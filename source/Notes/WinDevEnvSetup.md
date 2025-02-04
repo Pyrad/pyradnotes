@@ -364,6 +364,12 @@ https://vscode.cdn.azure.cn/stable/ea3859d4ba2f3e577a159bc91e3074c5d85c0523/code
 
 这个就是国内的镜像了点开后你会发现速度直接起飞。
 
+### VS Code to fold specific lines
+
+[Fold selection](https://code.visualstudio.com/docs/editor/codebasics#_fold-selection)
+
+首先鼠标选中需要折叠的行，然后使用快捷键 `Ctrl` + `K` 加上 `Ctrl` + `,`。
+
 
 
 ## Scrapy
