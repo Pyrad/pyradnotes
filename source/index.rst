@@ -18,7 +18,7 @@ A Tour of Life (Pyrad's Notes!)
       -
     * - :math:`\star` :doc:`Git </Git/index>`
       - :doc:`git </Git/git>`
-      -
+      - :doc:`git FAQ </Git/gitcmd>`
       -
       -
     * - :math:`\star` :doc:`Linux </Linux/index>`
