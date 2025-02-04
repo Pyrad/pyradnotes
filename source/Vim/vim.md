@@ -683,3 +683,11 @@ version 1.4 之前
 ]
 ```
 
+## Vim check key map
+
+使用如下命令查看快捷键 `<C-y>` 映射
+
+```shell
+:verbose imap <C-y>
+```
+
