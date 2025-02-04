@@ -152,6 +152,28 @@ array=($(find . -name "*.txt"))
 for i in "${array[@]}"; do echo $i; done
 ```
 
+## Bash find command with +
+
+[How can I grep the results of FIND using -EXEC and still output to a file? - StackExchange](https://unix.stackexchange.com/questions/21033/how-can-i-grep-the-results-of-find-using-exec-and-still-output-to-a-file)
+
+[Using semicolon (;) vs plus (+) with exec in find - Stack Overflow](https://stackoverflow.com/questions/6085156/using-semicolon-vs-plus-with-exec-in-find)
+
+```shell
+find . -type f -name "*.txt" -exec grep -l "is.*good" {} + > result.log
+```
+
+需要注意的是， `{}` 必须是最后一个得出现在 `+` 之前的字符串，否则会报错。
+
+一个例子是，如果想要把一些文件移动到另外一个目录中去，`mv` 命令就需要做如下的变动，
+
+```shell
+find . -type f -name "*.txt" -exec mv -t ./a_target_directory {} +
+```
+
+这里就利用了 `mv` 的参数 `-t`，这样就可以使得 `{}` 是最后一个出现在 `+` 之前的option。
+
+[How to integrate mv command after find command?](https://unix.stackexchange.com/a/154819)
+
 
 
 ## 删除一个符号链接的方法：
@@ -922,4 +944,25 @@ xrdb -load /dev/null
 ```
 
 
+## 拷贝文件目录，但跳过其中的某些文件
 
+[How to use 'cp' command to exclude a specific directory? - StackOverflow](https://stackoverflow.com/questions/2193584/copy-folder-recursively-excluding-some-folders)
+
+[How can I use cp to copy a directory but ignore a certain sub directory in Linux - Stack Exchange](https://superuser.com/questions/151970/how-can-i-use-cp-to-copy-a-directory-but-ignore-a-certain-sub-directory-in-linux)
+
+```shell
+rsync -a source_dir target_dir --exclude mytemp --exclude mytemp2
+```
+
+其中 `--exclude` 后面的文件（或文件目录）名称，是相对于 `source_dir` 的相对路径，可以同时指定多个需要跳过拷贝的文件（或目录）。
+
+
+## sed to print lines with line numbers
+
+`sed` 程序打印行号。
+
+[Print line range from file, and include line numbers - StackExchange](https://unix.stackexchange.com/questions/605080/print-line-range-from-file-and-include-line-numbers)
+
+```shell
+sed -n '10,20{=;p}' file.txt | sed '{N; s/\n/ /}'
+```
