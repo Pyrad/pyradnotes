@@ -590,7 +590,14 @@ New value = (int *) 0x604010
 | info win | List of all displayed windows. | 列出所有显示的窗口 |
 | info xmethod |GDB command to list registered xmethod matchers.| GDB命令列出注册的xmethod匹配器 |
 
+## GDB info line
 
+查看一个函数或一个变量位于哪个文件的哪一行，可以使用 `info line func_name/var_name`。
+
+```shell
+info line function_name
+info line variable_name
+```
 
 ## 查看函数的位置和定义
 
@@ -614,7 +621,9 @@ info line *function_name
 list function_name
 ```
 
+## GDB GUI
 
+[GDB front ends and other tools](https://sourceware.org/gdb/wiki/GDB%20Front%20Ends)
 
 
 
