@@ -275,91 +275,91 @@ git push (or use git push origin <NEW_BRANCH_NAME>)
 Reference website [git 删除文件与恢复](https://www.jianshu.com/p/c3ff8f0da85e)
 
 - A file was deleted locally by `shell` commands other than `git` commands, but it was not added to the stage area, use `checkout` option to restore
-  
-  ```shell
-  # Remove a file locally by shell commands
-  rm <FILE>
-  # Restore the file
-  git checkout -- <FILE>
-  ```
+
+```shell
+# Remove a file locally by shell commands
+rm <FILE>
+# Restore the file
+git checkout -- <FILE>
+```
 
 - A file was deleted locally by `shell` commands other than `git` commands, and it **was** added to the stage area, first use `reset` command to rollback the file to the status of locally removed, and then use `checkout` option to restore
-  
-  ```shell
-  ##### 1st situation
-  # Remove a file locally by shell commands
-  rm <FILE>
-  # Add to staged area (deleted)
-  git add <FILE>
-  # Rollback
-  git reset HEAD <FILE>
-  # Restore the file
-  git checkout -- <FILE>
-  
-  ##### 2nd situation
-  # Remove a file locally by git command which will add it to staged area (deleted)
-  git rm <FILE>
-  # Rollback
-  git reset HEAD <FILE>
-  # Restore the file
-  git checkout -- <FILE>
-  ```
+
+```shell
+##### 1st situation
+# Remove a file locally by shell commands
+rm <FILE>
+# Add to staged area (deleted)
+git add <FILE>
+# Rollback
+git reset HEAD <FILE>
+# Restore the file
+git checkout -- <FILE>
+
+##### 2nd situation
+# Remove a file locally by git command which will add it to staged area (deleted)
+git rm <FILE>
+# Rollback
+git reset HEAD <FILE>
+# Restore the file
+git checkout -- <FILE>
+```
 
 - A file was deleted locally either by `shell` commands or `git` commands, and it **was** not only added to the stage area, but also committed to local repository, then we need to use `reset --hard <ID>` to rollback (ID is got by using `git log` command)
-  
-  ```shell
-  ##### 1st situation
-  # Remove a file locally by shell commands
-  rm <FILE>
-  # Add to staged area (deleted)
-  git add <FILE>
-  # Commit
-  git commit -m "Delete a file"
-  # Get the version ID by using the log option
-  git log --pretty=oneline
-  # Rollback
-  git reset --hard <ID>
-  
-  ##### 2nd situation
-  # Remove a file locally by git command which will add it to staged area (deleted)
-  git rm <FILE>
-  # Commit
-  git commit -m "Delete a file"
-  # Get the version ID by using the log option
-  git log --pretty=oneline
-  # Rollback
-  git reset --hard <ID>
-  ```
+
+```shell
+##### 1st situation
+# Remove a file locally by shell commands
+rm <FILE>
+# Add to staged area (deleted)
+git add <FILE>
+# Commit
+git commit -m "Delete a file"
+# Get the version ID by using the log option
+git log --pretty=oneline
+# Rollback
+git reset --hard <ID>
+
+##### 2nd situation
+# Remove a file locally by git command which will add it to staged area (deleted)
+git rm <FILE>
+# Commit
+git commit -m "Delete a file"
+# Get the version ID by using the log option
+git log --pretty=oneline
+# Rollback
+git reset --hard <ID>
+```
 
 - A file was deleted locally either by `shell` commands or `git` commands, and it **was** not only committed to the local repository, but also push to the remote repository (e.g., Github), then following the steps above, and the use `git push -f`to push the restored files back to the remote repository. Note here `-f` is a must, because git doesn't allow lower versions override higher versions.
-  
-  ```sh
-  ##### 1st situation
-  # Remove a file locally by shell commands
-  rm <FILE>
-  # Add to staged area (deleted)
-  git add <FILE>
-  # Commit
-  git commit -m "Delete a file"
-  # Get the version ID by using the log option
-  git log --pretty=oneline
-  # Rollback
-  git reset --hard <ID>
-  # Push to remote
-  git push -f
-  
-  ##### 2nd situation
-  # Remove a file locally by git command which will add it to staged area (deleted)
-  git rm <FILE>
-  # Commit
-  git commit -m "Delete a file"
-  # Get the version ID by using the log option
-  git log --pretty=oneline
-  # Rollback
-  git reset --hard <ID>
-  # Push to remote
-  git push -f
-  ```
+
+```sh
+##### 1st situation
+# Remove a file locally by shell commands
+rm <FILE>
+# Add to staged area (deleted)
+git add <FILE>
+# Commit
+git commit -m "Delete a file"
+# Get the version ID by using the log option
+git log --pretty=oneline
+# Rollback
+git reset --hard <ID>
+# Push to remote
+git push -f
+
+##### 2nd situation
+# Remove a file locally by git command which will add it to staged area (deleted)
+git rm <FILE>
+# Commit
+git commit -m "Delete a file"
+# Get the version ID by using the log option
+git log --pretty=oneline
+# Rollback
+git reset --hard <ID>
+# Push to remote
+git push -f
+```
 
 ## Change repository's fetch origin
 
@@ -840,6 +840,16 @@ rm .git/refs/remotes/origin/<name of branch>
   origin git@github.com:Pyrad/cpp.git (fetch)
   origin git@github.com:Pyrad/cpp.git (push)
   ```
+
+## If a file is controlled by Git?
+
+```shell
+git ls-files --error-unmatch path/to/your/file
+```
+
+If it returns an error message, then it was not managed by Git. If it returns the file path, it is managed by Git.
+
+
 
 
 
