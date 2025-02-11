@@ -218,3 +218,35 @@ nmap <leader>0 <Plug>AirlineSelectTab0
 
 
 
+## Vim Topic in Zhihu
+
+[有什么使用 Vim 的小技巧可以分享？ - 知乎](https://www.zhihu.com/question/636018229)
+
+[Vim 有什么奇技淫巧？ - 知乎](https://www.zhihu.com/question/27478597)
+
+[各位VIM大神，如何学习VIM，有很多命令感觉都没有什么意思的，如何记忆，熟能生巧耳？ - 知乎](https://www.zhihu.com/question/40102193)
+[到底 VIM 能配置到多强大的程度？ - 知乎](https://www.zhihu.com/question/20151659)
+
+[VIM这么难用，为啥这么多人热衷？ - 知乎](https://www.zhihu.com/question/437735833)
+
+[如何优雅地使用 Vim？ - 知乎](https://www.zhihu.com/question/20833248)
+
+[大家开发用的是vim还是neovim？ - 知乎](https://www.zhihu.com/question/640506439)
+
+[你对 NeoVim 怎么看？ - 知乎](https://www.zhihu.com/question/29652536)
+
+[要从vim切换到neovim吗？ - 知乎](https://www.zhihu.com/question/517490969)
+
+[有哪些值得推荐的vim 插件? - 知乎](https://www.zhihu.com/question/342885428)
+
+[为什么看似简陋的vim在熟练的人手中如此的神乎其技？ - 知乎](https://www.zhihu.com/question/433183204)
+
+[你们是怎么美化linux终端和vim界面的？ - 知乎](https://www.zhihu.com/question/30252123)
+
+[你最爱的一个 Vim 命令是什么？ - 知乎](https://www.zhihu.com/question/19691653)
+
+[在 Linux 上写 C/C++，Vim 怎么配置？ - 知乎](https://www.zhihu.com/question/663532440)
+
+[有什么使用 Vim 的小技巧可以分享？ - 知乎](https://www.zhihu.com/question/636018229)
+
+
