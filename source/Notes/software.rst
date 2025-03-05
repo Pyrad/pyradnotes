@@ -47,3 +47,6 @@ This is to keep down some software programs of daily use or which might be very 
     * - **布丁扫描**
       - 免费专业的扫描APP
       - `布丁扫描 <http://www.budingscan.com/#/>`_
+    * - **nomacs**
+      - Immage Lunge
+      - `nomacs <https://nomacs.org>`_
