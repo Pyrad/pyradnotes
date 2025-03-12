@@ -375,3 +375,24 @@ fstr = ("This is a very long long long long "
 [Quick Start - Setuptools](https://setuptools.pypa.io/en/latest/userguide/quickstart.html)
 
 [Python Packaging User Guide](https://packaging.python.org/en/latest/)
+
+
+## PDF to images
+
+Use PyMuPDF
+
+```shell
+ pip install PyMuPDF
+```
+
+Then use `fitz` module as below,
+
+```python
+def my_pdf_to_png(fn_pdf, fn_png, dpi=None):
+  doc = fitz.open(fn_pdf)
+  page = doc.load_page(0)
+  pix = page.get_pixmap() if dpi is None else page.get_pixmap(dpi=dpi)
+  pix.save(fn_png)
+  doc.close()
+
+```
