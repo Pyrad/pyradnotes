@@ -2,6 +2,12 @@
 
 主要记录在windows 7/10平台下安装terminal以及相对应的环境设置
 
+## Download Chrome
+
+可以在[谷歌265导航](http://www.265.com/) 中的链接中下载Chrome 
+
+[谷歌265导航](http://www.265.com/)
+
 
 
 ## Windows itself
