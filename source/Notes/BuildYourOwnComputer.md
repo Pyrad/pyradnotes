@@ -28,6 +28,13 @@ AMD开发的这个超频技术，一般也叫做PBO（**P**recision **B**oost **
 [AMD必看！什么是PBO？PBO如何开启？PBO2开启教程 - 开车匣的文章 - 知乎](https://zhuanlan.zhihu.com/p/375665927)
 
 
+
+## Timed Linux Kernel Compilation
+
+[Timed Linux Kernel Compilation](https://openbenchmarking.org/test/pts/build-linux-kernel-1.17.1) 用来比较CPU编译Linux kernel所花费的时间。
+
+
+
 ## CPU 规格
 
 ### AMD
