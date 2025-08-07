@@ -86,3 +86,15 @@ https://annas-archive.org/
 ### zlibrary数字图书馆官网，最新镜像网址入口（11.20）
 
 https://www.rymdh.com/10513.html
+
+
+
+### Z-Library最新地址
+
+2025-08-07
+
+Use 126.com for name is ok
+
+[https://book.clouds.pp.ua/](https://book.clouds.pp.ua/)
+
+
